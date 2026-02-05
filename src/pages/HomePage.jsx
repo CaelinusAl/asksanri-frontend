@@ -7,7 +7,7 @@ import SplashScreen from "@/components/SplashScreen";
 const HomePage = () => {
   const [showSplash, setShowSplash] = useState(true);
   const { language, toggleLanguage, t } = useLanguage();
- 
+  const navigate = useNavigate();
 
   // Stars once (performance)
   const stars = useMemo(() => {
@@ -31,7 +31,8 @@ const HomePage = () => {
     setShowSplash(false);
   };
 
- 
+  const goSanri = () => navigate("/sanriya-sor");
+
   return (
     <>
       <AnimatePresence>
@@ -41,7 +42,8 @@ const HomePage = () => {
       <div
         className="min-h-screen relative overflow-hidden"
         style={{
-          background: "linear-gradient(180deg, #050508 0%, #0a0a14 40%, #0d1020 100%)",
+          background:
+            "linear-gradient(180deg, #050508 0%, #0a0a14 40%, #0d1020 100%)",
         }}
       >
         {/* Subtle background */}
@@ -59,7 +61,8 @@ const HomePage = () => {
           <div
             className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-20"
             style={{
-              background: "radial-gradient(ellipse, rgba(99, 102, 241, 0.3) 0%, transparent 70%)",
+              background:
+                "radial-gradient(ellipse, rgba(99, 102, 241, 0.3) 0%, transparent 70%)",
             }}
           />
         </div>
@@ -75,9 +78,21 @@ const HomePage = () => {
                      hover:bg-white/[0.08] transition-colors"
           type="button"
         >
-          <span className={text-xs font-medium ${language === "tr" ? "text-white" : "text-white/40"}}>TR</span>
+          <span
+            className={`text-xs font-medium ${
+              language === "tr" ? "text-white" : "text-white/40"
+            }`}
+          >
+            TR
+          </span>
           <span className="text-white/30 text-xs">|</span>
-          <span className={text-xs font-medium ${language === "en" ? "text-white" : "text-white/40"}}>EN</span>
+          <span
+            className={`text-xs font-medium ${
+              language === "en" ? "text-white" : "text-white/40"
+            }`}
+          >
+            EN
+          </span>
         </motion.button>
 
         {/* Main */}
@@ -89,7 +104,14 @@ const HomePage = () => {
             className="w-16 h-16 mx-auto mb-10 opacity-60"
           >
             <svg viewBox="0 0 64 64" className="w-full h-full">
-              <circle cx="32" cy="32" r="28" fill="none" stroke="rgba(129, 140, 248, 0.3)" strokeWidth="0.5" />
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                fill="none"
+                stroke="rgba(129, 140, 248, 0.3)"
+                strokeWidth="0.5"
+              />
               <path
                 d="M32 8 C 48 20, 48 44, 32 56 C 16 44, 16 20, 32 8"
                 fill="none"
