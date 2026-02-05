@@ -233,44 +233,45 @@ const SanriyaSorPage = () => {
     handleRemoveImage();
 
     try {
-      // Build request body with domain support
-      const requestBody = {
-        message: messageToSend,
-        session_id: sessionId,
-        mode: currentMode.id,
-        system_language: language
-      };
-      
-      // Add domain if manually selected (null = auto-detect)
-      if (selectedDomain) {
-        requestBody.domain = selectedDomain;
-      }
+      // Build request body
+const requestBody = {
+  message: messageToSend,
+  session_id: sessionId || "default",
+  mode: "user", // backend: user/test/cocuk
+  system_language: language
+};
 
-      const response = await fetch(`${API_URL}/api/sanri/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      });
+// Add domain if selected
+if (selectedDomain) {
+  requestBody.domain = selectedDomain;
+}
 
-      if (!response.ok) {
-        throw new Error(t('errors.sanriResting'));
-      }
+// Add SANRI mod hint into the message (frontend modes)
+requestBody.message = '[SANRI_MOD=${currentMode.id}]'\n + requestBody.message;
 
-      const data = await response.json();
-      
-      if (!sessionId && data.session_id) {
-        setSessionId(data.session_id);
-      }
+const response = await fetch('${API_URL}'/bilinc-alani/ask, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(requestBody),
+});
 
-      setConversation(prev => [...prev, { 
-        type: "sanri", 
-        content: data.response,
-        mode: data.mode,
-        mode_name: language === 'en' ? data.mode_name_en : data.mode_name_tr,
-        domain: data.domain,
-        domain_name: data.domain_name,
-        timestamp: data.timestamp
-      }]);
+if (!response.ok) {
+  const t = await response.text();
+  throw new Error(t || t('errors.sanriResting'));
+}
+
+const data = await response.json();
+
+if (!sessionId && data.session_id) {
+  setSessionId(data.session_id);
+}
+
+setConversation(prev => [...prev, {
+  type: "sanri",
+  content: data.response,
+  mode: currentMode.id,
+  domain: selectedDomain,
+}]);
     } catch (err) {
       setError(err.message || t('common.error'));
       setConversation(prev => prev.slice(0, -1));
