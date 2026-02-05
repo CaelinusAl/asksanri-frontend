@@ -7,7 +7,7 @@ import SplashScreen from "@/components/SplashScreen";
 const HomePage = () => {
   const [showSplash, setShowSplash] = useState(true);
   const { language, toggleLanguage, t } = useLanguage();
-  const navigate = useNavigate();
+ 
 
   // Stars once (performance)
   const stars = useMemo(() => {
@@ -31,8 +31,7 @@ const HomePage = () => {
     setShowSplash(false);
   };
 
-  const goSanri = () => navigate("/sanriya-sor");
-
+ 
   return (
     <>
       <AnimatePresence>
