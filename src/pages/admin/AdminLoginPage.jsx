@@ -1,9 +1,9 @@
 // Admin Login Page
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Lock, AlertCircle } from "lucide-react";
-import { Button } from '../components/ui/button";
-import { Input } from '../components/ui/input";
+
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 import { useAdmin } from "../../contexts/AdminContext";
 
 const AdminLoginPage = () => {
