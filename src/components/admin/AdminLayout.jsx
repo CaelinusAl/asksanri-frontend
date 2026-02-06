@@ -22,7 +22,7 @@ import {
   Image as ImageIcon,
   Crown
 } from "lucide-react";
-import { Button } from 'ui/button";
+import { Button } from "..ui/button";
 import { useAdmin } from "../../contexts/AdminContext";
 
 const menuItems = [
