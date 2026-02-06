@@ -1,12 +1,12 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, MapPin, Sparkles, Compass, ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from '../components/ui/button";
-import { Card, CardContent } from '../components/ui/card";
-import { Badge } from '../components/ui/badge";
-import { Separator } from '../components/ui/separator";
-import { getCitiesByLanguage, getCityById } from '../data/cities";
-import { useLanguage } from '../contexts/LanguageContext";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Separator } from "../components/ui/separator";
+import { getCitiesByLanguage, getCityById } from "../data/cities";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const CityDetailPage = () => {
   const { cityId } = useParams();
@@ -252,3 +252,4 @@ const CityDetailPage = () => {
 };
 
 export default CityDetailPage;
+
