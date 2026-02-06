@@ -1,7 +1,7 @@
 import "@/App.css";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
-import { Toaster } from "@/components/ui/sonner";
+
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PremiumProvider } from "@/contexts/PremiumContext";
