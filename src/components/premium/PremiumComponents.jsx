@@ -4,10 +4,10 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Lock, Crown, Sparkles, ChevronRight, X, Zap, Star } from 'lucide-react';
-import { Button } from 'ui/button';
+import { Button } from '../ui/button';
 import { Card, CardContent } from 'ui/card';
-import { Badge } from 'ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from 'ui/dialog';
+import { Badge } from '../ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { usePremium, PLAN_TYPES, FEATURES } from 'PremiumContext';
 import { useLanguage } from 'LanguageContext';
 
