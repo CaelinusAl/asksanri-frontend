@@ -4,7 +4,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Crown, Sparkles, ChevronRight, Clock } from 'lucide-react';
-import { Button } from 'ui/button';
+import { Button } from '../ui/button';
 import { Dialog, DialogContent } from 'ui/dialog';
 import { useLanguage } from 'LanguageContext';
 import { useNavigate } from 'react-router-dom';
