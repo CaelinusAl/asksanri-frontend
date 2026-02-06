@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
     "axios": "^1.13.4",
     "framer-motion": "^10.18.0",
     "lucide-react": "^0.320.0",
