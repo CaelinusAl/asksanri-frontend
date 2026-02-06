@@ -1,7 +1,6 @@
 // CAELINUS AI - Global Language Context
 // TR/EN Bilingual System - Persisted in localStorage
 
-import { useLanguage } from "../../contexts/LanguageContext";
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
