@@ -3,7 +3,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from 'AuthContext';
+import { useAuth } from "../contexts/AuthContext";
 import { motion } from 'framer-motion';
 
 const AuthCallback = () => {
