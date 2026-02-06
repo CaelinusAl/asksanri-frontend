@@ -22,14 +22,14 @@ import {
   Crown
 } from "lucide-react";
 import { Button } from "../components/ui/button";
-import { Card, CardContent } from '../components/ui/card";
-import { Textarea } from '../components/ui/textarea";
-import { Separator } from '../components/ui/separator";
-import { Alert, AlertDescription } from '../components/ui/alert";
+import { Card, CardContent } from "../components/ui/card";
+import { Textarea } from "../components/ui/textarea";
+import { Separator } from "../components/ui/separator";
+import { Alert, AlertDescription } from "../components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs";
-import { useLanguage } from '../contexts/LanguageContext";
-import { usePremium, FEATURES } from '../contexts/PremiumContext";
-import { UpgradeModal, FeatureGate, LockedContent } from '../components/premium/PremiumComponents";
+import { useLanguage } from "../contexts/LanguageContext";
+import { usePremium, FEATURES } from "../contexts/PremiumContext";
+import { UpgradeModal, FeatureGate, LockedContent } from "../components/premium/PremiumComponents";
 import { 
   getKapilar,
   ritueller, 
@@ -41,7 +41,7 @@ import {
   getRandomMuhurYansima,
   getRandomRituelSonuSoru,
   kapiGecis
-} from '../data/rituel-data";
+} from "../data/rituel-data";
 import {
   getMikroRitueller,
   getDerinRitueller,
@@ -49,8 +49,8 @@ import {
   get112Ritueller,
   getBugunRitueli,
   getRituelById
-} from '../data/rituel-112-data";
-import RitualPlayer from '../components/RitualPlayer";
+} from "../data/rituel-112-data";
+import RitualPlayer from "../components/RitualPlayer";
 import axios from "axios";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;

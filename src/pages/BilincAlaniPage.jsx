@@ -23,19 +23,19 @@ import {
   Clock,
   Loader2
 } from "lucide-react";
-import { Button } from '../components/ui/button";
-import { Textarea } from '../components/ui/textarea";
-import { Card, CardContent } from '../components/ui/card";
-import { Alert, AlertDescription } from '../components/ui/alert";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs";
-import { Separator } from '../components/ui/separator";
+import { Button } from "../components/ui/button";
+import { Textarea } from "../components/ui/textarea";
+import { Card, CardContent } from "../components/ui/card";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Separator } from "../components/ui/separator";
 import { 
   kitapBolumleri, 
   kitapTemalari,
   getBolumById
-} from '../data/bilinc-alani-data";
-import PremiumRitualExperience from '../components/PremiumRitualExperience";
-import { useLanguage } from '../contexts/LanguageContext";
+} from "../data/bilinc-alani-data";
+import PremiumRitualExperience from "../components/PremiumRitualExperience";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 

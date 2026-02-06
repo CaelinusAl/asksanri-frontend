@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import { Button } from '../components/ui/button";
-import { Card, CardContent } from '../components/ui/card";
-import { Textarea } from '../components/ui/textarea";
-import { getRandomBilincText, getNextText, getBilincTexts } from '../data/bilinc-frekans";
-import { useLanguage } from '../contexts/LanguageContext";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { Textarea } from "../components/ui/textarea";
+import { getRandomBilincText, getNextText, getBilincTexts } from "../data/bilinc-frekans";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const BilincPage = () => {
   const { t, language } = useLanguage();
