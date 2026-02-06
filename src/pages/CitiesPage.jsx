@@ -2,21 +2,21 @@ import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Search, MapPin, Filter, Grid, List, Sparkles, Lock } from "lucide-react";
-import { Input } from '../components/ui/input";
-import { Button } from '../components/ui/button";
-import { Card, CardContent } from '../components/ui/card";
-import { Badge } from '../components/ui/badge";
+import { Input } from "../components/ui/input";
+import { Button } from "../components/ui/button";
+import { Card, CardContent } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../components/ui/select";
-import { getCitiesByLanguage, getElements } from '../data/cities";
-import { useLanguage } from '../contexts/LanguageContext";
-import { usePremium, FEATURES } from '../contexts/PremiumContext";
-import { UpgradeModal } from '../components/premium/PremiumComponents";
+} from "../components/ui/select";
+import { getCitiesByLanguage, getElements } from "../data/cities";
+import { useLanguage } from "../contexts/LanguageContext";
+import { usePremium, FEATURES } from "../contexts/PremiumContext";
+import { UpgradeModal } from "../components/premium/PremiumComponents";
 
 const CitiesPage = () => {
   const { language, t } = useLanguage();
