@@ -37,10 +37,10 @@ import {
 import PremiumRitualExperience from "../components/PremiumRitualExperience";
 import { useLanguage } from "../contexts/LanguageContext";
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Demo Premium Mode - env flag ile kontrol
-const DEMO_PREMIUM = process.env.REACT_APP_DEMO_PREMIUM !== "false";
+const DEMO_PREMIUM = import.meta.env.VITE_DEMO_PREMIUM !== "false";
 
 // Premium Check Hook
 const usePremiumStatus = () => {
@@ -343,7 +343,7 @@ const BolumDetay = ({ bolum, onBack, onStartChat, onStartRitual }) => {
             <Crown className="h-4 w-4 text-accent" />
           </h3>
           {relatedRitueller.map(rituel => {
-            const isPremiumUser = process.env.REACT_APP_DEMO_PREMIUM === 'true';
+            const isPremiumUser = import.meta.env.VITE_DEMO_PREMIUM === 'true';
             const isLocked = rituel.locked && !isPremiumUser;
             
             return (

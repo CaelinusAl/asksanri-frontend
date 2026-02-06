@@ -24,7 +24,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePremium, FEATURES } from "@/contexts/PremiumContext";
 import { UpgradeModal, FeatureGate, DailyLimitIndicator } from "@/components/premium/PremiumComponents";
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // SANRI Response Component
 const SanriResponseText = ({ text }) => {

@@ -16,10 +16,10 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Premium check (demo mode)
-const IS_PREMIUM = process.env.REACT_APP_DEMO_PREMIUM === 'true';
+const IS_PREMIUM = import.meta.env.VITE_DEMO_PREMIUM === 'true';
 
 const GorselinPage = () => {
   const { language, t } = useLanguage();

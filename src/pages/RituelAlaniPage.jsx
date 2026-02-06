@@ -53,8 +53,8 @@ import {
 import RitualPlayer from "../components/RitualPlayer";
 import axios from "axios";
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
-const IS_PREMIUM = process.env.REACT_APP_DEMO_PREMIUM === 'true';
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+const IS_PREMIUM = import.meta.env.VITE_DEMO_PREMIUM === 'true';
 
 // ============================================
 // YENİ: Premium Ritüel Hatları Componenti

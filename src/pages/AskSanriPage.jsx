@@ -7,7 +7,7 @@ export default function AskSanriPage({ mode = "ayna_sade" }) {
   ]);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const send = async () => {
     const userText = question.trim();

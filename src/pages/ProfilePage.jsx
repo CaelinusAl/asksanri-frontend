@@ -32,7 +32,7 @@ import { usePremium, FEATURES } from "../contexts/PremiumContext";
 import { useAuth } from "../contexts/AuthContext";
 import { UpgradeModal, PremiumBadge } from "../components/premium/PremiumComponents";
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Avatar symbol options
 const AVATAR_SYMBOLS = ["∞", "☽", "✧", "◈", "❋", "✦", "◎", "❂", "✺", "☼"];

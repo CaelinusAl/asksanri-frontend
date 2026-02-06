@@ -29,7 +29,7 @@ import {
   BarChart3, Activity, Shield, ArrowLeft
 } from 'lucide-react';
 
-const API_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // Stats Card Component
 const StatCard = ({ icon: Icon, title, value, subValue, trend, color }) => (
