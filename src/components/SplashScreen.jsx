@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useLanguage } from 'LanguageContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const SplashScreen = ({ onComplete }) => {
   const { t } = useLanguage();
