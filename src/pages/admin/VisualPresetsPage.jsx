@@ -4,20 +4,20 @@ import {
   Plus, Edit2, Trash2, Power, Save, X, 
   Crown, Sparkles, Image as ImageIcon
 } from 'lucide-react';
-import { Button } from '../../../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Input } from '../../../components/ui/input';
-import { Textarea } from '../../../components/ui/textarea';
-import { Label } from '../../../components/ui/label';
-import { Switch } from '../../../components/ui/switch';
-import { Badge } from '../../../components/ui/badge';
+import { Button } from '../../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { Input } from '../../components/ui/input';
+import { Textarea } from '../../components/ui/textarea';
+import { Label } from '../../components/ui/label';
+import { Switch } from '../../components/ui/switch';
+import { Badge } from '../../components/ui/badge';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from '../../../components/ui/dialog';
+} from '../../components/ui/dialog';
 import { toast } from 'sonner';
 import axios from 'axios';
 import AdminLayout from '../../components/admin/AdminLayout';

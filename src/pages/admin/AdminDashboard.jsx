@@ -16,7 +16,7 @@ import {
   BarChart3,
   Sparkles
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../components/ui/card";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
