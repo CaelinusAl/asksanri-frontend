@@ -10,8 +10,8 @@ import {
   Heart,
   Sparkles
 } from "lucide-react";
-import { Button } from '../ui/button";
 
+import { Button } from "./ui/button";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 // SANRI Dream TTS Hook (ElevenLabs)
