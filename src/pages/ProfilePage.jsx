@@ -22,15 +22,15 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
-import { Button } from '../components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card";
-import { Badge } from '../components/ui/badge";
-import { Progress } from '../components/ui/progress";
-import { Separator } from '../components/ui/separator";
-import { useLanguage } from '../contexts/LanguageContext";
-import { usePremium, FEATURES } from '../contexts/PremiumContext";
-import { useAuth } from '../contexts/AuthContext";
-import { UpgradeModal, PremiumBadge } from '../components/premium/PremiumComponents";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { Progress } from "../components/ui/progress";
+import { Separator } from "../components/ui/separator";
+import { useLanguage } from "../contexts/LanguageContext";
+import { usePremium, FEATURES } from "../contexts/PremiumContext";
+import { useAuth } from "../contexts/AuthContext";
+import { UpgradeModal, PremiumBadge } from "../components/premium/PremiumComponents";
 
 const API_URL = process.env.REACT_APP_BACKEND_URL;
 
