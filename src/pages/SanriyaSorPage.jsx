@@ -247,7 +247,7 @@ if (selectedDomain) {
 }
 
 // Add SANRI mod hint into the message (frontend modes)
-requestBody.message = '[SANRI_MOD=${currentMode.id}]'\n + requestBody.message;
+requestBody.message = '[SANRI_MOD=${currentMode.id}]\n${requestBody.message}';
 
 const response = await fetch('${API_URL}'/bilinc-alani/ask, {
   method: "POST",
