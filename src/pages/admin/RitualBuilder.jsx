@@ -22,19 +22,19 @@ import {
   Loader2,
   Send
 } from "lucide-react";
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
-import { Textarea } from "../../components/ui/textarea";
-import { Label } from "../../components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
+import { Button } from "../../../components/ui/button";
+import { Input } from "../../../components/ui/input";
+import { Textarea } from "../../../components/ui/textarea";
+import { Label } from "../../../components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { 
   Select, 
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
   SelectValue 
-} from "../../components/ui/select";
-import { Switch } from "../../components/ui/switch";
+} from "../../../components/ui/select";
+import { Switch } from "../../../components/ui/switch";
 import { useAdmin } from "../../contexts/AdminContext";
 
 const phaseOptions = [
@@ -587,6 +587,7 @@ const RitualBuilder = () => {
 };
 
 export default RitualBuilder;
+
 
 
 
