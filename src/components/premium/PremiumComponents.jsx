@@ -8,8 +8,8 @@ import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
-import { usePremium, PLAN_TYPES, FEATURES } from 'PremiumContext';
-import { useLanguage } from 'LanguageContext';
+import { usePremium, PLAN_TYPES, FEATURES } from '../../contexts/PremiumContext';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 // Plan display names
 const PLAN_NAMES = {
