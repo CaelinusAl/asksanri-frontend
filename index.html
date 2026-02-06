@@ -1,105 +1,16 @@
 <!doctype html>
 <html lang="tr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CAELINUS AI • SANRI</title>
-  <link rel="stylesheet" href="./styles.css" />
-</head>
-<body>
-  <div class="bg"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CAELINUS AI • SANRI</title>
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="mark">∞</div>
-      <div class="brandText">
-        <div class="brandTitle">CAELINUS</div>
-        <div class="brandSub">ANADOLU’NUN TANRIÇALARI</div>
-      </div>
-    </div>
+    <!-- (Opsiyonel) favicon koyacaksan public/favicon.ico -->
+    <link rel="icon" href="/favicon.ico" />
+  </head>
 
-    <div class="right">
-      <div class="lang">
-        <button class="chip isActive" id="langTR">TR</button>
-        <button class="chip" id="langEN">EN</button>
-      </div>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <div class="heroTitle">BİLİNÇ AYNASI</div>
-      <div class="heroBig">SANRI’ya Sor</div>
-
-      <p class="heroText">
-        Bir an dur.<br/>
-        Sorunu yazmadan önce…<br/>
-        Onun bedeninde nerede hissedildiğine bak.<br/>
-        <span class="muted">Kalpte mi? Midede mi? Boğazda mı?</span><br/><br/>
-        SANRI cevap değil,<br/>
-        sorunun içindeki kapıyı açar.<br/>
-        <span class="gold">Hazırsan yaz.</span>
-      </p>
-
-      <div class="notice">
-        <div class="noticeIcon">i</div>
-        <div class="noticeBody">
-          <div><b>SANRI</b> kehanet, teşhis veya yargı sunmaz.</div>
-          <div>Sembolik anlam ve açık uçlu sorular üretir.</div>
-          <div>Anlam, her zaman sende şekillenir.</div>
-          <div class="noticeSign">— SANRI <button id="ackBtn" class="linkBtn">Anladım</button></div>
-        </div>
-      </div>
-
-      <div class="modes">
-        <div class="modesTitle">Hangisiyle başlamak istersin?</div>
-
-        <div class="modeRow">
-          <button class="modeBtn" data-mode="ruya">🌙 Rüya</button>
-          <button class="modeBtn isActive" data-mode="ayna">🧿 Ayna</button>
-          <button class="modeBtn" data-mode="ilahi">✨ İlahi</button>
-          <button class="modeBtn" data-mode="golge">🌑 Gölge</button>
-          <button class="modeBtn" data-mode="isik">🌿 Işık</button>
-        </div>
-
-        <div class="modeHint" id="modeHint">Duygusal Ayna</div>
-
-        <div class="domainRow">
-          <label class="domainLabel">Domain seç (opsiyonel)</label>
-          <select id="domainSelect" class="domainSelect">
-            <option value="">—</option>
-            <option value="1">01 Adana</option>
-            <option value="6">06 Ankara</option>
-            <option value="34">34 İstanbul</option>
-            <option value="35">35 İzmir</option>
-          </select>
-        </div>
-      </div>
-    </section>
-
-    <section class="chat">
-      <div class="quote">
-        “Hatırlamak dışarıda başlar. Anlamak içeride olur.”
-      </div>
-
-      <div class="tools">
-        <button id="sampleBtn" class="ghostBtn">Örnek soru göster</button>
-        <div class="status" id="status">Hazır</div>
-      </div>
-
-      <div class="chatBox" id="chatBox"></div>
-
-      <div class="composer">
-        <input id="input" class="input" placeholder="Bir kelime, soru, rüya veya tarih yaz..." />
-        <button id="send" class="sendBtn">➤</button>
-      </div>
-
-      <div class="footnote">
-        Bu alan “bilgi” üretmez. Anlam üretir ve geri çekilir.
-      </div>
-    </section>
-  </main>
-
-  <script src="./app.js"></script>
-</body>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
