@@ -18,7 +18,7 @@ export default function AskSanriPage({ mode = "ayna_sade" }) {
     setMessages((m) => [...m, { role: "user", text: userText }]);
 
     try {
-      if (!API_URL) throw new Error("REACT_APP_API_URL missing");
+      if (!API_URL) throw new Error("_API_URL missing");
 
       const res = await fetch(${API_URL}/ask, {
         method: "POST",
