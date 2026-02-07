@@ -282,7 +282,7 @@ const SanriyaSorPage = () => {
     handleRemoveImage();
 
     try {
-      const res = await fetch(${API_URL}/bilinc-alani/ask, {
+      const res = await fetch('${API_URL}/bilinc-alani/ask', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
