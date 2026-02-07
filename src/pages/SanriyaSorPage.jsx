@@ -225,17 +225,21 @@ const SanriyaSorPage = () => {
   };
 
   const buildMessage = (userInput) => {
-    // Görsel varsa kısa not ekle
-    let msg = userInput;
-    if (uploadedImage) {
-      msg =
-        (language === "en" ? "[User shared an image]\n\n" : "[Kullanıcı bir görsel paylaştı]\n\n") +
-        (language === "en" ? User's question: ${userInput} : Kullanıcının sorusu: ${userInput});
-    }
+  // Görsel varsa kısa not ekle
+  let msg = userInput;
 
-    // Mode etiketi (backend "mode" ile karıştırmıyoruz)
-    return [SANRI_MODE=${currentMode.id}]\n${msg};
-  };
+  if (uploadedImage) {
+    const prefix =
+      language === "en"
+        ? "[User shared an image]\n\nUser's question: "
+        : "[Kullanıcı bir görsel paylaştı]\n\nKullanıcının sorusu: ";
+
+    msg = prefix + userInput;
+  }
+
+  // Mode etiketi (backend "mode" ile karıştırmıyoruz)
+  return "[SANRI_MODE=" + (currentMode?.id || "mirror") + "]\n" + msg;
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
