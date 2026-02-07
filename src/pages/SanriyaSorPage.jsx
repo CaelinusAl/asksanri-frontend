@@ -291,7 +291,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
 
     try {
       const requestBody = {
-        message: [SANRI_MOD=${currentMode.id}]\n${messageToSend},
+        message:'[SANRI_MOD=${currentMode.id}]\n${messageToSend}',
         session_id: sessionId || "default",
         mode: "user",
         system_language: language,
@@ -299,7 +299,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
 
       if (selectedDomain) requestBody.domain = selectedDomain;
 
-      const res = await fetch(${API_URL}/bilinc-alani/ask, {
+      const res = await fetch('${API_URL}/bilinc-alani/ask', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
