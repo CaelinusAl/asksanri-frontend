@@ -464,7 +464,7 @@ const SanriyaSorPage = () => {
                 <div className="space-y-3 mb-6">
                   <Sparkles className="h-8 w-8 text-accent/50 mx-auto mb-4" />
                   <p className="text-foreground/70 font-serif italic text-lg">
-                    &quot;{t(sanri.modes.${currentMode.id}.intro)}&quot;
+                    &quot;{t('sanri.modes.${currentMode.id}.intro')}&quot;
                   </p>
                 </div>
 
