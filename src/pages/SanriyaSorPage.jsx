@@ -265,10 +265,12 @@ const SanriyaSorPage = () => {
 
     let messageToSend = userInput;
     if (uploadedImage) {
-      messageToSend =
-        [${language === "en" ? "User shared an image" : "Kullanıcı bir görsel paylaştı"}]\n\n +
-        ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput};
-    }
+  messageToSend = `
+${language === "en" ? "User shared an image" : "Kullanıcı bir görsel paylaştı"}
+
+${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput}
+`.trim();
+}
 
     setInput("");
     setError(null);
