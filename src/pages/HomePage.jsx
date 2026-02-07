@@ -59,7 +59,7 @@ const HomePage = () => {
             <motion.div
               key={i}
               className="absolute w-0.5 h-0.5 bg-white/20 rounded-full"
-              style={{ left: ${s.left}%, top: ${s.top}% }} // ✅ FIXED
+              style={{ left: s.left + "%", top: s.top + "%" }} // ✅ FIXED
               animate={{ opacity: [s.opacityA, s.opacityB, s.opacityA] }}
               transition={{ duration: s.dur, repeat: Infinity, delay: s.delay }}
             />
