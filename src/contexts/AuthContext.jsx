@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
   const loginWithGoogle = useCallback(() => {
   const redirectUrl = window.location.origin + "/auth/callback";
-  window.location.href = https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}';
+  window.location.href = 'https://auth.emergentagent.com/?redirect=${encodeURIComponent(redirectUrl)}';
 }, []);
 
   // Apple Sign In (iOS App Store requirement)
