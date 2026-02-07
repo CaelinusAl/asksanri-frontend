@@ -238,7 +238,7 @@ const SanriyaSorPage = () => {
   };
 
   const getModeIntro = (modeId) => {
-    const modeData = t(sanri.modes.${modeId});
+    const modeData = t('sanri.modes.${modeId}');
     return {
       intro: modeData?.intro,
       introSub: modeData?.introSub,
