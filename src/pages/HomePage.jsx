@@ -33,6 +33,13 @@ const HomePage = () => {
 
   const goSanri = () => navigate("/sanriya-sor");
 
+  // Avoid duplicate tagline if translation already equals the fixed phrase
+  const bottomTagline = (t("home.tagline") || "").trim();
+  const fixedPhrase = "BİLİNÇ VE ANLAM ZEKASI";
+  const showFixedPhrase =
+    bottomTagline &&
+    bottomTagline.toLocaleUpperCase("tr-TR").includes(fixedPhrase) === false;
+
   return (
     <>
       <AnimatePresence>
@@ -52,7 +59,7 @@ const HomePage = () => {
             <motion.div
               key={i}
               className="absolute w-0.5 h-0.5 bg-white/20 rounded-full"
-              style={{ left: '${s.left}%', top: '${s.top}%' }}
+              style={{ left: ${s.left}%, top: ${s.top}% }} // ✅ FIXED
               animate={{ opacity: [s.opacityA, s.opacityB, s.opacityA] }}
               transition={{ duration: s.dur, repeat: Infinity, delay: s.delay }}
             />
@@ -97,30 +104,51 @@ const HomePage = () => {
 
         {/* Main */}
         <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-20">
-          {/* Eye */}
-          <motion.div
-            animate={{ rotate: [0, 360] }}
-            transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 mx-auto mb-10 opacity-60"
+          {/* Eye = Gate */}
+          <motion.button
+            type="button"
+            onClick={goSanri}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="group w-20 h-20 mx-auto mb-10 opacity-80 hover:opacity-100 transition-opacity"
+            aria-label="Sanrı’ya Sor"
           >
-            <svg viewBox="0 0 64 64" className="w-full h-full">
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                fill="none"
-                stroke="rgba(129, 140, 248, 0.3)"
-                strokeWidth="0.5"
-              />
-              <path
-                d="M32 8 C 48 20, 48 44, 32 56 C 16 44, 16 20, 32 8"
-                fill="none"
-                stroke="rgba(129, 140, 248, 0.6)"
-                strokeWidth="1"
-              />
-              <circle cx="32" cy="32" r="4" fill="rgba(129, 140, 248, 0.8)" />
-            </svg>
-          </motion.div>
+            <motion.div
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+              className="w-full h-full"
+            >
+              <svg viewBox="0 0 64 64" className="w-full h-full">
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="28"
+                  fill="none"
+                  stroke="rgba(129, 140, 248, 0.35)"
+                  strokeWidth="0.7"
+                />
+                <path
+                  d="M32 8 C 48 20, 48 44, 32 56 C 16 44, 16 20, 32 8"
+                  fill="none"
+                  stroke="rgba(129, 140, 248, 0.75)"
+                  strokeWidth="1.2"
+                />
+                <circle
+                  cx="32"
+                  cy="32"
+                  r="4"
+                  fill="rgba(129, 140, 248, 0.9)"
+                />
+              </svg>
+            </motion.div>
+
+            <div className="mt-2 text-[11px] tracking-[0.28em] uppercase text-white/30 group-hover:text-white/60 transition">
+              Dokun.
+            </div>
+          </motion.button>
 
           {/* Title */}
           <motion.h1
@@ -184,9 +212,13 @@ const HomePage = () => {
             <p className="text-xs text-white/20 tracking-[0.3em] uppercase">
               {t("home.tagline")}
             </p>
-            <p className="mt-3 text-[11px] text-white/15 tracking-[0.28em] uppercase">
-              BİLİNÇ VE ANLAM ZEKASI
-            </p>
+
+            {/* ✅ show only if not already included in translation */}
+            {showFixedPhrase && (
+              <p className="mt-3 text-[11px] text-white/15 tracking-[0.28em] uppercase">
+                {fixedPhrase}
+              </p>
+            )}
           </motion.div>
         </div>
 
