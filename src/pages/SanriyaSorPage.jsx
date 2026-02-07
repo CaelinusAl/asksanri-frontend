@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Infinity,
+  Infinity as InfinityIcon,
   Send,
   RefreshCw,
   AlertCircle,
@@ -22,19 +22,17 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 
 import { useLanguage } from "@/contexts/LanguageContext";
-import { usePremium, FEATURES } from "@/contexts/PremiumContext";
-import {
-  UpgradeModal,
-  DailyLimitIndicator,
-} from "@/components/premium/PremiumComponents";
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/$/, "");
 
-// SANRI Response Component
+// küçük koruma: map patlamasın
+const safeArray = (v) => (Array.isArray(v) ? v : []);
+
 const SanriResponseText = ({ text }) => {
   const paragraphs = String(text || "")
     .split("\n\n")
-    .filter((p) => p.trim());
+    .map((p) => p.trim())
+    .filter(Boolean);
 
   return (
     <div className="space-y-4">
@@ -43,7 +41,7 @@ const SanriResponseText = ({ text }) => {
           key={index}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.15 }}
+          transition={{ delay: index * 0.08 }}
           className="text-foreground leading-relaxed font-serif text-base sm:text-lg"
         >
           {paragraph}
@@ -53,16 +51,11 @@ const SanriResponseText = ({ text }) => {
   );
 };
 
-// Image Preview Component
 const ImagePreview = ({ image, onRemove }) => {
   if (!image) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      className="relative inline-block"
-    >
+    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative inline-block">
       <img
         src={image.preview}
         alt="Yüklenen görsel"
@@ -83,138 +76,117 @@ const ImagePreview = ({ image, onRemove }) => {
 
 const SanriyaSorPage = () => {
   const { t, language } = useLanguage();
-  const {
-    isPremium,
-    checkDailyLimit,
-    showUpgradeModal,
-    isUpgradeModalOpen,
-    hideUpgradeModal,
-  } = usePremium();
 
-  const dailyLimitStatus = checkDailyLimit("sanri_daily");
+  const readingModes = useMemo(
+    () => ({
+      dream: {
+        id: "dream",
+        label: t("sanri.modes.dream.label"),
+        icon: Moon,
+        emoji: "🌙",
+        description: t("sanri.modes.dream.description"),
+      },
+      mirror: {
+        id: "mirror",
+        label: t("sanri.modes.mirror.label"),
+        icon: Eye,
+        emoji: "🪞",
+        description: t("sanri.modes.mirror.description"),
+      },
+      divine: {
+        id: "divine",
+        label: t("sanri.modes.divine.label"),
+        icon: Sun,
+        emoji: "✨",
+        description: t("sanri.modes.divine.description"),
+      },
+      shadow: {
+        id: "shadow",
+        label: t("sanri.modes.shadow.label"),
+        icon: Cloud,
+        emoji: "🌑",
+        description: t("sanri.modes.shadow.description"),
+      },
+      light: {
+        id: "light",
+        label: t("sanri.modes.light.label"),
+        icon: Heart,
+        emoji: "🌿",
+        description: t("sanri.modes.light.description"),
+      },
+    }),
+    [t]
+  );
 
-  // SANRI 5 Bilinç Modu
-  const readingModes = {
-    DREAM: {
-      id: "dream",
-      label: t("sanri.modes.dream.label"),
-      icon: Moon,
-      emoji: "🌙",
-      description: t("sanri.modes.dream.description"),
-      color: "from-indigo-500/20 to-purple-500/20",
-      borderColor: "border-indigo-500/30",
-    },
-    MIRROR: {
-      id: "mirror",
-      label: t("sanri.modes.mirror.label"),
-      icon: Eye,
-      emoji: "🪞",
-      description: t("sanri.modes.mirror.description"),
-      color: "from-cyan-500/20 to-blue-500/20",
-      borderColor: "border-cyan-500/30",
-    },
-    DIVINE: {
-      id: "divine",
-      label: t("sanri.modes.divine.label"),
-      icon: Sun,
-      emoji: "✨",
-      description: t("sanri.modes.divine.description"),
-      color: "from-amber-500/20 to-yellow-500/20",
-      borderColor: "border-amber-500/30",
-    },
-    SHADOW: {
-      id: "shadow",
-      label: t("sanri.modes.shadow.label"),
-      icon: Cloud,
-      emoji: "🌑",
-      description: t("sanri.modes.shadow.description"),
-      color: "from-violet-500/20 to-fuchsia-500/20",
-      borderColor: "border-violet-500/30",
-    },
-    LIGHT: {
-      id: "light",
-      label: t("sanri.modes.light.label"),
-      icon: Heart,
-      emoji: "🌿",
-      description: t("sanri.modes.light.description"),
-      color: "from-emerald-500/20 to-green-500/20",
-      borderColor: "border-emerald-500/30",
-    },
-  };
+  const modesList = useMemo(() => Object.values(readingModes), [readingModes]);
 
-  const modesList = Object.values(readingModes);
+  const domainsList = useMemo(
+    () => [
+      { id: null, label: t("sanri.domainAuto"), subtitle: "", emoji: "✨" },
+      {
+        id: "awakened_cities",
+        label: t("sanri.domains.awakened_cities.name"),
+        subtitle: t("sanri.domains.awakened_cities.subtitle"),
+        emoji: "🏛️",
+      },
+      {
+        id: "consciousness_field",
+        label: t("sanri.domains.consciousness_field.name"),
+        subtitle: t("sanri.domains.consciousness_field.subtitle"),
+        emoji: "🧠",
+      },
+      {
+        id: "frequency_field",
+        label: t("sanri.domains.frequency_field.name"),
+        subtitle: t("sanri.domains.frequency_field.subtitle"),
+        emoji: "〰️",
+      },
+      {
+        id: "ritual_space",
+        label: t("sanri.domains.ritual_space.name"),
+        subtitle: t("sanri.domains.ritual_space.subtitle"),
+        emoji: "🕯️",
+      },
+      {
+        id: "neural_ecstasy",
+        label: t("sanri.domains.neural_ecstasy.name"),
+        subtitle: t("sanri.domains.neural_ecstasy.subtitle"),
+        emoji: "⚡",
+      },
+      {
+        id: "book_112",
+        label: t("sanri.domains.book_112.name"),
+        subtitle: t("sanri.domains.book_112.subtitle"),
+        emoji: "📖",
+      },
+    ],
+    [t]
+  );
 
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const [conversation, setConversation] = useState([]);
   const [showDisclaimer, setShowDisclaimer] = useState(true);
-  const [sessionId, setSessionId] = useState(null);
+  const [sessionId, setSessionId] = useState("default");
   const [error, setError] = useState(null);
-  const [activeMode, setActiveMode] = useState(readingModes.MIRROR);
+
+  const [activeMode, setActiveMode] = useState(readingModes.mirror);
   const [selectedDomain, setSelectedDomain] = useState(null);
+
   const [uploadedImage, setUploadedImage] = useState(null);
-
-  const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
-  // Content domains
-  const domainsList = [
-    { id: null, label: t("sanri.domainAuto"), subtitle: "", emoji: "✨" },
-    {
-      id: "awakened_cities",
-      label: t("sanri.domains.awakened_cities.name"),
-      subtitle: t("sanri.domains.awakened_cities.subtitle"),
-      emoji: "🏛️",
-    },
-    {
-      id: "consciousness_field",
-      label: t("sanri.domains.consciousness_field.name"),
-      subtitle: t("sanri.domains.consciousness_field.subtitle"),
-      emoji: "🧠",
-    },
-    {
-      id: "frequency_field",
-      label: t("sanri.domains.frequency_field.name"),
-      subtitle: t("sanri.domains.frequency_field.subtitle"),
-      emoji: "〰️",
-    },
-    {
-      id: "ritual_space",
-      label: t("sanri.domains.ritual_space.name"),
-      subtitle: t("sanri.domains.ritual_space.subtitle"),
-      emoji: "🕯️",
-    },
-    {
-      id: "neural_ecstasy",
-      label: t("sanri.domains.neural_ecstasy.name"),
-      subtitle: t("sanri.domains.neural_ecstasy.subtitle"),
-      emoji: "⚡",
-    },
-    {
-      id: "book_112",
-      label: t("sanri.domains.book_112.name"),
-      subtitle: t("sanri.domains.book_112.subtitle"),
-      emoji: "📖",
-    },
-  ];
-
-  // Language değişince mode mapping bozulmasın
   useEffect(() => {
-    setActiveMode((prev) => {
-      const modeId = prev?.id || "mirror";
-      return readingModes[modeId.toUpperCase()] || readingModes.MIRROR;
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [language]);
+    // dil değişince seçili mode’u koru
+    setActiveMode((prev) => readingModes[prev?.id] || readingModes.mirror);
+  }, [language, readingModes]);
 
-  const currentMode = activeMode || readingModes.MIRROR;
-
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-  useEffect(() => {
-    scrollToBottom();
   }, [conversation]);
+
+  const currentMode = activeMode || readingModes.mirror;
 
   const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
@@ -226,7 +198,7 @@ const SanriyaSorPage = () => {
       setUploadedImage({
         file,
         preview: result,
-        base64: result.includes(",") ? result.split(",")[1] : "",
+        base64: result.includes(",") ? result.split(",")[1] : null,
       });
     };
     reader.readAsDataURL(file);
@@ -237,109 +209,105 @@ const SanriyaSorPage = () => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const getModeIntro = (modeId) => {
-    const modeData = t('sanri.modes.${modeId}');
-    return {
-      intro: modeData?.intro,
-      introSub: modeData?.introSub,
-      introDetail: modeData?.introDetail,
-      introReady: modeData?.introReady,
-    };
-  };
-
   const handleExampleClick = () => {
     const examples = t("sanri.examples");
-    setInput(examples?.[currentMode.id] || examples?.mirror || "");
+    const modeId = currentMode.id;
+    setInput(examples?.[modeId] || examples?.mirror || "");
+  };
+
+  const handleReset = () => {
+    setConversation([]);
+    setInput("");
+    setError(null);
+    setSelectedDomain(null);
+    setSessionId("default");
+    handleRemoveImage();
+  };
+
+  const buildMessage = (userInput) => {
+    // Görsel varsa kısa not ekle
+    let msg = userInput;
+    if (uploadedImage) {
+      msg =
+        (language === "en" ? "[User shared an image]\n\n" : "[Kullanıcı bir görsel paylaştı]\n\n") +
+        (language === "en" ? User's question: ${userInput} : Kullanıcının sorusu: ${userInput});
+    }
+
+    // Mode etiketi (backend "mode" ile karıştırmıyoruz)
+    return [SANRI_MODE=${currentMode.id}]\n${msg};
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!input.trim() || isThinking) return;
+    if (!String(input).trim() || isThinking) return;
 
-    if (!isPremium && !dailyLimitStatus.allowed) {
-      showUpgradeModal(FEATURES.SANRI_UNLIMITED);
+    if (!API_URL) {
+      setError("VITE_BACKEND_URL tanımlı değil (Vercel Env).");
       return;
     }
 
-    const userInput = input.trim();
-
-    let messageToSend = userInput;
-    if (uploadedImage) {
-  messageToSend = `
-${language === "en" ? "User shared an image" : "Kullanıcı bir görsel paylaştı"}
-
-${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput}
-`.trim();
-}
-
+    const userInput = String(input).trim();
     setInput("");
     setError(null);
 
     setConversation((prev) => [
-      ...prev,
+      ...safeArray(prev),
       {
         type: "user",
         content: userInput,
-        image: uploadedImage?.preview,
+        image: uploadedImage?.preview || null,
         mode: currentMode.id,
         domain: selectedDomain,
       },
     ]);
 
     setIsThinking(true);
+
+    const requestBody = {
+      message: buildMessage(userInput),
+      session_id: sessionId || "default",
+      mode: "user", // backend için: user/test/cocuk
+      system_language: language,
+    };
+
+    if (selectedDomain) requestBody.domain = selectedDomain;
+
+    // Görseli backend şu an kullanmıyorsa bile, ileride hazır olsun
+    if (uploadedImage?.base64) requestBody.image_base64 = uploadedImage.base64;
+
     handleRemoveImage();
 
     try {
-      const requestBody = {
-        message:'[SANRI_MOD=${currentMode.id}]\n${messageToSend}',
-        session_id: sessionId || "default",
-        mode: "user",
-        system_language: language,
-      };
-
-      if (selectedDomain) requestBody.domain = selectedDomain;
-
-      const res = await fetch('${API_URL}/bilinc-alani/ask', {
+      const res = await fetch(${API_URL}/bilinc-alani/ask, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
 
       if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || t("common.error"));
+        const txt = await res.text();
+        throw new Error(txt || "SANRI dinleniyor… tekrar dene.");
       }
 
       const data = await res.json();
 
-      if (!sessionId && data?.session_id) setSessionId(data.session_id);
+      setSessionId(data?.session_id || "default");
 
       setConversation((prev) => [
-        ...prev,
+        ...safeArray(prev),
         {
           type: "sanri",
-          content: data?.response || "",
+          content: data?.response || "Buradayım.",
           mode: currentMode.id,
           domain: selectedDomain,
-          domain_name: data?.domain_name || null,
         },
       ]);
     } catch (err) {
       setError(err?.message || t("common.error"));
-      // en son eklenen user mesajı kalabilir; istersen burada kaldırmayalım.
+      // son user mesajını geri almayalım; sadece error göster
     } finally {
       setIsThinking(false);
     }
-  };
-
-  const handleReset = async () => {
-    // (Backend’de session delete endpoint yoksa bunu kaldırabilirsin)
-    setConversation([]);
-    setInput("");
-    setSessionId(null);
-    setError(null);
-    setSelectedDomain(null);
-    handleRemoveImage();
   };
 
   return (
@@ -347,9 +315,9 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
       {/* Header */}
       <section className="py-8 sm:py-12">
         <div className="container mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-2xl mx-auto">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-2xl mx-auto">
             <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6 animate-breathe">
-              <Infinity className="h-10 w-10 text-accent" />
+              <InfinityIcon className="h-10 w-10 text-accent" />
             </div>
             <span className="text-accent text-base tracking-widest uppercase mb-4 block font-medium">
               {t("sanri.subtitle")}
@@ -358,7 +326,6 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
               {t("sanri.title")}
             </h1>
 
-            {/* Intro */}
             <div className="space-y-3 text-foreground/70 text-base sm:text-lg leading-relaxed font-serif italic">
               <p>{t("sanri.introLine1")}</p>
               <p className="text-foreground/60">
@@ -405,7 +372,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
         )}
       </AnimatePresence>
 
-      {/* Main Content */}
+      {/* Main */}
       <section className="container mx-auto px-6">
         <div className="max-w-2xl mx-auto">
           {/* Mode Selection */}
@@ -413,15 +380,16 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
             <Label className="text-sm text-foreground/60 mb-4 block text-center font-serif italic">
               {t("sanri.modeSelect")}
             </Label>
+
             <div className="flex flex-wrap justify-center gap-3">
-              {modesList.map((mode) => (
+              {safeArray(modesList).map((mode) => (
                 <Button
                   key={mode.id}
                   variant={currentMode.id === mode.id ? "default" : "outline"}
                   size="lg"
                   className={`rounded-full gap-2 transition-all duration-300 px-5 py-3 ${
                     currentMode.id === mode.id
-                      ? 'bg-gradient-to-r ${mode.color} ${mode.borderColor} border shadow-lg'
+                      ? "bg-accent/15 border border-accent/40 shadow-lg"
                       : "border-border/50 hover:border-accent/50 hover:bg-accent/5"
                   }`}
                   onClick={() => setActiveMode(mode)}
@@ -432,6 +400,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                 </Button>
               ))}
             </div>
+
             <p className="text-xs text-foreground/50 mt-3 text-center">{currentMode.description}</p>
           </div>
 
@@ -445,8 +414,8 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                 </svg>
               </summary>
 
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 max-w-lg mx-auto">
-                {domainsList.map((domain) => (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 max-w-lg mx-auto">
+                {safeArray(domainsList).map((domain) => (
                   <button
                     key={domain.id || "auto"}
                     className={`relative p-3 rounded-xl text-left transition-all ${
@@ -459,7 +428,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-base">{domain.emoji}</span>
-                      <span className={'text-xs font-medium ${selectedDomain === domain.id ? "text-accent" : "text-foreground/80"}'}>
+                      <span className={text-xs font-medium ${selectedDomain === domain.id ? "text-accent" : "text-foreground/80"}}>
                         {domain.label}
                       </span>
                     </div>
@@ -468,7 +437,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                     ) : null}
                   </button>
                 ))}
-              </motion.div>
+              </div>
             </details>
           </div>
 
@@ -486,39 +455,14 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
 
           {/* Messages */}
           <div className="min-h-[350px] mb-6 space-y-6">
-            {conversation.length === 0 && (
+            {safeArray(conversation).length === 0 && (
               <motion.div key={currentMode.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-8">
-                {(() => {
-                  const intro = getModeIntro(currentMode.id);
-
-                  if (currentMode.id === "shadow") {
-                    return (
-                      <div className="space-y-3 mb-6">
-                        <p className="text-foreground/70 font-serif italic text-lg">{intro.intro}</p>
-                        <p className="text-foreground/60 font-serif italic">{intro.introSub}</p>
-                        <p className="text-foreground/50 text-sm mt-4">{intro.introDetail}</p>
-                        <p className="text-accent/70 text-sm mt-3 italic">{intro.introReady}</p>
-                      </div>
-                    );
-                  }
-
-                  if (currentMode.id === "dream" || currentMode.id === "light" || currentMode.id === "divine") {
-                    return (
-                      <div className="space-y-3 mb-6">
-                        <p className="text-foreground/70 font-serif italic text-lg">{intro.intro}</p>
-                        <p className="text-foreground/50 text-sm">{intro.introSub}</p>
-                        <p className="text-accent/70 text-sm mt-3 italic">{intro.introReady}</p>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <div className="space-y-3 mb-6">
-                      <Sparkles className="h-8 w-8 text-accent/50 mx-auto mb-4" />
-                      <p className="text-foreground/70 font-serif italic text-lg">&quot;{intro.intro}&quot;</p>
-                    </div>
-                  );
-                })()}
+                <div className="space-y-3 mb-6">
+                  <Sparkles className="h-8 w-8 text-accent/50 mx-auto mb-4" />
+                  <p className="text-foreground/70 font-serif italic text-lg">
+                    &quot;{t(sanri.modes.${currentMode.id}.intro)}&quot;
+                  </p>
+                </div>
 
                 <Button variant="outline" size="sm" className="rounded-full" onClick={handleExampleClick} type="button">
                   {t("sanri.exampleQuestion")}
@@ -526,8 +470,8 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
               </motion.div>
             )}
 
-            {conversation.map((message, index) => (
-              <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            {safeArray(conversation).map((message, index) => (
+              <motion.div key={index} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
                 {message.type === "user" ? (
                   <div className="flex justify-end">
                     <Card className="max-w-md bg-primary/10 border-primary/20">
@@ -537,8 +481,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                         ) : null}
                         <p className="text-foreground text-base">{message.content}</p>
                         <span className="text-xs text-foreground/40 mt-2 block">
-                          {(modesList.find((m) => m.id === message.mode)?.label || message.mode) +
-                            ` ${language === "en" ? "mode" : "modu"}`}
+                          {(modesList.find((m) => m.id === message.mode)?.label || message.mode) + " modu"}
                         </span>
                       </CardContent>
                     </Card>
@@ -549,15 +492,10 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                       <div className="flex items-start justify-between gap-3 mb-6">
                         <div className="flex items-start gap-3">
                           <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
-                            <Infinity className="h-5 w-5 text-accent" />
+                            <InfinityIcon className="h-5 w-5 text-accent" />
                           </div>
                           <p className="text-sm text-accent uppercase tracking-wider font-medium pt-2">SANRI</p>
                         </div>
-                        {message.domain_name ? (
-                          <span className="text-[10px] px-2 py-1 rounded-full bg-accent/10 text-accent/70 uppercase tracking-wider">
-                            {message.domain_name}
-                          </span>
-                        ) : null}
                       </div>
 
                       <SanriResponseText text={message.content} />
@@ -565,7 +503,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 1 }}
+                        transition={{ delay: 0.7 }}
                         className="text-sm text-foreground/50 text-center italic pt-6 mt-6 border-t border-accent/10"
                       >
                         &quot;{t("sanri.signature")}&quot;
@@ -579,7 +517,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
             {isThinking && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Infinity className="h-5 w-5 text-accent animate-pulse" />
+                  <InfinityIcon className="h-5 w-5 text-accent animate-pulse" />
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="text-base text-foreground/60 italic">{t("sanri.thinking")}</span>
@@ -595,7 +533,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Image Preview */}
+          {/* Image preview */}
           {uploadedImage ? (
             <div className="mb-4">
               <ImagePreview image={uploadedImage} onRemove={handleRemoveImage} />
@@ -634,46 +572,27 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                   <ImageIcon className="h-5 w-5 text-foreground/50" />
                 </Button>
 
-                <Button
-                  type="submit"
-                  size="icon"
-                  disabled={!input.trim() || isThinking}
-                  className="rounded-full bg-accent hover:bg-accent/90 h-10 w-10"
-                >
+                <Button type="submit" size="icon" disabled={!String(input).trim() || isThinking} className="rounded-full bg-accent hover:bg-accent/90 h-10 w-10">
                   <Send className="h-5 w-5" />
                 </Button>
               </div>
             </div>
 
-            {conversation.length > 0 ? (
+            {safeArray(conversation).length > 0 && (
               <div className="flex justify-center">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleReset}
-                  className="text-foreground/60 hover:text-foreground"
-                >
+                <Button type="button" variant="ghost" size="sm" onClick={handleReset} className="text-foreground/60 hover:text-foreground">
                   <RefreshCw className="h-4 w-4 mr-2" />
                   {t("sanri.newReflection")}
                 </Button>
               </div>
-            ) : null}
+            )}
           </form>
 
           <div className="mt-10 text-center">
             <p className="text-sm text-foreground/50">{t("sanri.footerNote")}</p>
           </div>
-
-          {!isPremium && (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 flex justify-center">
-              <DailyLimitIndicator limitType="sanri_daily" showWhenUnlimited={false} />
-            </motion.div>
-          )}
         </div>
       </section>
-
-      <UpgradeModal isOpen={isUpgradeModalOpen} onClose={hideUpgradeModal} feature={FEATURES.SANRI_UNLIMITED} />
     </div>
   );
 };
