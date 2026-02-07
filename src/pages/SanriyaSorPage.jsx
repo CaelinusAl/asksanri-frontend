@@ -459,7 +459,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                   >
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-base">{domain.emoji}</span>
-                      <span className={text-xs font-medium ${selectedDomain === domain.id ? "text-accent" : "text-foreground/80"}}>
+                      <span className={'text-xs font-medium ${selectedDomain === domain.id ? "text-accent" : "text-foreground/80"}'}>
                         {domain.label}
                       </span>
                     </div>
