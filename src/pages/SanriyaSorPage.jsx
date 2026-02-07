@@ -421,7 +421,7 @@ ${language === "en" ? "User's question" : "Kullanıcının sorusu"}: ${userInput
                   size="lg"
                   className={`rounded-full gap-2 transition-all duration-300 px-5 py-3 ${
                     currentMode.id === mode.id
-                      ? bg-gradient-to-r ${mode.color} ${mode.borderColor} border shadow-lg
+                      ? 'bg-gradient-to-r ${mode.color} ${mode.borderColor} border shadow-lg'
                       : "border-border/50 hover:border-accent/50 hover:bg-accent/5"
                   }`}
                   onClick={() => setActiveMode(mode)}
