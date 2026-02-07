@@ -8,8 +8,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { PremiumProvider } from "./contexts/PremiumContext";
 import { AdminProvider, useAdmin } from "./contexts/AdminContext";
 
-import { Navbar } from "./components/layout/Navbar";
-import { Footer } from "./components/layout/Footer";
+import Navbar from "./components/layout/Navbar";
+import Footer from "./components/layout/Footer";
 import AdminLayout from "./components/admin/AdminLayout";
 import { UpgradeModal } from "./components/premium/PremiumComponents";
 import { UpgradeFlowModal } from "./components/premium/UpgradeFlowModal";
