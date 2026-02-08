@@ -698,13 +698,13 @@ const BilincAlaniPage = () => {
       
 {/* Premium Ritual Experience Overlay */}
       <AnimatePresence>
-        {activeRitual && (
+        {activeRitual ? (
           <PremiumRitualExperience
             ritual={activeRitual}
             onClose={handleCloseRitual}
             onComplete={handleCloseRitual}
           />
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );
