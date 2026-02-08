@@ -645,12 +645,14 @@ const BilincAlaniPage = () => {
                                 <h4 className="font-serif text-lg text-foreground">{ritual.title}</h4>
                                 {ritual.visibility === "premium" && <Crown className="h-4 w-4 text-accent" />}
                               </div>
-                              <p className="text-sm text-foreground/50">
-                                {ritual.subtitle || ritual.description?.slice(0, 50)}
-                                {" • "}
-                                <Clock className="w-3 h-3 inline-block mr-1" />
-                                {ritual.duration || ${ritual.duration_minutes} dk}
-                              </p>
+                              <p className="text-sm text-foreground/50 flex items-center gap-1">
+  {ritual.subtitle || ritual.description?.slice(0, 50)}
+  <span>•</span>
+  <Clock className="w-3 h-3 inline-block" />
+  <span>
+    {ritual.duration || ${ritual.duration_minutes} dk}
+  </span>
+</p>
                             </div>
                           </div>
 
