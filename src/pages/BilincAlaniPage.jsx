@@ -704,7 +704,7 @@ const BilincAlaniPage = () => {
           />
         )}
       </AnimatePresence>
-    </div>
+
   );
 };
 
