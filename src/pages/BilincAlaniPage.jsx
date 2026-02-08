@@ -689,18 +689,21 @@ const BilincAlaniPage = () => {
 
         {view === "chat" && <ChatGorunumu bolum={selectedBolum} onBack={handleBack} />}
       </div>
+return (
+  <>
+    {/* sayfanın ana içeriği burada bitiyor */}
 
     {/* Premium Ritual Experience Overlay */}
-<AnimatePresence>
-  {activeRitual && (
-    <PremiumRitualExperience
-      ritual={activeRitual}
-      onClose={handleCloseRitual}
-      onComplete={handleCloseRitual}
-    />
-  )}
-</AnimatePresence>
-</div>
+    <AnimatePresence>
+      {activeRitual ? (
+        <PremiumRitualExperience
+          ritual={activeRitual}
+          onClose={handleCloseRitual}
+          onComplete={handleCloseRitual}
+        />
+      ) : null}
+    </AnimatePresence>
+  </>
 );
 };
 
