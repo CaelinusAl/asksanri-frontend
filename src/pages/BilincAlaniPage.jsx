@@ -690,24 +690,18 @@ const BilincAlaniPage = () => {
         {view === "chat" && <ChatGorunumu bolum={selectedBolum} onBack={handleBack} />}
       </div>
 
-      <AnimatePresence>
+    {/* Premium Ritual Experience Overlay */}
+<AnimatePresence>
   {activeRitual && (
-    <PremiumRitualExperience ritual={activeRitual}
-      onClose={handleCloseRitual} onComplete={handleCloseRitual} />
+    <PremiumRitualExperience
+      ritual={activeRitual}
+      onClose={handleCloseRitual}
+      onComplete={handleCloseRitual}
+    />
   )}
-      
-{/* Premium Ritual Experience Overlay */}
-      <AnimatePresence>
-        {activeRitual ? (
-          <PremiumRitualExperience
-            ritual={activeRitual}
-            onClose={handleCloseRitual}
-            onComplete={handleCloseRitual}
-          />
-        ) : null}
-      </AnimatePresence>
-    </div>
-  );
+</AnimatePresence>
+</div>
+);
 };
 
 export default BilincAlaniPage;
