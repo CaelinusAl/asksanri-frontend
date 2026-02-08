@@ -35,7 +35,6 @@ import {
   kitapTemalari,
   getBolumById
 } from "../data/bilinc-alani-data";
-import PremiumRitualExperience from "../components/PremiumRitualExperience";
 import { useLanguage } from "../contexts/LanguageContext";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
