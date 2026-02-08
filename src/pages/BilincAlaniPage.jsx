@@ -650,7 +650,7 @@ const BilincAlaniPage = () => {
   <span>•</span>
   <Clock className="w-3 h-3 inline-block" />
   <span>
-    {ritual.duration || '${ritual.duration_minutes}' dk}
+    {ritual.duration || '${ritual.duration_minutes} dk'}
   </span>
 </p>
                             </div>
