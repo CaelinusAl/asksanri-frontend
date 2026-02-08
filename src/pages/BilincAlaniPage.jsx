@@ -295,7 +295,12 @@ const BolumDetay = ({ bolum, onBack, onStartChat, onStartRitual }) => {
             const isLocked = rituel.locked && !isPremiumUser;
 
             return (
-              <Card key={rituel.id} className={border-border/50 bg-card/50 mb-3 relative overflow-hidden ${isLocked ? "opacity-80" : ""}}>
+              <Card
+  key={rituel.id}
+  className={`border border-border/50 bg-card/50 mb-3 relative overflow-hidden ${
+    isLocked ? "opacity-80" : ""
+  }`}
+>
                 {isLocked && (
                   <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] z-10 flex items-center justify-center">
                     <div className="text-center p-4">
