@@ -385,7 +385,7 @@ const ChatGorunumu = ({ bolum, onBack }) => {
     setIsThinking(true);
 
     try {
-      const response = await fetch(${API_URL}/bilinc-alani/ask, {
+      const response = await fetch('${API_URL}/bilinc-alani/ask', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
