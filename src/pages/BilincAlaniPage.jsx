@@ -442,16 +442,14 @@ const ChatGorunumu = ({ bolum, onBack }) => {
     setIsThinking(true);
 
     try {
-     const response = await fetch(${API_URL}/bilinc-alani/ask, {
+     const response = await fetch('${API_URL}/bilinc-alani/ask', {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    message: bolum
-      ? [BILINC_CHAPTER=${bolum.chapter}] [THEME=${bolum.theme}]\n${userInput}
-      : userInput,
-    session_id: sessionId || "default",
-    mode: "user",
-  }),
+  message: userInput,                 // ✅ sadece kullanıcının      mesajı
+  session_id: sessionId || "default",
+  mode: "user",
+}),
 });
 
       if (!response.ok) throw new Error("Bağlantı hatası");
