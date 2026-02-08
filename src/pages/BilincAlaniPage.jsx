@@ -696,16 +696,11 @@ const BilincAlaniPage = () => {
         )}
       
 <AnimatePresence>
-        {activeRitual && (
-          <PremiumRitualExperience
-            ritual={activeRitual}
-            onClose={handleCloseRitual}
-            onComplete={handleCloseRitual}
-          />
-        )}
-      </AnimatePresence>
-
-  );
-};
-
-export default BilincAlaniPage;
+  {activeRitual && (
+    <PremiumRitualExperience
+      ritual={activeRitual}
+      onClose={handleCloseRitual}
+      onComplete={handleCloseRitual}
+    />
+  )}
+</AnimatePresence>
