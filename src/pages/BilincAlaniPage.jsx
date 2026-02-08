@@ -385,32 +385,41 @@ const ChatGorunumu = ({ bolum, onBack }) => {
     setIsThinking(true);
 
     try {
-      const response = await fetch('${API_URL}/bilinc-alani/ask', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: userInput,
-          session_id: sessionId || "default",
-          mode: "user",
-        }),
-      });
+  const response = await fetch('${API_URL}/bilinc-alani/ask', {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: userInput,
+      session_id: sessionId || "default",
+      mode: "user",
+    }),
+  });
 
-      if (!response.ok) throw new Error("Bağlantı hatası");
+  if (!response.ok) {
+    throw new Error("Bağlantı hatası");
+  }
 
-      const data = await response.json();
+  const data = await response.json();
 
-      if (!sessionId && data.session_id) setSessionId(data.session_id);
+  if (!sessionId && data.session_id) {
+    setSessionId(data.session_id);
+  }
 
-      setConversation((prev) => [...prev, { type: "caelinus", content: data.response }]);
-    } catch (err) {
-      setConversation((prev) => [
-        ...prev,
-        { type: "caelinus", content: "Bilinç alanı şu an dinlenme halinde. Bir süre sonra tekrar dene." },
-      ]);
-    } finally {
-      setIsThinking(false);
-    }
-  };
+  setConversation((prev) => [
+    ...prev,
+    { type: "caelinus", content: data.response },
+  ]);
+} catch (err) {
+  setConversation((prev) => [
+    ...prev,
+    {
+      type: "caelinus",
+      content: "Bilinç alanı şu an dinlenme halinde. Bir süre sonra tekrar dene.",
+    },
+  ]);
+} finally {
+  setIsThinking(false);
+}
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
