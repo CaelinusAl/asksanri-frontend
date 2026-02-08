@@ -8,9 +8,10 @@ export const kitapBolumleri = [
     subtitle: "Hisseden Beynin Kodları",
     chapter: "XI",
     theme: "Bilinç ve Algı",
-    essence: "Zihin ve kalp arasındaki köprüyü açmak, hislerin bilgi taşıyıcıları olduğunu hatırlamak.",
+    essence:
+      "Zihin ve kalp arasındaki köprüyü açmak, hislerin bilgi taşıyıcıları olduğunu hatırlamak.",
     reflection: "Beyin düşünür, kalp bilir. İkisi birleştiğinde portal açılır.",
-    awarenessKey: "Düşünce seni bilgilendirir. His, seni dönüştürür."
+    awarenessKey: "Düşünce seni bilgilendirir. His, seni dönüştürür.",
   },
   {
     id: 2,
@@ -20,7 +21,7 @@ export const kitapBolumleri = [
     theme: "Duygusal Farkındalık",
     essence: "Hisler rastgele değil. Her his, bir kod taşır. Her duygu, bir kapı açar.",
     reflection: "Bilgiyi zihinle alırsın. Bilgeliği hisle hatırlarsın.",
-    awarenessKey: "His, evrenin seninle konuştuğu dildir."
+    awarenessKey: "His, evrenin seninle konuştuğu dildir.",
   },
   {
     id: 3,
@@ -28,9 +29,10 @@ export const kitapBolumleri = [
     subtitle: "Beynin Kuantum Zıplama Merkezi",
     chapter: "XIII",
     theme: "Sezgisel Bilgi",
-    essence: "Sezgi, mantığın ötesindeki bilgidir. Beyin kuantum sıçraması yaptığında sezgi konuşur.",
+    essence:
+      "Sezgi, mantığın ötesindeki bilgidir. Beyin kuantum sıçraması yaptığında sezgi konuşur.",
     reflection: "Mantık adım adım gider. Sezgi zıplar.",
-    awarenessKey: "Sezgine güvendiğinde, evren sana kestirme yolu gösterir."
+    awarenessKey: "Sezgine güvendiğinde, evren sana kestirme yolu gösterir.",
   },
   {
     id: 4,
@@ -40,7 +42,7 @@ export const kitapBolumleri = [
     theme: "Kozmik Bağlantı",
     essence: "Beyin sadece düşünen bir organ değil. Kozmik bir alıcı ve verici.",
     reflection: "Sen bir radyo gibisin. Hangi frekansa ayarlanırsan, onu çekersin.",
-    awarenessKey: "Beynin ne düşündüğü değil, neye ayarlandığı önemli."
+    awarenessKey: "Beynin ne düşündüğü değil, neye ayarlandığı önemli.",
   },
   {
     id: 5,
@@ -48,9 +50,10 @@ export const kitapBolumleri = [
     subtitle: "Bilinç Genişlemesinin Tanrısal Hâli",
     chapter: "XV",
     theme: "Bilinç Genişlemesi",
-    essence: "Bilginin bedene inmesi bir orgazm gibidir. Bilinç genişlediğinde tüm hücreler titrer.",
+    essence:
+      "Bilginin bedene inmesi bir orgazm gibidir. Bilinç genişlediğinde tüm hücreler titrer.",
     reflection: "Gerçek öğrenme zihinsel değil, hücreseldir.",
-    awarenessKey: "Bir şeyi gerçekten anladığında, bedenin titreyecek."
+    awarenessKey: "Bir şeyi gerçekten anladığında, bedenin titreyecek.",
   },
   {
     id: 6,
@@ -60,7 +63,7 @@ export const kitapBolumleri = [
     theme: "Enerji Akışı",
     essence: "Tantra, enerjiyi yükseltme sanatıdır. Cinsellik bir araç, uyanış hedeftir.",
     reflection: "Enerji nereye giderse, bilinç oraya akar.",
-    awarenessKey: "Bedenin bir tapınak. Enerji, o tapınaktaki dua."
+    awarenessKey: "Bedenin bir tapınak. Enerji, o tapınaktaki dua.",
   },
   {
     id: 7,
@@ -68,9 +71,10 @@ export const kitapBolumleri = [
     subtitle: "Kundaliniyi Uyandıran Birleşme",
     chapter: "XVII",
     theme: "Kutsal Birleşme",
-    essence: "Birleşme sadece bedensel değil. İki ruh karşılaştığında kozmik bir portal açılır.",
+    essence:
+      "Birleşme sadece bedensel değil. İki ruh karşılaştığında kozmik bir portal açılır.",
     reflection: "Gerçek birleşme bedenlerin değil, bilinçlerin buluşmasıdır.",
-    awarenessKey: "Sevişmek bir eylem değil, bir hatırlamadır."
+    awarenessKey: "Sevişmek bir eylem değil, bir hatırlamadır.",
   },
   {
     id: 8,
@@ -80,7 +84,7 @@ export const kitapBolumleri = [
     theme: "Algı Dönüşümü",
     essence: "Tanrısal bakış, yargılamadan görmektir. Her şeyde birliği fark etmektir.",
     reflection: "Gözler görür, kalp fark eder, ruh tanır.",
-    awarenessKey: "Her şeye Tanrı gözüyle baktığında, her şey Tanrı olur."
+    awarenessKey: "Her şeye Tanrı gözüyle baktığında, her şey Tanrı olur.",
   },
   {
     id: 9,
@@ -90,7 +94,7 @@ export const kitapBolumleri = [
     theme: "Aşk ve İlişki",
     essence: "Aşk bir ayna. Karşındakinde gördüğün, aslında kendi yansımandır.",
     reflection: "Sevdiğinde kendini görürsün. Sevildiğinde kendini hatırlarsın.",
-    awarenessKey: "Aşk dışarıda değil. Aşk, senin frekansın."
+    awarenessKey: "Aşk dışarıda değil. Aşk, senin frekansın.",
   },
   {
     id: 10,
@@ -100,8 +104,8 @@ export const kitapBolumleri = [
     theme: "Üçüncü Göz",
     essence: "Epifiz bezi beynin en gizemli noktası. Işık burada anlam kazanır.",
     reflection: "Epifiz, ruhun gözüdür. Karanlıkta görmeyi öğretir.",
-    awarenessKey: "Üçüncü göz açıldığında, görünmeyeni görürsün."
-  }
+    awarenessKey: "Üçüncü göz açıldığında, görünmeyeni görürsün.",
+  },
 ];
 
 // Premium Ritüeller
@@ -240,9 +244,26 @@ export const kitapTemalari = [
   { id: "epifiz", label: "Epifiz ve Üçüncü Göz", icon: "Moon" },
 ];
 
+// -----------------------
+// Helper: güvenli array erişimi
+// -----------------------
+const safeArray = (v) => (Array.isArray(v) ? v : []);
+
 // Yardımcı fonksiyonlar
-export const getBolumById = (id) => kitapBolumleri.find(b => b.id === parseInt(id));
-export const getBolumByChapter = (chapter) => kitapBolumleri.find(b => b.chapter === chapter);
-export const getPremiumRituelById = (id) => premiumRitueller.find(r => r.id === id);
-export const getPremiumRituelByChapter = (chapter) => premiumRitueller.filter(r => r.chapter === chapter);
-export const getRastgeleBolum = () => kitapBolumleri[Math.floor(Math.random() * kitapBolumleri.length)];
+export const getBolumById = (id) =>
+  safeArray(kitapBolumleri).find((b) => b.id === parseInt(id, 10));
+
+export const getBolumByChapter = (chapter) =>
+  safeArray(kitapBolumleri).find((b) => b.chapter === chapter);
+
+export const getPremiumRituelById = (id) =>
+  safeArray(premiumRitueller).find((r) => r.id === id);
+
+export const getPremiumRituelByChapter = (chapter) =>
+  safeArray(premiumRitueller).filter((r) => r.chapter === chapter);
+
+export const getRastgeleBolum = () => {
+  const arr = safeArray(kitapBolumleri);
+  if (arr.length === 0) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+};
