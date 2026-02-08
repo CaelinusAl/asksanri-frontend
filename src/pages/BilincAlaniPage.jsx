@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import PremiumRitualExperience from "../components/PremiumRitualExperience";
 import { 
   Lock, 
   Unlock,
@@ -441,16 +442,17 @@ const ChatGorunumu = ({ bolum, onBack }) => {
     setIsThinking(true);
 
     try {
-      const response = await fetch(`${API_URL}/api/bilinc-alani/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: userInput,
-          chapter: bolum?.chapter,
-          theme: bolum?.theme,
-          session_id: sessionId
-        }),
-      });
+     const response = await fetch(${API_URL}/bilinc-alani/ask, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: bolum
+      ? [BILINC_CHAPTER=${bolum.chapter}] [THEME=${bolum.theme}]\n${userInput}
+      : userInput,
+    session_id: sessionId || "default",
+    mode: "user",
+  }),
+});
 
       if (!response.ok) throw new Error("Bağlantı hatası");
 
@@ -595,7 +597,9 @@ const BilincAlaniPage = () => {
   const navigate = useNavigate();
   const { language, t } = useLanguage();
   const isPremium = usePremiumStatus();
-  const { rituals, isLoading: ritualsLoading, refetch } = usePublishedRituals();
+  const rituals = [];
+  const ritualsLoading = false;
+  const refetch = () => {};
   const [view, setView] = useState("list"); // list, detail, chat
   const [selectedBolum, setSelectedBolum] = useState(null);
   const [activeTab, setActiveTab] = useState("bolumler");
@@ -855,15 +859,9 @@ const BilincAlaniPage = () => {
             onComplete={handleCloseRitual}
           />
         )}
-      </AnimatePresence>
+      
 
-      {/* Premium Gate Modal */}
-      <AnimatePresence>
-        {showPremiumGate && (
-          <PremiumGate onClose={() => setShowPremiumGate(false)} />
-        )}
-      </AnimatePresence>
-    </div>
+          </div>
   );
 };
 
