@@ -424,7 +424,7 @@ const ChatGorunumu = ({ bolum, onBack }) => {
           <BookOpen className="h-8 w-8 text-primary" />
         </div>
         <h2 className="font-serif text-2xl text-foreground mb-2">
-          {bolum ? ${bolum.chapter}. ${bolum.title} : "Bilinç Alanı"}
+          {bolum ? '${bolum.chapter}. ${bolum.title}' : "Bilinç Alanı"}
         </h2>
         <p className="text-sm text-foreground/50">CAELINUS ile derinleş</p>
       </div>
