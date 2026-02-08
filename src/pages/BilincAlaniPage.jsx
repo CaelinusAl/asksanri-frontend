@@ -691,16 +691,23 @@ const BilincAlaniPage = () => {
       </div>
 
       <AnimatePresence>
-        {activeRitual && (
-          <PremiumRitualExperience ritual={activeRitual} onClose={handleCloseRitual} onComplete={handleCloseRitual} />
-        )}
-      
-<AnimatePresence>
   {activeRitual && (
-    <PremiumRitualExperience
-      ritual={activeRitual}
-      onClose={handleCloseRitual}
-      onComplete={handleCloseRitual}
-    />
+    <PremiumRitualExperience ritual={activeRitual}
+      onClose={handleCloseRitual} onComplete={handleCloseRitual} />
   )}
-</AnimatePresence>
+      
+{/* Premium Ritual Experience Overlay */}
+      <AnimatePresence>
+        {activeRitual && (
+          <PremiumRitualExperience
+            ritual={activeRitual}
+            onClose={handleCloseRitual}
+            onComplete={handleCloseRitual}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default BilincAlaniPage;
