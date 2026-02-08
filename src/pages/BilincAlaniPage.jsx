@@ -694,10 +694,14 @@ const BilincAlaniPage = () => {
         {activeRitual && (
           <PremiumRitualExperience ritual={activeRitual} onClose={handleCloseRitual} onComplete={handleCloseRitual} />
         )}
-      </AnimatePresence>
-
       <AnimatePresence>
-        {showPremiumGate && <PremiumGate onClose={() => setShowPremiumGate(false)} />}
+        {activeRitual && (
+          <PremiumRitualExperience
+            ritual={activeRitual}
+            onClose={handleCloseRitual}
+            onComplete={handleCloseRitual}
+          />
+        )}
       </AnimatePresence>
     </div>
   );
