@@ -857,9 +857,8 @@ const BilincAlaniPage = () => {
             onComplete={handleCloseRitual}
           />
         )}
-      
-
-          </div>
+      </AnimatePresence>
+    </div>
   );
 };
 
