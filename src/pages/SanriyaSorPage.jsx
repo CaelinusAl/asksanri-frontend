@@ -80,7 +80,7 @@ export default function SanriyaSorPage() {
           </div>
         </section>
       </main>
-
+);
       {/* Footer */}
       <footer className="relative z-10 mt-20 pb-6 text-center text-xs text-purple-400/50">
         © 2026 CaelinusAI · SANRI
