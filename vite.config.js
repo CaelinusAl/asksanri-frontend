@@ -6,6 +6,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
+    build: {
+sourcemap: true
+}
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
