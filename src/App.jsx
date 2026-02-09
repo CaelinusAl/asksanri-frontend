@@ -144,9 +144,7 @@ function App() {
       </LayoutWrapper>
 
       <Toaster position="bottom-right" />
-      <UpgradeModal />
-      <UpgradeFlowWrapper />
-    </div>
+          </div>
   );
 }
 
