@@ -8,7 +8,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Separator } from '../components/ui/separator';
 import { Input } from '../components/ui/input';
-import { usePremium, PLAN_TYPES } from '../contexts/PremiumContext';
+import { usePremium } from '../contexts/PremiumContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { toast } from 'sonner';
 

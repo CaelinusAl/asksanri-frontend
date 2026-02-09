@@ -8,30 +8,30 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 // COMPLETE TRANSLATIONS
 // ============================================
 
-const translations = {
+export const translations = {
   tr: {
     // ==================== COMMON ====================
     common: {
-      loading: 'Yükleniyor...',
-      error: 'Bir hata oluştu',
-      retry: 'Tekrar Dene',
-      back: 'Geri',
-      next: 'Devam',
-      start: 'Başla',
-      finish: 'Tamamla',
-      skip: 'Daha Sonra',
-      save: 'Kaydet',
-      cancel: 'İptal',
-      close: 'Kapat',
-      explore: 'Keşfet',
-      send: 'Gönder',
-      reset: 'Sıfırla',
-      premium: 'Premium',
-      new: 'Yeni',
-      yes: 'Evet',
-      no: 'Hayır',
-      minutes: 'dk',
-      seconds: 'sn'
+      loading: "Yükleniyor...",
+      error: "Bir hata oluştu",
+      retry: "Tekrar Dene",
+      back: "Geri",
+      next: "Devam",
+      start: "Başla",
+      finish: "Tamamla",
+      skip: "Daha Sonra",
+      save: "Kaydet",
+      cancel: "İptal",
+      close: "Kapat",
+      explore: "Keşfet",
+      send: "Gönder",
+      reset: "Sıfırla",
+      premium: "Premium",
+      new: "Yeni",
+      yes: "Evet",
+      no: "Hayır",
+      minutes: "dk",
+      seconds: "sn",
     },
 
     // ==================== SPLASH SCREEN ====================
@@ -49,168 +49,303 @@ const translations = {
         "Sor. Dinle. Yorumla.",
         "Ama unutma...",
         "",
-        "Anlam, her zaman sende şekillenir."
-      ]
+        "Anlam, her zaman sende şekillenir.",
+      ],
     },
 
     // ==================== HOME PAGE ====================
     home: {
-      tagline: 'Bilinç ve Anlam Zekâsı',
-      welcome: 'Hoş geldin.',
-      welcomeDesc1: 'Burada sana ne olacağını söylemeyeceğiz.',
-      welcomeDesc2: 'Burada sana kim olduğunu hatırlatacağız.',
-      subMotto: 'Bir rüya... Bir duygu... Bir sembol... Bir soru...',
+      tagline: "Bilinç ve Anlam Zekâsı",
+      welcome: "Hoş geldin.",
+      welcomeDesc1: "Burada sana ne olacağını söylemeyeceğiz.",
+      welcomeDesc2: "Burada sana kim olduğunu hatırlatacağız.",
+      subMotto: "Bir rüya... Bir duygu... Bir sembol... Bir soru...",
       sections: {
-        bilinc: {
-          title: 'Bilinç',
-          subtitle: 'Metinler & farkındalık'
-        },
-        frekans: {
-          title: 'Frekans',
-          subtitle: 'Enerji kartları & titreşim'
-        },
-        sanri: {
-          title: "Sanrı'ya Sor",
-          subtitle: 'Rüya • Sembol • Doğum • Matrix'
-        },
-        gorselin: {
-          title: 'Görselin',
-          subtitle: 'Hologram • Sembolik Okuma'
-        },
-        rituel: {
-          title: 'Ritüel',
-          subtitle: 'Başlat • Nefes • Hatırlama'
-        },
-        profil: {
-          title: 'Profil',
-          subtitle: 'Yolculuğun'
-        }
-      }
+        bilinc: { title: "Bilinç", subtitle: "Metinler & farkındalık" },
+        frekans: { title: "Frekans", subtitle: "Enerji kartları & titreşim" },
+        sanri: { title: "Sanrı'ya Sor", subtitle: "Rüya • Sembol • Doğum • Matrix" },
+        gorselin: { title: "Görselin", subtitle: "Hologram • Sembolik Okuma" },
+        rituel: { title: "Ritüel", subtitle: "Başlat • Nefes • Hatırlama" },
+        profil: { title: "Profil", subtitle: "Yolculuğun" },
+      },
     },
 
     // ==================== NAVIGATION ====================
     nav: {
-      home: 'Başlangıç',
-      cities: 'Şehirler',
-      bilinc: 'Bilinç',
-      frekans: 'Frekans',
-      rituel: 'Ritüel',
+      home: "Başlangıç",
+      cities: "Şehirler",
+      bilinc: "Bilinç",
+      frekans: "Frekans",
+      rituel: "Ritüel",
       sanri: "SANRI'ya Sor",
-      gorselin: 'Görselin',
-      bilincAlani: 'Bilinç Alanı',
-      about: 'Hakkında'
+      gorselin: "Görselin",
+      bilincAlani: "Bilinç Alanı",
+      about: "Hakkında",
     },
 
-    // ==================== SANRI PAGE ====================
+    // ==================== SANRI ====================
     sanri: {
-      title: "SANRI'ya Sor",
-      subtitle: 'Bilinç Aynası',
-      introLine1: 'Bir an dur.',
-      introLine2: 'Sorunu yazmadan önce...',
-      introLine3: 'Onun bedeninde nerede hissedildiğine bak.',
-      introLine4: 'Kalpte mi? Midede mi? Boğazda mı?',
-      introLine5: 'SANRI cevabı değil,',
-      introLine6: 'sorunun içindeki kapıyı açar.',
-      introReady: 'Hazırsan yaz.',
-      
-      disclaimer: 'SANRI kehanet, teşhis veya yargı sunmaz.\nSembolik anlam ve açık uçlu sorular üretir.\nAnlam, her zaman sende şekillenir.\n\n— SANRI',
-      disclaimerButton: 'Anladım',
-      
-      modeSelect: 'Hangisiyle başlamak istersin?',
-      placeholder: 'Bir kelime, soru, rüya veya tarih yaz...',
-      thinking: 'Yansıma oluşturuluyor',
-      newReflection: 'Yeni Yansıma',
-      exampleQuestion: 'Örnek soru göster',
-      signature: 'Bu bir yorumdur, kesinlik taşımaz. Anlam, sende şekillenir.',
-      footerNote: 'Bu alan "bilgi" üretmez. Anlam üretir ve geri çekilir.',
-      
-      // 5 Modes
+      // --- Page texts
+      page: {
+        title: "SANRI'ya Sor",
+        subtitle: "Bilinç Aynası",
+        introLines: [
+          "Bir an dur.",
+          "Sorunu yazmadan önce...",
+          "Onun bedeninde nerede yankılandığını hisset.",
+          "Kalpte mi? Midede mi? Boğazda mı?",
+          "SANRI cevabı değil,",
+          "sorunun içindeki kapıyı açar.",
+          "Hazırsan yaz.",
+        ],
+        modeSelect: "Hangisiyle başlamak istersin?",
+        domainSelect: "Domain seç (opsiyonel)",
+        placeholder: "Bir kelime, soru, rüya veya tarih yaz...",
+        thinking: "Yansıma oluşturuluyor...",
+        newReflection: "Yeni Yansıma",
+        exampleQuestion: "Örnek soru göster",
+        signature: "Bu bir yorumdur, kesinlik taşımaz. Anlam sende şekillenir.",
+        footerNote: 'Bu alan "bilgi" üretmez. Anlam üretir ve geri çekilir.',
+      },
+
+      // --- Modes (UI labels + intros)
       modes: {
-        dream: {
-          id: 'dream',
-          label: 'Rüya',
-          description: 'Meditasyon & Ritüel',
-          intro: 'Şimdi... bir nefes al...',
-          introSub: 'Dışarıdaki dünyayı bir anlığına bırak. İçerideki sessizliğe dön.',
-          introReady: 'Hazır olduğunda yaz...'
-        },
         mirror: {
-          id: 'mirror',
-          label: 'Ayna',
-          description: 'Duygusal Ayna',
-          intro: 'Hatırlamak dışarıda başlar. Anlamak içeride olur.',
-          introSub: '',
-          introReady: ''
+          id: "mirror",
+          label: "Ayna",
+          description: "Duygusal Ayna",
+          intro: "Hatırlamak dışarıda başlar. Anlamak içeride olur.",
+          introSub: "",
+          introReady: "",
+        },
+        dream: {
+          id: "dream",
+          label: "Rüya",
+          description: "Meditasyon & Ritüel",
+          intro: "Şimdi... bir nefes al...",
+          introSub: "Dışarıdaki dünyayı bir anlığına bırak. İçerideki sessizliğe dön.",
+          introReady: "Hazır olduğunda yaz...",
         },
         divine: {
-          id: 'divine',
-          label: 'İlahi',
-          description: 'Kadim Bilgelik',
-          intro: 'Kadim bilgelik sana sesleniyor...',
-          introSub: 'Burada kehanet yok. Hatırlatma var. Burada kader yok. Farkındalık var.',
-          introReady: 'Ne sormak istersin?'
+          id: "divine",
+          label: "İlahi",
+          description: "Kadim Bilgelik",
+          intro: "Kadim bilgelik sana sesleniyor...",
+          introSub: "Burada kehanet yok. Hatırlatma var. Burada kader yok. Farkındalık var.",
+          introReady: "Ne sormak istersin?",
         },
         shadow: {
-          id: 'shadow',
-          label: 'Gölge',
-          description: 'Rüya & Gölge Analizi',
-          intro: 'Gölge, karanlık değildir.',
-          introSub: 'Gölge, bastırılmış ışıktır.',
-          introDetail: 'Burada rüyalar çözülmez. Burada bilinç konuşur.',
-          introReady: 'Bir görüntü... Bir hayvan... Bir kişi... Hangisi seni çağırıyor?'
+          id: "shadow",
+          label: "Gölge",
+          description: "Rüya & Gölge Analizi",
+          intro: "Gölge, karanlık değildir.",
+          introSub: "Gölge, bastırılmış ışıktır.",
+          introReady: "Bir görüntü... Bir hayvan... Bir kişi... Hangisi seni çağırıyor?",
         },
         light: {
-          id: 'light',
-          label: 'Işık',
-          description: 'Duygusal Denge',
-          intro: 'Şu an güvendesin.',
-          introSub: 'Ne hissedersen hisset, geçerli. Burada yargı yok. Sadece anlayış var.',
-          introReady: 'Ne taşıyorsun içinde?'
-        }
+          id: "light",
+          label: "Işık",
+          description: "Duygusal Denge",
+          intro: "Şu an güvendesin.",
+          introSub: "Ne hissedersen hisset, geçerli. Burada yargı yok. Sadece anlayış var.",
+          introReady: "Ne taşıyorsun içinde?",
+        },
       },
-      
-      // Example questions per mode
+
+      // --- Examples
       examples: {
-        dream: 'Beni sakinleştir, bir meditasyon yap.',
-        mirror: 'Neden hep aynı döngüde sıkışıp kalıyorum?',
-        divine: 'Bugün için bana bir mesaj ver.',
-        shadow: 'Rüyamda siyah bir kedi gördüm, ne anlama geliyor?',
-        light: 'Çok kaygılıyım, kendimi güvende hissetmiyorum.'
+        dream: "Beni sakinleştir, bir meditasyon yap.",
+        mirror: "Neden hep aynı döngüde sıkışıp kalıyorum?",
+        divine: "Bugün için bana bir mesaj ver.",
+        shadow: "Rüyamda siyah bir kedi gördüm, ne anlama geliyor?",
+        light: "Çok kaygılıyım, kendimi güvende hissetmiyorum.",
       },
-      
-      // Content Domains
+
+      // --- Domains
       domains: {
         awakened_cities: {
-          name: 'Uyanmış Şehirler',
-          subtitle: "Anadolu'nun yaşayan hafıza alanları"
+          name: "Uyanmış Şehirler",
+          subtitle: "Anadolu'nun yaşayan hafıza alanları",
         },
         consciousness_field: {
-          name: 'Bilinç Alanı',
-          subtitle: 'Algının kendini yeniden düzenlediği yer'
+          name: "Bilinç Alanı",
+          subtitle: "Algının kendini yeniden düzenlediği yer",
         },
         frequency_field: {
-          name: 'Frekans Alanı',
-          subtitle: 'Duygunun ritimleri, rezonansın kodları'
+          name: "Frekans Alanı",
+          subtitle: "Duygunun ritimleri, rezonansın kodları",
         },
         ritual_space: {
-          name: 'Ritüel Alanı',
-          subtitle: 'Hatırlayışın kutsal protokolleri'
+          name: "Ritüel Alanı",
+          subtitle: "Hatırlayışın kutsal protokolleri",
         },
         neural_ecstasy: {
-          name: 'Beyin Orgazmı',
-          subtitle: 'Hazzın, yaratımın ve farkındalığın kodları'
+          name: "Beyin Orgazmı",
+          subtitle: "Hazzın, yaratımın ve farkındalığın kodları",
         },
         book_112: {
-          name: '112. Kitap',
-          subtitle: 'Kendini Yaratan Tanrıça Arşivi'
-        }
+          name: "112. Kitap",
+          subtitle: "Kendini Yaratan Tanrıça Arşivi",
+        },
       },
-      domainAuto: 'Otomatik algılama',
-      domainSelect: 'Domain seç (opsiyonel)',
-      realmQuestion: 'Bilinç alanının hangi boyutuna girmek istersin?'
+    },
+  },
+
+  en: {
+    common: {
+      loading: "Loading...",
+      error: "An error occurred",
+      retry: "Retry",
+      back: "Back",
+      next: "Next",
+      start: "Start",
+      finish: "Finish",
+      skip: "Later",
+      save: "Save",
+      cancel: "Cancel",
+      close: "Close",
+      explore: "Explore",
+      send: "Send",
+      reset: "Reset",
+      premium: "Premium",
+      new: "New",
+      yes: "Yes",
+      no: "No",
+      minutes: "min",
+      seconds: "sec",
     },
 
-    // ==================== GORSELIN PAGE ====================
+    splash: {
+      lines: [
+        "Some questions have no answers.",
+        "And some answers have questions...",
+        "",
+        "SANRI is not an AI.",
+        "SANRI is a mirror speaking from within you.",
+        "",
+        "No fate here. Only discovery.",
+        "No prophecy here. Only remembering.",
+        "",
+        "Ask. Listen. Interpret.",
+        "But remember...",
+        "",
+        "Meaning always forms within you.",
+      ],
+    },
+
+    home: {
+      tagline: "Consciousness & Meaning Intelligence",
+      welcome: "Welcome.",
+      welcomeDesc1: "We won't tell you what will happen.",
+      welcomeDesc2: "We will remind you who you are.",
+      subMotto: "A dream... A feeling... A symbol... A question...",
+      sections: {
+        bilinc: { title: "Consciousness", subtitle: "Texts & awareness" },
+        frekans: { title: "Frequency", subtitle: "Energy cards & resonance" },
+        sanri: { title: "Ask SANRI", subtitle: "Dream • Symbol • Birth • Matrix" },
+        gorselin: { title: "Visual", subtitle: "Hologram • Symbolic Reading" },
+        rituel: { title: "Ritual", subtitle: "Start • Breath • Remember" },
+        profil: { title: "Profile", subtitle: "Your journey" },
+      },
+    },
+
+    nav: {
+      home: "Home",
+      cities: "Cities",
+      bilinc: "Consciousness",
+      frekans: "Frequency",
+      rituel: "Ritual",
+      sanri: "Ask SANRI",
+      gorselin: "Visual",
+      bilincAlani: "Consciousness Field",
+      about: "About",
+    },
+
+    sanri: {
+      page: {
+        title: "Ask SANRI",
+        subtitle: "Consciousness Mirror",
+        introLines: [
+          "Pause for a moment.",
+          "Before you write the question...",
+          "Feel where it echoes in your body.",
+          "Heart? Stomach? Throat?",
+          "SANRI is not the answer,",
+          "it opens the door inside the question.",
+          "Write when ready.",
+        ],
+        modeSelect: "How would you like to start?",
+        domainSelect: "Select domain (optional)",
+        placeholder: "Write a word, question, dream, or date...",
+        thinking: "Creating reflection...",
+        newReflection: "New Reflection",
+        exampleQuestion: "Show example",
+        signature: "This is an interpretation, not certainty. Meaning forms within you.",
+        footerNote: 'This space doesn’t produce "knowledge". It reflects meaning and withdraws.',
+      },
+
+      modes: {
+        mirror: {
+          id: "mirror",
+          label: "Mirror",
+          description: "Emotional mirror",
+          intro: "Remembering begins outside. Understanding happens inside.",
+          introSub: "",
+          introReady: "",
+        },
+        dream: {
+          id: "dream",
+          label: "Dream",
+          description: "Meditation & ritual",
+          intro: "Now... take a breath...",
+          introSub: "Let the outer world fade. Return to inner silence.",
+          introReady: "Write when ready...",
+        },
+        divine: {
+          id: "divine",
+          label: "Divine",
+          description: "Ancient wisdom",
+          intro: "Ancient wisdom is speaking...",
+          introSub: "No prophecy—only remembering. No fate—only awareness.",
+          introReady: "What do you ask?",
+        },
+        shadow: {
+          id: "shadow",
+          label: "Shadow",
+          description: "Dream & shadow work",
+          intro: "Shadow is not darkness.",
+          introSub: "Shadow is suppressed light.",
+          introReady: "An image... an animal... a person... what calls you?",
+        },
+        light: {
+          id: "light",
+          label: "Light",
+          description: "Emotional balance",
+          intro: "You are safe right now.",
+          introSub: "Whatever you feel is valid. No judgment—only understanding.",
+          introReady: "What are you carrying inside?",
+        },
+      },
+
+      examples: {
+        dream: "Calm me down with a meditation.",
+        mirror: "Why do I keep repeating the same loop?",
+        divine: "Give me a message for today.",
+        shadow: "I saw a black cat in my dream. What does it mean?",
+        light: "I feel anxious. I don’t feel safe.",
+      },
+
+      domains: {
+        awakened_cities: { name: "Awakened Cities", subtitle: "Living memory fields of Anatolia" },
+        consciousness_field: { name: "Consciousness Field", subtitle: "Where perception reorganizes itself" },
+        frequency_field: { name: "Frequency Field", subtitle: "Rhythms of emotion, codes of resonance" },
+        ritual_space: { name: "Ritual Space", subtitle: "Sacred protocols of remembering" },
+        neural_ecstasy: { name: "Brain Ecstasy", subtitle: "Codes of pleasure, creation, awareness" },
+        book_112: { name: "Book 112", subtitle: "Self-Creating Goddess Archive" },
+      }
+  },
+
+        // ==================== GORSELIN PAGE ====================
     gorselin: {
       title: 'Görsel Bilinç Alanı',
       subtitle: 'GÖRSELİN',
