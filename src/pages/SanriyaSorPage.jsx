@@ -1,604 +1,435 @@
-import { useState, useRef, useEffect, useMemo } from "react";
+// src/pages/SanriyaSorPage.jsx
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Infinity as InfinityIcon,
-  Send,
-  RefreshCw,
-  AlertCircle,
-  Sparkles,
-  Image as ImageIcon,
-  X,
-  Moon,
-  Eye,
-  Sun,
-  Cloud,
-  Heart,
-} from "lucide-react";
+import { Eye, Sparkles, Send, ChevronDown, Wand2, Info, Paperclip } from "lucide-react";
 
 import { Button } from "../components/ui/button";
 import { Textarea } from "../components/ui/textarea";
 import { Card, CardContent } from "../components/ui/card";
 import { Alert, AlertDescription } from "../components/ui/alert";
-import { Label } from "../components/ui/label";
-
 import { useLanguage } from "../contexts/LanguageContext";
 
-const API_URL = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/$/, "");
+const API_URL = import.meta.env.VITE_BACKEND_URL;
 
-// küçük koruma: map patlamasın
-const safeArray = (v) => (Array.isArray(v) ? v : []);
+// ---------- helpers ----------
+const safeArray = (x) => (Array.isArray(x) ? x : []);
 
-const SanriResponseText = ({ text }) => {
-  const paragraphs = String(text || "")
-    .split("\n\n")
-    .filter((p) => p.trim())
-    .filter(Boolean);
+const cx = (...xs) => xs.filter(Boolean).join(" ");
 
-  return (
-    <div className="space-y-4">
-      {(Array.isArray(paragraphs) ? paragraphs : []).map((paragraph, index) => (
-  <motion.p
-    key={index}
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: index * 0.08 }}
-    className="text-foreground leading-relaxed font-serif"
-  >
-    {paragraph}
-  </motion.p>
-))}
-    </div>
+export default function SanriyaSorPage() {
+  const { language, t } = useLanguage();
+
+  // Modes (fallback) — sende farklıysa burayı güncellersin
+  const modesList = useMemo(
+    () => [
+      { id: "ayna", label: language === "en" ? "Mirror" : "Ayna", emoji: "🪞" },
+      { id: "ruya", label: language === "en" ? "Dream" : "Rüya", emoji: "🌙" },
+      { id: "ilahi", label: language === "en" ? "Divine" : "İlahi", emoji: "✨" },
+      { id: "golge", label: language === "en" ? "Shadow" : "Gölge", emoji: "🕯️" },
+      { id: "isik", label: language === "en" ? "Light" : "Işık", emoji: "☀️" },
+    ],
+    [language]
   );
-};
-
-const ImagePreview = ({ image, onRemove }) => {
-  if (!image) return null;
-
-  return (
-    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="relative inline-block">
-      <img
-        src={image.preview}
-        alt="Yüklenen görsel"
-        className="max-h-40 rounded-lg border border-border/50 object-cover"
-      />
-      <Button
-        variant="destructive"
-        size="icon"
-        className="absolute -top-2 -right-2 h-6 w-6 rounded-full"
-        onClick={onRemove}
-        type="button"
-      >
-        <X className="h-3 w-3" />
-      </Button>
-    </motion.div>
-  );
-};
-
-const SanriyaSorPage = () => {
-  const { t, language } = useLanguage();
-
-  const readingModes = useMemo(
-    () => ({
-      dream: {
-        id: "dream",
-        label: t("sanri.modes.dream.label"),
-        icon: Moon,
-        emoji: "🌙",
-        description: t("sanri.modes.dream.description"),
-      },
-      mirror: {
-        id: "mirror",
-        label: t("sanri.modes.mirror.label"),
-        icon: Eye,
-        emoji: "🪞",
-        description: t("sanri.modes.mirror.description"),
-      },
-      divine: {
-        id: "divine",
-        label: t("sanri.modes.divine.label"),
-        icon: Sun,
-        emoji: "✨",
-        description: t("sanri.modes.divine.description"),
-      },
-      shadow: {
-        id: "shadow",
-        label: t("sanri.modes.shadow.label"),
-        icon: Cloud,
-        emoji: "🌑",
-        description: t("sanri.modes.shadow.description"),
-      },
-      light: {
-        id: "light",
-        label: t("sanri.modes.light.label"),
-        icon: Heart,
-        emoji: "🌿",
-        description: t("sanri.modes.light.description"),
-      },
-    }),
-    [t]
-  );
-
-  const modesList = useMemo(() => Object.values(readingModes), [readingModes]);
 
   const domainsList = useMemo(
     () => [
-      { id: null, label: t("sanri.domainAuto"), subtitle: "", emoji: "✨" },
-      {
-        id: "awakened_cities",
-        label: t("sanri.domains.awakened_cities.name"),
-        subtitle: t("sanri.domains.awakened_cities.subtitle"),
-        emoji: "🏛️",
-      },
-      {
-        id: "consciousness_field",
-        label: t("sanri.domains.consciousness_field.name"),
-        subtitle: t("sanri.domains.consciousness_field.subtitle"),
-        emoji: "🧠",
-      },
-      {
-        id: "frequency_field",
-        label: t("sanri.domains.frequency_field.name"),
-        subtitle: t("sanri.domains.frequency_field.subtitle"),
-        emoji: "〰️",
-      },
-      {
-        id: "ritual_space",
-        label: t("sanri.domains.ritual_space.name"),
-        subtitle: t("sanri.domains.ritual_space.subtitle"),
-        emoji: "🕯️",
-      },
-      {
-        id: "neural_ecstasy",
-        label: t("sanri.domains.neural_ecstasy.name"),
-        subtitle: t("sanri.domains.neural_ecstasy.subtitle"),
-        emoji: "⚡",
-      },
-      {
-        id: "book_112",
-        label: t("sanri.domains.book_112.name"),
-        subtitle: t("sanri.domains.book_112.subtitle"),
-        emoji: "📖",
-      },
+      { id: "para", label: language === "en" ? "Money" : "Para", emoji: "💸" },
+      { id: "ask", label: language === "en" ? "Love" : "Aşk", emoji: "❤️" },
+      { id: "aile", label: language === "en" ? "Family" : "Aile", emoji: "🏠" },
+      { id: "beden", label: language === "en" ? "Body" : "Beden", emoji: "🫀" },
+      { id: "kariyer", label: language === "en" ? "Career" : "Kariyer", emoji: "🧭" },
     ],
-    [t]
+    [language]
   );
 
+  const [currentMode, setCurrentMode] = useState(modesList[0]?.id || "ayna");
+  const [selectedDomain, setSelectedDomain] = useState("");
   const [input, setInput] = useState("");
+  const [conversation, setConversation] = useState([]); // [{role:"user"|"assistant", content:string}]
   const [isThinking, setIsThinking] = useState(false);
-  const [conversation, setConversation] = useState([]);
-  const [showDisclaimer, setShowDisclaimer] = useState(true);
   const [sessionId, setSessionId] = useState("default");
-  const [error, setError] = useState(null);
 
-  const [activeMode, setActiveMode] = useState(readingModes.mirror);
-  const [selectedDomain, setSelectedDomain] = useState(null);
+  // file attach (opsiyonel)
+  const fileRef = useRef(null);
+  const [fileName, setFileName] = useState("");
 
-  const [uploadedImage, setUploadedImage] = useState(null);
-  const fileInputRef = useRef(null);
   const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    // dil değişince seçili mode’u koru
-    setActiveMode((prev) => readingModes[prev?.id] || readingModes.mirror);
-  }, [language, readingModes]);
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [conversation]);
+  }, [conversation, isThinking]);
 
-  const currentMode = activeMode || readingModes.mirror;
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const result = String(reader.result || "");
-      setUploadedImage({
-        file,
-        preview: result,
-        base64: result.includes(",") ? result.split(",")[1] : null,
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleRemoveImage = () => {
-    setUploadedImage(null);
-    if (fileInputRef.current) fileInputRef.current.value = "";
-  };
-
-  const handleExampleClick = () => {
-    const examples = t("sanri.examples");
-    const modeId = currentMode.id;
-    setInput(examples?.[modeId] || examples?.mirror || "");
-  };
-
-  const handleReset = () => {
-    setConversation([]);
-    setInput("");
-    setError(null);
-    setSelectedDomain(null);
-    setSessionId("default");
-    handleRemoveImage();
-  };
-
-  const buildMessage = (userInput) => {
-  // Görsel varsa kısa not ekle
-  let msg = userInput;
-
-  if (uploadedImage) {
-    const prefix =
-      language === "en"
-        ? "[User shared an image]\n\nUser's question: "
-        : "[Kullanıcı bir görsel paylaştı]\n\nKullanıcının sorusu: ";
-
-    msg = prefix + userInput;
-  }
-
-  // Mode etiketi (backend "mode" ile karıştırmıyoruz)
-  return "[SANRI_MODE=" + (currentMode?.id || "mirror") + "]\n" + msg;
-};
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!String(input).trim() || isThinking) return;
-
-    if (!API_URL) {
-      setError("VITE_BACKEND_URL tanımlı değil (Vercel Env).");
-      return;
+  const introText = useMemo(() => {
+    // Çeviriler sende varsa buradan akar:
+    // translations.tr.sanri.modes.ayna.intro gibi
+    const key = `sanri.modes.${currentMode}.intro`;
+    const val = t?.(key);
+    // Eğer t key’i bulamazsa, fallback:
+    if (!val || val === key) {
+      const fallback =
+        language === "en"
+          ? "Pause. Feel where the question sits in your body. Then write."
+          : "Bir an dur. Sorunun bedeninde nerede olduğunu hisset. Sonra yaz.";
+      return fallback;
     }
+    return val;
+  }, [currentMode, language, t]);
 
-    const userInput = String(input).trim();
-    setInput("");
-    setError(null);
+  const examplePrompt = useMemo(() => {
+    if (language === "en") {
+      return selectedDomain
+        ? `In my ${selectedDomain} field I feel stuck. What is the first crack in the pattern?`
+        : `I feel stuck. What is the first crack in the pattern?`;
+    }
+    return selectedDomain
+      ? `“${selectedDomain}” alanında tıkandım. İlk çatlak nerede?`
+      : "Tıkandım. İlk çatlak nerede?";
+  }, [language, selectedDomain]);
 
-    setConversation((prev) => [
-      ...safeArray(prev),
-      {
-        type: "user",
-        content: userInput,
-        image: uploadedImage?.preview || null,
-        mode: currentMode.id,
-        domain: selectedDomain,
+  const buildUserPayload = (userText) => {
+    // Backend’ine göre endpoint ayarı:
+    // Çoğu yerde sende /api/bilinc-alani/ask çalışıyor.
+    // Gerekirse /bilinc-alani/ask yaparsın.
+    return {
+      message: userText,
+      session_id: sessionId || "default",
+      mode: "user",
+      // İstersen backend prompta bağlam için ekleyebilirsin:
+      meta: {
+        sanri_mode: currentMode,
+        domain: selectedDomain || null,
       },
-    ]);
+    };
+  };
 
+  const sendMessage = async (userText) => {
+    setConversation((prev) => [...prev, { role: "user", content: userText }]);
     setIsThinking(true);
 
-    const requestBody = {
-      message: buildMessage(userInput),
-      session_id: sessionId || "default",
-      mode: "user", // backend için: user/test/cocuk
-      system_language: language,
-    };
-
-    if (selectedDomain) requestBody.domain = selectedDomain;
-
-    // Görseli backend şu an kullanmıyorsa bile, ileride hazır olsun
-    if (uploadedImage?.base64) requestBody.image_base64 = uploadedImage.base64;
-
-    handleRemoveImage();
-
     try {
-      const res = await fetch('${API_URL}/bilinc-alani/ask', {
+      const res = await fetch(`${API_URL}/api/bilinc-alani/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
+        body: JSON.stringify(buildUserPayload(userText)),
       });
 
-      if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(txt || "SANRI dinleniyor… tekrar dene.");
-      }
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.detail || "Request failed");
 
-      const data = await res.json();
+      if (data?.session_id) setSessionId(data.session_id);
 
-      setSessionId(data?.session_id || "default");
-
+      const reply = String(data?.response || "").trim() || (language === "en" ? "I’m here." : "Buradayım.");
+      setConversation((prev) => [...prev, { role: "assistant", content: reply }]);
+    } catch (e) {
       setConversation((prev) => [
-        ...safeArray(prev),
+        ...prev,
         {
-          type: "sanri",
-          content: data?.response || "Buradayım.",
-          mode: currentMode.id,
-          domain: selectedDomain,
+          role: "assistant",
+          content:
+            language === "en"
+              ? "Connection paused. Try again in a moment."
+              : "Bağlantı kısa süreli durdu. Biraz sonra tekrar dene.",
         },
       ]);
-    } catch (err) {
-      setError(err?.message || t("common.error"));
-      // son user mesajını geri almayalım; sadece error göster
     } finally {
       setIsThinking(false);
     }
   };
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const userText = input.trim();
+    if (!userText || isThinking) return;
+    setInput("");
+    await sendMessage(userText);
+  };
+
+  const onExample = async () => {
+    if (isThinking) return;
+    await sendMessage(examplePrompt);
+  };
+
   return (
-    <div className="min-h-screen pt-24 pb-16">
-      {/* Header */}
-      <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center max-w-2xl mx-auto">
-            <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-6 animate-breathe">
-              <InfinityIcon className="h-10 w-10 text-accent" />
-            </div>
-            <span className="text-accent text-base tracking-widest uppercase mb-4 block font-medium">
-              {t("sanri.subtitle")}
-            </span>
-            <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-foreground mb-6">
-              {t("sanri.title")}
-            </h1>
-
-            <div className="space-y-3 text-foreground/70 text-base sm:text-lg leading-relaxed font-serif italic">
-              <p>{t("sanri.introLine1")}</p>
-              <p className="text-foreground/60">
-                {t("sanri.introLine2")}
-                <br />
-                {t("sanri.introLine3")}
-              </p>
-              <p className="text-sm text-foreground/50">{t("sanri.introLine4")}</p>
-              <p className="text-foreground/60 mt-4">
-                {t("sanri.introLine5")}
-                <br />
-                {t("sanri.introLine6")}
-              </p>
-              <p className="text-accent/80 text-sm mt-4">{t("sanri.introReady")}</p>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Disclaimer */}
-      <AnimatePresence>
-        {showDisclaimer && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="container mx-auto px-6 mb-6"
-          >
-            <Alert className="max-w-2xl mx-auto border-accent/30 bg-accent/5">
-              <AlertCircle className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-              <AlertDescription className="text-sm text-foreground/70 whitespace-pre-line">
-                {t("sanri.disclaimer")}
-                <Button
-                  variant="link"
-                  className="text-accent p-0 h-auto ml-2 text-sm"
-                  onClick={() => setShowDisclaimer(false)}
-                  type="button"
-                >
-                  {t("sanri.disclaimerButton")}
-                </Button>
-              </AlertDescription>
-            </Alert>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Main */}
-      <section className="container mx-auto px-6">
-        <div className="max-w-2xl mx-auto">
-          {/* Mode Selection */}
-          <div className="mb-6">
-            <Label className="text-sm text-foreground/60 mb-4 block text-center font-serif italic">
-              {t("sanri.modeSelect")}
-            </Label>
-
-            <div className="flex flex-wrap justify-center gap-3">
-              {safeArray(modesList).map((mode) => (
-                <Button
-                  key={mode.id}
-                  variant={currentMode.id === mode.id ? "default" : "outline"}
-                  size="lg"
-                  className={`rounded-full gap-2 transition-all duration-300 px-5 py-3 ${
-                    currentMode.id === mode.id
-                      ? "bg-accent/15 border border-accent/40 shadow-lg"
-                      : "border-border/50 hover:border-accent/50 hover:bg-accent/5"
-                  }`}
-                  onClick={() => setActiveMode(mode)}
-                  type="button"
-                >
-                  <span className="text-base">{mode.emoji}</span>
-                  <span>{mode.label}</span>
-                </Button>
-              ))}
-            </div>
-
-            <p className="text-xs text-foreground/50 mt-3 text-center">{currentMode.description}</p>
-          </div>
-
-          {/* Domain Selection */}
-          <div className="mb-8">
-            <details className="group">
-              <summary className="text-xs text-foreground/40 mb-2 cursor-pointer text-center hover:text-foreground/60 transition-colors list-none flex items-center justify-center gap-2">
-                <span>{t("sanri.domainSelect")}</span>
-                <svg className="w-3 h-3 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4 max-w-lg mx-auto">
-                {safeArray(domainsList).map((domain) => (
-                  <button
-                    key={domain.id || "auto"}
-                    className={`relative p-3 rounded-xl text-left transition-all ${
-                      selectedDomain === domain.id
-                        ? "bg-accent/15 border border-accent/40 shadow-sm"
-                        : "bg-background/50 border border-border/30 hover:border-accent/30 hover:bg-accent/5"
-                    }`}
-                    onClick={() => setSelectedDomain(domain.id)}
-                    type="button"
-                  >
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-base">{domain.emoji}</span>
-                      <span className={'text-xs font-medium ${selectedDomain === domain.id ? "text-accent" : "text-foreground/80"}'}>
-                        {domain.label}
-                      </span>
-                    </div>
-                    {domain.subtitle ? (
-                      <p className="text-[10px] text-foreground/50 leading-tight pl-6">{domain.subtitle}</p>
-                    ) : null}
-                  </button>
-                ))}
+    <div className="min-h-screen bg-background">
+      {/* Premium Dark Gradient */}
+      <div className="pt-20 pb-10 bg-gradient-to-b from-background via-background to-muted/20">
+        <div className="max-w-6xl mx-auto px-5">
+          {/* Top Bar */}
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <Eye className="w-4 h-4 text-primary" />
               </div>
-            </details>
-          </div>
-
-          {/* Error */}
-          <AnimatePresence>
-            {error && (
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="mb-6">
-                <Alert className="border-destructive/30 bg-destructive/5">
-                  <AlertCircle className="h-4 w-4 text-destructive" />
-                  <AlertDescription className="text-sm">{error}</AlertDescription>
-                </Alert>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Messages */}
-          <div className="min-h-[350px] mb-6 space-y-6">
-            {safeArray(conversation).length === 0 && (
-              <motion.div key={currentMode.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-8">
-                <div className="space-y-3 mb-6">
-                  <Sparkles className="h-8 w-8 text-accent/50 mx-auto mb-4" />
-                  <p className="text-foreground/70 font-serif italic text-lg">
-                    &quot;{t('sanri.modes.${currentMode.id}.intro')}&quot;
-                  </p>
-                </div>
-
-                <Button variant="outline" size="sm" className="rounded-full" onClick={handleExampleClick} type="button">
-                  {t("sanri.exampleQuestion")}
-                </Button>
-              </motion.div>
-            )}
-
-            {safeArray(conversation).map((message, index) => (
-              <motion.div key={index} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}>
-                {message.type === "user" ? (
-                  <div className="flex justify-end">
-                    <Card className="max-w-md bg-primary/10 border-primary/20">
-                      <CardContent className="p-4">
-                        {message.image ? (
-                          <img src={message.image} alt="Paylaşılan görsel" className="max-h-32 rounded-lg mb-3" />
-                        ) : null}
-                        <p className="text-foreground text-base">{message.content}</p>
-                        <span className="text-xs text-foreground/40 mt-2 block">
-                          {(modesList.find((m) => m.id === message.mode)?.label || message.mode) + " modu"}
-                        </span>
-                      </CardContent>
-                    </Card>
-                  </div>
-                ) : (
-                  <Card className="border-accent/20 bg-accent/5">
-                    <CardContent className="p-6 sm:p-8">
-                      <div className="flex items-start justify-between gap-3 mb-6">
-                        <div className="flex items-start gap-3">
-                          <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center shrink-0">
-                            <InfinityIcon className="h-5 w-5 text-accent" />
-                          </div>
-                          <p className="text-sm text-accent uppercase tracking-wider font-medium pt-2">SANRI</p>
-                        </div>
-                      </div>
-
-                      <SanriResponseText text={message.content} />
-
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.7 }}
-                        className="text-sm text-foreground/50 text-center italic pt-6 mt-6 border-t border-accent/10"
-                      >
-                        &quot;{t("sanri.signature")}&quot;
-                      </motion.p>
-                    </CardContent>
-                  </Card>
-                )}
-              </motion.div>
-            ))}
-
-            {isThinking && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                  <InfinityIcon className="h-5 w-5 text-accent animate-pulse" />
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-base text-foreground/60 italic">{t("sanri.thinking")}</span>
-                  <div className="flex gap-1">
-                    <span className="w-2 h-2 bg-accent/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                    <span className="w-2 h-2 bg-accent/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                    <span className="w-2 h-2 bg-accent/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Image preview */}
-          {uploadedImage ? (
-            <div className="mb-4">
-              <ImagePreview image={uploadedImage} onRemove={handleRemoveImage} />
+              <div className="leading-tight">
+                <div className="text-sm font-semibold text-foreground">SANRI</div>
+                <div className="text-xs text-foreground/50">Consciousness Mirror</div>
+              </div>
             </div>
-          ) : null}
 
-          {/* Input */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="text-sm text-foreground/60 hidden md:block">
+              <span className="font-semibold text-foreground/80">Ask SANRI</span>{" "}
+              <span className="text-foreground/40">•</span>{" "}
+              <span>{language === "en" ? "Question Field" : "Soru Alanı"}</span>
+            </div>
+
+            {/* Mode dropdown (simple) */}
             <div className="relative">
-              <Textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={t("sanri.placeholder")}
-                className="min-h-[100px] pr-24 resize-none bg-background border-border focus:border-accent text-base"
-                disabled={isThinking}
-              />
+              <select
+                value={currentMode}
+                onChange={(e) => setCurrentMode(e.target.value)}
+                className="appearance-none bg-card/60 border border-border/60 text-foreground text-sm rounded-full px-4 py-2 pr-9 hover:bg-card transition"
+              >
+                {modesList.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.emoji} {m.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-4 h-4 text-foreground/50 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+          </div>
 
-              <div className="absolute bottom-3 right-3 flex gap-2">
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                  id="image-upload"
-                />
+          {/* 3-column layout */}
+          <div className="grid lg:grid-cols-[280px_1fr_320px] gap-4">
+            {/* LEFT PANEL */}
+            <Card className="bg-card/40 border-border/50 backdrop-blur">
+              <CardContent className="p-4 space-y-4">
+                <div className="text-xs uppercase tracking-wider text-foreground/40">
+                  {language === "en" ? "Start Point" : "Başlangıç"}
+                </div>
+
+                {/* Mode Chips */}
+                <div className="flex flex-wrap gap-2">
+                  {modesList.map((m) => {
+                    const active = currentMode === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        onClick={() => setCurrentMode(m.id)}
+                        className={cx(
+                          "px-3 py-1.5 rounded-full text-xs border transition",
+                          active
+                            ? "bg-primary/15 border-primary/30 text-foreground"
+                            : "bg-background/30 border-border/60 text-foreground/70 hover:text-foreground hover:bg-background/40"
+                        )}
+                        type="button"
+                      >
+                        <span className="mr-1">{m.emoji}</span>
+                        {m.label}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Domain */}
+                <div className="space-y-2">
+                  <div className="text-xs text-foreground/50">
+                    {language === "en" ? "Domain (optional)" : "Domain (opsiyonel)"}
+                  </div>
+                  <select
+                    value={selectedDomain}
+                    onChange={(e) => setSelectedDomain(e.target.value)}
+                    className="w-full bg-background/30 border border-border/60 rounded-xl px-3 py-2 text-sm text-foreground"
+                  >
+                    <option value="">{language === "en" ? "Choose…" : "Seç…"}</option>
+                    {domainsList.map((d) => (
+                      <option key={d.id} value={d.label}>
+                        {d.emoji} {d.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <Button
+                  variant="outline"
+                  className="w-full rounded-xl border-border/60 bg-background/30 hover:bg-background/40"
                   type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="h-10 w-10 rounded-full"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={onExample}
                   disabled={isThinking}
                 >
-                  <ImageIcon className="h-5 w-5 text-foreground/50" />
+                  <Wand2 className="w-4 h-4 mr-2" />
+                  {language === "en" ? "Show example" : "Örnek soru göster"}
                 </Button>
 
-                <Button type="submit" size="icon" disabled={!String(input).trim() || isThinking} className="rounded-full bg-accent hover:bg-accent/90 h-10 w-10">
-                  <Send className="h-5 w-5" />
-                </Button>
-              </div>
-            </div>
+                <Alert className="border-border/60 bg-background/20">
+                  <Info className="w-4 h-4 text-foreground/50" />
+                  <AlertDescription className="text-xs text-foreground/55 leading-relaxed">
+                    {language === "en"
+                      ? "SANRI does not diagnose. It mirrors meaning and asks only what needs opening."
+                      : "SANRI teşhis koymaz. Anlamı yansıtır ve yalnızca açılması gereken yerde soru sorar."}
+                  </AlertDescription>
+                </Alert>
+              </CardContent>
+            </Card>
 
-            {safeArray(conversation).length > 0 && (
-              <div className="flex justify-center">
-                <Button type="button" variant="ghost" size="sm" onClick={handleReset} className="text-foreground/60 hover:text-foreground">
-                  <RefreshCw className="h-4 w-4 mr-2" />
-                  {t("sanri.newReflection")}
-                </Button>
-              </div>
-            )}
-          </form>
+            {/* CENTER CHAT */}
+            <Card className="bg-card/30 border-border/50 backdrop-blur">
+              <CardContent className="p-4 sm:p-6">
+                <div className="min-h-[420px] space-y-4">
+                  {/* Intro block */}
+                  {safeArray(conversation).length === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-5 rounded-2xl border border-border/60 bg-background/20"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles className="w-4 h-4 text-primary" />
+                        <div className="text-sm font-semibold text-foreground">
+                          {language === "en" ? "Before you ask…" : "Sormadan önce…"}
+                        </div>
+                      </div>
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        {introText}
+                      </p>
+                    </motion.div>
+                  )}
 
-          <div className="mt-10 text-center">
-            <p className="text-sm text-foreground/50">{t("sanri.footerNote")}</p>
+                  {/* Messages */}
+                  <div className="space-y-3">
+                    {safeArray(conversation).map((m, idx) => {
+                      const isUser = m.role === "user";
+                      return (
+                        <motion.div
+                          key={idx}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={cx("flex", isUser ? "justify-end" : "justify-start")}
+                        >
+                          <div
+                            className={cx(
+                              "max-w-[85%] rounded-2xl px-4 py-3 border",
+                              isUser
+                                ? "bg-primary/15 border-primary/25 text-foreground"
+                                : "bg-background/20 border-border/60 text-foreground"
+                            )}
+                          >
+                            <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                              {String(m.content || "")}
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {isThinking && (
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-foreground/60 italic">
+                      {language === "en" ? "Reflecting…" : "Yansıma oluşturuluyor…"}
+                    </motion.div>
+                  )}
+
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* Input */}
+                <form onSubmit={onSubmit} className="mt-5 space-y-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="rounded-xl border-border/60 bg-background/30 hover:bg-background/40"
+                      onClick={() => fileRef.current?.click()}
+                    >
+                      <Paperclip className="w-4 h-4 mr-2" />
+                      {language === "en" ? "File" : "Dosya"}
+                    </Button>
+                    <input
+                      ref={fileRef}
+                      type="file"
+                      className="hidden"
+                      onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
+                    />
+                    <div className="text-xs text-foreground/40 truncate">
+                      {fileName ? fileName : (language === "en" ? "No file selected" : "Seçilen dosya yok")}
+                    </div>
+                  </div>
+
+                  <div className="relative">
+                    <Textarea
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder={language === "en" ? "Write your question…" : "Sorunu yaz…"}
+                      className="min-h-[90px] pr-14 resize-none bg-background/30 border-border/60"
+                      disabled={isThinking}
+                    />
+                    <Button
+                      type="submit"
+                      size="icon"
+                      className="absolute bottom-3 right-3 rounded-full h-10 w-10"
+                      disabled={isThinking || !input.trim()}
+                    >
+                      <Send className="w-5 h-5" />
+                    </Button>
+                  </div>
+
+                  <div className="text-xs text-foreground/40">
+                    {language === "en"
+                      ? "This field doesn’t produce “knowledge”. It reflects meaning."
+                      : 'Bu alan "bilgi" üretmez. Anlam üretir ve geri çekilir.'}
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* RIGHT PANEL */}
+            <Card className="bg-card/40 border-border/50 backdrop-blur">
+              <CardContent className="p-4 space-y-4">
+                <div className="text-xs uppercase tracking-wider text-foreground/40">
+                  {language === "en" ? "Guidance" : "Kılavuz"}
+                </div>
+
+                <div className="p-4 rounded-2xl border border-border/60 bg-background/20 space-y-2">
+                  <div className="text-sm font-semibold text-foreground">
+                    {language === "en" ? "Body check" : "Beden kontrolü"}
+                  </div>
+                  <div className="text-sm text-foreground/70">
+                    {language === "en"
+                      ? "Where do you feel it right now?"
+                      : "Şu an bedeninde nerede hissediyorsun?"}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      { id: "kalp", tr: "Kalp", en: "Heart" },
+                      { id: "mide", tr: "Mide", en: "Stomach" },
+                      { id: "bogaz", tr: "Boğaz", en: "Throat" },
+                      { id: "karin", tr: "Karın", en: "Belly" },
+                    ].map((x) => (
+                      <span
+                        key={x.id}
+                        className="px-3 py-1.5 rounded-full text-xs border border-border/60 bg-background/30 text-foreground/70"
+                      >
+                        {language === "en" ? x.en : x.tr}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl border border-border/60 bg-background/20 space-y-2">
+                  <div className="text-sm font-semibold text-foreground">
+                    {language === "en" ? "One question rule" : "Tek soru kuralı"}
+                  </div>
+                  <div className="text-sm text-foreground/70">
+                    {language === "en"
+                      ? "If you ask, ask one. If you feel, stay."
+                      : "Soru soracaksan tek sor. Hissediyorsan kal."}
+                  </div>
+                </div>
+
+                <div className="text-xs text-foreground/35">
+                  {language === "en"
+                    ? "No diagnosis. No forcing. No drama."
+                    : "Teşhis yok. Dayatma yok. Dramatize etmek yok."}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Footer mini */}
+          <div className="mt-6 text-center text-xs text-foreground/30">
+            © 2026 CaelinusAI • SANRI
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
-};
-
-export default SanriyaSorPage;
+}
