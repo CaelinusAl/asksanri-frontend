@@ -6,13 +6,8 @@ import { Toaster } from "sonner";
 import Navbar from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
 import AdminLayout from "./components/admin/AdminLayout";
-import { UpgradeModal } from "./components/premium/PremiumComponents";
-import { UpgradeFlowModal } from "./components/premium/UpgradeFlowModal";
-
 import { useAdmin } from "./contexts/AdminContext";
-import { useUpgradeFlow } from "./hooks/useUpgradeFlow";
 
-// Lazy load pages
 const HomePage = lazy(() => import("./pages/HomePage"));
 const CitiesPage = lazy(() => import("./pages/CitiesPage"));
 const CityDetailPage = lazy(() => import("./pages/CityDetailPage"));
@@ -27,13 +22,11 @@ const GorselinPage = lazy(() => import("./pages/GorselinPage"));
 const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 
-// Auth Pages
 const GirisPage = lazy(() => import("./pages/GirisPage"));
 const OnboardingPage = lazy(() => import("./pages/OnboardingPage"));
 const AuthCallback = lazy(() => import("./components/AuthCallback"));
 const GizlilikPage = lazy(() => import("./pages/GizlilikPage"));
 
-// Admin Pages
 const AdminLoginPage = lazy(() => import("./pages/admin/AdminLoginPage"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
@@ -52,11 +45,6 @@ const PageLoader = () => (
     </div>
   </div>
 );
-
-const UpgradeFlowWrapper = () => {
-  const { trigger, showPrompt, dismissPrompt } = useUpgradeFlow();
-  return <UpgradeFlowModal trigger={trigger} isOpen={showPrompt} onClose={dismissPrompt} />;
-};
 
 const AdminRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAdmin();
@@ -80,13 +68,12 @@ const LayoutWrapper = ({ children, isDark, toggleTheme }) => {
   );
 };
 
-function App() {
+export default function App() {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("caelinus-theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
     if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
       setIsDark(true);
       document.documentElement.classList.add("dark");
@@ -107,7 +94,6 @@ function App() {
       <LayoutWrapper isDark={isDark} toggleTheme={toggleTheme}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* Public */}
             <Route path="/" element={<HomePage />} />
             <Route path="/sehirler" element={<CitiesPage />} />
             <Route path="/sehir/:cityId" element={<CityDetailPage />} />
@@ -123,14 +109,12 @@ function App() {
             <Route path="/profil" element={<ProfilePage />} />
             <Route path="/profile" element={<ProfilePage />} />
 
-            {/* Auth */}
             <Route path="/giris" element={<GirisPage />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/gizlilik" element={<GizlilikPage />} />
             <Route path="/privacy" element={<GizlilikPage />} />
 
-            {/* Admin */}
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/users" element={<AdminRoute><AdminUsersPage /></AdminRoute>} />
@@ -144,8 +128,6 @@ function App() {
       </LayoutWrapper>
 
       <Toaster position="bottom-right" />
-          </div>
+    </div>
   );
 }
-
-export default App;
