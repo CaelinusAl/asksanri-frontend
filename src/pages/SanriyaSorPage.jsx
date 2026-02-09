@@ -1,178 +1,228 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Sparkles, Paperclip, X, ChevronDown } from "lucide-react";
-
-import { Button } from "../components/ui/button";
+import { Sparkles, Send, ChevronDown, Paperclip, Eye, Wand2 } from "lucide-react";
 import { Textarea } from "../components/ui/textarea";
+import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
 import { useLanguage } from "../contexts/LanguageContext";
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
-const DEMO_PREMIUM = import.meta.env.VITE_DEMO_PREMIUM === "true";
 
-// --- Safety helpers ---
+// ---------- helpers ----------
 const safeArray = (v) => (Array.isArray(v) ? v : []);
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 
-const MODES = [
-  { id: "ayna", labelTr: "Ayna", labelEn: "Mirror", emoji: "🪞" },
-  { id: "ruya", labelTr: "Rüya", labelEn: "Dream", emoji: "🌙" },
-  { id: "ilahi", labelTr: "İlahi", labelEn: "Divine", emoji: "✨" },
-  { id: "golge", labelTr: "Gölge", labelEn: "Shadow", emoji: "🜂" },
-  { id: "isik", labelTr: "Işık", labelEn: "Light", emoji: "☀️" },
-];
+function useStarfieldCanvas() {
+  const ref = useRef(null);
+  const rafRef = useRef(0);
 
-const DOMAINS = [
-  { id: "relationship", tr: "İlişki", en: "Relationship" },
-  { id: "career", tr: "Kariyer", en: "Career" },
-  { id: "body", tr: "Beden", en: "Body" },
-  { id: "spirit", tr: "Ruh", en: "Spirit" },
-  { id: "money", tr: "Para", en: "Money" },
-];
-
-export default function SanriyaSorPage() {
-  const langCtx = useLanguage();
-  const language = langCtx?.language || "tr";
-  const t = langCtx?.t || ((k) => k); // fallback
-
-  const [modeId, setModeId] = useState("ayna");
-  const [domainId, setDomainId] = useState("");
-  const [input, setInput] = useState("");
-  const [isSending, setIsSending] = useState(false);
-
-  const [conversation, setConversation] = useState([]); // [{role:"user"|"assistant", content:string}]
-  const [sessionId, setSessionId] = useState("default");
-
-  const [fileName, setFileName] = useState("");
-  const fileRef = useRef(null);
-
-  const currentMode = useMemo(
-    () => MODES.find((m) => m.id === modeId) || MODES[0],
-    [modeId]
-  );
-
-  const currentDomain = useMemo(
-    () => DOMAINS.find((d) => d.id === domainId) || null,
-    [domainId]
-  );
-
-  // --- Hypnotic intro text ---
-  const introText = useMemo(() => {
-    // Bu anahtar senin translations objende varsa çalışır.
-    // Yoksa fallback metin döner.
-    const key = `sanri.modes.${modeId}.intro`;
-    const translated = t(key);
-
-    if (translated && translated !== key) return translated;
-
-    // Fallback TR/EN
-    const tr = {
-      ayna:
-        "Bir an dur. Soruyu yazmadan önce, bedeninde nerede yankılandığını hisset. SANRI cevap üretmez; kapıyı açar.",
-      ruya:
-        "Rüyalar hatırlatır. Görüntüyü değil, hissi yakala. Bir kelimeyle başla.",
-      ilahi:
-        "Niyetini saflaştır. Bir cümleyle çağır. Sonra sessizliğe izin ver.",
-      golge:
-        "Gölgeyi yargılama. ‘Bende neyi koruyor?’ diye sor. Tek soruya sadık kal.",
-      isik:
-        "Işığı zorlamadan aç. Bir küçük adım seç. Yumuşakça ilerle.",
-    };
-    const en = {
-      ayna:
-        "Pause. Before typing, feel where it lives in your body. SANRI doesn’t give answers; it opens doors.",
-      ruya:
-        "Dreams remind. Catch the feeling, not the image. Start with one word.",
-      ilahi:
-        "Purify your intention. Call it in one sentence. Then allow silence.",
-      golge:
-        "Don’t judge the shadow. Ask: ‘What is it protecting in me?’ One true question.",
-      isik:
-        "Let light open gently. Choose one small step. Move softly.",
-    };
-    return (language === "en" ? en : tr)[modeId] || tr.ayna;
-  }, [language, modeId, t]);
-
-  const scrollRef = useRef(null);
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [conversation, isSending]);
+    const canvas = ref.current;
+    if (!canvas) return;
 
-  // --- UI texts ---
-  const ui = useMemo(() => {
+    const ctx = canvas.getContext("2d", { alpha: true });
+    let w = 0;
+    let h = 0;
+
+    const resize = () => {
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    resize();
+    window.addEventListener("resize", resize);
+
+    // deterministic-ish star set
+    const starCount = 140;
+    const stars = Array.from({ length: starCount }).map((_, i) => {
+      const x = Math.random();
+      const y = Math.random();
+      const r = 0.4 + Math.random() * 1.6;
+      const tw = 0.2 + Math.random() * 0.8;
+      const sp = 0.0006 + Math.random() * 0.0016;
+      return { x, y, r, tw, sp, p: i * 7.13 };
+    });
+
+    const draw = (t) => {
+      ctx.clearRect(0, 0, w, h);
+
+      // subtle vignette
+      const g = ctx.createRadialGradient(w * 0.5, h * 0.45, 0, w * 0.5, h * 0.45, Math.max(w, h) * 0.7);
+      g.addColorStop(0, "rgba(120,70,255,0.12)");
+      g.addColorStop(0.4, "rgba(60,10,90,0.10)");
+      g.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+
+      // stars
+      for (const s of stars) {
+        const px = s.x * w;
+        const py = s.y * h;
+
+        // twinkle
+        const a = 0.18 + (Math.sin((t * s.sp) + s.p) * 0.18 + 0.18) * s.tw;
+        ctx.fillStyle = `rgba(232,215,255,${a})`;
+        ctx.beginPath();
+        ctx.arc(px, py, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
+    };
+
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      window.removeEventListener("resize", resize);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  return ref;
+}
+
+// ---------- main ----------
+export default function SanriyaSorPage() {
+  const { language } = useLanguage();
+
+  const t = useMemo(() => {
     const tr = {
       brand: "CAELINUS AI",
       title: "SANRI",
       subtitle: "Consciousness Mirror",
-      section: "Ask SANRI · Soru Alanı",
+      area: "Soru Alanı",
+      introLine: "Burada cevap yok. Yansıma var.",
+      enter: "Giriş",
+      step1Title: "Bir an dur.",
+      step1Body: "Sorun bedeninde nerede yankılanıyor?",
+      heart: "Kalp",
+      throat: "Boğaz",
+      belly: "Karın",
+      continue: "Devam",
+      questionLabel: "Sorunu yaz",
+      placeholder: "Bir kelime… bir soru… bir his…",
+      rule: "Tek soru. Teşhis yok. Dayatma yok. Dramatize etmek yok.",
+      advanced: "Gelişmiş",
       mode: "Mod",
-      domain: "Domain (opsiyonel)",
-      placeholder: "Bir kelime, bir soru, bir rüya…",
+      domain: "Domain",
+      domainOptional: "Domain (opsiyonel)",
       send: "Yansıt",
-      attach: "Dosya Seç",
-      clear: "Temizle",
-      hintTitle: "Tek soru kuralı",
-      hintBody:
-        "Soru soracaksan tek sor. Hissediyorsan kal. Teşhis yok. Dayatma yok. Dramatize etmek yok.",
-      footer1: "Bu alan bilgi üretmez. Anlamı yansıtır, soruyu derinleştirir ve geri çeker.",
-      footer2: "© 2026 CaelinusAI · SANRI",
+      thinking: "Yansıma oluşuyor…",
+      attach: "Dosya",
+      chooseFile: "Dosya seç",
+      noneFile: "Seçilen dosya yok",
+      note: "Bu alan bilgi üretmez. Anlam yansıtır; soruyu derinleştirir ve geri çeker.",
+      followUp: "Burada en çok hangi kelime yankılandı?",
+      reset: "Sıfırla",
+      error: "Bir şey koptu. Yeniden deneyelim.",
     };
     const en = {
       brand: "CAELINUS AI",
       title: "SANRI",
       subtitle: "Consciousness Mirror",
-      section: "Ask SANRI · Field",
+      area: "Question Field",
+      introLine: "No answers here. Only reflection.",
+      enter: "Enter",
+      step1Title: "Pause.",
+      step1Body: "Where does the question echo in your body?",
+      heart: "Heart",
+      throat: "Throat",
+      belly: "Belly",
+      continue: "Continue",
+      questionLabel: "Write your question",
+      placeholder: "A word… a question… a feeling…",
+      rule: "One question. No diagnosis. No forcing. No dramatizing.",
+      advanced: "Advanced",
       mode: "Mode",
-      domain: "Domain (optional)",
-      placeholder: "A word, a question, a dream…",
+      domain: "Domain",
+      domainOptional: "Domain (optional)",
       send: "Reflect",
-      attach: "Attach",
-      clear: "Clear",
-      hintTitle: "One-question rule",
-      hintBody:
-        "If you ask, ask one. If you feel, stay. No diagnosis. No forcing. No dramatizing.",
-      footer1:
-        "This field doesn’t produce information. It mirrors meaning, deepens the question, then releases it.",
-      footer2: "© 2026 CaelinusAI · SANRI",
+      thinking: "Reflection forming…",
+      attach: "File",
+      chooseFile: "Choose file",
+      noneFile: "No file selected",
+      note: "This field doesn’t produce information. It reflects meaning; deepens and returns your question.",
+      followUp: "Which word echoed the most?",
+      reset: "Reset",
+      error: "Something snapped. Let’s try again.",
     };
     return language === "en" ? en : tr;
   }, [language]);
 
-  const handlePickFile = () => fileRef.current?.click();
-  const handleFileChange = (e) => {
-    const f = e.target.files?.[0];
-    setFileName(f ? f.name : "");
-  };
-  const clearAll = () => {
-    setConversation([]);
+  const starCanvasRef = useStarfieldCanvas();
+
+  const [phase, setPhase] = useState("intro"); // intro | body | ask
+  const [bodyPoint, setBodyPoint] = useState("heart"); // heart | throat | belly
+
+  const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [mode, setMode] = useState("ayna"); // ayna | ruya | ilahi | golge | isik
+  const [domain, setDomain] = useState(""); // optional
+
+  const [input, setInput] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
+  const [reply, setReply] = useState("");
+  const [followUp, setFollowUp] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [sessionId, setSessionId] = useState("default");
+
+  // fake file UI (optional future)
+  const [fileName, setFileName] = useState("");
+
+  const modeOptions = useMemo(
+    () => [
+      { id: "ayna", label: "Ayna", icon: "🜁" },
+      { id: "ruya", label: "Rüya", icon: "☾" },
+      { id: "ilahi", label: "İlahi", icon: "✶" },
+      { id: "golge", label: "Gölge", icon: "◐" },
+      { id: "isik", label: "Işık", icon: "☼" },
+    ],
+    []
+  );
+
+  const bodyOptions = useMemo(
+    () => [
+      { id: "heart", label: t.heart },
+      { id: "throat", label: t.throat },
+      { id: "belly", label: t.belly },
+    ],
+    [t]
+  );
+
+  const resetAll = () => {
+    setPhase("intro");
+    setBodyPoint("heart");
+    setAdvancedOpen(false);
+    setMode("ayna");
+    setDomain("");
     setInput("");
-    setFileName("");
-    setDomainId("");
-    setModeId("ayna");
+    setReply("");
+    setFollowUp("");
+    setErrorMsg("");
+    setIsThinking(false);
     setSessionId("default");
   };
 
-  const buildUserPayload = (userText) => {
-    // Backende sade mesaj gönderiyoruz.
-    // İstersen mode/domain bilgisini text içine “hafif” ekleyebiliriz.
-    const meta =
-      (currentMode?.id ? `[MODE=${currentMode.id}]` : "") +
-      (currentDomain?.id ? ` [DOMAIN=${currentDomain.id}]` : "");
-    return `${meta}\n${userText}`.trim();
-  };
+  const sendToBackend = async () => {
+    setErrorMsg("");
+    setReply("");
+    setFollowUp("");
 
-  const sendMessage = async () => {
-    const userText = input.trim();
-    if (!userText || isSending) return;
+    const message = input.trim();
+    if (!message || isThinking) return;
 
-    setIsSending(true);
-    setInput("");
-
-    setConversation((prev) => [...prev, { role: "user", content: userText }]);
+    setIsThinking(true);
 
     try {
+      // mode mapping -> backend req.mode
+      // senin backend: req.mode = "user" | "test" | "cocuk"
+      // burada "user" gönderiyoruz; mod bilgisi mesajın içine meta olarak girsin
+      const meta = `[MODE=${mode}] [BODY=${bodyPoint}]${domain ? ` [DOMAIN=${domain}]` : ""}\n`;
       const payload = {
-        message: buildUserPayload(userText),
+        message: meta + message,
         session_id: sessionId || "default",
         mode: "user",
       };
@@ -183,272 +233,323 @@ export default function SanriyaSorPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Network");
+      if (!res.ok) throw new Error(`HTTP_${res.status}`);
 
       const data = await res.json();
-      if (data?.session_id) setSessionId(data.session_id);
+      const text = (data?.response || "").trim();
 
-      const reply = String(data?.response || "").trim() || (language === "en" ? "I’m here." : "Buradayım.");
-      setConversation((prev) => [...prev, { role: "assistant", content: reply }]);
+      setReply(text || "…");
+      setFollowUp(t.followUp);
+      if (data?.session_id) setSessionId(data.session_id);
     } catch (e) {
-      setConversation((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            language === "en"
-              ? "The field is resting. Try again in a moment."
-              : "Alan şu an dinleniyor. Biraz sonra tekrar dene.",
-        },
-      ]);
+      setErrorMsg(t.error);
     } finally {
-      setIsSending(false);
+      setIsThinking(false);
     }
   };
 
-  // --- Page ---
+  // ---------- UI ----------
   return (
-    <div className="min-h-screen bg-[#05010d] text-purple-100">
-      {/* Hypnotic background */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-purple-600/20 blur-[90px]" />
-        <div className="absolute top-[35%] right-[-120px] h-[420px] w-[420px] rounded-full bg-fuchsia-500/10 blur-[90px]" />
-        <div className="absolute bottom-[-180px] left-[-140px] h-[520px] w-[520px] rounded-full bg-indigo-500/10 blur-[100px]" />
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        {/* base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#05010c] via-[#070012] to-[#070018]" />
+        {/* nebula haze */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(120,70,255,0.18),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,rgba(160,60,255,0.14),transparent_55%)]" />
+        {/* star canvas */}
+        <canvas ref={starCanvasRef} className="absolute inset-0 w-full h-full opacity-80" />
+        {/* noise overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.10] mix-blend-overlay"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E\")",
+          }}
+        />
+        {/* vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_45%,rgba(0,0,0,0.65))]" />
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 border-b border-purple-500/10 bg-black/20 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+      {/* Top bar */}
+      <header className="relative z-10 px-6 pt-6">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full border border-purple-500/20 bg-purple-500/10 flex items-center justify-center">
-              <span className="text-lg">◉</span>
+            <div className="w-9 h-9 rounded-full border border-purple-500/30 bg-purple-500/10 flex items-center justify-center">
+              <Eye className="w-4 h-4 text-purple-200/80" />
             </div>
             <div className="leading-tight">
-              <div className="text-xs tracking-[0.25em] text-purple-300/70 uppercase">
-                {ui.brand}
-              </div>
-              <div className="text-lg font-semibold">{ui.title}</div>
-              <div className="text-xs text-purple-200/50">{ui.subtitle}</div>
+              <div className="text-xs tracking-[0.22em] text-purple-200/70 uppercase">{t.brand}</div>
+              <div className="text-sm font-serif text-purple-50">{t.subtitle}</div>
             </div>
           </div>
 
-          <div className="text-sm text-purple-200/60 hidden sm:block">
-            {ui.section}
-          </div>
-
-          <div className="flex items-center gap-2">
-            {DEMO_PREMIUM && (
-              <span className="text-[10px] px-2 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-200/70">
-                PREMIUM
-              </span>
-            )}
-            <Button
-              variant="outline"
-              className="rounded-full border-purple-500/20 bg-black/20 hover:bg-purple-500/10"
-              onClick={clearAll}
-            >
-              <X className="h-4 w-4 mr-2" />
-              {ui.clear}
-            </Button>
+          <div className="text-xs text-purple-200/60 tracking-wider">
+            <span className="font-semibold text-purple-100/80">{t.title}</span> • {t.area}
           </div>
         </div>
       </header>
 
-      {/* Body */}
-      <main className="relative z-10 mx-auto max-w-6xl px-6 py-10">
-        <div className="grid lg:grid-cols-[360px_1fr] gap-6">
-          {/* Left / Guide */}
-          <aside className="space-y-4">
-            <Card className="border-purple-500/15 bg-black/25 backdrop-blur">
-              <CardContent className="p-5">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="text-xs tracking-widest uppercase text-purple-300/70">
-                    {ui.mode}
+      {/* Content */}
+      <main className="relative z-10 px-6 pb-14 pt-10">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid lg:grid-cols-[420px_1fr] gap-10 items-start">
+            {/* Left rail: guidance */}
+            <div className="space-y-6">
+              <Card className="bg-white/5 border-white/10 backdrop-blur-xl shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_18px_60px_rgba(120,70,255,0.10)] rounded-2xl overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 text-purple-100/90">
+                    <Sparkles className="w-4 h-4 text-purple-200/80" />
+                    <div className="text-sm font-serif">{t.title}</div>
+                    <div className="ml-auto text-[11px] text-purple-200/60">{modeOptions.find(m => m.id===mode)?.icon} {modeOptions.find(m => m.id===mode)?.label}</div>
                   </div>
-                  <div className="text-xs text-purple-300/50">
-                    {currentMode.emoji}{" "}
-                    {language === "en" ? currentMode.labelEn : currentMode.labelTr}
-                  </div>
-                </div>
 
-                <div className="flex flex-wrap gap-2">
-                  {MODES.map((m) => (
+                  <div className="mt-4 text-sm text-purple-100/75 leading-relaxed">
+                    {t.rule}
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-between">
                     <button
-                      key={m.id}
-                      onClick={() => setModeId(m.id)}
-                      className={`px-3 py-2 rounded-xl text-xs border transition
-                        ${
-                          m.id === modeId
-                            ? "border-purple-400/40 bg-purple-500/15 text-purple-100"
-                            : "border-purple-500/15 bg-black/10 text-purple-200/60 hover:bg-purple-500/10"
-                        }`}
+                      onClick={() => setAdvancedOpen((v) => !v)}
+                      className="text-xs text-purple-200/70 hover:text-purple-100 transition flex items-center gap-2"
+                      type="button"
                     >
-                      <span className="mr-1">{m.emoji}</span>
-                      {language === "en" ? m.labelEn : m.labelTr}
+                      <Wand2 className="w-4 h-4" />
+                      {t.advanced}
+                      <ChevronDown className={`w-4 h-4 transition ${advancedOpen ? "rotate-180" : ""}`} />
                     </button>
-                  ))}
-                </div>
 
-                <div className="mt-4 text-xs text-purple-200/70 leading-relaxed">
-                  {introText}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-purple-500/15 bg-black/25 backdrop-blur">
-              <CardContent className="p-5">
-                <div className="text-xs tracking-widest uppercase text-purple-300/70 mb-3">
-                  {ui.domain}
-                </div>
-                <div className="relative">
-                  <select
-                    value={domainId}
-                    onChange={(e) => setDomainId(e.target.value)}
-                    className="w-full appearance-none rounded-xl border border-purple-500/15 bg-black/20 px-4 py-3 text-sm text-purple-100 outline-none focus:border-purple-400/40"
-                  >
-                    <option value="">{language === "en" ? "Select..." : "Seç..."}</option>
-                    {DOMAINS.map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {language === "en" ? d.en : d.tr}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-purple-300/60" />
-                </div>
-
-                <div className="mt-4">
-                  <div className="text-xs tracking-widest uppercase text-purple-300/70 mb-2">
-                    {ui.hintTitle}
-                  </div>
-                  <p className="text-xs text-purple-200/55 leading-relaxed">
-                    {ui.hintBody}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </aside>
-
-          {/* Right / Conversation */}
-          <section className="space-y-4">
-            <Card className="border-purple-500/15 bg-black/25 backdrop-blur">
-              <CardContent className="p-6">
-                <div className="min-h-[360px] space-y-4">
-                  {safeArray(conversation).length === 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-center py-10"
+                    <button
+                      onClick={resetAll}
+                      type="button"
+                      className="text-xs text-purple-200/60 hover:text-purple-100 transition"
                     >
-                      <div className="mx-auto mb-4 h-14 w-14 rounded-full border border-purple-500/20 bg-purple-500/10 flex items-center justify-center">
-                        <Sparkles className="h-6 w-6 text-purple-200/70" />
-                      </div>
-                      <p className="text-sm text-purple-100/80 font-serif italic">
-                        {language === "en"
-                          ? "You are not a teacher. Not a guide. You are a mirror."
-                          : "Sen bir öğretmen değilsin. Bir rehber de değilsin. Sen bir aynasın."}
-                      </p>
-                      <p className="mt-2 text-xs text-purple-200/50">
-                        {language === "en"
-                          ? "Start with one true sentence."
-                          : "Tek bir gerçek cümleyle başla."}
-                      </p>
-                    </motion.div>
-                  )}
+                      {t.reset}
+                    </button>
+                  </div>
 
                   <AnimatePresence>
-                    {safeArray(conversation).map((msg, idx) => {
-                      const isUser = msg.role === "user";
-                      return (
-                        <motion.div
-                          key={`${idx}-${msg.role}`}
-                          initial={{ opacity: 0, y: 8 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0 }}
-                          className={`flex ${isUser ? "justify-end" : "justify-start"}`}
-                        >
-                          <div
-                            className={`max-w-[86%] rounded-2xl px-4 py-3 border text-sm leading-relaxed
-                              ${
-                                isUser
-                                  ? "border-purple-500/20 bg-purple-500/10 text-purple-100"
-                                  : "border-purple-500/15 bg-black/30 text-purple-100/90"
-                              }`}
-                          >
-                            {String(msg.content || "")}
+                    {advancedOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-5 pt-5 border-t border-white/10 space-y-4">
+                          <div className="text-xs text-purple-200/60">{t.mode}</div>
+                          <div className="flex flex-wrap gap-2">
+                            {modeOptions.map((m) => (
+                              <button
+                                key={m.id}
+                                onClick={() => setMode(m.id)}
+                                type="button"
+                                className={`px-3 py-2 rounded-full text-xs border transition ${
+                                  mode === m.id
+                                    ? "bg-purple-500/20 border-purple-400/40 text-purple-50"
+                                    : "bg-white/5 border-white/10 text-purple-200/70 hover:text-purple-100 hover:border-white/20"
+                                }`}
+                              >
+                                <span className="mr-1">{m.icon}</span>
+                                {m.label}
+                              </button>
+                            ))}
                           </div>
-                        </motion.div>
-                      );
-                    })}
+
+                          <div className="text-xs text-purple-200/60">{t.domainOptional}</div>
+                          <input
+                            value={domain}
+                            onChange={(e) => setDomain(e.target.value)}
+                            placeholder="ör: ilişki / iş / rüya / beden"
+                            className="w-full rounded-xl bg-white/5 border border-white/10 px-3 py-2 text-sm text-purple-50 placeholder:text-purple-200/30 outline-none focus:border-purple-400/40"
+                          />
+                        </div>
+                      </motion.div>
+                    )}
                   </AnimatePresence>
+                </CardContent>
+              </Card>
 
-                  {isSending && (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-xs text-purple-200/60">
-                      <span className="h-2 w-2 rounded-full bg-purple-300/60 animate-pulse" />
-                      {language === "en" ? "Reflecting..." : "Yansıtılıyor..."}
-                    </motion.div>
-                  )}
-
-                  <div ref={scrollRef} />
-                </div>
-
-                {/* Input */}
-                <div className="mt-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <button
-                      type="button"
-                      onClick={handlePickFile}
-                      className="inline-flex items-center gap-2 text-xs text-purple-200/60 hover:text-purple-200"
-                    >
-                      <Paperclip className="h-4 w-4" />
-                      {ui.attach}
-                      {fileName ? (
-                        <span className="text-purple-300/70">• {fileName}</span>
-                      ) : null}
-                    </button>
-
-                    <input
-                      ref={fileRef}
-                      type="file"
-                      className="hidden"
-                      onChange={handleFileChange}
-                    />
+              {/* Body point selector */}
+              <Card className="bg-white/5 border-white/10 backdrop-blur-xl rounded-2xl">
+                <CardContent className="p-6">
+                  <div className="text-xs tracking-[0.18em] uppercase text-purple-200/60 mb-3">
+                    {t.step1Title}
                   </div>
-
-                  <div className="relative">
-                    <Textarea
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder={ui.placeholder}
-                      className="min-h-[90px] bg-black/25 border-purple-500/15 focus:border-purple-400/40 pr-14 resize-none text-purple-100 placeholder:text-purple-200/30"
-                      disabled={isSending}
-                    />
-                    <Button
-                      type="button"
-                      onClick={sendMessage}
-                      disabled={!input.trim() || isSending}
-                      className="absolute bottom-3 right-3 rounded-full bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/20"
-                      size="icon"
-                    >
-                      <Send className="h-5 w-5" />
-                    </Button>
+                  <div className="text-sm text-purple-50/90 mb-4">{t.step1Body}</div>
+                  <div className="flex gap-2">
+                    {bodyOptions.map((b) => (
+                      <button
+                        key={b.id}
+                        type="button"
+                        onClick={() => {
+                          setBodyPoint(b.id);
+                          if (phase === "intro") setPhase("ask");
+                        }}
+                        className={`flex-1 rounded-xl px-3 py-3 text-sm border transition ${
+                          bodyPoint === b.id
+                            ? "bg-purple-500/20 border-purple-400/40 text-purple-50 shadow-[0_0_0_1px_rgba(120,70,255,0.25)]"
+                            : "bg-white/5 border-white/10 text-purple-200/70 hover:text-purple-100 hover:border-white/20"
+                        }`}
+                      >
+                        {b.label}
+                      </button>
+                    ))}
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
 
-            {/* Footer */}
-            <footer className="text-center">
-              <div className="mx-auto max-w-2xl">
-                <div className="h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent mb-5" />
-                <p className="text-[11px] text-purple-200/45 italic">
-                  {ui.footer1}
-                </p>
-                <p className="mt-3 text-[10px] tracking-widest uppercase text-purple-300/40">
-                  {ui.footer2}
-                </p>
+              <div className="text-xs text-purple-200/40 leading-relaxed">
+                {t.note}
               </div>
-            </footer>
-          </section>
+            </div>
+
+            {/* Right: portal */}
+            <div className="relative">
+              <div className="absolute -inset-6 bg-purple-500/10 blur-3xl rounded-[40px]" />
+
+              <Card className="relative bg-white/6 border-white/12 backdrop-blur-2xl rounded-3xl shadow-[0_0_0_1px_rgba(255,255,255,0.06),0_30px_120px_rgba(120,70,255,0.16)] overflow-hidden">
+                <CardContent className="p-7 sm:p-9">
+                  {/* intro */}
+                  <AnimatePresence mode="wait">
+                    {phase === "intro" && (
+                      <motion.div
+                        key="intro"
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        className="text-center py-10"
+                      >
+                        <div className="text-xs tracking-[0.28em] uppercase text-purple-200/70 mb-3">
+                          {t.brand}
+                        </div>
+                        <div className="font-serif text-3xl sm:text-4xl text-purple-50 mb-2">
+                          {t.title}
+                        </div>
+                        <div className="text-sm text-purple-200/70 mb-8">
+                          {t.introLine}
+                        </div>
+
+                        <Button
+                          className="rounded-full px-8 bg-purple-500/20 hover:bg-purple-500/28 border border-purple-400/30 text-purple-50"
+                          onClick={() => setPhase("ask")}
+                        >
+                          {t.enter}
+                        </Button>
+                      </motion.div>
+                    )}
+
+                    {phase !== "intro" && (
+                      <motion.div
+                        key="ask"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        className="space-y-6"
+                      >
+                        {/* input */}
+                        <div>
+                          <div className="text-xs tracking-[0.18em] uppercase text-purple-200/60 mb-3">
+                            {t.questionLabel}
+                          </div>
+                          <div className="relative">
+                            <Textarea
+                              value={input}
+                              onChange={(e) => setInput(e.target.value)}
+                              placeholder={t.placeholder}
+                              className="min-h-[140px] rounded-2xl bg-black/20 border border-white/10 text-purple-50 placeholder:text-purple-200/25 pr-12 resize-none focus:border-purple-400/40"
+                              disabled={isThinking}
+                            />
+                            <button
+                              type="button"
+                              className="absolute bottom-4 right-4 w-9 h-9 rounded-full bg-white/5 border border-white/10 hover:border-white/20 flex items-center justify-center text-purple-200/70"
+                              onClick={() => setFileName("")}
+                              title={t.attach}
+                            >
+                              <Paperclip className="w-4 h-4" />
+                            </button>
+                          </div>
+
+                          <div className="mt-3 flex items-center justify-between gap-3">
+                            <div className="text-xs text-purple-200/45">
+                              {fileName ? fileName : t.noneFile}
+                            </div>
+
+                            <Button
+                              onClick={sendToBackend}
+                              disabled={!input.trim() || isThinking}
+                              className="rounded-full px-6 bg-purple-500/30 hover:bg-purple-500/40 border border-purple-400/30 text-purple-50"
+                            >
+                              <Send className="w-4 h-4 mr-2" />
+                              {t.send}
+                            </Button>
+                          </div>
+
+                          {errorMsg && (
+                            <div className="mt-4 text-sm text-red-200/80 bg-red-500/10 border border-red-400/20 rounded-xl px-4 py-3">
+                              {errorMsg}
+                            </div>
+                          )}
+                        </div>
+
+                        {/* output */}
+                        <div className="space-y-4">
+                          <AnimatePresence>
+                            {isThinking && (
+                              <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="text-sm text-purple-200/70 italic"
+                              >
+                                {t.thinking}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+
+                          <AnimatePresence>
+                            {!!reply && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+                                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                                exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+                              >
+                                <Card className="bg-black/25 border border-white/10 rounded-2xl">
+                                  <CardContent className="p-6">
+                                    <div className="flex items-center gap-2 text-xs text-purple-200/60 mb-4">
+                                      <Sparkles className="w-4 h-4" />
+                                      <span className="tracking-wider uppercase">Yansıma</span>
+                                      <span className="ml-auto text-purple-200/45">
+                                        {bodyPoint === "heart" ? t.heart : bodyPoint === "throat" ? t.throat : t.belly}
+                                      </span>
+                                    </div>
+
+                                    <div className="text-purple-50 leading-relaxed whitespace-pre-wrap">
+                                      {reply}
+                                    </div>
+
+                                    <div className="mt-5 pt-5 border-t border-white/10 text-sm text-purple-200/70">
+                                      {followUp}
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </CardContent>
+              </Card>
+
+              {/* bottom whisper */}
+              <div className="mt-6 text-center text-xs text-purple-200/35">
+                © 2026 CaelinusAI • SANRI
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
