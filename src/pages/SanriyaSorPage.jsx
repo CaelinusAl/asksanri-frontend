@@ -15,13 +15,13 @@ import {
   Heart,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Label } from "@/components/ui/label";
+import { Button } from "../components/ui/button";
+import { Textarea } from "../components/ui/textarea";
+import { Card, CardContent } from "../components/ui/card";
+import { Alert, AlertDescription } from "../components/ui/alert";
+import { Label } from "../components/ui/label";
 
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const API_URL = (import.meta.env.VITE_BACKEND_URL || "").replace(/\/$/, "");
 
@@ -31,22 +31,22 @@ const safeArray = (v) => (Array.isArray(v) ? v : []);
 const SanriResponseText = ({ text }) => {
   const paragraphs = String(text || "")
     .split("\n\n")
-    .map((p) => p.trim())
+    .filter((p) => p.trim())
     .filter(Boolean);
 
   return (
     <div className="space-y-4">
-      {paragraphs.map((paragraph, index) => (
-        <motion.p
-          key={index}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.08 }}
-          className="text-foreground leading-relaxed font-serif text-base sm:text-lg"
-        >
-          {paragraph}
-        </motion.p>
-      ))}
+      {(Array.isArray(paragraphs) ? paragraphs : []).map((paragraph, index) => (
+  <motion.p
+    key={index}
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: index * 0.08 }}
+    className="text-foreground leading-relaxed font-serif"
+  >
+    {paragraph}
+  </motion.p>
+))}
     </div>
   );
 };

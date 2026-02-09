@@ -53,6 +53,7 @@ import {
 import RitualPlayer from "../components/RitualPlayer";
 import axios from "axios";
 
+const safeArray = (v) => (Array.isArray(v) ? v : []);
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 const IS_PREMIUM = import.meta.env.VITE_DEMO_PREMIUM === 'true';
 
@@ -102,7 +103,7 @@ const PremiumRitualLines = ({ onSelectRitual }) => {
     <div className="space-y-8">
       {/* 3 Hat Seçimi */}
       <div className="grid grid-cols-3 gap-3">
-        {lines.map((line) => (
+        {safeArray(lines).map((line) => (
           <button
             key={line.id}
             onClick={() => setSelectedLine(line.id)}
@@ -121,7 +122,7 @@ const PremiumRitualLines = ({ onSelectRitual }) => {
 
       {/* Seçili Hat Ritüelleri */}
       <div className="space-y-4">
-        {filteredRituals.map((ritual) => {
+        {safeArray(filteredRituals).map((ritual) => {
           const hasSteps = ritual.steps && ritual.steps.length > 0;
           const isLocked = !IS_PREMIUM;
           
@@ -349,7 +350,7 @@ const Rituel112Listesi = ({ onStartRituel, t, language }) => {
       </div>
 
       <div className="grid gap-3">
-        {kitap112Rituelleri.map((rituel, index) => (
+        {safeArray(kitap112Rituelleri).map((rituel, index) => (
           <motion.div
             key={rituel.id}
             initial={{ opacity: 0, x: -20 }}
@@ -714,7 +715,7 @@ const KapiSecimi = ({ onSelectKapi, t, language }) => {
       </div>
 
       <div className="grid gap-4 max-w-2xl mx-auto">
-        {kapilar.map((kapi, index) => (
+        {safeArray(kapilar).map((kapi, index) => (
           <motion.div
             key={kapi.id}
             initial={{ opacity: 0, x: -20 }}

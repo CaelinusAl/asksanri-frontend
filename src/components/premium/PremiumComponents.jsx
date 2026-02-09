@@ -11,6 +11,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { usePremium, FEATURES } from "../../contexts/PremiumContext";
 import { useLanguage } from '../../contexts/LanguageContext';
 
+const {
+  currentPlan,
+  isPremium,
+  hasFeature,
+  getRequiredPlan,
+  checkDailyLimit,
+  showUpgradeModal,
+  upgradePrompt,
+} = usePremium();
+
 // Plan display names
 const PLAN_NAMES = {
   free: { tr: 'Ücretsiz – Uyanış', en: 'Free – Awaken' },
@@ -31,7 +41,7 @@ const PLAN_STYLES = {
  * Premium Badge - Shows user's current plan
  */
 export const PremiumBadge = ({ showFree = false, size = 'default' }) => {
-  const { currentPlan, isPremium } = usePremium();
+  
   const { language } = useLanguage();
   
   if (!isPremium && !showFree) return null;
@@ -67,7 +77,7 @@ export const FeatureLock = ({
   blurPreview = true,
   className = ''
 }) => {
-  const { hasFeature, getRequiredPlan, showUpgradeModal } = usePremium();
+  
   const { language } = useLanguage();
   
   const hasAccess = hasFeature(feature);
@@ -128,7 +138,7 @@ export const ContentLimiter = ({
   renderItem,
   emptyMessage = null 
 }) => {
-  const { getContentLimit, showUpgradeModal, currentPlan } = usePremium();
+
   const { language } = useLanguage();
   
   const limit = getContentLimit(contentType);
@@ -143,7 +153,9 @@ export const ContentLimiter = ({
   
   return (
     <>
-      {displayItems.map((item, index) => renderItem(item, index))}
+      {(Array.isArray(displayItems) ? displayItems : []).map((item, index) =>
+  renderItem(item, index)
+)}
       
       {isLimited && (
         <motion.div
@@ -181,8 +193,7 @@ export const ContentLimiter = ({
  * Upgrade Prompt Banner - Shows contextual upgrade message
  */
 export const UpgradePromptBanner = ({ dismissable = true }) => {
-  const { upgradePrompt, showUpgradeModal, currentPlan } = usePremium();
-  const { language } = useLanguage();
+   const { language } = useLanguage();
   const [dismissed, setDismissed] = React.useState(false);
   
   if (!upgradePrompt || dismissed) return null;
@@ -233,8 +244,7 @@ export const UpgradePromptBanner = ({ dismissable = true }) => {
  * Daily Limit Indicator - Shows remaining uses
  */
 export const DailyLimitIndicator = ({ limitType, showWhenUnlimited = false }) => {
-  const { checkDailyLimit, showUpgradeModal } = usePremium();
-  const { language } = useLanguage();
+    const { language } = useLanguage();
   
   const { allowed, remaining, limit } = checkDailyLimit(limitType);
   
@@ -410,108 +420,129 @@ export const PlanCard = ({ plan, isCurrent = false, onSelect }) => {
 };
 
 /**
+/**
  * Upgrade Modal - Full plan selection dialog
  */
 export const UpgradeModal = () => {
-  const { 
-    isUpgradeModalOpen, 
-    hideUpgradeModal, 
-    plans, 
-    currentPlan, 
+  const {
+    isUpgradeModalOpen,
+    hideUpgradeModal,
+    plans,
+    currentPlan,
     upgradeToPlan,
-    redeemInviteCode 
+    // varsa context'ten gelir:
+    redeemInviteCode,
+    // TEMP için (varsa):
+    setPlans,
+    setCurrentPlan,
   } = usePremium();
+
   const { language } = useLanguage();
-  const [inviteCode, setInviteCode] = React.useState('');
+
+  const [inviteCode, setInviteCode] = React.useState("");
   const [isUpgrading, setIsUpgrading] = React.useState(false);
   const [showInviteInput, setShowInviteInput] = React.useState(false);
-  
+
   const handleSelectPlan = async (planId) => {
-    if (planId === currentPlan) return;
-    
+    if (!planId || planId === currentPlan) return;
+
     setIsUpgrading(true);
-    const result = await upgradeToPlan(planId);
-    setIsUpgrading(false);
-    
-    if (result.success) {
-      hideUpgradeModal();
+    try {
+      const result = await upgradeToPlan(planId);
+      if (result?.success) hideUpgradeModal();
+    } finally {
+      setIsUpgrading(false);
     }
   };
-  
+
   const handleRedeemCode = async () => {
     if (!inviteCode.trim()) return;
-    
-    setIsUpgrading(true);
-    const result = await redeemInviteCode(inviteCode);
-    setIsUpgrading(false);
-    
-    if (result.success) {
-      setInviteCode('');
+
+    // redeemInviteCode yoksa kırma
+    if (typeof redeemInviteCode !== "function") {
       setShowInviteInput(false);
-      hideUpgradeModal();
+      setInviteCode("");
+      return;
+    }
+
+    setIsUpgrading(true);
+    try {
+      const result = await redeemInviteCode(inviteCode.trim());
+      if (result?.success) {
+        setInviteCode("");
+        setShowInviteInput(false);
+        hideUpgradeModal();
+      }
+    } finally {
+      setIsUpgrading(false);
     }
   };
-  
+
+  // TEMP: backend bağlanana kadar boş array (setter'lar varsa)
+  React.useEffect(() => {
+    if (typeof setPlans === "function") setPlans([]);
+    if (typeof setCurrentPlan === "function") setCurrentPlan(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <Dialog open={isUpgradeModalOpen} onOpenChange={hideUpgradeModal}>
+    <Dialog open={!!isUpgradeModalOpen} onOpenChange={hideUpgradeModal}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-serif text-2xl text-center">
-            {language === 'en' ? 'Unlock Your Consciousness' : 'Bilincini Aç'}
+            {language === "en" ? "Unlock Your Consciousness" : "Bilincini Aç"}
           </DialogTitle>
           <DialogDescription className="text-center">
-            {language === 'en' 
-              ? 'Choose your path to deeper awareness'
-              : 'Derin farkındalığa giden yolunu seç'
-            }
+            {language === "en"
+              ? "Choose your path to deeper awareness"
+              : "Derin farkındalığa giden yolunu seç"}
           </DialogDescription>
         </DialogHeader>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
-          {plans.map((plan) => (
-            <PlanCard 
-              key={plan.id}
-              plan={plan}
-              isCurrent={plan.id === currentPlan}
-              onSelect={handleSelectPlan}
-            />
-          ))}
-        </div>
-        
+
+        {(Array.isArray(plans) ? plans : []).map((plan) => (
+          <PlanCard
+            key={plan.id}
+            plan={plan}
+            isCurrent={plan.id === currentPlan}
+            onSelect={handleSelectPlan}
+          />
+        ))}
+
         {/* Invite Code Section */}
         <div className="mt-6 pt-6 border-t border-border">
           {showInviteInput ? (
             <div className="flex gap-2 max-w-md mx-auto">
               <input
                 type="text"
-                placeholder={language === 'en' ? 'Enter invite code' : 'Davet kodu girin'}
+                placeholder={
+                  language === "en" ? "Enter invite code" : "Davet kodu girin"
+                }
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
                 className="flex-1 px-4 py-2 rounded-lg bg-muted border border-border text-foreground"
               />
               <Button onClick={handleRedeemCode} disabled={isUpgrading}>
-                {language === 'en' ? 'Redeem' : 'Kullan'}
+                {language === "en" ? "Redeem" : "Kullan"}
               </Button>
               <Button variant="ghost" onClick={() => setShowInviteInput(false)}>
                 <X className="w-4 h-4" />
               </Button>
             </div>
           ) : (
-            <button 
+            <button
               onClick={() => setShowInviteInput(true)}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors mx-auto block"
             >
-              {language === 'en' ? 'Have an invite code?' : 'Davet kodun var mı?'}
+              {language === "en" ? "Have an invite code?" : "Davet kodun var mı?"}
             </button>
           )}
         </div>
-        
+
         {/* Disclaimer */}
         <p className="text-xs text-muted-foreground text-center mt-4">
-          {language === 'en'
-            ? 'Subscriptions auto-renew. Cancel anytime. This is a demo version.'
-            : 'Abonelikler otomatik yenilenir. İstediğin zaman iptal edebilirsin. Bu bir demo sürümüdür.'
-          }
+          {language === "en"
+            ? "Subscriptions auto-renew. Cancel anytime. This is a demo version."
+            : "Abonelikler otomatik yenilenir. İstediğin zaman iptal edebilirsin. Bu bir demo sürümüdür."}
         </p>
       </DialogContent>
     </Dialog>
@@ -523,14 +554,9 @@ export const UpgradeModal = () => {
  */
 export const FeatureGate = ({ feature, children, fallback = null }) => {
   const { hasFeature } = usePremium();
-  
-  if (hasFeature(feature)) {
-    return <>{children}</>;
-  }
-  
-  return fallback || null;
+  if (hasFeature(feature)) return <>{children}</>;
+  return <>{fallback}</>;
 };
-
 /**
  * Locked Content - Beautiful locked state display
  */

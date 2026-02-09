@@ -324,7 +324,7 @@ const GorselinPage = () => {
               <CardContent className="p-6">
                 <Label className="text-white/70 mb-3 block">{t('gorselin.generate.styleSelect')}</Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {presets.map((preset) => (
+                  {safeArray(presets).map((preset) => (
                     <button
                       key={preset.id}
                       onClick={() => setSelectedPreset(preset.id)}
@@ -518,7 +518,7 @@ const GorselinPage = () => {
                   )}
 
                   <div className={`grid gap-4 ${generatedImages.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
-                    {generatedImages.map((img, idx) => (
+                    {safeArray(generatedImages).map((img, idx) => (
                       <motion.div
                         key={idx}
                         initial={{ opacity: 0, scale: 0.9 }}

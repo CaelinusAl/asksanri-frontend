@@ -7,8 +7,9 @@ import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
 import { getCitiesByLanguage, getCityById } from "../data/cities";
 import { useLanguage } from "../contexts/LanguageContext";
-
-const CityDetailPage = () => {
+  
+  const safeArray = (v) => (Array.isArray(v) ? v : []);
+  const CityDetailPage = () => {
   const { cityId } = useParams();
   const { language, t } = useLanguage();
   
@@ -147,7 +148,7 @@ const CityDetailPage = () => {
             </div>
             
             <div className="space-y-6">
-              {readings.map((reading, index) => (
+              {safeArray(readings).map((reading, index) => (
                 <motion.p
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -192,7 +193,7 @@ const CityDetailPage = () => {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {relatedCities.map((relatedCity, index) => (
+              {safeArray(relatedCities).map((relatedCity, index) => (
                   <motion.div
                     key={relatedCity.id}
                     initial={{ opacity: 0, y: 20 }}

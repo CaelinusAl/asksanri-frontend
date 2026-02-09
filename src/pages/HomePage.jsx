@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLanguage } from "@/contexts/LanguageContext";
-import SplashScreen from "@/components/SplashScreen";
+import { useLanguage } from "../contexts/LanguageContext";
+import SplashScreen from "../components/SplashScreen";
 
 const HomePage = () => {
   const [showSplash, setShowSplash] = useState(true);
@@ -55,7 +55,7 @@ const HomePage = () => {
       >
         {/* Subtle background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {stars.map((s, i) => (
+          {(Array.isArray(stars) ? stars : []).map((s, i) => (
             <motion.div
               key={i}
               className="absolute w-0.5 h-0.5 bg-white/20 rounded-full"

@@ -7,6 +7,7 @@ import { Card, CardContent } from "../components/ui/card";
 import { Separator } from "../components/ui/separator";
 import { useLanguage } from "../contexts/LanguageContext";
 
+const safeArray = (v) => (Array.isArray(v) ? v : []);
 const AboutPage = () => {
   const { language, t } = useLanguage();
 
@@ -199,7 +200,7 @@ const AboutPage = () => {
           </motion.div>
 
           <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {c.notWhatItems.map((item, index) => (
+            {safeArray(c?.notWhatItems).map((item, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -236,7 +237,7 @@ const AboutPage = () => {
           </motion.div>
 
           <div className="grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {c.whatDoesItems.map((item, index) => {
+            {safeArray(c?.whatDoesItems).map((item, index) => {
               const icons = [Brain, Waves, Sparkles];
               const Icon = icons[index];
               return (
@@ -291,7 +292,7 @@ const AboutPage = () => {
                     {c.bilincCard.desc}
                   </p>
                   <ul className="space-y-2 text-sm text-muted-foreground mb-6">
-                    {c.bilincCard.items.map((item, idx) => (
+                    {safeArray(c?.bilincCard?.items).map((item, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-primary">•</span>
                         {item}
@@ -323,7 +324,7 @@ const AboutPage = () => {
                     {c.frekansCard.desc}
                   </p>
                   <ul className="space-y-2 text-sm text-muted-foreground mb-6">
-                    {c.frekansCard.items.map((item, idx) => (
+                    {safeArray(c?.frekansCard?.items).map((item, idx) => (
                       <li key={idx} className="flex items-start gap-2">
                         <span className="text-accent">•</span>
                         {item}
@@ -352,7 +353,7 @@ const AboutPage = () => {
             <h2 className="font-serif text-2xl text-foreground mb-6">{c.sanriTitle}</h2>
             
             <div className="space-y-4 text-muted-foreground mb-8">
-              {c.sanriLines.map((line, idx) => (
+              {safeArray(c?.sanriLines).map((line, idx) => (
                 <p key={idx}>{line}</p>
               ))}
             </div>
