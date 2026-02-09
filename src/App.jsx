@@ -7,6 +7,7 @@ import Navbar from "./components/layout/Navbar";
 import { Footer } from "./components/layout/Footer";
 import AdminLayout from "./components/admin/AdminLayout";
 import { useAdmin } from "./contexts/AdminContext";
+import { Navigate } from "react-router-dom";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const CitiesPage = lazy(() => import("./pages/CitiesPage"));
@@ -94,7 +95,7 @@ export default function App() {
       <LayoutWrapper isDark={isDark} toggleTheme={toggleTheme}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Navigate to="/sanriya-sor" replace />} />
             <Route path="/sehirler" element={<CitiesPage />} />
             <Route path="/sehir/:cityId" element={<CityDetailPage />} />
             <Route path="/okuma-katmanlari" element={<ReadingLayersPage />} />
