@@ -54,10 +54,18 @@ export default function SanriyaSorPage() {
             className="w-full min-h-[180px] bg-transparent resize-none outline-none text-lg placeholder:text-purple-400/40 leading-relaxed"
           />
 
-          <div className="mt-6 flex justify-between items-center">
-            <span className="text-xs text-purple-400/50">
-              Bu alan bilgi üretmez. Anlam yansıtır.
-            </span>
+          <div className="mt-10 text-center relative">
+  <div className="absolute inset-x-0 -top-6 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent" />
+
+  <p className="text-xs tracking-widest uppercase text-purple-300/60">
+    CAELINUS · Consciousness Mirror
+  </p>
+
+  <p className="mt-2 text-[11px] text-purple-400/40 italic max-w-md mx-auto">
+    Bu alan bilgi üretmez.  
+    Anlamı yansıtır, soruyu derinleştirir ve geri çeker.
+  </p>
+</div>
 
             <button
               disabled={!question.trim()}
