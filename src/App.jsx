@@ -1,5 +1,6 @@
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import SanriyaSorPage from "./pages/SanriyaSorPage.jsx";
+import SanriyaSorPage from "./pages/SanriyaSorPage";
 
 export default function App() {
   return (
@@ -7,7 +8,6 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/sanriya-sor" replace />} />
         <Route path="/sanriya-sor" element={<SanriyaSorPage />} />
-        <Route path="*" element={<Navigate to="/sanriya-sor" replace />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,99 +1,132 @@
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #3a1c6b, #0b0615);
-  color: white;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+/* CAELINUS AI • SANRI — B MODE (NO TAILWIND) */
+:root{
+  --bg0:#05010c;
+  --bg1:#070012;
+  --bg2:#070018;
+  --ink: rgba(245,240,255,.92);
+  --muted: rgba(210,195,255,.55);
+  --p1: rgba(120,70,255,.90);
+  --p2: rgba(170,90,255,.85);
+  --glass: rgba(255,255,255,.06);
+  --glassB: rgba(255,255,255,.10);
+  --r: 22px;
 }
 
-.caelinus-hypno-bg {
-  background: radial-gradient(circle at 50% 30%, rgba(140,80,255,0.25), transparent 60%);
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 700px at 50% 0%, rgba(120,70,255,.18), transparent 55%),
+    radial-gradient(1100px 700px at 50% 100%, rgba(170,90,255,.12), transparent 55%),
+    linear-gradient(180deg, var(--bg0), var(--bg1) 40%, var(--bg2));
 }
 
-.caelinus-glass {
-  background: rgba(255,255,255,0.06);
-  border-radius: 20px;
+#root{min-height:100vh;}
+
+.hypno{
+  position:relative;
+  min-height:100vh;
+  isolation:isolate;
+}
+.hypno:before{
+  content:"";
+  position:absolute; inset:-20%;
+  z-index:-2;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(120,70,255,.22), transparent 35%),
+    radial-gradient(circle at 80% 30%, rgba(170,90,255,.18), transparent 38%),
+    radial-gradient(circle at 55% 75%, rgba(60,10,90,.22), transparent 45%);
+  filter: blur(28px);
+  opacity:.95;
+  animation: drift 16s ease-in-out infinite;
+}
+@keyframes drift{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  35%{transform:translate3d(2.5%,-2%,0) scale(1.03)}
+  70%{transform:translate3d(-2%,2.5%,0) scale(1.02)}
+  100%{transform:translate3d(0,0,0) scale(1)}
+}
+
+.shell{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 18px 60px;
+}
+
+.card{
+  background: var(--glass);
+  border: 1px solid var(--glassB);
+  border-radius: var(--r);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 24px 80px rgba(120,70,255,.14);
+}
+
+.topbar{
+  position: sticky; top:0;
+  z-index:10;
+  padding: 14px 18px;
+  background: rgba(0,0,0,.35);
+  border-bottom: 1px solid rgba(255,255,255,.08);
   backdrop-filter: blur(18px);
 }
 
-/* =========================
-   FORM SKIN (premium controls)
-   ========================= */
+.h1{
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 44px;
+  margin: 0 0 8px;
+  letter-spacing: .5px;
+}
 
-.caelinus-select,
-.caelinus-input,
-.caelinus-textarea {
+.small{color: var(--muted); font-size: 13px;}
+.row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+.sp{height:12px;}
+
+.sel, .txt{
   width: 100%;
-  background: rgba(0,0,0,0.28);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: rgba(245,240,255,0.92);
-  border-radius: 16px;
-  padding: 10px 12px;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 16px 60px rgba(120,70,255,0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.10);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 12px 12px;
 }
+.txt{min-height: 120px; resize: vertical;}
 
-.caelinus-textarea {
-  min-height: 150px;
-  resize: none;
-  line-height: 1.6;
-}
-
-.caelinus-select:focus-visible,
-.caelinus-input:focus-visible,
-.caelinus-textarea:focus-visible {
-  outline: 2px solid rgba(170,90,255,0.35);
-  outline-offset: 3px;
-}
-
-.caelinus-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: 18px;
-  padding: 10px 16px;
-  border: 1px solid rgba(255,255,255,0.12);
-  background: rgba(255,255,255,0.06);
-  color: rgba(245,240,255,0.90);
-  cursor: pointer;
-  transition: transform .15s ease, background .15s ease, border-color .15s ease;
-}
-.caelinus-btn:hover {
-  background: rgba(255,255,255,0.10);
-  border-color: rgba(170,90,255,0.25);
-  transform: translateY(-1px);
-}
-.caelinus-btn:disabled {
-  opacity: .45;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.caelinus-btn-primary {
-  background: rgba(170,90,255,0.22);
-  border-color: rgba(170,90,255,0.25);
-}
-.caelinus-btn-primary:hover {
-  background: rgba(170,90,255,0.30);
-}
-
-.caelinus-chip {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
+.btn{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(170,90,255,.18);
+  color: var(--ink);
+  padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.05);
-  color: rgba(245,240,255,0.75);
-  font-size: 14px;
-  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+  cursor: pointer;
 }
-.caelinus-chip:hover {
-  background: rgba(255,255,255,0.10);
-  transform: translateY(-1px);
+.btn:disabled{opacity:.5; cursor:not-allowed;}
+.btn2{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
+  color: var(--ink);
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
 }
-.caelinus-chip-active {
-  background: rgba(170,90,255,0.22);
-  border-color: rgba(170,90,255,0.25);
-  color: rgba(255,255,255,0.92);
+
+.out{
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.24);
+  border: 1px solid rgba(255,255,255,.10);
+  min-height: 120px;
+  white-space: pre-wrap;
+}
+
+.tag{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
 }
