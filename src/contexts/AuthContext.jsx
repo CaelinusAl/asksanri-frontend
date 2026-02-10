@@ -1,13 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SanriyaSorPage from "./pages/SanriyaSorPage";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SanriyaSorPage />} />
-        <Route path="/sanriya-sor" element={<SanriyaSorPage />} />
-      </Routes>
-    </BrowserRouter>
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+  // Demo / placeholder auth state
+  const [user, setUser] = useState(null);
+
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthenticated: !!user,
+      login: (u) => setUser(u),
+      logout: () => setUser(null),
+    }),
+    [user]
   );
-}
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
+};

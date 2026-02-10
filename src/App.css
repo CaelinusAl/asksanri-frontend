@@ -14,3 +14,86 @@ body {
   border-radius: 20px;
   backdrop-filter: blur(18px);
 }
+
+/* =========================
+   FORM SKIN (premium controls)
+   ========================= */
+
+.caelinus-select,
+.caelinus-input,
+.caelinus-textarea {
+  width: 100%;
+  background: rgba(0,0,0,0.28);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(245,240,255,0.92);
+  border-radius: 16px;
+  padding: 10px 12px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 16px 60px rgba(120,70,255,0.12);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.caelinus-textarea {
+  min-height: 150px;
+  resize: none;
+  line-height: 1.6;
+}
+
+.caelinus-select:focus-visible,
+.caelinus-input:focus-visible,
+.caelinus-textarea:focus-visible {
+  outline: 2px solid rgba(170,90,255,0.35);
+  outline-offset: 3px;
+}
+
+.caelinus-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 18px;
+  padding: 10px 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
+  color: rgba(245,240,255,0.90);
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+.caelinus-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(170,90,255,0.25);
+  transform: translateY(-1px);
+}
+.caelinus-btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.caelinus-btn-primary {
+  background: rgba(170,90,255,0.22);
+  border-color: rgba(170,90,255,0.25);
+}
+.caelinus-btn-primary:hover {
+  background: rgba(170,90,255,0.30);
+}
+
+.caelinus-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.05);
+  color: rgba(245,240,255,0.75);
+  font-size: 14px;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+.caelinus-chip:hover {
+  background: rgba(255,255,255,0.10);
+  transform: translateY(-1px);
+}
+.caelinus-chip-active {
+  background: rgba(170,90,255,0.22);
+  border-color: rgba(170,90,255,0.25);
+  color: rgba(255,255,255,0.92);
+}
