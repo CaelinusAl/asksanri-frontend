@@ -1,0 +1,31 @@
+.cae-field {
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+  background: rgba(0,0,0,0.25);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.cae-field__title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.cae-field__sub {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.cae-door {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #2a2350;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+}
+
+.cae-door.is-active {
+  background: #6d5cff;
+}

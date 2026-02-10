@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import "./SanriyaSorPage.css";
+import styles from "./SanriyaSorPage.module.css";
 
 // (Opsiyonel) Bilinç Alanı field'in varsa kullanır.
 // Dosya yolu senin ekran görüntüne göre:
@@ -251,7 +251,7 @@ export default function SanriyaSorPage() {
             <div className="right">
               {/* FIELD */}
               {FieldComponent && (
-                <div className="panel">
+                <div className={styles["sanri-panel"]}>
                   <FieldComponent
                     language="tr"
                     onInsert={(txt) =>
