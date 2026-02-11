@@ -27,6 +27,20 @@ const translations = {
       title: "SANRI’ya Sor",
       subtitleLine: "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın.",
       placeholder: "Bir kelime, soru, rüya veya tarih yaz..."
+    },
+
+    home: {
+      title: "Kapılar",
+      subtitle: "Hangi alana geçmek istiyorsun?",
+      cardHint: "Alanı aç"
+    },
+
+    gates: {
+      title: "Alanlar",
+      sanri: { title: "SANRI", desc: "Yansıma alanı" },
+      bilinc: { title: "Bilinç Alanı", desc: "Derin sorgu alanı" },
+      frekans: { title: "Frekans Alanı", desc: "Enerji katmanı" },
+      rituel: { title: "Ritüel Alanı", desc: "Özel kapı" }
     }
   },
 
@@ -52,10 +66,23 @@ const translations = {
       title: "Ask SANRI",
       subtitleLine: "This is not an answer. It is a reflection. You open the door.",
       placeholder: "Write a word, question, dream or date..."
+    },
+
+    home: {
+      title: "Gates",
+      subtitle: "Which area do you want to enter?",
+      cardHint: "Enter area"
+    },
+
+    gates: {
+      title: "Areas",
+      sanri: { title: "SANRI", desc: "Reflection space" },
+      bilinc: { title: "Consciousness Field", desc: "Deep inquiry area" },
+      frekans: { title: "Frequency Field", desc: "Energy layer" },
+      rituel: { title: "Ritual Space", desc: "Special gate" }
     }
   }
 };
-
 /* =========================
    CONTEXT
 ========================= */
