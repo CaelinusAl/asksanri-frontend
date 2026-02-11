@@ -1,16 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./SanriyaSorPage.css";
-
+import BilincAlaniField from "../components/sanri/fields/BilincAlaniField";
 // Opsiyonel field (Bilinç Alanı) - dosya yoksa patlamasın diye dinamik
-let BilincAlaniField = null;
-try {
-  // senin repo düzenine göre:
-  // src/components/sanri/fields/BilincAlaniField.jsx
-  // eslint-disable-next-line import/no-unresolved
-  BilincAlaniField = (await import("../components/sanri/fields/BilincAlaniField.jsx")).default;
-} catch (_) {
-  BilincAlaniField = null;
-}
+
+const DOMAIN_COMPONENTS = {
+  consciousness_field: BilincAlaniField,
+};
 
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
@@ -20,6 +15,7 @@ const MODES = [
   { id: "divine", label: "İlahi" },
   { id: "shadow", label: "Gölge" },
   { id: "light", label: "Işık" },
+  
 ];
 
 const DOMAINS = [
