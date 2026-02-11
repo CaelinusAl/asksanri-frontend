@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
-import { sanriI18n } from "../i18n/sanri";
+import { createContext, useContext, useState, useEffect, useMemo } from "react";
 
-const LanguageContext = createContext(null);
+/* =========================
+   TRANSLATIONS
+========================= */
 
-// Base minimal common i18n (istersen büyütürüz)
-const baseTranslations = {
+const translations = {
   tr: {
     common: {
       loading: "Yükleniyor...",
@@ -12,7 +12,7 @@ const baseTranslations = {
       send: "Gönder",
       reset: "Sıfırla",
       reflect: "Yansıt (Ctrl+Enter)",
-      reflecting: "Yansıtılıyor…",
+      reflecting: "Yansıtılıyor...",
       voiceInput: "Sesle yaz",
       stop: "Durdur",
       mode: "Mod",
@@ -20,9 +20,16 @@ const baseTranslations = {
       guide: "Kılavuz",
       reflectionFlow: "Yansıma Akışı",
       reflection: "Yansıma",
-      reflectionEmpty: "Yansıma burada belirecek.",
+      reflectionEmpty: "Yansıma burada belirecek."
     },
+
+    sanri: {
+      title: "SANRI’ya Sor",
+      subtitleLine: "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın.",
+      placeholder: "Bir kelime, soru, rüya veya tarih yaz..."
+    }
   },
+
   en: {
     common: {
       loading: "Loading...",
@@ -30,7 +37,7 @@ const baseTranslations = {
       send: "Send",
       reset: "Reset",
       reflect: "Reflect (Ctrl+Enter)",
-      reflecting: "Reflecting…",
+      reflecting: "Reflecting...",
       voiceInput: "Voice input",
       stop: "Stop",
       mode: "Mode",
@@ -38,53 +45,82 @@ const baseTranslations = {
       guide: "Guide",
       reflectionFlow: "Reflection Flow",
       reflection: "Reflection",
-      reflectionEmpty: "Your reflection will appear here.",
+      reflectionEmpty: "Your reflection will appear here."
     },
-  },
+
+    sanri: {
+      title: "Ask SANRI",
+      subtitleLine: "This is not an answer. It is a reflection. You open the door.",
+      placeholder: "Write a word, question, dream or date..."
+    }
+  }
 };
 
-// Deep key resolver: t("sanri.title") gibi
-function getNested(obj, path) {
-  if (!obj || !path) return undefined;
-  return path.split(".").reduce((acc, key) => (acc ? acc[key] : undefined), obj);
+/* =========================
+   CONTEXT
+========================= */
+
+const LanguageContext = createContext(null);
+
+/* =========================
+   HELPER: Deep key resolver
+========================= */
+
+function getNestedValue(obj, path) {
+  return path.split(".").reduce((acc, key) => {
+    if (!acc) return undefined;
+    return acc[key];
+  }, obj);
 }
 
-export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState(() => {
-    const saved = localStorage.getItem("caelinus-lang");
-    return saved === "en" ? "en" : "tr";
-  });
+/* =========================
+   PROVIDER
+========================= */
 
-  const translations = useMemo(() => {
-    return {
-      tr: { ...baseTranslations.tr, ...sanriI18n.tr },
-      en: { ...baseTranslations.en, ...sanriI18n.en },
-    };
+export function LanguageProvider({ children }) {
+  const [language, setLanguage] = useState("tr");
+
+  // Load saved language
+  useEffect(() => {
+    const saved = localStorage.getItem("sanri-lang");
+    if (saved && translations[saved]) {
+      setLanguage(saved);
+    }
   }, []);
 
-  const t = useMemo(() => {
-    return (key, fallback) => {
-      const value = getNested(translations[language], key);
-      if (value === undefined || value === null) return fallback ?? key;
-      return value;
-    };
-  }, [language, translations]);
+  // Save language
+  useEffect(() => {
+    localStorage.setItem("sanri-lang", language);
+  }, [language]);
 
-  const setLang = (lang) => {
-    const safe = lang === "en" ? "en" : "tr";
-    localStorage.setItem("caelinus-lang", safe);
-    setLanguage(safe);
+  const t = useMemo(() => {
+    return (key) => {
+      const value = getNestedValue(translations[language], key);
+      return value ?? key;
+    };
+  }, [language]);
+
+  const value = {
+    language,
+    setLanguage,
+    t
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: setLang, t }}>
+    <LanguageContext.Provider value={value}>
       {children}
     </LanguageContext.Provider>
   );
 }
 
+/* =========================
+   HOOK
+========================= */
+
 export function useLanguage() {
   const ctx = useContext(LanguageContext);
-  if (!ctx) throw new Error("useLanguage must be used inside LanguageProvider");
+  if (!ctx) {
+    throw new Error("useLanguage must be used inside LanguageProvider");
+  }
   return ctx;
 }

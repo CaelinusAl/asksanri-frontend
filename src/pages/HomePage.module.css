@@ -1,0 +1,105 @@
+.page{
+  min-height:100vh;
+  color:#e9ecff;
+  background:
+    radial-gradient(1200px 600px at 20% 10%, rgba(110,120,255,.25), transparent 60%),
+    radial-gradient(900px 500px at 70% 40%, rgba(160,110,255,.18), transparent 55%),
+    linear-gradient(180deg, #0b0d18, #0a0b14);
+}
+
+.topbar{
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(0,0,0,.35);
+  backdrop-filter: blur(10px);
+}
+
+.brand{display:flex; align-items:center; gap:10px;}
+.brandChip{
+  font-size:12px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+}
+.brandSub{opacity:.75; font-size:12px;}
+
+.right{display:flex; align-items:center; gap:10px;}
+.lang{
+  height:34px;
+  padding:0 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.06);
+  color:#e9ecff;
+  cursor:pointer;
+}
+
+.main{max-width:1040px; margin:0 auto; padding:26px 18px 40px;}
+.hero{padding:26px 4px 18px;}
+.eye{
+  width:44px; height:44px; border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.22), rgba(255,255,255,.06));
+  margin-bottom:10px;
+}
+.h1{font-size:46px; margin:0; letter-spacing:.02em;}
+.p{margin:10px 0 0; opacity:.8; max-width:620px; line-height:1.5;}
+
+.gates{margin-top:18px;}
+.gatesTitle{
+  font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+  opacity:.75; margin-bottom:12px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:14px;
+}
+
+.card{
+  text-align:left;
+  padding:16px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+.card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.08);
+}
+.cardTop{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.cardTitle{font-size:18px; font-weight:700;}
+.cardDesc{margin-top:8px; opacity:.8; line-height:1.45;}
+.cardHint{margin-top:12px; font-size:12px; opacity:.6;}
+
+.badge{
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(150,120,255,.18);
+}
+
+.footer{
+  margin-top:22px;
+  opacity:.55;
+  font-size:12px;
+  border-top:1px solid rgba(255,255,255,.08);
+  padding-top:14px;
+}
+
+@media (max-width: 860px){
+  .grid{grid-template-columns:1fr;}
+  .h1{font-size:36px;}
+}
