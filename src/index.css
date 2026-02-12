@@ -33,3 +33,96 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* ✦ Sparkle Star Trail (Eflatun) */
+.sparkle{
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(var(--rot, 0deg));
+
+  /* “star” shape via pseudo elements */
+  background: transparent;
+  filter: drop-shadow(0 0 12px rgba(200, 150, 255, 0.55));
+  animation: sparkle-fly 820ms ease-out forwards;
+}
+
+/* big center sparkle */
+.sparkle--big{
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 18px rgba(220, 180, 255, 0.7));
+  animation: sparkle-pop 1100ms ease-out forwards;
+}
+
+/* STAR arms */
+.sparkle::before,
+.sparkle::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+}
+
+.sparkle::before{
+  /* main cross */
+  background:
+    linear-gradient(transparent 42%, rgba(235, 220, 255, 0.95) 42% 58%, transparent 58%),
+    linear-gradient(90deg, transparent 42%, rgba(235, 220, 255, 0.95) 42% 58%, transparent 58%);
+  opacity: 0.95;
+}
+
+.sparkle::after{
+  /* diagonal cross + soft core */
+  background:
+    linear-gradient(45deg, transparent 44%, rgba(190, 140, 255, 0.85) 44% 56%, transparent 56%),
+    linear-gradient(-45deg, transparent 44%, rgba(190, 140, 255, 0.85) 44% 56%, transparent 56%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,0.90) 0 22%, rgba(200,150,255,0.0) 60%);
+  opacity: 0.9;
+}
+
+/* gentle flying drift */
+@keyframes sparkle-fly{
+  0%{
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(0.6);
+  }
+  12%{
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1);
+  }
+  100%{
+    opacity: 0;
+    transform:
+      translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px)))
+      rotate(calc(var(--rot, 0deg) + 80deg))
+      scale(0.2);
+  }
+}
+
+/* big pop with a tiny tail vibe */
+@keyframes sparkle-pop{
+  0%{
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(0.5);
+  }
+  10%{
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1.15);
+  }
+  35%{
+    transform: translate(-50%, -50%) rotate(calc(var(--rot, 0deg) + 20deg)) scale(1.0);
+  }
+  100%{
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(calc(var(--rot, 0deg) + 120deg)) scale(0.25);
+  }
+}
+
