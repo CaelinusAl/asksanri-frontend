@@ -189,16 +189,17 @@ export default function SanriyaSorPage() {
     playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
 
     try {
-      const res = await fetch(`${API_URL}/sanriya-sor/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text: payloadText,
-          mode,
-          domain,
-          language,
-        }),
-      });
+      const response = await fetch(`${API_URL}/bilinc-alani/ask`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    message: text,
+    mode: "mirror",
+    domain: selectedDomain,
+  }),
+});
 
       const data = await res.json().catch(() => ({}));
 
