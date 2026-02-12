@@ -37,8 +37,8 @@ body {
 /* ✦ Sparkle Star Trail (Eflatun) */
 .sparkle{
   position: fixed;
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   pointer-events: none;
   left: 0;
   top: 0;
@@ -50,7 +50,7 @@ body {
 
   /* “star” shape via pseudo elements */
   background: transparent;
-  filter: drop-shadow(0 0 12px rgba(200, 150, 255, 0.55));
+  filter: drop-shadow(0 0 18px rgba(200, 150, 255, 0.75));
   animation: sparkle-fly 820ms ease-out forwards;
 }
 

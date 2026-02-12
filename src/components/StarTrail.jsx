@@ -26,7 +26,7 @@ export default function StarTrail() {
 
     const burst = (x, y) => {
       // meteor burst (tap)
-      const count = 10 + Math.floor(Math.random() * 6); // 10-15
+      const count = 18 + Math.floor(Math.random() * 10); // 10-15
       spawnStar(x, y, { big: true, drift: false });
 
       for (let i = 0; i < count; i += 1) {
