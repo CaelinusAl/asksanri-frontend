@@ -129,25 +129,28 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 const handleSubmit = async () => {
   if (!text.trim() || isSending) return;
 
-  setIsSending(true);
-  setReflection("...");
-
   try {
-    const res = await fetch(`${API_URL}bilinc-alani/ask`, {
+    setIsSending(true);
+
+    const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        message: text
+        text,
+        domain
       })
     });
 
     const data = await res.json();
-    setReflection(data.answer || "Yanıt alınamadı.");
+    setReflection(data?.answer || "Yanıt alınamadı.");
   } catch (err) {
+    console.error(err);
     setReflection("Bağlantı hatası.");
+  } finally {
+    setIsSending(false);
   }
-
-  setIsSending(false);
 };
 
   const handleKeyDown = (e) => {
