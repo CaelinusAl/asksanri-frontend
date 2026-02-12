@@ -1,0 +1,21 @@
+/* Star trail effect */
+.star-trail {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle,
+    rgba(180,220,255,1) 0%,
+    rgba(120,150,255,0.65) 40%,
+    rgba(120,150,255,0) 70%
+  );
+  box-shadow: 0 0 12px rgba(150,200,255,0.85);
+  animation: starFade 0.7s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes starFade {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
+}

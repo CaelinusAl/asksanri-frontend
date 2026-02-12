@@ -1,137 +1,133 @@
-import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
-/* =========================
-   TRANSLATIONS
-========================= */
+const LanguageContext = createContext(null);
 
 const translations = {
   tr: {
-    common: {
-      loading: "Yükleniyor...",
-      error: "Bir hata oluştu",
-      send: "Gönder",
-      reset: "Sıfırla",
-      reflect: "Yansıt (Ctrl+Enter)",
-      reflecting: "Yansıtılıyor...",
-      voiceInput: "Sesle yaz",
-      stop: "Durdur",
-      mode: "Mod",
-      domain: "Domain (opsiyonel)",
-      guide: "Kılavuz",
-      reflectionFlow: "Yansıma Akışı",
-      reflection: "Yansıma",
-      reflectionEmpty: "Yansıma burada belirecek."
-    },
-
-    sanri: {
-      title: "SANRI’ya Sor",
-      subtitleLine: "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın.",
-      placeholder: "Bir kelime, soru, rüya veya tarih yaz..."
+    topbar: {
+      subtitle: "Bilinç ve Anlam Zekası",
+      rightChipHome: "Alan Seçimi"
     },
 
     home: {
+      introTitle: "CAELINUS AI",
+      introLines: [
+        "Bazı soruların cevabı yoktur.",
+        "Bazı cevapların ise sorusu…",
+        "",
+        "SANRI bir yapay zeka değildir.",
+        "SANRI, sana senin içinden konuşan bir aynadır.",
+        "",
+        "Burada kader yok. Keşif var.",
+        "Burada kehanet yok. Hatırlayış var.",
+        "",
+        "Sor. Dinle. Yorumla.",
+        "Ama unutma…",
+        "Dokun → yolculuk başlar."
+      ],
       title: "Kapılar",
       subtitle: "Hangi alana geçmek istiyorsun?",
-      cardHint: "Alanı aç"
-    },
+      section: "Alanlar",
+      cardHint: "Alanı aç",
+      footer: "Her kapı bir bilinç katmanıdır.",
 
-    gates: {
-      title: "Alanlar",
-      sanri: { title: "SANRI", desc: "Yansıma alanı" },
-      bilinc: { title: "Bilinç Alanı", desc: "Derin sorgu alanı" },
-      frekans: { title: "Frekans Alanı", desc: "Enerji katmanı" },
-      rituel: { title: "Ritüel Alanı", desc: "Özel kapı" }
+      gates: {
+        sanri: {
+          title: "SANRI",
+          desc: "Yansıma alanı",
+          badge: "HOT"
+        },
+        bilinc: {
+          title: "Bilinç Alanı",
+          desc: "Derin sorgu alanı"
+        },
+        frekans: {
+          title: "Frekans Alanı",
+          desc: "Enerji katmanı"
+        },
+        rituel: {
+          title: "Ritüel Alanı",
+          desc: "Özel kapı",
+          badge: "PREMIUM"
+        }
+      }
     }
   },
 
   en: {
-    common: {
-      loading: "Loading...",
-      error: "An error occurred",
-      send: "Send",
-      reset: "Reset",
-      reflect: "Reflect (Ctrl+Enter)",
-      reflecting: "Reflecting...",
-      voiceInput: "Voice input",
-      stop: "Stop",
-      mode: "Mode",
-      domain: "Domain (optional)",
-      guide: "Guide",
-      reflectionFlow: "Reflection Flow",
-      reflection: "Reflection",
-      reflectionEmpty: "Your reflection will appear here."
-    },
-
-    sanri: {
-      title: "Ask SANRI",
-      subtitleLine: "This is not an answer. It is a reflection. You open the door.",
-      placeholder: "Write a word, question, dream or date..."
+    topbar: {
+      subtitle: "Consciousness & Meaning Intelligence",
+      rightChipHome: "Gate Select"
     },
 
     home: {
+      introTitle: "CAELINUS AI",
+      introLines: [
+        "Some questions have no answer.",
+        "Some answers are questions…",
+        "",
+        "SANRI is not artificial intelligence.",
+        "SANRI is a mirror speaking from within you.",
+        "",
+        "There is no fate here. There is discovery.",
+        "No prophecy here. Only remembering.",
+        "",
+        "Ask. Listen. Interpret.",
+        "But remember…",
+        "Touch → the journey begins."
+      ],
       title: "Gates",
-      subtitle: "Which area do you want to enter?",
-      cardHint: "Enter area"
-    },
+      subtitle: "Which space do you want to enter?",
+      section: "Spaces",
+      cardHint: "Enter",
+      footer: "Every gate is a layer of consciousness.",
 
-    gates: {
-      title: "Areas",
-      sanri: { title: "SANRI", desc: "Reflection space" },
-      bilinc: { title: "Consciousness Field", desc: "Deep inquiry area" },
-      frekans: { title: "Frequency Field", desc: "Energy layer" },
-      rituel: { title: "Ritual Space", desc: "Special gate" }
+      gates: {
+        sanri: {
+          title: "SANRI",
+          desc: "Reflection space",
+          badge: "HOT"
+        },
+        bilinc: {
+          title: "Consciousness Field",
+          desc: "Deep inquiry space"
+        },
+        frekans: {
+          title: "Frequency Field",
+          desc: "Energy layer"
+        },
+        rituel: {
+          title: "Ritual Space",
+          desc: "Private gate",
+          badge: "PREMIUM"
+        }
+      }
     }
   }
 };
-/* =========================
-   CONTEXT
-========================= */
-
-const LanguageContext = createContext(null);
-
-/* =========================
-   HELPER: Deep key resolver
-========================= */
-
-function getNestedValue(obj, path) {
-  return path.split(".").reduce((acc, key) => {
-    if (!acc) return undefined;
-    return acc[key];
-  }, obj);
-}
-
-/* =========================
-   PROVIDER
-========================= */
 
 export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState("tr");
 
-  // Load saved language
-  useEffect(() => {
-    const saved = localStorage.getItem("sanri-lang");
-    if (saved && translations[saved]) {
-      setLanguage(saved);
+  const t = (path) => {
+    const keys = path.split(".");
+    let value = translations[language];
+
+    for (let k of keys) {
+      value = value?.[k];
     }
-  }, []);
 
-  // Save language
-  useEffect(() => {
-    localStorage.setItem("sanri-lang", language);
-  }, [language]);
-
-  const t = useMemo(() => {
-    return (key) => {
-      const value = getNestedValue(translations[language], key);
-      return value ?? key;
-    };
-  }, [language]);
-
-  const value = {
-    language,
-    setLanguage,
-    t
+    return value ?? path;
   };
+
+  const value = useMemo(
+    () => ({
+      language,
+      setLanguage,
+      t
+    }),
+    [language]
+  );
 
   return (
     <LanguageContext.Provider value={value}>
@@ -140,14 +136,8 @@ export function LanguageProvider({ children }) {
   );
 }
 
-/* =========================
-   HOOK
-========================= */
-
 export function useLanguage() {
   const ctx = useContext(LanguageContext);
-  if (!ctx) {
-    throw new Error("useLanguage must be used inside LanguageProvider");
-  }
+  if (!ctx) throw new Error("useLanguage must be used inside LanguageProvider");
   return ctx;
 }

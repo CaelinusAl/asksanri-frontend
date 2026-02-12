@@ -1,133 +1,101 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import React, { useMemo, useState } from "react";
+import styles from "./FrekansPage.module.css";
 
-import { getRandomFrekansText, getFrekansTexts } from "../data/bilinc-frekans";
+import StarTrail from "../components/StarTrail";
+import FrekansJourney from "../components/FrekansJourney";
+
+import { frekansDoors } from "../data/frekansDoors";
 import { useLanguage } from "../contexts/LanguageContext";
+import { unlockAudio, playSfx } from "../utils/sfx";
 
-const FrekansPage = () => {
-  const { t, language } = useLanguage();
-  const [currentText, setCurrentText] = useState(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [breathPhase, setBreathPhase] = useState("in"); // in, hold, out
+export default function FrekansPage() {
+  const { language, setLanguage } = useLanguage();
+  const isTR = language === "tr";
 
-  useEffect(() => {
-    setCurrentText(getRandomFrekansText(language));
-  }, [language]);
+  const doors = useMemo(() => frekansDoors, []);
+  const [activeKey, setActiveKey] = useState(doors[0]?.key || "sakinlik");
+  const [stepIndex, setStepIndex] = useState(0);
 
-  // Nefes döngüsü
-  useEffect(() => {
-    const breathCycle = setInterval(() => {
-      setBreathPhase(prev => {
-        if (prev === "in") return "hold";
-        if (prev === "hold") return "out";
-        return "in";
-      });
-    }, 4000);
+  const activeDoor = useMemo(
+    () => doors.find((d) => d.key === activeKey) || doors[0],
+    [doors, activeKey]
+  );
 
-    return () => clearInterval(breathCycle);
-  }, []);
-
-  const handleNext = useCallback(() => {
-    setIsTransitioning(true);
-    
-    setTimeout(() => {
-      const texts = getFrekansTexts(language);
-      const currentIndex = texts.findIndex(t => t.id === currentText?.id);
-      const nextIndex = (currentIndex + 1) % texts.length;
-      setCurrentText(texts[nextIndex]);
-      setIsTransitioning(false);
-    }, 800);
-  }, [currentText, language]);
-
-  // Klavye ile geçiş
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (e.key === "ArrowRight" || e.key === " ") {
-        handleNext();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [handleNext]);
-
-  if (!currentText) return null;
+  const selectDoor = (key) => {
+    unlockAudio();
+    playSfx("/sfx/aura-chime.mp3", { volume: 0.28 });
+    setActiveKey(key);
+    setStepIndex(0);
+  };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header - Çok Minimal */}
-      <header className="pt-28 pb-4">
-        <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="text-center"
+    <div className={styles.page} onPointerDown={unlockAudio}>
+      <StarTrail />
+
+      <div className={styles.topbar}>
+        <div className={styles.topbarLeft}>
+          <span className={styles.brand}>CAELINUS AI</span>
+          <span className={styles.topbarSubtitle}>
+            {isTR ? "Bilinç ve Anlam Zekası" : "Consciousness & Meaning Intelligence"}
+          </span>
+        </div>
+
+        <div className={styles.topbarRight}>
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setLanguage(isTR ? "en" : "tr")}
+            title={isTR ? "EN" : "TR"}
           >
-            <span className="text-accent/40 text-xs tracking-[0.4em] uppercase">
-              {t('frekans.title')}
-            </span>
-          </motion.div>
+            {isTR ? "TR" : "EN"}
+          </button>
         </div>
-      </header>
+      </div>
 
-      {/* Ana İçerik - Tam Merkez */}
-      <main className="flex-1 flex items-center justify-center px-6">
-        <div className="max-w-md w-full">
-          <AnimatePresence mode="wait">
-            {!isTransitioning && (
-              <motion.div
-                key={currentText.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-                className="text-center"
-              >
-                {/* Mikro-Metin */}
-                <p className="font-serif text-2xl sm:text-3xl md:text-4xl text-foreground leading-relaxed whitespace-pre-line mb-16">
-                  {currentText.text}
-                </p>
-
-                {/* Nefes Göstergesi */}
-                <motion.div
-                  className="flex items-center justify-center mb-12"
-                  animate={{
-                    scale: breathPhase === "in" ? 1.2 : breathPhase === "hold" ? 1.2 : 1,
-                    opacity: breathPhase === "hold" ? 1 : 0.6,
-                  }}
-                  transition={{ duration: 3.5, ease: "easeInOut" }}
-                >
-                  <div className="w-4 h-4 rounded-full bg-accent/30" />
-                </motion.div>
-
-                {/* İlerleme - Çok Minimal */}
-                <motion.button
-                  onClick={handleNext}
-                  className="text-muted-foreground/30 hover:text-muted-foreground/60 transition-colors"
-                  whileHover={{ x: 5 }}
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+      <div className={styles.shell}>
+        <div className={styles.hero}>
+          <div className={styles.kicker}>{isTR ? "FREKANS ALANI" : "FREQUENCY FIELD"}</div>
+          <h1 className={styles.h1}>{isTR ? "Frekans Alanı" : "Frequency Field"}</h1>
+          <p className={styles.sub}>
+            {isTR
+              ? "Bir frekans seç. Adım adım sabitle. Son adımda SANRI ile netleştir."
+              : "Choose a frequency. Stabilize it step by step. Clarify with SANRI at the end."}
+          </p>
         </div>
-      </main>
 
-      {/* Alt - Neredeyse Görünmez */}
-      <footer className="py-6">
-        <div className="container mx-auto px-6">
-          <div className="text-center">
-            <p className="text-[10px] text-muted-foreground/20 tracking-wider">
-              {t('frekans.navigation')}
-            </p>
+        <div className={styles.grid}>
+          <div className={styles.left}>
+            <div className={styles.panel}>
+              <div className={styles.panelTitle}>{isTR ? "Frekanslar" : "Frequencies"}</div>
+
+              <div className={styles.list}>
+                {doors.map((d) => (
+                  <button
+                    key={d.key}
+                    type="button"
+                    className={`${styles.door} ${activeKey === d.key ? styles.active : ""}`}
+                    onClick={() => selectDoor(d.key)}
+                  >
+                    <div className={styles.doorTitle}>{d.title?.[language] || d.title?.tr}</div>
+                    <div className={styles.doorDesc}>{d.desc?.[language] || d.desc?.tr}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.right}>
+            <FrekansJourney
+              lang={language}
+              door={activeDoor}
+              stepIndex={stepIndex}
+              setStepIndex={setStepIndex}
+            />
           </div>
         </div>
-      </footer>
+
+        <div className={styles.footer}>Caelinus AI • Frekans Alanı</div>
+      </div>
     </div>
   );
-};
-
-export default FrekansPage;
+}
