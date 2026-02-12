@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import DoorTransition from "./components/DoorTransition";
 import { useDoor } from "./contexts/DoorNavContext";
 
+// Pages
 import HomePage from "./pages/HomePage";
 import SanriyaSorPage from "./pages/SanriyaSorPage";
 import BilincAlaniPage from "./pages/BilincAlaniPage";
