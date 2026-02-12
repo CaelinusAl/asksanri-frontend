@@ -230,3 +230,20 @@
   .grid{grid-template-columns:1fr;}
   .h1{font-size:44px;}
 }
+
+.reflectBtn {
+  background: linear-gradient(135deg, #7c5cff, #a07bff);
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 20px rgba(124, 92, 255, 0.3);
+}
+
+.reflectBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(160, 123, 255, 0.6);
+}

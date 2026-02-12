@@ -124,6 +124,32 @@ export default function SanriyaSorPage() {
     requestAnimationFrame(() => taRef.current?.focus());
   };
 
+const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+const handleSubmit = async () => {
+  if (!text.trim() || isSending) return;
+
+  setIsSending(true);
+  setReflection("...");
+
+  try {
+    const res = await fetch(`${API_URL}bilinc-alani/ask`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: text
+      })
+    });
+
+    const data = await res.json();
+    setReflection(data.answer || "Yanıt alınamadı.");
+  } catch (err) {
+    setReflection("Bağlantı hatası.");
+  }
+
+  setIsSending(false);
+};
+
   const handleKeyDown = (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
       e.preventDefault();
@@ -225,7 +251,7 @@ export default function SanriyaSorPage() {
                   </button>
 
                   <button
-                    className={styles.btnPrimary}
+                    className={styles.reflectBtn}
                     type="button"
                     onClick={handleSubmit}
                     disabled={isSending || !text.trim()}
