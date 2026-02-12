@@ -158,3 +158,31 @@
   opacity:0.4;
   font-size:12px;
 }
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(15,18,30,0.52);
+  border: 1px solid rgba(160,170,255,0.18);
+  box-shadow: 0 0 28px rgba(120,160,255,0.10);
+  backdrop-filter: blur(10px);
+}
+
+.brand{
+  font-weight:700;
+  letter-spacing:0.12em;
+  font-size:12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.topbarSubtitle{
+  opacity:0.78;
+  font-size:12px;
+}

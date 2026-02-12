@@ -23,8 +23,7 @@ export default function FrekansPage() {
 
   const selectDoor = (key) => {
     unlockAudio();
-    playSfx("/sfx/aura-chime.mp3", { volume: 0.28 });
-    setActiveKey(key);
+        setActiveKey(key);
     setStepIndex(0);
   };
 

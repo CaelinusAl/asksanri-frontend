@@ -1,64 +1,66 @@
 // src/pages/SanriyaSorPage.jsx
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import styles from "./SanriyaSorPage.module.css";
 
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
-import { unlockAudio, playSfx } from "../utils/sfx";
-
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+import { unlockAudio } from "../utils/sfx";
+import { useDoor } from "../contexts/DoorNavContext";
 
 const MODES = [
-  { id: "mirror", labelKey: "sanri.modes.mirror", fallbackTR: "Ayna", fallbackEN: "Mirror" },
-  { id: "dream", labelKey: "sanri.modes.dream", fallbackTR: "Rüya", fallbackEN: "Dream" },
-  { id: "divine", labelKey: "sanri.modes.divine", fallbackTR: "İlahi", fallbackEN: "Divine" },
-  { id: "shadow", labelKey: "sanri.modes.shadow", fallbackTR: "Gölge", fallbackEN: "Shadow" },
-  { id: "light", labelKey: "sanri.modes.light", fallbackTR: "Işık", fallbackEN: "Light" },
+  { id: "mirror", labelKey: "sanri.modes.mirror", tr: "Ayna", en: "Mirror" },
+  { id: "dream", labelKey: "sanri.modes.dream", tr: "Rüya", en: "Dream" },
+  { id: "divine", labelKey: "sanri.modes.divine", tr: "İlahi", en: "Divine" },
+  { id: "shadow", labelKey: "sanri.modes.shadow", tr: "Gölge", en: "Shadow" },
+  { id: "light", labelKey: "sanri.modes.light", tr: "Işık", en: "Light" },
 ];
 
 const DOMAINS = [
-  { id: "auto", labelKey: "sanri.domains.auto", fallbackTR: "Otomatik", fallbackEN: "Auto" },
-  { id: "awakened_cities", labelKey: "sanri.domains.awakened_cities", fallbackTR: "Uyanmış Şehirler", fallbackEN: "Awakened Cities" },
-  { id: "consciousness_field", labelKey: "sanri.domains.consciousness_field", fallbackTR: "Bilinç Alanı", fallbackEN: "Consciousness Field" },
-  { id: "frequency_field", labelKey: "sanri.domains.frequency_field", fallbackTR: "Frekans Alanı", fallbackEN: "Frequency Field" },
-  { id: "ritual_space", labelKey: "sanri.domains.ritual_space", fallbackTR: "Ritüel Alanı", fallbackEN: "Ritual Space" },
-  { id: "neural_ecstasy", labelKey: "sanri.domains.neural_ecstasy", fallbackTR: "Beyin Orgazmı", fallbackEN: "Neural Ecstasy" },
-  { id: "book_112", labelKey: "sanri.domains.book_112", fallbackTR: "112. Kitap", fallbackEN: "Book 112" },
+  { id: "auto", labelKey: "sanri.domains.auto", tr: "Otomatik", en: "Auto" },
+  { id: "awakened_cities", labelKey: "sanri.domains.awakened_cities", tr: "Uyanmış Şehirler", en: "Awakened Cities" },
+  { id: "consciousness_field", labelKey: "sanri.domains.consciousness_field", tr: "Bilinç Alanı", en: "Consciousness Field" },
+  { id: "frequency_field", labelKey: "sanri.domains.frequency_field", tr: "Frekans Alanı", en: "Frequency Field" },
+  { id: "ritual_space", labelKey: "sanri.domains.ritual_space", tr: "Ritüel Alanı", en: "Ritual Space" },
+  { id: "neural_ecstasy", labelKey: "sanri.domains.neural_ecstasy", tr: "Beyin Orgazmı", en: "Neural Ecstasy" },
+  { id: "book_112", labelKey: "sanri.domains.book_112", tr: "112. Kitap", en: "Book 112" },
 ];
 
-function getQuery(search) {
+function readQuery(search) {
   const sp = new URLSearchParams(search);
   return {
-    domain: sp.get("domain"),
-    mode: sp.get("mode"),
-    prefill: sp.get("prefill"),
+    domain: sp.get("domain") || "",
+    mode: sp.get("mode") || "",
+    prefill: sp.get("prefill") || "",
   };
 }
 
 export default function SanriyaSorPage() {
-  const navigate = useNavigate();
-  const location = useLocation();
-
+  const { go } = useDoor();
   const { language, setLanguage, t } = useLanguage();
   const isTR = language === "tr";
 
-  const q = useMemo(() => getQuery(location.search), [location.search]);
+  const API_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL?.trim(); // safe
+
+  const location = useLocation();
+  const q = useMemo(() => readQuery(location.search), [location.search]);
 
   const [mode, setMode] = useState(q.mode || "mirror");
   const [domain, setDomain] = useState(q.domain || "auto");
   const [text, setText] = useState(q.prefill ? String(q.prefill) : "");
-  const [isSending, setIsSending] = useState(false);
 
+  const [isSending, setIsSending] = useState(false);
   const [replyFull, setReplyFull] = useState("");
   const [replyShown, setReplyShown] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
   const taRef = useRef(null);
+
+  // speech
   const recognitionRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
 
-  // Query değişirse (kapıdan prefill ile gelince) state güncelle
+  // query ile geldiyse state’leri güncelle
   useEffect(() => {
     if (q.mode) setMode(q.mode);
     if (q.domain) setDomain(q.domain);
@@ -66,6 +68,7 @@ export default function SanriyaSorPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q.mode, q.domain, q.prefill]);
 
+  // i18n helper (fallback)
   const tt = useCallback(
     (key, fallback) => {
       try {
@@ -79,37 +82,64 @@ export default function SanriyaSorPage() {
     [t]
   );
 
+  const title = tt("sanri.title", isTR ? "SANRI’ya Sor" : "Ask SANRI");
+  const subtitle = tt(
+    "sanri.subtitleLine",
+    isTR
+      ? "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın."
+      : "This is not an answer. It is a reflection. You open the door."
+  );
+
   const hint = useMemo(() => {
     const base = isTR
       ? "Bir an dur. Soruyu yazmadan önce bedeninde nerede yankılandığını hisset.\nSANRI cevap üretmez; kapıyı açar.\n"
       : "Pause for a moment. Feel where your question resonates in your body.\nSANRI does not answer; it opens a door.\n";
 
-    const modeLine = isTR ? `\nMod: ${mode}\nNet bir cümle yaz. Cevap değil; yansıma gelecek.` : `\nMode: ${mode}\nWrite one clear sentence. Not an answer—reflection will arrive.`;
+    const modeLine = isTR
+      ? `\nMod: ${mode}\nNet bir cümle yaz. Cevap değil; yansıma gelecek.`
+      : `\nMode: ${mode}\nWrite one clear sentence. Not an answer—reflection will arrive.`;
+
     return base + modeLine;
   }, [isTR, mode]);
 
-  const goBackHome = () => {
-    unlockAudio();
-    playSfx("/sfx/door-whoosh.mp3", { volume: 0.55 });
-    navigate("/");
-  };
+  // typewriter reveal
+  useEffect(() => {
+    if (!replyFull) return;
+    setReplyShown("");
+    let i = 0;
+    const timer = window.setInterval(() => {
+      i += 2;
+      setReplyShown(replyFull.slice(0, i));
+      if (i >= replyFull.length) window.clearInterval(timer);
+    }, 12);
+    return () => window.clearInterval(timer);
+  }, [replyFull]);
 
-  const handleReset = () => {
+  const goBackToGates = useCallback(() => {
+    // Home’a dönerken intro’yu SKIP etmek için state veriyoruz
+    go("/", { state: { skipIntro: true }, whoosh: true, chime: false });
+  }, [go]);
+
+  const handleReset = useCallback(() => {
     setText("");
     setReplyFull("");
     setReplyShown("");
     setErrorMsg("");
     window.setTimeout(() => taRef.current?.focus?.(), 0);
-  };
+  }, []);
 
-  const handleKeyDown = (e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        if (!isSending) handleSubmit();
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isSending, text, mode, domain, language]
+  );
 
-  const ensureRecognition = () => {
+  const ensureRecognition = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) return null;
     const rec = new SR();
@@ -117,16 +147,18 @@ export default function SanriyaSorPage() {
     rec.interimResults = true;
     rec.continuous = true;
     return rec;
-  };
+  }, [isTR]);
 
-  const startListening = () => {
+  const startListening = useCallback(() => {
     unlockAudio();
     if (isListening) return;
+
     const rec = ensureRecognition();
     if (!rec) {
-      setErrorMsg(isTR ? "Tarayıcı ses tanımayı desteklemiyor." : "Speech recognition not supported.");
+      setErrorMsg(isTR ? "Tarayıcı ses tanımayı desteklemiyor." : "Speech recognition is not supported.");
       return;
     }
+
     recognitionRef.current = rec;
 
     rec.onresult = (event) => {
@@ -147,27 +179,14 @@ export default function SanriyaSorPage() {
     } catch {
       setIsListening(false);
     }
-  };
+  }, [ensureRecognition, isListening, isTR]);
 
-  const stopListening = () => {
+  const stopListening = useCallback(() => {
     try {
       recognitionRef.current?.stop?.();
     } catch {}
     setIsListening(false);
-  };
-
-  // Typewriter-ish reveal (lightweight)
-  useEffect(() => {
-    if (!replyFull) return;
-    setReplyShown("");
-    let i = 0;
-    const timer = window.setInterval(() => {
-      i += 2;
-      setReplyShown(replyFull.slice(0, i));
-      if (i >= replyFull.length) window.clearInterval(timer);
-    }, 14);
-    return () => window.clearInterval(timer);
-  }, [replyFull]);
+  }, []);
 
   const handleSubmit = useCallback(async () => {
     unlockAudio();
@@ -177,7 +196,7 @@ export default function SanriyaSorPage() {
     if (!payloadText || isSending) return;
 
     if (!API_URL) {
-      setErrorMsg(isTR ? "VITE_BACKEND_URL tanımlı değil (Vercel env)." : "VITE_BACKEND_URL is missing (Vercel env).");
+      setErrorMsg(isTR ? "VITE_BACKEND_URL eksik (Vercel env)." : "VITE_BACKEND_URL is missing (Vercel env).");
       return;
     }
 
@@ -185,21 +204,19 @@ export default function SanriyaSorPage() {
     setReplyFull("");
     setReplyShown("");
 
-    // küçük aura chime (çok düşük)
-    playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
-
     try {
-      const response = await fetch(`${API_URL}/bilinc-alani/ask`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    message: text,
-    mode: "mirror",
-    domain: selectedDomain,
-  }),
-});
+      // Backend’in hangi endpointi beklediği sende değişebiliyor.
+      // En güvenlisi: /bilinc-alani/ask (mevcut swagger’ında gördüğün)
+      const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: payloadText,
+          mode, // mirror/dream/divine/shadow/light
+          domain, // auto / frequency_field / ...
+          language, // tr / en
+        }),
+      });
 
       const data = await res.json().catch(() => ({}));
 
@@ -213,11 +230,11 @@ export default function SanriyaSorPage() {
       const answer = data?.response ?? data?.reply ?? data?.text ?? "";
       setReplyFull(String(answer || ""));
       setIsSending(false);
-    } catch (err) {
+    } catch (e) {
       setErrorMsg(isTR ? "Bağlantı hatası." : "Network error.");
       setIsSending(false);
     }
-  }, [text, isSending, mode, domain, language, isTR]);
+  }, [API_URL, domain, isSending, isTR, language, mode, text]);
 
   return (
     <div className={styles.page} onPointerDown={unlockAudio}>
@@ -233,7 +250,7 @@ export default function SanriyaSorPage() {
         </div>
 
         <div className={styles.topbarRight}>
-          <button type="button" className={styles.backBtn} onClick={goBackHome}>
+          <button type="button" className={styles.backBtn} onClick={goBackToGates}>
             {isTR ? "← Kapılara Dön" : "← Back to Gates"}
           </button>
 
@@ -253,17 +270,8 @@ export default function SanriyaSorPage() {
       <div className={styles.shell}>
         <div className={styles.card}>
           <div className={styles.kicker}>CAELINUS AI • CONSCIOUSNESS MIRROR</div>
-
-          <div className={styles.h1}>
-            {tt("sanri.title", isTR ? "SANRI’ya Sor" : "Ask SANRI")}
-          </div>
-
-          <div className={styles.subtitle}>
-            {tt(
-              "sanri.subtitleLine",
-              isTR ? "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın." : "This is not an answer. It is a reflection. You open the door."
-            )}
-          </div>
+          <div className={styles.h1}>{title}</div>
+          <div className={styles.subtitle}>{subtitle}</div>
 
           <div className={styles.grid}>
             {/* LEFT */}
@@ -273,7 +281,7 @@ export default function SanriyaSorPage() {
                 <select className={styles.select} value={mode} onChange={(e) => setMode(e.target.value)}>
                   {MODES.map((m) => (
                     <option key={m.id} value={m.id}>
-                      {tt(m.labelKey, isTR ? m.fallbackTR : m.fallbackEN)}
+                      {tt(m.labelKey, isTR ? m.tr : m.en)}
                     </option>
                   ))}
                 </select>
@@ -284,7 +292,7 @@ export default function SanriyaSorPage() {
                 <select className={styles.select} value={domain} onChange={(e) => setDomain(e.target.value)}>
                   {DOMAINS.map((d) => (
                     <option key={d.id} value={d.id}>
-                      {tt(d.labelKey, isTR ? d.fallbackTR : d.fallbackEN)}
+                      {tt(d.labelKey, isTR ? d.tr : d.en)}
                     </option>
                   ))}
                 </select>
@@ -303,7 +311,6 @@ export default function SanriyaSorPage() {
                   {tt("common.reflectionFlow", isTR ? "Yansıma Akışı" : "Reflection Flow")}
                 </div>
 
-                {/* FORM = garanti submit */}
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -328,13 +335,10 @@ export default function SanriyaSorPage() {
                       {tt("common.reset", isTR ? "Sıfırla" : "Reset")}
                     </button>
 
-                    <button
-                      type="submit"
-                      className={styles.btnPrimary}
-                      disabled={isSending || !String(text || "").trim()}
-                      title="Ctrl+Enter"
-                    >
-                      {isSending ? tt("common.reflecting", isTR ? "Yansıtılıyor…" : "Reflecting…") : tt("common.reflect", isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
+                    <button type="submit" className={styles.btnPrimary} disabled={isSending || !String(text || "").trim()}>
+                      {isSending
+                        ? tt("common.reflecting", isTR ? "Yansıtılıyor…" : "Reflecting…")
+                        : tt("common.reflect", isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
                     </button>
 
                     <div className={styles.grow} />
@@ -344,7 +348,9 @@ export default function SanriyaSorPage() {
                       className={`${styles.micBtn} ${isListening ? styles.live : ""}`}
                       onClick={isListening ? stopListening : startListening}
                     >
-                      {isListening ? tt("common.stop", isTR ? "Durdur" : "Stop") : tt("common.voiceInput", isTR ? "Sesle yaz" : "Voice input")}
+                      {isListening
+                        ? tt("common.stop", isTR ? "Durdur" : "Stop")
+                        : tt("common.voiceInput", isTR ? "Sesle yaz" : "Voice input")}
                     </button>
                   </div>
                 </form>

@@ -1,55 +1,41 @@
 // src/contexts/DoorNavContext.jsx
 import React, { createContext, useContext, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { playSfx } from "../utils/sfx";
+import { playSfx, unlockAudio } from "../utils/sfx";
 
 const DoorNavContext = createContext(null);
 
 export function DoorNavProvider({ children }) {
   const navigate = useNavigate();
-
-  const [doorOpen, setDoorOpen] = useState(true); // true: sayfa açık (kapı açık)
-  const nextPathRef = useRef(null);
+  const [doorOpen, setDoorOpen] = useState(true);
   const busyRef = useRef(false);
 
-  const api = useMemo(() => {
-    const go = (path) => {
-      if (!path || busyRef.current) return;
+  const go = (path, navOptions) => {
+    if (!path || busyRef.current) return;
+    busyRef.current = true;
 
-      busyRef.current = true;
-      nextPathRef.current = path;
+    unlockAudio();
 
-      // 1) her zaman whoosh (kapı kapanırken)
-      playSfx("/sfx/door-whoosh.mp3", { volume: 0.7 });
+    // 1) sadece kapı "whoosh"
+    playSfx("/sfx/door-whoosh.mp3", { volume: 0.75 });
 
-      // 2) kapıyı kapat
-      setDoorOpen(false);
+    // 2) kapı kapanır
+    setDoorOpen(false);
 
-      // 3) route değiştir (kapı kapandıktan sonra)
+    // 3) route değiştir
+    window.setTimeout(() => {
+      navigate(path, navOptions);
+      // 4) kapıyı aç
       window.setTimeout(() => {
-        navigate(nextPathRef.current);
+        setDoorOpen(true);
+        busyRef.current = false;
+      }, 220);
+    }, 520);
+  };
 
-        // 4) sadece ilk girişte aura-chime
-        const firstEntry = !sessionStorage.getItem("sanriFirstEntryPlayed");
-        if (firstEntry) {
-          sessionStorage.setItem("sanriFirstEntryPlayed", "true");
-          window.setTimeout(() => {
-            playSfx("/sfx/aura-chime.mp3", { volume: 0.9 });
-          }, 250);
-        }
+  const value = useMemo(() => ({ doorOpen, go }), [doorOpen]);
 
-        // 5) küçük nefes, sonra kapıyı aç
-        window.setTimeout(() => {
-          setDoorOpen(true);
-          busyRef.current = false;
-        }, 180);
-      }, 520);
-    };
-
-    return { doorOpen, go };
-  }, [doorOpen, navigate]);
-
-  return <DoorNavContext.Provider value={api}>{children}</DoorNavContext.Provider>;
+  return <DoorNavContext.Provider value={value}>{children}</DoorNavContext.Provider>;
 }
 
 export function useDoor() {

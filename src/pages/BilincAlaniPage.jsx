@@ -23,7 +23,7 @@ export default function BilincAlaniPage() {
 
   const selectDoor = (key) => {
     unlockAudio();
-    playSfx("/sfx/aura-chime.mp3", { volume: 0.32 });
+   
     setActiveKey(key);
     setStepIndex(0);
   };

@@ -7,10 +7,15 @@ import RituelJourney from "../components/RituelJourney";
 import { rituelFlows } from "../data/rituelFlows";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio, playSfx } from "../utils/sfx";
+import RitualAudioPlayer from "../components/RitualAudioPlayer";
+
+
+
 
 export default function RituelAlaniPage() {
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
+
 
   const flows = useMemo(() => rituelFlows, []);
   const [activeKey, setActiveKey] = useState(flows[0]?.key || "rituel_60");
@@ -23,7 +28,7 @@ export default function RituelAlaniPage() {
 
   const selectFlow = (key) => {
     unlockAudio();
-    playSfx("/sfx/aura-chime.mp3", { volume: 0.28 });
+    
     setActiveKey(key);
     setStepIndex(0);
   };
@@ -93,6 +98,15 @@ export default function RituelAlaniPage() {
             />
           </div>
         </div>
+         <RitualAudioPlayer
+  src={
+    language === "tr"
+      ? "/audio/rituels/vitrin_rituel_tr.mp3"
+      : "/audio/rituels/vitrin_rituel_en.mp3"
+  }
+/>
+
+
 
         <div className={styles.footer}>Caelinus AI • Ritüel Alanı</div>
       </div>
