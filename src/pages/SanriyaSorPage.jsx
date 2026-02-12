@@ -153,7 +153,7 @@ export default function SanriyaSorPage() {
 
       // backend endpoint: senin sisteminde hangi endpoint doğruysa burayı tek satır değiştiririz.
       // Örn: "/sanri/ask" veya "/ask" vs.
-      const endpoint = "/ask";
+      const endpoint = "/bilinc-alani/ask";
 
       const res = await fetch(`${API_URL}${endpoint}`, {
         method: "POST",
