@@ -44,4 +44,4 @@ export const ritualFlows = [
   },
 ];
 
-export default rituelFlows;
+export default ritualFlows;
