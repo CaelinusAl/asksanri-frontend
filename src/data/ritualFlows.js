@@ -1,5 +1,4 @@
 // src/data/ritualFlows.js
-
 export const ritualFlows = [
   {
     key: "vitrin_rituel",
@@ -13,35 +12,39 @@ export const ritualFlows = [
     steps: {
       tr: [
         { t: "DUR", b: "Elini kalbine koy. Bir nefes." },
-        { t: "NİYET", b: "“Bugün kendime dönüyorum.”" },
+        { t: "NİYET", b: "Bugün kendime dönüyorum." },
         { t: "NEFES", b: "4 al • 2 tut • 6 ver (3 tur)." },
-        { t: "MÜHÜR", b: "“Oldu.”" },
+        { t: "MÜHÜR", b: "Oldu." },
       ],
       en: [
         { t: "PAUSE", b: "Hand on heart. One breath." },
-        { t: "INTENTION", b: "“I return to myself today.”" },
+        { t: "INTENTION", b: "I return to myself today." },
         { t: "BREATH", b: "4 in • 2 hold • 6 out (3 rounds)." },
-        { t: "SEAL", b: "“Done.”" },
+        { t: "SEAL", b: "Done." },
       ],
     },
   },
 
-  // Aşağıya diğer ritüellerin burada olduğu gibi devam edecek:
-  // ÖRNEK: rituel_60 (senin mevcut içeriğini buraya taşıyacağız)
   {
     key: "rituel_60",
     title: { tr: "60 Saniye Ritüeli", en: "60-Second Ritual" },
     desc: { tr: "Anında düzenleme protokolü.", en: "Instant regulation protocol." },
     premium: true,
     audio: {
-      tr: "/audio/rituels/rituel_60_tr.mp3",
-      en: "/audio/rituels/rituel_60_en.mp3",
+      tr: "/audio/rituels/60_tr.mp3",
+      en: "/audio/rituels/60_en.mp3",
     },
     steps: {
-      tr: [{ t: "NİYET", b: "Niyetini yaz." }],
-      en: [{ t: "INTENTION", b: "Write your intention." }],
+      tr: [
+        { t: "Sakinlik", b: "Omuzlarını indir. Çeneni yumuşat." },
+        { t: "Nefes", b: "3 nefes: uzun veriş." },
+        { t: "Yön", b: "Bugün hangi frekansta kalmalıyım?" },
+      ],
+      en: [
+        { t: "Calm", b: "Drop your shoulders. Relax your jaw." },
+        { t: "Breath", b: "3 breaths: longer exhale." },
+        { t: "Direction", b: "What frequency should I hold today?" },
+      ],
     },
   },
 ];
-
-export default ritualFlows;
