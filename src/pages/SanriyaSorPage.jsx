@@ -65,6 +65,7 @@ export default function SanriyaSorPage() {
 
   const { language, setLanguage, t } = useLanguage();
   const isTR = language === "tr";
+  const hasStartedRef = useRef(false);
 
   const tt = useCallback(
     (key, fallback) => {
@@ -128,6 +129,8 @@ export default function SanriyaSorPage() {
     setReplyFull("");
     setTypedReply("");
     setErrorMsg("");
+
+    hasStartedRef.current = false;
     setIsThinking(false);
     setIsSending(false);
     window.setTimeout(() => taRef.current?.focus?.(), 0);
@@ -183,9 +186,15 @@ export default function SanriyaSorPage() {
     };
   }, [replyFull]);
 
+  
   const handleSubmit = useCallback(async () => {
     unlockAudio();
     setErrorMsg("");
+
+  if (!hasStartedRef.current) {
+  playSfx("/sfx/door-open.mp3", { volume: 0.3 });
+  hasStartedRef.current = true;
+}
 
     const msg = String(text || "").trim();
     if (!msg || isSending) return;
