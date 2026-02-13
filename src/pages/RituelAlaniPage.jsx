@@ -9,7 +9,7 @@ import RitualJourney from "../components/RituelJourney";
 import RitualAudioPlayer from "../components/RitualAudioPlayer";
 import PremiumGateModal from "../components/PremiumGateModal";
 
-import { ritualFlows } from "../data/rituelFlows";
+import { ritualFlows } from "../data/ritualFlows";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 import { useAuth } from "../contexts/AuthContext";
