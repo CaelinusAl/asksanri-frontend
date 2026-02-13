@@ -1,6 +1,6 @@
-// src/data/rituelFlows.js
+// src/data/ritualFlows.js
 
-export const rituelFlows = [
+export const ritualFlows = [
   {
     key: "vitrin_rituel",
     title: { tr: "Vitrin Ritüeli • Kapı Açılışı", en: "Showcase Ritual • Door Opening" },
