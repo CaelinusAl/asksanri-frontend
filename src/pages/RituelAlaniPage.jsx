@@ -8,7 +8,34 @@ import { rituelFlows } from "../data/rituelFlows";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio, playSfx } from "../utils/sfx";
 import RitualAudioPlayer from "../components/RitualAudioPlayer";
+import PremiumGateModal from "../components/PremiumGateModal";
+import { useAuth } from "../contexts/AuthContext";
 
+export default function RituelAlaniPage() {
+  const { isAuthenticated, isPremium } = useAuth();
+  const [gateOpen, setGateOpen] = useState(false);
+
+  const openFlow = (flow) => {
+    if (flow.premium && (!isAuthenticated || !isPremium)) {
+      setGateOpen(true);
+      return;
+    }
+    // ✅ burada ritüeli başlat
+  };
+
+  return (
+    <>
+      {/* ... ritüel UI ... */}
+
+      <PremiumGateModal
+        open={gateOpen}
+        onClose={() => setGateOpen(false)}
+        title="Ritüel Alanı • Premium Kapı"
+        subtitle="Bir katman daha derine geçmek için giriş/premium gerekli."
+      />
+    </>
+  );
+}
 
 
 

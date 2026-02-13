@@ -189,52 +189,53 @@ export default function SanriyaSorPage() {
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    unlockAudio();
-    setErrorMsg("");
+  unlockAudio();
+  setErrorMsg("");
 
-    const payloadText = String(text || "").trim();
-    if (!payloadText || isSending) return;
+  const payloadText = String(text || "").trim();
+  if (!payloadText || isSending) return;
 
-    if (!API_URL) {
-      setErrorMsg(isTR ? "VITE_BACKEND_URL eksik (Vercel env)." : "VITE_BACKEND_URL is missing (Vercel env).");
+  if (!API_URL) {
+    setErrorMsg("Backend URL missing.");
+    return;
+  }
+
+  setIsSending(true);
+  setReplyFull("");
+  setReplyShown("");
+
+  try {
+    const response = await fetch(`${API_URL}/bilinc-alani/ask`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: payloadText,
+        question: payloadText,
+        session_id: "default",
+        mode: "user"
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setErrorMsg(data?.detail || "Error");
+      setIsSending(false);
       return;
     }
 
-    setIsSending(true);
-    setReplyFull("");
-    setReplyShown("");
+    // API genelde response ya da reply döndürür
+    const answer = data?.response || data?.reply || data?.text || "";
+    setReplyFull(answer);
+    setIsSending(false);
 
-    try {
-      // Backend’in hangi endpointi beklediği sende değişebiliyor.
-      // En güvenlisi: /bilinc-alani/ask (mevcut swagger’ında gördüğün)
-      const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: payloadText,
-          mode, // mirror/dream/divine/shadow/light
-          domain, // auto / frequency_field / ...
-          language, // tr / en
-        }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        const msg = data?.detail || data?.error || (isTR ? "Bir hata oluştu." : "An error occurred.");
-        setErrorMsg(String(msg));
-        setIsSending(false);
-        return;
-      }
-
-      const answer = data?.response ?? data?.reply ?? data?.text ?? "";
-      setReplyFull(String(answer || ""));
-      setIsSending(false);
-    } catch (e) {
-      setErrorMsg(isTR ? "Bağlantı hatası." : "Network error.");
-      setIsSending(false);
-    }
-  }, [API_URL, domain, isSending, isTR, language, mode, text]);
+  } catch (err) {
+    setErrorMsg("Network error.");
+    setIsSending(false);
+  }
+}, [text, isSending, API_URL]);
 
   return (
     <div className={styles.page} onPointerDown={unlockAudio}>
