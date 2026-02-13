@@ -1,0 +1,250 @@
+/* src/pages/RituelAlaniPage.module.css */
+
+.page{
+  min-height: 100vh;
+  padding: 22px 18px 60px;
+  background:
+    radial-gradient(900px 650px at 25% 20%, rgba(170,120,255,0.18), transparent 60%),
+    radial-gradient(700px 480px at 80% 75%, rgba(80,120,255,0.12), transparent 60%),
+    linear-gradient(180deg, #07080d 0%, #0b0d14 55%, #06070b 100%);
+  color: rgba(255,255,255,0.92);
+}
+
+/* Topbar */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  background:
+    radial-gradient(900px 120px at 20% 0%, rgba(170,120,255,0.22), transparent 60%),
+    radial-gradient(800px 120px at 80% 0%, rgba(120,160,255,0.16), transparent 60%),
+    linear-gradient(180deg, rgba(14,18,28,0.72) 0%, rgba(10,12,18,0.52) 100%);
+  backdrop-filter: blur(14px);
+}
+.topbarLeft{ display:flex; align-items:center; gap:12px; }
+.brand{
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(0,0,0,0.24);
+  font-weight: 900;
+  letter-spacing: .12em;
+  font-size: 12px;
+}
+.topbarSubtitle{
+  opacity: .86;
+  font-size: 12px;
+  letter-spacing: .06em;
+}
+.topbarRight{ display:flex; align-items:center; gap:10px; }
+
+.backBtn{
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.92);
+  cursor:pointer;
+  font-weight: 800;
+}
+.langBtn{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(160,123,255,0.12);
+  color: rgba(255,255,255,0.92);
+  cursor:pointer;
+  font-weight: 900;
+}
+
+/* Layout */
+.shell{ max-width: 1180px; margin: 18px auto 0; }
+.grid{
+  display:grid;
+  grid-template-columns: 420px 1fr;
+  gap: 14px;
+}
+@media (max-width: 980px){
+  .grid{ grid-template-columns: 1fr; }
+}
+
+.left, .right{
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 0 40px rgba(0,0,0,0.35);
+  padding: 16px;
+}
+
+.sectionTitle{
+  font-size: 12px;
+  letter-spacing: .14em;
+  opacity: .82;
+  margin-bottom: 10px;
+  font-weight: 900;
+}
+
+.list{ display:grid; gap: 10px; }
+
+.item{
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.18);
+  padding: 12px;
+  cursor: pointer;
+}
+.item:hover{
+  border-color: rgba(160,123,255,0.38);
+  background: rgba(160,123,255,0.08);
+}
+.itemActive{
+  border-color: rgba(160,123,255,0.55);
+  background: rgba(160,123,255,0.12);
+}
+.itemTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+}
+.itemTitle{
+  font-weight: 900;
+  letter-spacing: .02em;
+}
+.itemDesc{
+  margin-top: 6px;
+  opacity: .80;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.badgePremium, .badgeFree{
+  font-size: 11px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+.badgePremium{ background: rgba(255,160,80,0.14); }
+.badgeFree{ background: rgba(80,160,255,0.12); }
+
+.miniNote{
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: .72;
+  line-height: 1.35;
+}
+
+/* Active ritual */
+.activeCard{
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.12);
+  padding: 14px;
+}
+.kicker{
+  font-size: 12px;
+  letter-spacing: .14em;
+  opacity: .72;
+  margin-bottom: 6px;
+}
+.activeTitle{
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.05;
+}
+.activeDesc{
+  margin-top: 8px;
+  opacity: .82;
+  line-height: 1.4;
+}
+
+.audioBox{
+  margin-top: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  padding: 12px;
+}
+.audioTitle{
+  font-weight: 900;
+  letter-spacing: .04em;
+  margin-bottom: 8px;
+}
+.audio{
+  width: 100%;
+}
+.audioHint{
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: .72;
+}
+
+.steps{
+  margin-top: 12px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  padding: 12px;
+}
+.stepHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.stepCount{
+  font-size: 12px;
+  opacity: .78;
+  font-weight: 800;
+}
+.stepTag{
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(160,123,255,0.10);
+}
+.stepBody{
+  font-size: 14px;
+  line-height: 1.55;
+  opacity: .92;
+  min-height: 64px;
+}
+
+.stepActions{
+  margin-top: 10px;
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+.grow{ flex: 1; }
+
+.btnGhost, .btnPrimary, .btnSecondary{
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.14);
+  padding: 10px 12px;
+  cursor:pointer;
+  font-weight: 900;
+  color: rgba(255,255,255,0.92);
+}
+.btnGhost{ background: rgba(255,255,255,0.05); }
+.btnPrimary{ background: rgba(160,123,255,0.14); }
+.btnSecondary{ background: rgba(80,160,255,0.12); }
+
+.footnote{
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: .72;
+  text-align: center;
+}

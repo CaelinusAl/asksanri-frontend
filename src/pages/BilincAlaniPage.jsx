@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import styles from "./BilincAlaniPage.module.css";
+import { useNavigate } from "react-router-dom";
 
 import StarTrail from "../components/StarTrail";
 import DoorJourney from "../components/DoorJourney";
@@ -20,6 +21,12 @@ export default function BilincAlaniPage() {
     () => doors.find((d) => d.key === activeKey) || doors[0],
     [doors, activeKey]
   );
+
+  const navigate = useNavigate();
+
+  const goBackToGates = () => {
+  navigate("/", { state: { skipIntro: true } });
+};
 
   const selectDoor = (key) => {
     unlockAudio();
@@ -43,6 +50,13 @@ export default function BilincAlaniPage() {
 
         <div className={styles.topbarRight}>
           <button
+           type="button"
+           className={styles.backBtn}
+           onClick={goBackToGates}
+    >
+         {isTR ? "← Kapılara Dön" : "← Back to Gates"}
+     </button>
+           <button
             type="button"
             className={styles.langBtn}
             onClick={() => setLanguage(isTR ? "en" : "tr")}

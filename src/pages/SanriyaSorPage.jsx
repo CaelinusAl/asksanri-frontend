@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SanriyaSorPage.module.css";
 
+
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio, playSfx } from "../utils/sfx";
@@ -66,6 +67,10 @@ export default function SanriyaSorPage() {
   const { language, setLanguage, t } = useLanguage();
   const isTR = language === "tr";
   const hasStartedRef = useRef(false);
+
+
+
+  const hasPlayedRef = useRef(false);
 
   const tt = useCallback(
     (key, fallback) => {

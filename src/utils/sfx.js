@@ -1,21 +1,15 @@
-let unlocked = false;
+let audioUnlocked = false;
 
 export function unlockAudio() {
-  unlocked = true;
+  if (!audioUnlocked) {
+    const dummy = new Audio();
+    dummy.play().catch(() => {});
+    audioUnlocked = true;
+  }
 }
 
-export async function playSfx(src, { volume = 0.8 } = {}) {
-  try {
-    if (!unlocked) unlocked = true;
-
-    const audio = new Audio(src);
-    audio.volume = volume;
-    audio.currentTime = 0;
-
-    await audio.play().catch(() => {});
-    return audio;
-  } catch (err) {
-    console.warn("SFX error:", err);
-    return null;
-  }
+export function playSfx(src, options = {}) {
+  const audio = new Audio(src);
+  audio.volume = options.volume ?? 0.3;
+  audio.play().catch(() => {});
 }

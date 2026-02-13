@@ -1,11 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+
 import App from "./App";
 
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { DoorNavProvider } from "./contexts/DoorNavContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { DoorNavProvider } from "./contexts/DoorNavContext";
+
+import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

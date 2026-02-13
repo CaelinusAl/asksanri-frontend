@@ -1,82 +1,46 @@
-import React, { useEffect, useRef, useState } from "react";
+// src/components/PremiumGateModal.jsx
+import React, { useMemo, useState } from "react";
 import styles from "./PremiumGateModal.module.css";
-import { unlockAudio, playSfx } from "../utils/sfx";
 
 export default function PremiumGateModal({
   open,
   onClose,
-  title = "Ritüel Alanı • Premium Kapı",
-  subtitle = "Bu kapı, bilinç katmanı derin olanlara açılır.\nGiriş yap ve alanı aktive et.",
-  note = "Not: Google ile giriş endpoint’in var (/api/auth/google/session). Onu da ekleriz; önce email login’i sağlamlaştıralım.",
-  onRegister,
+  title,
+  subtitle,
+  primaryCtaTextTR = "✨ Frekansı Aktive Et",
+  primaryCtaTextEN = "✨ Activate Frequency",
   onLogin,
+  onRegister,
+  isTR = true,
 }) {
-  const [tab, setTab] = useState("register"); // "login" | "register"
+  const [tab, setTab] = useState("login"); // login | register
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const hasPlayedRef = useRef(false);
+  const primaryText = isTR ? primaryCtaTextTR : primaryCtaTextEN;
 
-  useEffect(() => {
-    if (!open) {
-      hasPlayedRef.current = false;
-      return;
-    }
-    // Modal açılınca sadece 1 kere hafif chime
-    if (!hasPlayedRef.current) {
-      unlockAudio();
-      playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
-      hasPlayedRef.current = true;
-    }
-  }, [open]);
+  const canSubmit = useMemo(() => {
+    return email.trim().length > 3 && password.trim().length > 3;
+  }, [email, password]);
 
   if (!open) return null;
 
-  const handleOverlayClick = () => {
-    unlockAudio();
-    onClose?.();
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    unlockAudio();
-
-    const payload = { email: String(email).trim(), password: String(password) };
-    if (!payload.email || !payload.password) return;
-
-    try {
-      if (tab === "login") {
-        await onLogin?.(payload);
-      } else {
-        await onRegister?.(payload);
-      }
-    } catch {
-      // hata yönetimi parent’ta olabilir; burada sessiz kalıyoruz
-    }
+  const submit = async () => {
+    const payload = { email: email.trim(), password: password.trim() };
+    if (tab === "login") await onLogin?.(payload);
+    else await onRegister?.(payload);
   };
 
   return (
-    <div className={styles.overlay} onMouseDown={handleOverlayClick} onPointerDown={handleOverlayClick}>
-      <div className={styles.premiumOverlayGlow} />
-
-      <div
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        onMouseDown={(e) => e.stopPropagation()}
-        onPointerDown={(e) => e.stopPropagation()}
-      >
-        <button type="button" className={styles.close} onClick={onClose} aria-label="Close">
-          ✕
+    <div className={styles.overlay} onMouseDown={onClose}>
+      <div className={styles.modal} onMouseDown={(e) => e.stopPropagation()}>
+        <button className={styles.close} type="button" onClick={onClose} aria-label="close">
+          ×
         </button>
 
         <div className={styles.header}>
           <div className={styles.title}>{title}</div>
-          <div className={styles.subtitle}>
-            {subtitle.split("\n").map((line, i) => (
-              <div key={i}>{line}</div>
-            ))}
-          </div>
+          <div className={styles.subtitle}>{subtitle}</div>
         </div>
 
         <div className={styles.tabs}>
@@ -85,40 +49,44 @@ export default function PremiumGateModal({
             className={`${styles.tab} ${tab === "login" ? styles.active : ""}`}
             onClick={() => setTab("login")}
           >
-            Giriş
+            {isTR ? "Giriş" : "Login"}
           </button>
           <button
             type="button"
             className={`${styles.tab} ${tab === "register" ? styles.active : ""}`}
             onClick={() => setTab("register")}
           >
-            Kayıt
+            {isTR ? "Kayıt" : "Register"}
           </button>
         </div>
 
-        <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.form}>
           <input
             className={styles.input}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
+            placeholder={isTR ? "Email" : "Email"}
             autoComplete="email"
           />
           <input
             className={styles.input}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Şifre"
+            placeholder={isTR ? "Şifre" : "Password"}
             type="password"
             autoComplete={tab === "login" ? "current-password" : "new-password"}
           />
 
-          <button type="submit" className={styles.cta}>
-            {tab === "login" ? "Girişi Tamamla" : "✨ Frekansı Aktive Et"}
+          <button type="button" className={styles.primary} disabled={!canSubmit} onClick={submit}>
+            {primaryText}
           </button>
-        </form>
 
-        {note ? <div className={styles.note}>{note}</div> : null}
+          <div className={styles.note}>
+            {isTR
+              ? "Not: Google ile giriş endpoint’in var (/api/auth/google/session). Onu da ekleriz; önce email login’i sağlamlaştıralım."
+              : "Note: You have a Google login endpoint (/api/auth/google/session). We can add it next; first stabilize email login."}
+          </div>
+        </div>
       </div>
     </div>
   );

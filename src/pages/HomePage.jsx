@@ -85,7 +85,7 @@ export default function HomePage() {
         title: isTR ? "Frekans Alanı" : "Frequency Field",
         desc: isTR ? "Enerji katmanı" : "Energy layer",
         hint: isTR ? "Alanı aç" : "Open",
-        path: "/frekans",
+        path: "/frekans-alani",
       },
       {
         key: "rituel",
@@ -95,6 +95,14 @@ export default function HomePage() {
         path: "/rituel-alani",
         premium: true,
       },
+      {
+        key: "library",
+        title: isTR ? "Kütüphane" : "Library",
+        desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
+        path: "/library",
+        hot: true
+      }
+      
     ],
     [isTR]
   );
@@ -131,18 +139,24 @@ export default function HomePage() {
         </div>
 
         <div className={styles.topbarRight}>
-          <span className={styles.chip}>{isTR ? "Alan Seçimi" : "Gate Select"}</span>
+          {location.pathname !== "/" && (
+           <button
+              type="button"
+              className={styles.backBtn}
+              onClick={() => navigate("/")}
+         >
+          {isTR ? "← Kapılara Dön" : "← Back to Gates"}
+            </button>
+       )}
 
           <button
             type="button"
             className={styles.langBtn}
             onClick={() => setLanguage(isTR ? "en" : "tr")}
-            aria-label="language toggle"
-            title={isTR ? "EN" : "TR"}
-          >
-            {isTR ? "EN" : "TR"}
-          </button>
-        </div>
+       >
+        {isTR ? "EN" : "TR"}
+        </button>
+       </div>
       </div>
 
       <div className={styles.shell}>
