@@ -104,16 +104,50 @@ export default function SanriyaSorPage() {
 
   // typewriter reveal
   useEffect(() => {
-    if (!replyFull) return;
-    setReplyShown("");
-    let i = 0;
-    const timer = window.setInterval(() => {
-      i += 2;
-      setReplyShown(replyFull.slice(0, i));
-      if (i >= replyFull.length) window.clearInterval(timer);
-    }, 12);
-    return () => window.clearInterval(timer);
-  }, [replyFull]);
+  if (!replyFull) return;
+
+  setReplyShown("");
+  let i = 0;
+  let cancelled = false;
+
+  const getDelay = (ch) => {
+    // temel hız (ms): küçültürsen hızlanır, büyütürsen yavaşlar
+    const base = 28;          // ana hız
+    const space = 8;          // boşluk daha hızlı
+    const comma = 120;        // virgül duraksama
+    const dot = 220;          // nokta duraksama
+    const line = 260;         // satır sonu duraksama
+
+    if (ch === " ") return space;
+    if (ch === ",") return comma;
+    if (ch === "." || ch === "!" || ch === "?") return dot;
+    if (ch === "\n") return line;
+    if (ch === ":" || ch === ";") return 160;
+    return base;
+  };
+
+  const tick = () => {
+    if (cancelled) return;
+
+    // 1 karakter yaz
+    i += 1;
+    setReplyShown(replyFull.slice(0, i));
+
+    if (i >= replyFull.length) return;
+
+    const nextChar = replyFull[i - 1];
+    const delay = getDelay(nextChar);
+
+    window.setTimeout(tick, delay);
+  };
+
+  // küçük başlangıç gecikmesi (insan hissi)
+  window.setTimeout(tick, 120);
+
+  return () => {
+    cancelled = true;
+  };
+}, [replyFull]);
 
   const goBackToGates = useCallback(() => {
     // Home’a dönerken intro’yu SKIP etmek için state veriyoruz
