@@ -1,12 +1,11 @@
 // src/pages/SanriyaSorPage.jsx
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SanriyaSorPage.module.css";
 
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
-import { unlockAudio } from "../utils/sfx";
-import { useDoor } from "../contexts/DoorNavContext";
+import { unlockAudio, playSfx } from "../utils/sfx";
 
 const MODES = [
   { id: "mirror", labelKey: "sanri.modes.mirror", tr: "Ayna", en: "Mirror" },
@@ -26,7 +25,7 @@ const DOMAINS = [
   { id: "book_112", labelKey: "sanri.domains.book_112", tr: "112. Kitap", en: "Book 112" },
 ];
 
-function readQuery(search) {
+function parseQuery(search) {
   const sp = new URLSearchParams(search);
   return {
     domain: sp.get("domain") || "",
@@ -35,40 +34,38 @@ function readQuery(search) {
   };
 }
 
+function safeJsonParse(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
+function ThinkingDots({ label }) {
+  const [dots, setDots] = useState("");
+  useEffect(() => {
+    const t = setInterval(() => setDots((d) => (d.length >= 3 ? "" : d + ".")), 350);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <span className={styles.thinking}>
+      {label}
+      <span className={styles.dots}>{dots}</span>
+    </span>
+  );
+}
+
 export default function SanriyaSorPage() {
-  const { go } = useDoor();
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const q = useMemo(() => parseQuery(location.search), [location.search]);
+
   const { language, setLanguage, t } = useLanguage();
   const isTR = language === "tr";
 
-  const API_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_BACKEND_URL?.trim(); // safe
-
-  const location = useLocation();
-  const q = useMemo(() => readQuery(location.search), [location.search]);
-
-  const [mode, setMode] = useState(q.mode || "mirror");
-  const [domain, setDomain] = useState(q.domain || "auto");
-  const [text, setText] = useState(q.prefill ? String(q.prefill) : "");
-
-  const [isSending, setIsSending] = useState(false);
-  const [replyFull, setReplyFull] = useState("");
-  const [replyShown, setReplyShown] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-
-  const taRef = useRef(null);
-
-  // speech
-  const recognitionRef = useRef(null);
-  const [isListening, setIsListening] = useState(false);
-
-  // query ile geldiyse state’leri güncelle
-  useEffect(() => {
-    if (q.mode) setMode(q.mode);
-    if (q.domain) setDomain(q.domain);
-    if (q.prefill) setText(String(q.prefill));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q.mode, q.domain, q.prefill]);
-
-  // i18n helper (fallback)
   const tt = useCallback(
     (key, fallback) => {
       try {
@@ -85,80 +82,54 @@ export default function SanriyaSorPage() {
   const title = tt("sanri.title", isTR ? "SANRI’ya Sor" : "Ask SANRI");
   const subtitle = tt(
     "sanri.subtitleLine",
-    isTR
-      ? "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın."
-      : "This is not an answer. It is a reflection. You open the door."
+    isTR ? "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın." : "This is not an answer. It is a reflection. You open the door."
   );
+
+  // state
+  const [mode, setMode] = useState(q.mode || "mirror");
+  const [domain, setDomain] = useState(q.domain || "auto");
+  const [text, setText] = useState(q.prefill ? String(q.prefill) : "");
+
+  const [isSending, setIsSending] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
+
+  const [replyFull, setReplyFull] = useState("");
+  const [typedReply, setTypedReply] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const taRef = useRef(null);
+
+  // query ile geldiyse state’leri güncelle (kapı presetleri)
+  useEffect(() => {
+    if (q.mode) setMode(q.mode);
+    if (q.domain) setDomain(q.domain);
+    if (q.prefill) setText(String(q.prefill));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q.mode, q.domain, q.prefill]);
 
   const hint = useMemo(() => {
     const base = isTR
-      ? "Bir an dur. Soruyu yazmadan önce bedeninde nerede yankılandığını hisset.\nSANRI cevap üretmez; kapıyı açar.\n"
-      : "Pause for a moment. Feel where your question resonates in your body.\nSANRI does not answer; it opens a door.\n";
-
+      ? "Bir an dur.\nSoruyu yazmadan önce bedeninde nerede yankılandığını hisset.\nSANRI cevap üretmez; kapıyı açar.\n"
+      : "Pause for a moment.\nFeel where your question resonates in your body.\nSANRI does not answer; it opens a door.\n";
     const modeLine = isTR
       ? `\nMod: ${mode}\nNet bir cümle yaz. Cevap değil; yansıma gelecek.`
       : `\nMode: ${mode}\nWrite one clear sentence. Not an answer—reflection will arrive.`;
-
     return base + modeLine;
   }, [isTR, mode]);
 
-  // typewriter reveal
-  useEffect(() => {
-  if (!replyFull) return;
-
-  setReplyShown("");
-  let i = 0;
-  let cancelled = false;
-
-  const getDelay = (ch) => {
-    // temel hız (ms): küçültürsen hızlanır, büyütürsen yavaşlar
-    const base = 28;          // ana hız
-    const space = 8;          // boşluk daha hızlı
-    const comma = 120;        // virgül duraksama
-    const dot = 220;          // nokta duraksama
-    const line = 260;         // satır sonu duraksama
-
-    if (ch === " ") return space;
-    if (ch === ",") return comma;
-    if (ch === "." || ch === "!" || ch === "?") return dot;
-    if (ch === "\n") return line;
-    if (ch === ":" || ch === ";") return 160;
-    return base;
-  };
-
-  const tick = () => {
-    if (cancelled) return;
-
-    // 1 karakter yaz
-    i += 1;
-    setReplyShown(replyFull.slice(0, i));
-
-    if (i >= replyFull.length) return;
-
-    const nextChar = replyFull[i - 1];
-    const delay = getDelay(nextChar);
-
-    window.setTimeout(tick, delay);
-  };
-
-  // küçük başlangıç gecikmesi (insan hissi)
-  window.setTimeout(tick, 120);
-
-  return () => {
-    cancelled = true;
-  };
-}, [replyFull]);
-
+  // “Kapılara dön” = Home’a skipIntro ile dönsün (intro tekrar açılmasın)
   const goBackToGates = useCallback(() => {
-    // Home’a dönerken intro’yu SKIP etmek için state veriyoruz
-    go("/", { state: { skipIntro: true }, whoosh: true, chime: false });
-  }, [go]);
+    unlockAudio();
+    navigate("/", { state: { skipIntro: true } });
+  }, [navigate]);
 
   const handleReset = useCallback(() => {
     setText("");
     setReplyFull("");
-    setReplyShown("");
+    setTypedReply("");
     setErrorMsg("");
+    setIsThinking(false);
+    setIsSending(false);
     window.setTimeout(() => taRef.current?.focus?.(), 0);
   }, []);
 
@@ -166,110 +137,120 @@ export default function SanriyaSorPage() {
     (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
-        if (!isSending) handleSubmit();
+        void handleSubmit();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isSending, text, mode, domain, language]
+    [text, mode, domain, isSending, API_URL, isTR]
   );
 
-  const ensureRecognition = useCallback(() => {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) return null;
-    const rec = new SR();
-    rec.lang = isTR ? "tr-TR" : "en-US";
-    rec.interimResults = true;
-    rec.continuous = true;
-    return rec;
-  }, [isTR]);
+  // typing effect: “insan gibi”
+  useEffect(() => {
+    if (!replyFull) return;
+    setTypedReply("");
 
-  const startListening = useCallback(() => {
-    unlockAudio();
-    if (isListening) return;
+    let i = 0;
+    let alive = true;
 
-    const rec = ensureRecognition();
-    if (!rec) {
-      setErrorMsg(isTR ? "Tarayıcı ses tanımayı desteklemiyor." : "Speech recognition is not supported.");
-      return;
-    }
+    const step = () => {
+      if (!alive) return;
+      const next = replyFull.slice(0, i + 1);
+      setTypedReply(next);
+      i += 1;
 
-    recognitionRef.current = rec;
+      if (i >= replyFull.length) return;
 
-    rec.onresult = (event) => {
-      let finalText = "";
-      for (let i = event.resultIndex; i < event.results.length; i += 1) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) finalText += transcript;
-      }
-      if (finalText) setText((prev) => (prev ? prev + " " : "") + finalText.trim());
+      const ch = replyFull[i - 1] || "";
+      // noktalama duraklaması
+      const pause =
+        ch === "." || ch === "!" || ch === "?" ? 240 :
+        ch === "," || ch === ";" || ch === ":" ? 140 :
+        ch === "\n" ? 200 :
+        0;
+
+      // temel hız (senin “gerçek yazıyor” hissin)
+      const base = 18; // 18ms/char
+      const jitter = Math.floor(Math.random() * 18); // 0..17
+      const delay = base + jitter + pause;
+
+      window.setTimeout(step, delay);
     };
 
-    rec.onerror = () => setIsListening(false);
-    rec.onend = () => setIsListening(false);
+    window.setTimeout(step, 80);
 
-    try {
-      rec.start();
-      setIsListening(true);
-    } catch {
-      setIsListening(false);
-    }
-  }, [ensureRecognition, isListening, isTR]);
-
-  const stopListening = useCallback(() => {
-    try {
-      recognitionRef.current?.stop?.();
-    } catch {}
-    setIsListening(false);
-  }, []);
+    return () => {
+      alive = false;
+    };
+  }, [replyFull]);
 
   const handleSubmit = useCallback(async () => {
-  unlockAudio();
-  setErrorMsg("");
+    unlockAudio();
+    setErrorMsg("");
 
-  const payloadText = String(text || "").trim();
-  if (!payloadText || isSending) return;
+    const msg = String(text || "").trim();
+    if (!msg || isSending) return;
 
-  if (!API_URL) {
-    setErrorMsg("Backend URL missing.");
-    return;
-  }
-
-  setIsSending(true);
-  setReplyFull("");
-  setReplyShown("");
-
-  try {
-    const response = await fetch(`${API_URL}/bilinc-alani/ask`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: payloadText,
-        question: payloadText,
-        session_id: "default",
-        mode: "user"
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      setErrorMsg(data?.detail || "Error");
-      setIsSending(false);
+    if (!API_URL) {
+      setErrorMsg(isTR ? "VITE_BACKEND_URL eksik (Vercel env)." : "VITE_BACKEND_URL is missing (Vercel env).");
       return;
     }
 
-    // API genelde response ya da reply döndürür
-    const answer = data?.response || data?.reply || data?.text || "";
-    setReplyFull(answer);
-    setIsSending(false);
+    setIsSending(true);
+    setIsThinking(true);
+    setReplyFull("");
+    setTypedReply("");
 
-  } catch (err) {
-    setErrorMsg("Network error.");
-    setIsSending(false);
-  }
-}, [text, isSending, API_URL]);
+    // minik “düşünüyor” çanı (çok düşük)
+    playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
+
+    // Backend schema: message/question/session_id/mode
+    // Biz message + mode gönderiyoruz, session_id sabit.
+    const payload = {
+      message: msg,
+      question: msg,
+      session_id: "default",
+      mode: mode || "mirror",
+      // domain backend’de zorunlu değilse bile gönderiyoruz (ileride kullanılır)
+      domain: domain || "auto",
+    };
+
+    try {
+      const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const raw = await res.text();
+      const data = safeJsonParse(raw) || {};
+
+      if (!res.ok) {
+        const msgErr =
+          data?.detail ||
+          data?.error ||
+          raw ||
+          (isTR ? "Bir hata oluştu." : "An error occurred.");
+        setErrorMsg(String(msgErr));
+        setIsSending(false);
+        setIsThinking(false);
+        return;
+      }
+
+      const answer = data?.response ?? data?.reply ?? data?.text ?? raw ?? "";
+      setReplyFull(String(answer || ""));
+      setIsSending(false);
+      setIsThinking(false);
+    } catch (err) {
+      // CORS dahil network
+      setErrorMsg(
+        isTR
+          ? "Bağlantı/CORS hatası. (Railway SANRI_ALLOWED_ORIGINS içine Vercel domainini eklemen gerekebilir.)"
+          : "Network/CORS error. (Add your Vercel domain into SANRI_ALLOWED_ORIGINS on Railway.)"
+      );
+      setIsSending(false);
+      setIsThinking(false);
+    }
+  }, [API_URL, domain, isSending, isTR, mode, text]);
 
   return (
     <div className={styles.page} onPointerDown={unlockAudio}>
@@ -313,7 +294,11 @@ export default function SanriyaSorPage() {
             <div className={styles.left}>
               <div className={styles.block}>
                 <div className={styles.label}>{tt("common.mode", isTR ? "Mod" : "Mode")}</div>
-                <select className={styles.select} value={mode} onChange={(e) => setMode(e.target.value)}>
+                <select
+                  className={styles.select}
+                  value={mode}
+                  onChange={(e) => setMode(e.target.value)}
+                >
                   {MODES.map((m) => (
                     <option key={m.id} value={m.id}>
                       {tt(m.labelKey, isTR ? m.tr : m.en)}
@@ -324,7 +309,11 @@ export default function SanriyaSorPage() {
 
               <div className={styles.block}>
                 <div className={styles.label}>{tt("common.domain", isTR ? "Domain (opsiyonel)" : "Domain (optional)")}</div>
-                <select className={styles.select} value={domain} onChange={(e) => setDomain(e.target.value)}>
+                <select
+                  className={styles.select}
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                >
                   {DOMAINS.map((d) => (
                     <option key={d.id} value={d.id}>
                       {tt(d.labelKey, isTR ? d.tr : d.en)}
@@ -349,7 +338,7 @@ export default function SanriyaSorPage() {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    handleSubmit();
+                    void handleSubmit();
                   }}
                 >
                   <textarea
@@ -370,22 +359,14 @@ export default function SanriyaSorPage() {
                       {tt("common.reset", isTR ? "Sıfırla" : "Reset")}
                     </button>
 
-                    <button type="submit" className={styles.btnPrimary} disabled={isSending || !String(text || "").trim()}>
+                    <button
+                      type="submit"
+                      className={styles.btnPrimary}
+                      disabled={isSending || !String(text || "").trim()}
+                    >
                       {isSending
                         ? tt("common.reflecting", isTR ? "Yansıtılıyor…" : "Reflecting…")
                         : tt("common.reflect", isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
-                    </button>
-
-                    <div className={styles.grow} />
-
-                    <button
-                      type="button"
-                      className={`${styles.micBtn} ${isListening ? styles.live : ""}`}
-                      onClick={isListening ? stopListening : startListening}
-                    >
-                      {isListening
-                        ? tt("common.stop", isTR ? "Durdur" : "Stop")
-                        : tt("common.voiceInput", isTR ? "Sesle yaz" : "Voice input")}
                     </button>
                   </div>
                 </form>
@@ -394,13 +375,16 @@ export default function SanriyaSorPage() {
               <div className={`${styles.panel} ${styles.reply}`}>
                 <div className={styles.label}>{tt("common.reflection", isTR ? "Yansıma" : "Reflection")}</div>
 
-                {errorMsg ? <div className={styles.error}>{errorMsg}</div> : null}
-
                 <div className={styles.replybox}>
-                  {replyShown ||
-                    (!replyFull && !isSending
-                      ? tt("common.reflectionEmpty", isTR ? "Yansıma burada belirecek." : "Your reflection will appear here.")
-                      : "")}
+                  {errorMsg ? (
+                    <span className={styles.errorText}>{errorMsg}</span>
+                  ) : isThinking || isSending ? (
+                    <ThinkingDots label={isTR ? "Sanrı düşünüyor" : "SANRI is thinking"} />
+                  ) : typedReply ? (
+                    typedReply
+                  ) : (
+                    tt("common.reflectionEmpty", isTR ? "Yansıma burada belirecek." : "Your reflection will appear here.")
+                  )}
                 </div>
               </div>
 
