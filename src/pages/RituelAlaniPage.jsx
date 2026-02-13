@@ -325,6 +325,21 @@ export default function RituelAlaniPage() {
                     className={`${styles.ritualItem} ${active ? styles.ritualItemActive : ""}`}
                     onClick={() => openFlow(f)}
                   >
+                     <div className="ritual-audio">
+  <h3>🎧 Gate 1 – Identity Burning</h3>
+
+  <div className="audio-buttons">
+    <button onClick={() => playAudio("tr")}>
+      🇹🇷 Türkçe Dinle
+    </button>
+
+    <button onClick={() => playAudio("en")}>
+      🇬🇧 English Listen
+    </button>
+  </div>
+
+  <audio ref={audioRef} />
+</div>
                     <div className={styles.ritualItemRow}>
                       <div className={styles.ritualItemTitle}>{ft}</div>
                       <div className={styles.badges}>
