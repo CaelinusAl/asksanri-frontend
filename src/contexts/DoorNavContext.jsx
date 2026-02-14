@@ -1,39 +1,34 @@
 // src/contexts/DoorNavContext.jsx
-import React, { createContext, useContext, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { playSfx, unlockAudio } from "../utils/sfx";
+import React, { createContext, useCallback, useContext, useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { unlockAudio } from "../utils/sfx"; // ✅ gerekli (mobilde tıklayınca audio izni)
 
 const DoorNavContext = createContext(null);
 
+/**
+ * DoorNav: sadece "kapıdan geçiş" navigasyonu yönetir.
+ * ❌ burada SES yok. (SFX sadece SanriyaSorPage içinde)
+ */
 export function DoorNavProvider({ children }) {
   const navigate = useNavigate();
-  const [doorOpen, setDoorOpen] = useState(true);
-  const busyRef = useRef(false);
+  const location = useLocation();
 
-  const go = (path, navOptions) => {
-    if (!path || busyRef.current) return;
-    busyRef.current = true;
+  const go = useCallback(
+    (path, opts = {}) => {
+      // Mobilde audio izinlerini tek dokunuşta açmak için:
+      try {
+        unlockAudio();
+      } catch {}
 
-    unlockAudio();
+      // aynı sayfadaysak tekrar navigate etme
+      if (location.pathname === path) return;
 
-    // 1) sadece kapı "whoosh"
-    playSfx("/sfx/door-whoosh.mp3", { volume: 0.75 });
+      navigate(path, { replace: false, state: opts.state || {} });
+    },
+    [navigate, location.pathname]
+  );
 
-    // 2) kapı kapanır
-    setDoorOpen(false);
-
-    // 3) route değiştir
-    window.setTimeout(() => {
-      navigate(path, navOptions);
-      // 4) kapıyı aç
-      window.setTimeout(() => {
-        setDoorOpen(true);
-        busyRef.current = false;
-      }, 220);
-    }, 520);
-  };
-
-  const value = useMemo(() => ({ doorOpen, go }), [doorOpen]);
+  const value = useMemo(() => ({ go }), [go]);
 
   return <DoorNavContext.Provider value={value}>{children}</DoorNavContext.Provider>;
 }

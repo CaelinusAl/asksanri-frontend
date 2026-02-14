@@ -7,7 +7,7 @@ import DoorJourney from "../components/DoorJourney";
 
 import { bilincDoors } from "../data/bilincDoors";
 import { useLanguage } from "../contexts/LanguageContext";
-import { unlockAudio, playSfx } from "../utils/sfx";
+import { unlockAudio,} from "../utils/sfx";
 
 export default function BilincAlaniPage() {
   const { language, setLanguage } = useLanguage();

@@ -1,15 +1,14 @@
 // src/pages/FrekansAlaniPage.jsx
 import React, { useMemo, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./FrekansAlaniPage.module.css";
 
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
-import { unlockAudio } from "../utils/sfx";
+import { unlockAudio } from "../utils/sfx"; // ✅ EKLENDİ
 
 export default function FrekansAlaniPage() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
@@ -123,9 +122,7 @@ export default function FrekansAlaniPage() {
             {/* RIGHT */}
             <div className={styles.right}>
               <div className={styles.panel}>
-                <div className={styles.panelTitle}>
-                  {isTR ? "Seçili Protokol" : "Selected Protocol"}
-                </div>
+                <div className={styles.panelTitle}>{isTR ? "Seçili Protokol" : "Selected Protocol"}</div>
 
                 <div className={styles.bigTitle}>{isTR ? active.titleTR : active.titleEN}</div>
                 <div className={styles.bigDesc}>{isTR ? active.descTR : active.descEN}</div>
@@ -134,11 +131,7 @@ export default function FrekansAlaniPage() {
                   <button
                     type="button"
                     className={styles.primaryBtn}
-                    onClick={() => {
-                      // şimdilik sadece bir “başlat” hissi verelim
-                      // sonra buraya ritual player veya frekans player bağlarız
-                      alert(isTR ? "Başladı. Nefes al." : "Started. Breathe.");
-                    }}
+                    onClick={() => alert(isTR ? "Başladı. Nefes al." : "Started. Breathe.")}
                   >
                     {isTR ? "Başlat" : "Start"}
                   </button>
