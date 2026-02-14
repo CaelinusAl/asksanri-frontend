@@ -44,9 +44,11 @@ export default function AdminPanelPage() {
   };
 
   useEffect(() => {
-    if (adminKey) load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/stats?key=${import.meta.env.VITE_ADMIN_KEY}`)
+    .then(r => r.json())
+    .then(setData)
+    .catch(console.error);
+}, []);
 
   return (
     <div style={styles.page} onPointerDown={unlockAudio}>
