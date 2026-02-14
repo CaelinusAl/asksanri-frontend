@@ -9,7 +9,6 @@ import BilincAlaniPage from "./pages/BilincAlaniPage";
 import FrekansAlaniPage from "./pages/FrekansAlaniPage";
 import RituelAlaniPage from "./pages/RituelAlaniPage";
 import LibraryPage from "./pages/LibraryPage";
-import AwakenedCitiesPage from "./pages/AwakenedCitiesPage";
 import YasamKocuPage from "./pages/YasamKocuPage";
 
 // ADMIN PAGES
@@ -32,7 +31,6 @@ export default function App() {
       <Route path="/frekans-alani" element={<FrekansAlaniPage />} />
       <Route path="/rituel-alani" element={<RituelAlaniPage />} />
       <Route path="/library" element={<LibraryPage />} />
-      <Route path="/uyanan-sehirler" element={<AwakenedCitiesPage />} />
       <Route path="/yasam-kocu" element={<YasamKocuPage />} />
 
       {/* ADMIN */}

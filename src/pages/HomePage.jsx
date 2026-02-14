@@ -70,65 +70,73 @@ export default function HomePage() {
     return () => window.clearInterval(timer);
   }, [introDone, introLines]);
 
-  const gates = useMemo(
-    () => [
-      {
-        key: "sanri",
-        title: isTR ? "SANRI" : "SANRI",
-        desc: isTR ? "Yansıma alanı" : "Reflection space",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/sanriya-sor",
-        hot: true,
-      },
-      {
-        key: "yasam_kocu",
-        title: isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach",
-        desc: isTR ? "Kişisel bilinç panelin" : "Your personal consciousness dashboard",
-        hint: isTR ? "Panele gir" : "Enter panel",
-        path: "/yasam-kocu",
-        premium: true,
-      },
-      {
-        key: "bilinc",
-        title: isTR ? "Bilinç Alanı" : "Consciousness Field",
-        desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/bilinc-alani",
-      },
-      {
-        key: "frekans",
-        title: isTR ? "Frekans Alanı" : "Frequency Field",
-        desc: isTR ? "Enerji katmanı" : "Energy layer",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/frekans-alani",
-      },
-      {
-        key: "rituel",
-        title: isTR ? "Ritüel Alanı" : "Ritual Field",
-        desc: isTR ? "Özel kapı" : "Private gate",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/rituel-alani",
-        premium: true,
-      },
-      {
-        key: "library",
-        title: isTR ? "Kütüphane" : "Library",
-        desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/library",
-        hot: true,
-      },
-      {
-        key: "awakened_cities",
-        title: isTR ? "Anadolu’nun Uyanan Şehirleri" : "Awakened Cities of Anatolia",
-        desc: isTR ? "Türkiye okuması • Ruhsal yolculuk" : "Turkey reading • Inner journey",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/uyanan-sehirler",
-        hot: true,
-      },
-    ],
-    [isTR]
-  );
+  const gates = useMemo(() => {
+  const baseGates = [
+    {
+      key: "sanri",
+      title: isTR ? "SANRI" : "SANRI",
+      desc: isTR ? "Yansıma alanı" : "Reflection space",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/sanriya-sor",
+      hot: true,
+    },
+    {
+      key: "bilinc",
+      title: isTR ? "Bilinç Alanı" : "Consciousness Field",
+      desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/bilinc-alani",
+    },
+    {
+      key: "frekans",
+      title: isTR ? "Frekans Alanı" : "Frequency Field",
+      desc: isTR ? "Enerji katmanı" : "Energy layer",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/frekans-alani",
+    },
+    {
+      key: "rituel",
+      title: isTR ? "Ritüel Alanı" : "Ritual Field",
+      desc: isTR ? "Özel kapı" : "Private gate",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/rituel-alani",
+      premium: true,
+    },
+    {
+      key: "library",
+      title: isTR ? "Kütüphane" : "Library",
+      desc: isTR
+        ? "E-kitaplar + sesli bölümler"
+        : "E-books + voiced chapters",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/library",
+      hot: true,
+    },
+    {
+      key: "uyanan_sehirler",
+      title: isTR ? "Uyanan Şehirler" : "Awakened Cities",
+      desc: isTR
+        ? "Türkiye okuması • ruh yolculuğu"
+        : "Türkiye reading • inner journey",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/uyanan-sehirler",
+      hot: true,
+    },
+  ];
+
+  // 👇 ADMIN sadece VITE_ADMIN_KEY varsa eklenir
+  if (import.meta.env.VITE_ADMIN_KEY) {
+    baseGates.push({
+      key: "admin_panel",
+      title: isTR ? "Admin Panel" : "Admin Panel",
+      desc: isTR ? "Sadece Selin" : "Selin only",
+      hint: isTR ? "Aç" : "Open",
+      path: `/admin/panel?key=${import.meta.env.VITE_ADMIN_KEY}`,
+    });
+  }
+
+  return baseGates;
+}, [isTR]);
 
   const onUnlock = () => unlockAudio();
 
@@ -139,9 +147,17 @@ export default function HomePage() {
   };
 
   const handleGate = (g) => {
-    onUnlock();
-    navigate(g.path, { state: { skipIntro: true } });
-  };
+  onUnlock();
+
+  // sadece bunlar premium kapı
+  if (g.key === "rituel" || g.key === "yasam_kocu") {
+    setAuthOpen(true);
+    return;
+  }
+
+  navigate(g.path, { state: { skipIntro: true } });
+};
+
 
   return (
     <div className={styles.page} onPointerDown={onUnlock}>
