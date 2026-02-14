@@ -1,118 +1,163 @@
-// Admin Login Page
-import { motion } from "framer-motion";
-import { Eye, EyeOff, Lock, AlertCircle } from "lucide-react";
-
-import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
+// src/pages/admin/AdminLoginPage.jsx
+import React, { useMemo, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAdmin } from "../../contexts/AdminContext";
 
-const AdminLoginPage = () => {
+export default function AdminLoginPage() {
   const { login } = useAdmin();
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const nav = useNavigate();
+  const loc = useLocation();
 
-  const handleSubmit = async (e) => {
+  const from = useMemo(() => loc.state?.from || "/admin/panel", [loc.state]);
+
+  const [email, setEmail] = useState("");
+  const [key, setKey] = useState("");
+  const [hours, setHours] = useState(12);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
-    const result = await login(password);
-    
-    if (!result.success) {
-      setError(result.error);
+    setErr("");
+    setBusy(true);
+    try {
+      await login({ email, key, rememberHours: hours });
+      nav(from, { replace: true });
+    } catch (ex) {
+      setErr(String(ex?.message || ex));
+    } finally {
+      setBusy(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center p-4">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(76,29,149,0.1),transparent_50%)]" />
-      
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative w-full max-w-md"
-      >
-        {/* Logo/Title */}
-        <div className="text-center mb-8">
-          <motion.div
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-violet-600/20 to-purple-600/20 border border-violet-500/30 flex items-center justify-center"
-          >
-            <Lock className="w-8 h-8 text-violet-400" />
-          </motion.div>
-          <h1 className="text-2xl font-serif text-white mb-2">CAELINUS</h1>
-          <p className="text-sm text-gray-500 tracking-[0.2em] uppercase">Kontrol Odası</p>
+    <div style={{
+      minHeight: "100vh",
+      display: "grid",
+      placeItems: "center",
+      padding: 18,
+      background: "linear-gradient(180deg, #07080d 0%, #0b0d14 55%, #06070b 100%)",
+      color: "rgba(255,255,255,0.92)"
+    }}>
+      <div style={{
+        width: "min(520px, 100%)",
+        borderRadius: 22,
+        border: "1px solid rgba(255,255,255,0.10)",
+        background: "rgba(255,255,255,0.04)",
+        backdropFilter: "blur(12px)",
+        boxShadow: "0 18px 60px rgba(0,0,0,0.45)",
+        padding: 18
+      }}>
+        <div style={{ fontWeight: 900, letterSpacing: ".12em", fontSize: 12, opacity: .8 }}>
+          CAELINUS AI • ADMIN
+        </div>
+        <div style={{ fontSize: 32, fontWeight: 900, marginTop: 10 }}>
+          Admin Key
+        </div>
+        <div style={{ opacity: .78, marginTop: 6 }}>
+          Sadece Selin erişir. (VITE_ADMIN_KEY ile kilitli)
         </div>
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-[#12121a] rounded-2xl p-8 border border-gray-800/50">
-            {/* Password Input */}
-            <div className="space-y-2">
-              <label className="text-sm text-gray-400">Şifre</label>
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="bg-[#0a0a0f] border-gray-800 text-white pr-10 h-12"
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
+        <form onSubmit={onSubmit} style={{ marginTop: 14, display: "grid", gap: 10 }}>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email (sende kalır)"
+            autoComplete="email"
+            style={{
+              width: "100%",
+              padding: "14px 14px",
+              borderRadius: 16,
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(0,0,0,0.35)",
+              color: "rgba(255,255,255,0.92)"
+            }}
+          />
+          <input
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            placeholder="Admin Key"
+            autoComplete="current-password"
+            type="password"
+            style={{
+              width: "100%",
+              padding: "14px 14px",
+              borderRadius: 16,
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(0,0,0,0.35)",
+              color: "rgba(255,255,255,0.92)"
+            }}
+          />
 
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-2 text-red-400 text-sm mt-4"
-              >
-                <AlertCircle className="w-4 h-4" />
-                {error}
-              </motion.div>
-            )}
-
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isLoading || !password}
-              className="w-full mt-6 h-12 bg-violet-600 hover:bg-violet-700 text-white"
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            <span style={{ opacity: .78, fontSize: 12 }}>Session</span>
+            <select
+              value={hours}
+              onChange={(e) => setHours(Number(e.target.value))}
+              style={{
+                flex: 1,
+                padding: "10px 12px",
+                borderRadius: 14,
+                border: "1px solid rgba(255,255,255,0.12)",
+                background: "rgba(255,255,255,0.06)",
+                color: "rgba(255,255,255,0.92)"
+              }}
             >
-              {isLoading ? (
-                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : (
-                "Giriş Yap"
-              )}
-            </Button>
+              <option value={1}>1 hour</option>
+              <option value={6}>6 hours</option>
+              <option value={12}>12 hours</option>
+              <option value={24}>24 hours</option>
+              <option value={72}>3 days</option>
+            </select>
           </div>
-        </form>
 
-        {/* Footer */}
-        <p className="text-center text-xs text-gray-600 mt-6">
-          Bu alan yalnızca yetkili kullanıcılar içindir.
-        </p>
-      </motion.div>
+          {err ? (
+            <div style={{
+              marginTop: 6,
+              padding: 12,
+              borderRadius: 14,
+              border: "1px solid rgba(255,80,80,0.35)",
+              background: "rgba(255,80,80,0.10)",
+              color: "rgba(255,230,230,0.92)"
+            }}>
+              {err}
+            </div>
+          ) : null}
+
+          <button
+            type="submit"
+            disabled={busy}
+            style={{
+              marginTop: 8,
+              padding: "14px 14px",
+              borderRadius: 16,
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "linear-gradient(180deg, rgba(160,123,255,0.22), rgba(160,123,255,0.10))",
+              color: "rgba(255,255,255,0.92)",
+              fontWeight: 900,
+              letterSpacing: ".06em",
+              cursor: "pointer"
+            }}
+          >
+            {busy ? "..." : "OPEN"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => nav("/", { replace: true })}
+            style={{
+              padding: "12px 14px",
+              borderRadius: 16,
+              border: "1px solid rgba(255,255,255,0.10)",
+              background: "rgba(0,0,0,0.25)",
+              color: "rgba(255,255,255,0.86)",
+              cursor: "pointer"
+            }}
+          >
+            ← Back to Gates
+          </button>
+        </form>
+      </div>
     </div>
   );
-};
-
-export default AdminLoginPage;
-
-
-
-
+}
