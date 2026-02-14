@@ -177,3 +177,66 @@
   border-bottom: 1px solid rgba(255,255,255,0.10);
   backdrop-filter: blur(14px);
 }
+
+/* TOPBAR sabit + cam-mor */
+.topbar{
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 18px;
+  background:
+    radial-gradient(900px 120px at 20% 0%, rgba(170,120,255,0.22), transparent 60%),
+    radial-gradient(800px 120px at 80% 0%, rgba(120,160,255,0.16), transparent 60%),
+    linear-gradient(180deg, rgba(14,18,28,0.72) 0%, rgba(10,12,18,0.20) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(14px);
+}
+
+/* sağdaki butonlar üstte kalsın */
+.topbarRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  position: relative;
+  z-index: 10000;
+}
+
+/* sayfa içeriğini topbar'ın altına indir */
+.shell{
+  padding-top: 18px; /* gerekirse 24 yap */
+}
+
+/* intro ekranında "giriş" alanı topbar'ın altına gelsin */
+.introWrapper{
+  padding-top: 18px; /* gerekirse 24 */
+}
+
+/* EN/TR butonu tıklanabilir ama diğerlerini kapatmasın */
+.langBtn{
+  position: relative;
+  z-index: 10001;
+}
+
+.enterBtn{
+  margin-top: 14px;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(170,120,255,0.18);
+  color: rgba(255,255,255,0.95);
+  font-weight: 800;
+  letter-spacing: .08em;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+.enterBtn:hover{
+  background: rgba(170,120,255,0.24);
+}
+
+.enterBtn { position: relative; z-index: 50; }
+.topbar { z-index: 100; }

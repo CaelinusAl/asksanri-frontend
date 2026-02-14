@@ -12,42 +12,73 @@ export default function YasamKocuPage() {
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
+  const [note, setNote] = useState(localStorage.getItem("sanri_note") || "");
+  const [draft, setDraft] = useState(localStorage.getItem("sanri_draft") || "");
+
   const daily = useMemo(() => {
-    const tr = [
-      "Bugün küçük bir seçim yap: Kendine daha nazik davran.",
-      "Niyet netleşince sistem sadeleşir.",
-      "Kalbinin ‘evet’ dediği yere bir adım.",
-      "Şu an, yön değiştirmenin tam zamanı.",
-      "Bir cümle yaz: ‘Ben neyi seçiyorum?’",
+    const poolTR = [
+      "Bugün bir şeyi düzeltme. Sadece gör.",
+      "Küçük seçimler büyük akışa dönüşür.",
+      "Kalbinin sessizliği, zihnin gürültüsünü çözer.",
+      "Sorunun cevabı bazen ‘senin frekansın’dır.",
     ];
-    const en = [
-      "Make one small choice today: be kinder to yourself.",
-      "When intention becomes clear, the system becomes simple.",
-      "Take one step toward what your heart says yes to.",
-      "Now is the moment to change direction.",
-      "Write one sentence: “What am I choosing?”",
+    const poolEN = [
+      "Don’t fix anything today. Just see.",
+      "Small choices become a larger flow.",
+      "The silence of the heart dissolves the noise of the mind.",
+      "Sometimes the answer is your frequency.",
     ];
-    const list = isTR ? tr : en;
-    const idx = new Date().getDate() % list.length;
-    return list[idx];
+    const pool = isTR ? poolTR : poolEN;
+    const idx = new Date().getDate() % pool.length;
+    return pool[idx];
   }, [isTR]);
 
-  const [note, setNote] = useState("");
+  const addNoteToDraft = () => {
+    const merged = `${draft}\n\n—\n${note}`.trim();
+    setDraft(merged);
+    localStorage.setItem("sanri_draft", merged);
+  };
+
+  const copyDraft = async () => {
+    try {
+      await navigator.clipboard.writeText(draft || "");
+      alert(isTR ? "Kopyalandı." : "Copied.");
+    } catch {
+      alert(isTR ? "Kopyalanamadı." : "Copy failed.");
+    }
+  };
+
+  const saveNote = () => {
+    localStorage.setItem("sanri_note", note);
+    alert(isTR ? "Kaydedildi." : "Saved.");
+  };
+
+  const clearAll = () => {
+    if (!confirm(isTR ? "Not ve taslak temizlensin mi?" : "Clear note and draft?")) return;
+    setNote("");
+    setDraft("");
+    localStorage.removeItem("sanri_note");
+    localStorage.removeItem("sanri_draft");
+  };
 
   return (
     <div className={styles.page} onPointerDown={unlockAudio}>
       <StarTrail />
 
       <div className={styles.topbar}>
-        <div className={styles.topbarLeft}>
-          <span className={styles.brandPill}>CAELINUS AI</span>
-          <span className={styles.topbarSubtitle}>
-            {isTR ? "Sanrı Yaşam Koçu" : "SANRI Life Coach"}
+        <div className={styles.left}>
+          <span className={styles.brand}>CAELINUS AI</span>
+          <span className={styles.sub}>
+            {isTR ? "Sanrı Yaşam Koçu • Kişisel Panel" : "Sanri Life Coach • Personal Panel"}
           </span>
         </div>
 
-        <div className={styles.topbarRight}>
-          <button type="button" className={styles.backBtn} onClick={() => navigate("/", { state: { skipIntro: true } })}>
+        <div className={styles.right}>
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => navigate("/", { state: { skipIntro: true } })}
+          >
             {isTR ? "← Kapılara Dön" : "← Back to Gates"}
           </button>
 
@@ -56,7 +87,6 @@ export default function YasamKocuPage() {
             className={styles.langBtn}
             onClick={() => setLanguage(isTR ? "en" : "tr")}
             title={isTR ? "EN" : "TR"}
-            aria-label="Language toggle"
           >
             {isTR ? "EN" : "TR"}
           </button>
@@ -64,56 +94,147 @@ export default function YasamKocuPage() {
       </div>
 
       <div className={styles.shell}>
-        <div className={styles.card}>
-          <div className={styles.kicker}>CAELINUS AI • LIVING SPACE</div>
-          <div className={styles.h1}>{isTR ? "Sanrı Yaşam Koçu" : "SANRI Life Coach"}</div>
-          <div className={styles.subtitle}>
-            {isTR ? "Kişisel alanın: günlük sözler, notlar ve dönüşüm." : "Your personal space: daily guidance, notes, transformation."}
-          </div>
-
-          <div className={styles.grid}>
-            <div className={styles.panel}>
-              <div className={styles.panelTitle}>{isTR ? "Günün Sözü" : "Daily Line"}</div>
-              <div className={styles.daily}>{daily}</div>
-
-              <div className={styles.smallNote}>
-                {isTR ? "İpucu: Bugün tek bir küçük eylem seç." : "Tip: Choose one small action today."}
-              </div>
-            </div>
-
-            <div className={styles.panel}>
-              <div className={styles.panelTitle}>{isTR ? "Kişisel Not" : "Personal Note"}</div>
-              <textarea
-                className={styles.textarea}
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                placeholder={isTR ? "Bugün neyi seçiyorsun? (kısa yaz)" : "What are you choosing today? (write briefly)"}
-              />
-              <div className={styles.row}>
-                <button type="button" className={styles.ghostBtn} onClick={() => setNote("")}>
-                  {isTR ? "Temizle" : "Clear"}
-                </button>
-                <div className={styles.grow} />
-                <button
-                  type="button"
-                  className={styles.primaryBtn}
-                  onClick={() => {
-                    // şimdilik local; sonra backend’e kaydederiz
-                    alert(isTR ? "Kaydedildi (şimdilik local). Sonra hesabına bağlayacağız." : "Saved (local for now). We’ll bind it to your account next.");
-                  }}
-                >
-                  {isTR ? "Kaydet" : "Save"}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.footnote}>
+        <div className={styles.hero}>
+          <div className={styles.kicker}>{isTR ? "BUGÜNÜN SÖZÜ" : "TODAY'S LINE"}</div>
+          <div className={styles.daily}>{daily}</div>
+          <div className={styles.mini}>
             {isTR
-              ? "Bu alan yaşayan bir alan: her gün büyür. © 2026 CaelinusAI • SANRI"
-              : "This is a living space: it grows daily. © 2026 CaelinusAI • SANRI"}
+              ? "Bu alan yaşayan bir alan. Yazdıkların birikiyor. Sonra ‘Kitap Taslağı’na dönüşür."
+              : "This is a living space. What you write accumulates, then becomes a book draft."}
+          </div>
+
+          {/* QUICK ACTIONS */}
+          <div className={styles.row}>
+            <button type="button" className={styles.primary} onClick={saveNote}>
+              {isTR ? "Notu Kaydet" : "Save Note"}
+            </button>
+            <button type="button" className={styles.ghost} onClick={clearAll}>
+              {isTR ? "Temizle" : "Clear"}
+            </button>
           </div>
         </div>
+
+        <div className={styles.grid}>
+          {/* NOTE */}
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>{isTR ? "Kendi Notun" : "Your Note"}</div>
+            <textarea
+              className={styles.textarea}
+              value={note}
+              onChange={(e) => {
+                setNote(e.target.value);
+                localStorage.setItem("sanri_note", e.target.value);
+              }}
+              placeholder={isTR ? "Bugün neyi fark ettin?" : "What did you notice today?"}
+            />
+            <div className={styles.row}>
+              <button type="button" className={styles.primary} onClick={saveNote}>
+                {isTR ? "Kaydet" : "Save"}
+              </button>
+              <button
+                type="button"
+                className={styles.ghost}
+                onClick={() => navigate("/sanriya-sor", { state: { skipIntro: true }, replace: false })}
+              >
+                {isTR ? "SANRI’ya Sor" : "Ask SANRI"}
+              </button>
+            </div>
+          </div>
+
+          {/* DRAFT */}
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>{isTR ? "Kitap Taslağı" : "Book Draft"}</div>
+            <textarea
+              className={styles.textarea}
+              value={draft}
+              onChange={(e) => {
+                setDraft(e.target.value);
+                localStorage.setItem("sanri_draft", e.target.value);
+              }}
+              placeholder={isTR ? "Buraya parça parça yaz… Sonra bölüm olur." : "Write in fragments… Later it becomes chapters."}
+            />
+            <div className={styles.row}>
+              <button type="button" className={styles.primary} onClick={addNoteToDraft}>
+                {isTR ? "Notu Taslağa Ekle" : "Add Note to Draft"}
+              </button>
+              <button type="button" className={styles.ghost} onClick={copyDraft}>
+                {isTR ? "Taslağı Kopyala" : "Copy Draft"}
+              </button>
+            </div>
+          </div>
+
+          {/* PLANS (ACTIVE) */}
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>{isTR ? "Planlar" : "Plans"}</div>
+
+            <div className={styles.planList}>
+              <button
+                type="button"
+                className={styles.planItemBtn}
+                onClick={() => alert(isTR ? "Misafir: Panel + Notlar aktif." : "Guest: Panel + Notes active.")}
+              >
+                <div className={styles.planName}>{isTR ? "Misafir" : "Guest"}</div>
+                <div className={styles.planDesc}>{isTR ? "Panel + Notlar" : "Panel + Notes"}</div>
+              </button>
+
+              <button
+                type="button"
+                className={styles.planItemBtn}
+                onClick={() => navigate("/rituel-alani", { state: { skipIntro: true } })}
+              >
+                <div className={styles.planName}>{isTR ? "Premium" : "Premium"}</div>
+                <div className={styles.planDesc}>
+                  {isTR ? "Ritüel Alanı + Kitap Oluşturma" : "Ritual Space + Book Builder"}
+                </div>
+              </button>
+            </div>
+
+            <div className={styles.row}>
+              <button
+                type="button"
+                className={styles.primary}
+                onClick={() => navigate("/library", { state: { skipIntro: true } })}
+              >
+                {isTR ? "Kütüphaneyi Aç" : "Open Library"}
+              </button>
+
+              <button
+                type="button"
+                className={styles.ghost}
+                onClick={() => alert(isTR ? "Ödeme bağlantısını yarın bağlayacağız." : "Payments will be wired tomorrow.")}
+              >
+                {isTR ? "Satın Al (yakında)" : "Buy (soon)"}
+              </button>
+            </div>
+          </div>
+
+          {/* TALK TO SANRI (ACTIVE) */}
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>{isTR ? "SANRI ile Konuş" : "Talk to SANRI"}</div>
+            <div className={styles.cardDesc}>
+              {isTR ? "Hemen Yansıma alanına geç." : "Jump into the reflection space."}
+            </div>
+
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={() => navigate("/sanriya-sor", { state: { skipIntro: true } })}
+            >
+              {isTR ? "SANRI’ya Sor →" : "Ask SANRI →"}
+            </button>
+
+            <button
+              type="button"
+              className={styles.ghost}
+              onClick={() => navigate("/library", { state: { skipIntro: true } })}
+              style={{ marginTop: 10 }}
+            >
+              {isTR ? "Kitapları Gör →" : "See Books →"}
+            </button>
+          </div>
+        </div>
+
+        <div className={styles.footer}>© 2026 CaelinusAI • SANRI</div>
       </div>
     </div>
   );

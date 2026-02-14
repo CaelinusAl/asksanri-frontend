@@ -33,6 +33,23 @@
 }
 .topbarSubtitle{opacity:.78; font-size:12px;}
 
+.planItemBtn{
+  width:100%;
+  text-align:left;
+  border:1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  border-radius:16px;
+  padding:14px;
+  cursor:pointer;
+}
+.planItemBtn:hover{
+  background: rgba(160,123,255,0.10);
+}
+.cardDesc{
+  opacity:0.85;
+  margin: 8px 0 14px;
+}
+
 .topbarRight{display:flex; align-items:center; gap:10px;}
 .backBtn, .langBtn{
   border:1px solid rgba(255,255,255,.14);

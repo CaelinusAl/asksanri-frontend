@@ -1,23 +1,29 @@
+// src/pages/HomePage.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.css";
 
 import StarTrail from "../components/StarTrail";
-import { useDoor } from "../contexts/DoorNavContext";
+import AuthModal from "../components/AuthModal";
+
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 
 export default function HomePage() {
-  const { go } = useDoor();
+  const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
   const location = useLocation();
 
-  // geri dönünce intro atlamak için: state.skipIntro
+  // ✅ geri dönünce intro atlamak için
   const [introDone, setIntroDone] = useState(() => Boolean(location.state?.skipIntro));
   const [visibleLines, setVisibleLines] = useState(0);
 
+  // ✅ Auth modal
+  const [authOpen, setAuthOpen] = useState(false);
+
+  // ✅ intro metinleri önce tanımlanır
   const introLines = useMemo(() => {
     return isTR
       ? [
@@ -48,7 +54,7 @@ export default function HomePage() {
         ];
   }, [isTR]);
 
-  // intro yazdırma
+  // ✅ intro yazdırma
   useEffect(() => {
     if (introDone) return;
     setVisibleLines(0);
@@ -65,62 +71,58 @@ export default function HomePage() {
   }, [introDone, introLines]);
 
   const gates = useMemo(
-  () => [
-    {
-      key: "sanri",
-      title: isTR ? "SANRI" : "SANRI",
-      desc: isTR ? "Yansıma alanı" : "Reflection space",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/sanriya-sor",
-      hot: true,
-    },
-    {
-      key: "yasam_kocu",
-      title: isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach",
-      desc: isTR
-        ? "Kişisel bilinç panelin"
-        : "Your personal consciousness dashboard",
-      hint: isTR ? "Panele gir" : "Enter panel",
-      path: "/yasam-kocu",
-      premium: true,
-    },
-    {
-      key: "bilinc",
-      title: isTR ? "Bilinç Alanı" : "Consciousness Field",
-      desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/bilinc-alani",
-    },
-    {
-      key: "frekans",
-      title: isTR ? "Frekans Alanı" : "Frequency Field",
-      desc: isTR ? "Enerji katmanı" : "Energy layer",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/frekans-alani",
-    },
-    {
-      key: "rituel",
-      title: isTR ? "Ritüel Alanı" : "Ritual Field",
-      desc: isTR ? "Özel kapı" : "Private gate",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/rituel-alani",
-      premium: true,
-    },
-    {
-      key: "library",
-      title: isTR ? "Kütüphane" : "Library",
-      desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/library",
-      hot: true,
-    },
-  ],
-  [isTR]
-);
+    () => [
+      {
+        key: "sanri",
+        title: isTR ? "SANRI" : "SANRI",
+        desc: isTR ? "Yansıma alanı" : "Reflection space",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/sanriya-sor",
+        hot: true,
+      },
+      {
+        key: "yasam_kocu",
+        title: isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach",
+        desc: isTR ? "Kişisel bilinç panelin" : "Your personal consciousness dashboard",
+        hint: isTR ? "Panele gir" : "Enter panel",
+        path: "/yasam-kocu",
+        premium: true,
+      },
+      {
+        key: "bilinc",
+        title: isTR ? "Bilinç Alanı" : "Consciousness Field",
+        desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/bilinc-alani",
+      },
+      {
+        key: "frekans",
+        title: isTR ? "Frekans Alanı" : "Frequency Field",
+        desc: isTR ? "Enerji katmanı" : "Energy layer",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/frekans-alani",
+      },
+      {
+        key: "rituel",
+        title: isTR ? "Ritüel Alanı" : "Ritual Field",
+        desc: isTR ? "Özel kapı" : "Private gate",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/rituel-alani",
+        premium: true,
+      },
+      {
+        key: "library",
+        title: isTR ? "Kütüphane" : "Library",
+        desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/library",
+        hot: true,
+      },
+    ],
+    [isTR]
+  );
 
-  const onUnlock = () => {
-    unlockAudio();
-  };
+  const onUnlock = () => unlockAudio();
 
   const onOpenGates = () => {
     onUnlock();
@@ -130,8 +132,7 @@ export default function HomePage() {
 
   const handleGate = (g) => {
     onUnlock();
-    // SES YOK. SES SADECE SANRI SAYFASINDA.
-    go(g.path);
+    navigate(g.path, { state: { skipIntro: true } });
   };
 
   return (
@@ -148,6 +149,17 @@ export default function HomePage() {
         </div>
 
         <div className={styles.topbarRight}>
+          {/* GİRİŞ / MİSAFİR */}
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setAuthOpen(true)}
+            title={isTR ? "Giriş / Misafir" : "Sign in / Guest"}
+          >
+            {isTR ? "GİRİŞ" : "SIGN IN"}
+          </button>
+
+          {/* TR/EN */}
           <button
             type="button"
             className={styles.langBtn}
@@ -161,8 +173,17 @@ export default function HomePage() {
       </div>
 
       <div className={styles.shell}>
+        {/* INTRO */}
         {!introDone ? (
-          <div className={styles.introWrapper} onClick={onOpenGates} role="button" tabIndex={0}>
+          <div
+            className={styles.introWrapper}
+            onClick={onOpenGates}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") onOpenGates();
+            }}
+          >
             <div className={styles.introCard}>
               <div className={styles.orb} />
               <div className={styles.introTitle}>CAELINUS AI</div>
@@ -176,11 +197,28 @@ export default function HomePage() {
               </div>
 
               {visibleLines >= introLines.length && (
-                <div className={styles.tapHint}>{isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}</div>
+                <>
+                  <div className={styles.tapHint}>
+                    {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
+                  </div>
+
+                  <button
+                    type="button"
+                    className={styles.enterBtn}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onOpenGates();
+                    }}
+                  >
+                    {isTR ? "GİRİŞ" : "ENTER"}
+                  </button>
+                </>
               )}
             </div>
           </div>
         ) : (
+          /* GATES */
           <div className={styles.gatesWrapper}>
             <h1 className={styles.h1}>{isTR ? "Kapılar" : "Gates"}</h1>
             <p className={styles.sub}>
@@ -219,6 +257,19 @@ export default function HomePage() {
           </div>
         )}
       </div>
+
+      {/* AUTH MODAL */}
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        onGuest={() => {
+          localStorage.setItem("sanri_guest", "1");
+          navigate("/yasam-kocu", { state: { skipIntro: true } });
+        }}
+        onLoginSuccess={() => {
+          navigate("/yasam-kocu", { state: { skipIntro: true } });
+        }}
+      />
     </div>
   );
 }
