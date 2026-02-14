@@ -72,18 +72,22 @@ export default function SanriyaSorPage() {
 
   const hasPlayedRef = useRef(false);
 
-  const tt = useCallback(
-    (key, fallback) => {
-      try {
-        const v = t?.(key);
-        if (!v || v === key) return fallback;
-        return v;
-      } catch {
-        return fallback;
-      }
-    },
-    [t]
-  );
+useEffect(() => {
+  if (hasPlayedRef.current) return;
+
+  const doorSound = isTR
+    ? "/sfx/door-whoosh.mp3"
+    : "/sfx/door-open-en.mp3";
+
+  unlockAudio();
+  playSfx(doorSound, { volume: 0.35 });
+
+  window.setTimeout(() => {
+    playSfx("/sfx/aura-chime.mp3", { volume: 0.25 });
+  }, 800);
+
+  hasPlayedRef.current = true;
+}, [isTR]);
 
   const title = tt("sanri.title", isTR ? "SANRI’ya Sor" : "Ask SANRI");
   const subtitle = tt(
