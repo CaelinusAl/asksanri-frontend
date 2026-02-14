@@ -12,10 +12,9 @@ export default function HomePage() {
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
-  // ✅ hook component içinde
   const location = useLocation();
 
-  // ✅ geri dönünce intro atlamak için: state.skipIntro
+  // geri dönünce intro atlamak için: state.skipIntro
   const [introDone, setIntroDone] = useState(() => Boolean(location.state?.skipIntro));
   const [visibleLines, setVisibleLines] = useState(0);
 
@@ -53,6 +52,7 @@ export default function HomePage() {
   useEffect(() => {
     if (introDone) return;
     setVisibleLines(0);
+
     const timer = window.setInterval(() => {
       setVisibleLines((v) => {
         const next = Math.min(v + 1, introLines.length);
@@ -60,6 +60,7 @@ export default function HomePage() {
         return next;
       });
     }, 520);
+
     return () => window.clearInterval(timer);
   }, [introDone, introLines]);
 
@@ -67,7 +68,7 @@ export default function HomePage() {
     () => [
       {
         key: "sanri",
-        title: isTR ? "SANRI" : "SANRI",
+        title: "SANRI",
         desc: isTR ? "Yansıma alanı" : "Reflection space",
         hint: isTR ? "Alanı aç" : "Open",
         path: "/sanriya-sor",
@@ -94,34 +95,33 @@ export default function HomePage() {
         hint: isTR ? "Alanı aç" : "Open",
         path: "/rituel-alani",
         premium: true,
+        hot: true,
       },
       {
         key: "library",
         title: isTR ? "Kütüphane" : "Library",
         desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
+        hint: isTR ? "Alanı aç" : "Open",
         path: "/library",
-        hot: true
-      }
-      
+        hot: true,
+      },
     ],
     [isTR]
   );
 
   const onUnlock = () => {
-    // mobil ses izinleri için
     unlockAudio();
   };
 
   const onOpenGates = () => {
     onUnlock();
     setIntroDone(true);
-    // ✅ intro ekranından kapılara geçerken history'yi kirletmeyelim
     window.history.replaceState({}, "", "/");
   };
 
   const handleGate = (g) => {
     onUnlock();
-    // ✅ sesleri HomePage değil DoorNavContext yönetiyor (çift ses engeli)
+    // SES YOK. SES SADECE SANRI SAYFASINDA.
     go(g.path);
   };
 
@@ -139,33 +139,23 @@ export default function HomePage() {
         </div>
 
         <div className={styles.topbarRight}>
-          {location.pathname !== "/" && (
-           <button
-              type="button"
-              className={styles.backBtn}
-              onClick={() => navigate("/")}
-         >
-          {isTR ? "← Kapılara Dön" : "← Back to Gates"}
-            </button>
-       )}
-
           <button
             type="button"
             className={styles.langBtn}
             onClick={() => setLanguage(isTR ? "en" : "tr")}
-       >
-        {isTR ? "EN" : "TR"}
-        </button>
-       </div>
+            title={isTR ? "EN" : "TR"}
+            aria-label="Language toggle"
+          >
+            {isTR ? "EN" : "TR"}
+          </button>
+        </div>
       </div>
 
       <div className={styles.shell}>
-        {/* INTRO */}
         {!introDone ? (
           <div className={styles.introWrapper} onClick={onOpenGates} role="button" tabIndex={0}>
             <div className={styles.introCard}>
               <div className={styles.orb} />
-
               <div className={styles.introTitle}>CAELINUS AI</div>
 
               <div className={styles.introText}>
@@ -177,17 +167,16 @@ export default function HomePage() {
               </div>
 
               {visibleLines >= introLines.length && (
-                <div className={styles.tapHint}>
-                  {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
-                </div>
+                <div className={styles.tapHint}>{isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}</div>
               )}
             </div>
           </div>
         ) : (
-          /* GATES */
           <div className={styles.gatesWrapper}>
             <h1 className={styles.h1}>{isTR ? "Kapılar" : "Gates"}</h1>
-            <p className={styles.sub}>{isTR ? "Hangi alana geçmek istiyorsun?" : "Which space do you want to enter?"}</p>
+            <p className={styles.sub}>
+              {isTR ? "Hangi alana geçmek istiyorsun?" : "Which space do you want to enter?"}
+            </p>
 
             <div className={styles.grid}>
               {gates.map((g) => (

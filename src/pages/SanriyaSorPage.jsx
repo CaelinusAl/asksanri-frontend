@@ -1,4 +1,3 @@
-// src/pages/SanriyaSorPage.jsx
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SanriyaSorPage.module.css";
@@ -67,13 +66,11 @@ export default function SanriyaSorPage() {
 
   const taRef = useRef(null);
 
-  // SFX: sadece SAYFAYA İLK girişte çalsın
+  // SFX refs
   const hasIntroPlayedRef = useRef(false);
-
-  // “kapı açılıyor” voice (door-open) sadece ilk submit’te çalsın
   const hasDoorVoicePlayedRef = useRef(false);
 
-  // typing timer
+  // typing cancel
   const typingCancelRef = useRef({ alive: true });
 
   // SpeechRecognition
@@ -81,12 +78,10 @@ export default function SanriyaSorPage() {
   const recognitionRef = useRef(null);
 
   const goBackToGates = useCallback(() => {
-    // “Kapılar” sayfanızın route’u hangisiyse onu yaz:
-    // çoğu projede "/" kapılar oluyor
-    navigate("/");
+    navigate("/", { replace: false, state: { skipIntro: true } });
   }, [navigate]);
 
-  // Query ile gelindiyse doldur
+  // Query prefill
   useEffect(() => {
     if (q.mode) setMode(q.mode);
     if (q.domain) setDomain(q.domain);
@@ -94,12 +89,11 @@ export default function SanriyaSorPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q.mode, q.domain, q.prefill]);
 
-  // Sayfaya ilk giriş SFX
+  // Page enter SFX (ONLY ONCE)
   useEffect(() => {
     if (hasIntroPlayedRef.current) return;
     hasIntroPlayedRef.current = true;
 
-    // girişte whoosh + chime
     try {
       playSfx("/sfx/door-whoosh.mp3", { volume: 0.55 });
       window.setTimeout(() => {
@@ -108,7 +102,7 @@ export default function SanriyaSorPage() {
     } catch {}
   }, []);
 
-  // Reply typing
+  // Reply typing effect
   useEffect(() => {
     typingCancelRef.current.alive = false;
     typingCancelRef.current = { alive: true };
@@ -125,7 +119,6 @@ export default function SanriyaSorPage() {
       i = Math.min(i + 1, full.length);
       setTypedReply(full.slice(0, i));
 
-      // doğal hız
       const ch = full[i - 1] || "";
       const pause =
         ch === "\n" ? 120 :
@@ -133,8 +126,8 @@ export default function SanriyaSorPage() {
         ch === "," || ch === ";" || ch === ":" ? 80 :
         0;
 
-      const base = 16; // ms/char (insan gibi)
-      const jitter = Math.floor(Math.random() * 16); // 0..15
+      const base = 16;
+      const jitter = Math.floor(Math.random() * 16);
       const delay = base + jitter + pause;
 
       if (i < full.length) window.setTimeout(step, delay);
@@ -175,6 +168,7 @@ export default function SanriyaSorPage() {
     ? "Bazı soruların cevabı yoktur. Bazı cevapların ise sorusu…"
     : "Some questions have no answer. Some answers have no question…";
 
+  // Voice input
   const startListening = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
@@ -230,13 +224,12 @@ export default function SanriyaSorPage() {
     setErrorMsg("");
     setIsThinking(false);
     setIsSending(false);
-    hasDoorVoicePlayedRef.current = false; // istersen resetle tekrar ilk soruda çalsın
+    hasDoorVoicePlayedRef.current = false; // reset sonrası tekrar ilk soruda çalsın
     taRef.current?.focus?.();
   }, []);
 
   const handleKeyDown = useCallback(
     (e) => {
-      // Ctrl+Enter
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
         handleSubmit();
@@ -258,7 +251,7 @@ export default function SanriyaSorPage() {
       return;
     }
 
-    // “Kapı açılıyor” sesi sadece ilk submit’te
+    // Voice only once, on first submit (language-based)
     if (!hasDoorVoicePlayedRef.current) {
       hasDoorVoicePlayedRef.current = true;
       const doorVoice = isTR ? "/sfx/door-open.mp3" : "/sfx/door-open-en.mp3";
@@ -284,23 +277,15 @@ export default function SanriyaSorPage() {
       });
 
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data?.detail || (isTR ? "Sunucu hatası" : "Server error"));
-      }
+      if (!res.ok) throw new Error(data?.detail || (isTR ? "Sunucu hatası" : "Server error"));
 
-      const answer =
-        data?.answer ||
-        data?.response ||
-        data?.text ||
-        data?.message ||
-        "";
-
+      const answer = data?.answer || data?.response || data?.text || data?.message || "";
       setReplyFull(String(answer || "").trim());
     } catch (e) {
-      const msg =
+      const msgErr =
         String(e?.message || "") ||
         (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
-      setErrorMsg(msg);
+      setErrorMsg(msgErr);
     } finally {
       setIsThinking(false);
       setIsSending(false);
@@ -311,7 +296,6 @@ export default function SanriyaSorPage() {
     <div className={styles.page} onPointerDown={unlockAudio}>
       <StarTrail />
 
-      {/* TOPBAR (cam-mor) */}
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
           <span className={styles.brandPill}>CAELINUS AI</span>
@@ -337,7 +321,6 @@ export default function SanriyaSorPage() {
         </div>
       </div>
 
-      {/* CARD */}
       <div className={styles.shell}>
         <div className={styles.card}>
           <div className={styles.kicker}>CAELINUS AI • CONSCIOUSNESS MIRROR</div>
@@ -345,7 +328,6 @@ export default function SanriyaSorPage() {
           <div className={styles.subtitle}>{subtitle}</div>
 
           <div className={styles.grid}>
-            {/* LEFT */}
             <div className={styles.left}>
               <div className={styles.block}>
                 <div className={styles.label}>{isTR ? "Mod" : "Mode"}</div>
@@ -375,7 +357,6 @@ export default function SanriyaSorPage() {
               </div>
             </div>
 
-            {/* RIGHT */}
             <div className={styles.right}>
               <div className={styles.panel}>
                 <div className={styles.panelLabel}>{isTR ? "Yansıma Akışı" : "Reflection Flow"}</div>
@@ -392,11 +373,7 @@ export default function SanriyaSorPage() {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder={
-                      isTR
-                        ? "Bir kelime, soru, rüya veya tarih yaz..."
-                        : "Write a word, question, dream or date..."
-                    }
+                    placeholder={isTR ? "Bir kelime, soru, rüya veya tarih yaz..." : "Write a word, question, dream or date..."}
                     disabled={isSending}
                   />
 
@@ -450,16 +427,14 @@ export default function SanriyaSorPage() {
                   type="button"
                   className={styles.askBtn}
                   onClick={() => {
-                    // sayfa zaten SANRI; bu buton “odak” hissi için:
                     taRef.current?.focus?.();
                     unlockAudio();
                     playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
                   }}
                 >
-                  {isTR ? "Ask SANRI" : "Ask SANRI"}
+                  Ask SANRI
                 </button>
               </div>
-
             </div>
           </div>
         </div>

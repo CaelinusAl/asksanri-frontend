@@ -1,7 +1,6 @@
 // src/pages/RituelAlaniPage.jsx
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
 import styles from "./RituelAlaniPage.module.css";
 
 import StarTrail from "../components/StarTrail";
@@ -9,7 +8,7 @@ import PremiumGateModal from "../components/PremiumGateModal";
 
 import { ritualFlows } from "../data/ritualFlows";
 import { useLanguage } from "../contexts/LanguageContext";
-import { unlockAudio } from "../utils/sfx";
+import { unlockAudio } from "../utils/sfx"; // ✅ KRİTİK: unlockAudio buradan gelir
 
 export default function RituelAlaniPage() {
   const navigate = useNavigate();
@@ -19,7 +18,7 @@ export default function RituelAlaniPage() {
   const isTR = language === "tr";
 
   // ---------- DATA ----------
-  const flows = useMemo(() => Array.isArray(ritualFlows) ? ritualFlows : [], []);
+  const flows = useMemo(() => (Array.isArray(ritualFlows) ? ritualFlows : []), []);
   const [activeKey, setActiveKey] = useState(() => flows?.[0]?.key || "vitrin_rituel");
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -45,7 +44,7 @@ export default function RituelAlaniPage() {
   // audio path (try to be resilient)
   const rawAudio = activeFlow?.audio?.[isTR ? "tr" : "en"] || "";
   const fallbackAudio = useMemo(() => {
-    // Eğer eski adlarla kaldıysa otomatik deneme yapalım (vitrin_rituel vs vitrin)
+    // Eğer eski adlarla kaldıysa otomatik deneme
     if (!rawAudio && activeFlow?.key === "vitrin_rituel") {
       return isTR ? "/audio/rituals/vitrin_rituel_tr.mp3" : "/audio/rituals/vitrin_rituel_en.mp3";
     }
@@ -55,7 +54,6 @@ export default function RituelAlaniPage() {
   const currentAudio = fallbackAudio;
 
   const goBackToGates = useCallback(() => {
-    // Gates ekranın route'u sende "/" ise:
     navigate("/");
   }, [navigate]);
 
@@ -92,7 +90,6 @@ export default function RituelAlaniPage() {
 
   const goToSanri = useCallback(() => {
     const title = isTR ? activeFlow?.title?.tr : activeFlow?.title?.en;
-    // SANRI sayfanda query ile prefill / domain alıyorsun: /sanriya-sor?prefill=...
     const q = encodeURIComponent(String(title || ""));
     navigate(`/sanriya-sor?prefill=${q}&domain=ritual_space&mode=mirror`);
   }, [navigate, activeFlow, isTR]);
@@ -101,7 +98,6 @@ export default function RituelAlaniPage() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    // audio değişince resetle
     if (!audioRef.current) return;
     try {
       audioRef.current.pause();
@@ -114,13 +110,17 @@ export default function RituelAlaniPage() {
     async ({ email, password }) => {
       try {
         if (!API_URL) throw new Error(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
+
         const res = await fetch(`${API_URL}/api/auth/email/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include", // ✅ cookie gerekiyorsa
           body: JSON.stringify({ email, password }),
         });
+
         const data = await res.json().catch(() => ({}));
-        if (!res.ok || data?.success === false) throw new Error(data?.detail || "Register failed");
+        if (!res.ok || data?.success === false) throw new Error(data?.detail || data?.error || "Register failed");
+
         setGateOpen(false);
         alert(isTR ? "Kayıt başarılı. Şimdi giriş yap." : "Registration successful. Now log in.");
       } catch (e) {
@@ -134,13 +134,17 @@ export default function RituelAlaniPage() {
     async ({ email, password }) => {
       try {
         if (!API_URL) throw new Error(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
+
         const res = await fetch(`${API_URL}/api/auth/email/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include", // ✅ cookie set edilecekse şart
           body: JSON.stringify({ email, password }),
         });
+
         const data = await res.json().catch(() => ({}));
-        if (!res.ok || data?.success === false) throw new Error(data?.detail || "Login failed");
+        if (!res.ok || data?.success === false) throw new Error(data?.detail || data?.error || "Login failed");
+
         setGateOpen(false);
         alert(isTR ? "Giriş başarılı." : "Login successful.");
       } catch (e) {
@@ -171,7 +175,7 @@ export default function RituelAlaniPage() {
         </div>
       ) : null}
 
-      {/* Stars (must be inside page) */}
+      {/* Stars */}
       <StarTrail />
 
       {/* TOPBAR */}
@@ -248,12 +252,10 @@ export default function RituelAlaniPage() {
           <div className={styles.panelTitle}>{rightTitle}</div>
 
           <div className={styles.selectedTitle}>
-            {activeFlow ? (isTR ? activeFlow?.title?.tr : activeFlow?.title?.en) : (isTR ? "Ritüel" : "Ritual")}
+            {activeFlow ? (isTR ? activeFlow?.title?.tr : activeFlow?.title?.en) : isTR ? "Ritüel" : "Ritual"}
           </div>
 
-          <div className={styles.selectedDesc}>
-            {activeFlow ? (isTR ? activeFlow?.desc?.tr : activeFlow?.desc?.en) : ""}
-          </div>
+          <div className={styles.selectedDesc}>{activeFlow ? (isTR ? activeFlow?.desc?.tr : activeFlow?.desc?.en) : ""}</div>
 
           {/* AUDIO */}
           <div className={styles.audioBox}>
@@ -262,9 +264,7 @@ export default function RituelAlaniPage() {
             {currentAudio ? (
               <audio ref={audioRef} src={currentAudio} controls className={styles.audio} preload="metadata" />
             ) : (
-              <div className={styles.audioMissing}>
-                {isTR ? "Ses dosyası bulunamadı." : "Audio file not found."}
-              </div>
+              <div className={styles.audioMissing}>{isTR ? "Ses dosyası bulunamadı." : "Audio file not found."}</div>
             )}
 
             <div className={styles.audioHint}>{audioHint}</div>
@@ -276,7 +276,6 @@ export default function RituelAlaniPage() {
               <span className={styles.stepCounter}>
                 {isTR ? "Adım" : "Step"} {steps.length ? stepIndex + 1 : 0}/{steps.length || 0}
               </span>
-
               {currentStep?.t ? <span className={styles.stepPill}>{currentStep.t}</span> : null}
             </div>
 
@@ -287,12 +286,7 @@ export default function RituelAlaniPage() {
                 {isTR ? "← Geri" : "← Back"}
               </button>
 
-              <button
-                type="button"
-                className={styles.btnPrimary}
-                onClick={nextStep}
-                disabled={!steps.length || stepIndex >= steps.length - 1}
-              >
+              <button type="button" className={styles.btnPrimary} onClick={nextStep} disabled={!steps.length || stepIndex >= steps.length - 1}>
                 {isTR ? "Devam →" : "Next →"}
               </button>
 
