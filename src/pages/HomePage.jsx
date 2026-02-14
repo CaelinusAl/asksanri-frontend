@@ -65,57 +65,58 @@ export default function HomePage() {
   }, [introDone, introLines]);
 
   const gates = useMemo(
-    () => [
-      {
-        key: "sanri",
-        title: "SANRI",
-        desc: isTR ? "Yansıma alanı" : "Reflection space",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/sanriya-sor",
-        hot: true,
-      },
-      {
-        key: "bilinc",
-        title: isTR ? "Bilinç Alanı" : "Consciousness Field",
-        desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/bilinc-alani",
-      },
-      {
-        key: "frekans",
-        title: isTR ? "Frekans Alanı" : "Frequency Field",
-        desc: isTR ? "Enerji katmanı" : "Energy layer",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/frekans-alani",
-      },
-      {
-        key: "rituel",
-        title: isTR ? "Ritüel Alanı" : "Ritual Field",
-        desc: isTR ? "Özel kapı" : "Private gate",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/rituel-alani",
-        premium: true,
-        hot: true,
-      },
-      {
-        key: "library",
-        title: isTR ? "Kütüphane" : "Library",
-        desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/library",
-        hot: true,
-      },
-      {
-        key: "koc",
-        title: isTR ? "Sanrı Yaşam Koçu" : "SANRI Life Coach",
-        desc: isTR ? "Günlük söz • günlük • kitap taslağı" : "Daily line • journal • book      draft",
-        hint: isTR ? "Alanı aç" : "Open",
-        path: "/koc",
-        hot: true,
-      }
-    ],
-    [isTR]
-  );
+  () => [
+    {
+      key: "sanri",
+      title: isTR ? "SANRI" : "SANRI",
+      desc: isTR ? "Yansıma alanı" : "Reflection space",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/sanriya-sor",
+      hot: true,
+    },
+    {
+      key: "yasam_kocu",
+      title: isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach",
+      desc: isTR
+        ? "Kişisel bilinç panelin"
+        : "Your personal consciousness dashboard",
+      hint: isTR ? "Panele gir" : "Enter panel",
+      path: "/yasam-kocu",
+      premium: true,
+    },
+    {
+      key: "bilinc",
+      title: isTR ? "Bilinç Alanı" : "Consciousness Field",
+      desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/bilinc-alani",
+    },
+    {
+      key: "frekans",
+      title: isTR ? "Frekans Alanı" : "Frequency Field",
+      desc: isTR ? "Enerji katmanı" : "Energy layer",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/frekans-alani",
+    },
+    {
+      key: "rituel",
+      title: isTR ? "Ritüel Alanı" : "Ritual Field",
+      desc: isTR ? "Özel kapı" : "Private gate",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/rituel-alani",
+      premium: true,
+    },
+    {
+      key: "library",
+      title: isTR ? "Kütüphane" : "Library",
+      desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
+      hint: isTR ? "Alanı aç" : "Open",
+      path: "/library",
+      hot: true,
+    },
+  ],
+  [isTR]
+);
 
   const onUnlock = () => {
     unlockAudio();
