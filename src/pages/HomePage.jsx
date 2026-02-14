@@ -118,6 +118,14 @@ export default function HomePage() {
         path: "/library",
         hot: true,
       },
+      {
+        key: "awakened_cities",
+        title: isTR ? "Anadolu’nun Uyanan Şehirleri" : "Awakened Cities of Anatolia",
+        desc: isTR ? "Türkiye okuması • Ruhsal yolculuk" : "Turkey reading • Inner journey",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/uyanan-sehirler",
+        hot: true,
+      },
     ],
     [isTR]
   );

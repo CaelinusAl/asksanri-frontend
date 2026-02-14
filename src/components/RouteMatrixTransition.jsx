@@ -91,7 +91,7 @@ export default function RouteMatrixTransition() {
     rafRef.current = requestAnimationFrame(draw);
 
     // ekstra güvenlik: 700ms sonra kesin kapat
-    timeoutRef.current = setTimeout(() => setShow(false), 700);
+    timeoutRef.current = setTimeout(() => setShow(false), 2800);
 
     window.addEventListener("resize", resize);
 
