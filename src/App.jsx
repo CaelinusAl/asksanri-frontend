@@ -1,6 +1,8 @@
 // src/App.jsx
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import CoachPanelPage from "./pages/CoachPanelPage";
+import CoachOnboardingPage from "./pages/CoachOnboardingPage";
 
 // PAGES
 import HomePage from "./pages/HomePage";
@@ -19,13 +21,15 @@ export default function App() {
     <Routes>
       {/* Home / Gates */}
       <Route path="/" element={<HomePage />} />
-
+      
       {/* Gates */}
       <Route path="/sanriya-sor" element={<SanriyaSorPage />} />
       <Route path="/bilinc-alani" element={<BilincAlaniPage />} />
       <Route path="/frekans-alani" element={<FrekansAlaniPage />} />
       <Route path="/rituel-alani" element={<RituelAlaniPage />} />
       <Route path="/library" element={<LibraryPage />} />
+      <Route path="/koc" element={<CoachPanelPage />} />
+      <Route path="/koc/onboarding" element={<CoachOnboardingPage />} />
 
       {/* Admin (varsa) */}
       <Route path="/admin/*" element={<AdminLayout />}>

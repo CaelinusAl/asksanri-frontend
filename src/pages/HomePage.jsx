@@ -105,6 +105,14 @@ export default function HomePage() {
         path: "/library",
         hot: true,
       },
+      {
+        key: "koc",
+        title: isTR ? "Sanrı Yaşam Koçu" : "SANRI Life Coach",
+        desc: isTR ? "Günlük söz • günlük • kitap taslağı" : "Daily line • journal • book      draft",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/koc",
+        hot: true,
+      }
     ],
     [isTR]
   );
