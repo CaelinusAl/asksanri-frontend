@@ -1,189 +1,247 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLanguage } from "../contexts/LanguageContext";
+import styles from "./CoachPanelPage.module.css";
+
 import StarTrail from "../components/StarTrail";
-import { unlockAudio } from "../utils/sfx";
+import { unlockAudio, playSfx } from "../utils/sfx";
+import { useLanguage } from "../contexts/LanguageContext";
 
-const LS_PROFILE = "sanri_profile_v1";
-const LS_JOURNAL = "sanri_journal_v1";
-const LS_DAILY = "sanri_daily_words_v1";
-
-function todayKey() {
-  return new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-}
+const todayKey = () => {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+};
 
 export default function CoachPanelPage() {
   const navigate = useNavigate();
-  const { language } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
-  const profile = useMemo(() => {
-    try { return JSON.parse(localStorage.getItem(LS_PROFILE) || "null"); } catch { return null; }
-  }, []);
-
-  // Eğer profil yoksa onboarding
-  if (!profile?.birthDate) {
-    navigate("/koc/onboarding", { replace: true });
-    return null;
-  }
-
-  const [journal, setJournal] = useState(() => localStorage.getItem(LS_JOURNAL) || "");
-  const [book, setBook] = useState(() => "");
-  const [daily, setDaily] = useState(() => {
+  // --- tiny “life coach” state (local) ---
+  const STORAGE_KEY = useMemo(() => `sanri_coach_${todayKey()}`, []);
+  const [doneIds, setDoneIds] = useState(() => {
     try {
-      const all = JSON.parse(localStorage.getItem(LS_DAILY) || "{}");
-      return all[todayKey()] || "";
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
     } catch {
-      return "";
+      return [];
     }
   });
 
-  const generateDaily = () => {
-    unlockAudio();
-    const line = isTR
-      ? `Bugün: ${profile.name}. Soru değil; yön seç. Küçük bir “evet” büyük bir kapıdır.`
-      : `Today: ${profile.name}. Not an answer—choose a direction. A small “yes” opens a larger gate.`;
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(doneIds));
+    } catch {}
+  }, [doneIds, STORAGE_KEY]);
 
-    setDaily(line);
+  const kindnessCards = useMemo(() => {
+    return isTR
+      ? [
+          { id: "k1", title: "Bugünün İyiliği", desc: "Bir kişiye gerçek bir iltifat et. Göz temasıyla." },
+          { id: "k2", title: "Alan Temizliği", desc: "5 dakika: masadan 3 şeyi kaldır. Frekans açılır." },
+          { id: "k3", title: "Kalp Mesajı", desc: "Birine “Nasılsın?” yaz ve cevap beklemeden gönder." },
+        ]
+      : [
+          { id: "k1", title: "Kindness of the Day", desc: "Give one honest compliment—eye contact included." },
+          { id: "k2", title: "Clear the Space", desc: "5 minutes: remove 3 items from your desk. Frequency opens." },
+          { id: "k3", title: "Heart Message", desc: "Text someone: “How are you?” and send without expectation." },
+        ];
+  }, [isTR]);
 
-    const all = JSON.parse(localStorage.getItem(LS_DAILY) || "{}");
-    all[todayKey()] = line;
-    localStorage.setItem(LS_DAILY, JSON.stringify(all));
-  };
+  const dailyMantra = isTR
+    ? "Bugün ‘düzeltmeye’ değil, ‘açmaya’ geldim."
+    : "Today I’m not here to fix—I'm here to open.";
 
-  const saveJournal = () => {
-    localStorage.setItem(LS_JOURNAL, journal);
-    alert(isTR ? "Kaydedildi." : "Saved.");
-  };
+  const goBackToGates = useCallback(() => {
+    navigate("/", { state: { skipIntro: true } });
+  }, [navigate]);
 
-  const addToBook = () => {
-    const stamp = `${todayKey()} — ${profile.name}\n`;
-    setBook((prev) => (prev ? prev + "\n\n" : "") + stamp + journal.trim());
+  const openSanri = useCallback(
+    (prefill) => {
+      unlockAudio();
+      try {
+        playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
+      } catch {}
+      const q = encodeURIComponent(prefill || "");
+      navigate(`/sanriya-sor?mode=mirror&domain=auto&prefill=${q}`);
+    },
+    [navigate]
+  );
+
+  const markDone = (id) => {
+    if (!id) return;
+    setDoneIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
   };
 
   return (
-    <div style={{ minHeight: "100vh", padding: 18, color: "#fff" }} onPointerDown={unlockAudio}>
+    <div className={styles.page} onPointerDown={unlockAudio}>
       <StarTrail />
 
-      <div style={topbar}>
-        <div>
-          <div style={{ fontWeight: 900, letterSpacing: ".12em", fontSize: 12 }}>SANRI YAŞAM KOÇU</div>
-          <div style={{ opacity: 0.75, marginTop: 4 }}>
-            {isTR ? `Hoş geldin, ${profile.name}` : `Welcome, ${profile.name}`}
-          </div>
+      {/* TOPBAR */}
+      <div className={styles.topbar}>
+        <div className={styles.topbarLeft}>
+          <span className={styles.brandPill}>CAELINUS AI</span>
+          <span className={styles.topbarSubtitle}>
+            {isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach"}
+          </span>
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
-          <button style={btnGhost} onClick={() => navigate("/", { state: { skipIntro: true } })}>
-            {isTR ? "← Kapılar" : "← Gates"}
+        <div className={styles.topbarRight}>
+          <button type="button" className={styles.backBtn} onClick={goBackToGates}>
+            {isTR ? "← Kapılara Dön" : "← Back to Gates"}
           </button>
-          <button style={btnGhost} onClick={() => navigate("/koc/onboarding")}>
-            {isTR ? "Profil" : "Profile"}
+
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setLanguage(isTR ? "en" : "tr")}
+            title={isTR ? "EN" : "TR"}
+            aria-label="Language toggle"
+          >
+            {isTR ? "EN" : "TR"}
           </button>
         </div>
       </div>
 
-      <div style={grid}>
-        <div style={card}>
-          <div style={cardTitle}>{isTR ? "Bugünün Sözü" : "Daily Line"}</div>
-          <div style={{ opacity: 0.85, lineHeight: 1.6, whiteSpace: "pre-wrap", minHeight: 80 }}>
-            {daily || (isTR ? "Henüz üretilmedi." : "Not generated yet.")}
+      <div className={styles.shell}>
+        {/* HERO */}
+        <div className={styles.hero}>
+          <div className={styles.kicker}>CAELINUS AI • LIVING SPACE</div>
+          <div className={styles.h1}>{isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach"}</div>
+          <div className={styles.sub}>
+            {isTR
+              ? "Bugün giriş yap, alanı aktive et. SANRI seninle yürür."
+              : "Enter today, activate the space. SANRI walks with you."}
           </div>
 
-          <button style={btn} onClick={generateDaily}>
-            {isTR ? "Bugünün Sözünü Üret" : "Generate Daily"}
-          </button>
-        </div>
-
-        <div style={card}>
-          <div style={cardTitle}>{isTR ? "Günlük" : "Journal"}</div>
-          <textarea
-            value={journal}
-            onChange={(e) => setJournal(e.target.value)}
-            placeholder={isTR ? "Bugün kendine ne söylemek istersin?" : "What do you want to tell yourself today?"}
-            style={{ ...inp, minHeight: 220, resize: "vertical" }}
-          />
-
-          <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
-            <button style={btnGhost} onClick={saveJournal}>{isTR ? "Kaydet" : "Save"}</button>
-            <button style={btn} onClick={addToBook}>{isTR ? "Kitaba Ekle" : "Add to Book"}</button>
+          <div className={styles.mantraBox}>
+            <div className={styles.mantraTitle}>{isTR ? "Günlük Söz" : "Daily Line"}</div>
+            <div className={styles.mantra}>{dailyMantra}</div>
+            <button
+              type="button"
+              className={styles.primaryBtn}
+              onClick={() =>
+                openSanri(
+                  isTR
+                    ? "Bugün hangi küçük seçim beni büyütür?"
+                    : "What small choice today will expand me?"
+                )
+              }
+            >
+              {isTR ? "SANRI ile Başla" : "Start with SANRI"}
+            </button>
           </div>
         </div>
 
-        <div style={card}>
-          <div style={cardTitle}>{isTR ? "Kitap Taslağı" : "Book Draft"}</div>
-          <div style={{ opacity: 0.7, fontSize: 12, marginBottom: 8 }}>
-            {isTR ? "Bu alan büyüdükçe e-kitaba dönüşecek." : "This will evolve into an e-book."}
+        <div className={styles.grid}>
+          {/* LEFT: Kindness */}
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>{isTR ? "İyilik Alanı" : "Kindness Space"}</div>
+            <div className={styles.cardDesc}>
+              {isTR
+                ? "Burası “iyi hissetmek” değil — iyi olmak için."
+                : "Not to feel good — to do good."}
+            </div>
+
+            <div className={styles.list}>
+              {kindnessCards.map((k) => {
+                const done = doneIds.includes(k.id);
+                return (
+                  <div key={k.id} className={`${styles.item} ${done ? styles.itemDone : ""}`}>
+                    <div className={styles.itemHeader}>
+                      <div className={styles.itemName}>{k.title}</div>
+                      {done ? <span className={styles.badge}>DONE</span> : null}
+                    </div>
+                    <div className={styles.itemText}>{k.desc}</div>
+                    <div className={styles.row}>
+                      <button
+                        type="button"
+                        className={styles.ghostBtn}
+                        onClick={() =>
+                          openSanri(
+                            isTR
+                              ? `Bu görevi yaptığımda içimde ne açılır? (${k.title})`
+                              : `What opens within me after I do this? (${k.title})`
+                          )
+                        }
+                      >
+                        {isTR ? "SANRI’ye Sor" : "Ask SANRI"}
+                      </button>
+
+                      <button
+                        type="button"
+                        className={styles.smallBtn}
+                        onClick={() => markDone(k.id)}
+                        disabled={done}
+                      >
+                        {done ? (isTR ? "Tamamlandı" : "Completed") : (isTR ? "Tamamladım" : "I did it")}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <textarea
-            value={book}
-            onChange={(e) => setBook(e.target.value)}
-            placeholder={isTR ? "Burada birikmeye başlar…" : "Your draft builds here…"}
-            style={{ ...inp, minHeight: 220, resize: "vertical" }}
-          />
+
+          {/* RIGHT: Plans */}
+          <div className={styles.card}>
+            <div className={styles.cardTitle}>{isTR ? "Planlar & Ürünler" : "Plans & Products"}</div>
+            <div className={styles.cardDesc}>
+              {isTR
+                ? "Premium ritüeller, kişisel alan ve kitap bölümleri."
+                : "Premium rituals, personal space, and book chapters."}
+            </div>
+
+            <div className={styles.plans}>
+              <div className={styles.plan}>
+                <div className={styles.planName}>{isTR ? "Free" : "Free"}</div>
+                <div className={styles.planLine}>
+                  {isTR ? "Kapılar + temel alanlar" : "Gates + core spaces"}
+                </div>
+                <button type="button" className={styles.planBtn} onClick={() => navigate("/library")}>
+                  {isTR ? "Kütüphaneyi Gör" : "Open Library"}
+                </button>
+              </div>
+
+              <div className={styles.planPremium}>
+                <div className={styles.planName}>{isTR ? "Premium" : "Premium"}</div>
+                <div className={styles.planLine}>
+                  {isTR ? "Ritüel alanı + özel protokoller" : "Ritual space + private protocols"}
+                </div>
+
+                {/* bugün için: ödeme yoksa bile “yakında” sayfasına götürür */}
+                <button
+                  type="button"
+                  className={styles.planBtnPrimary}
+                  onClick={() => navigate("/rituel-alani")}
+                >
+                  {isTR ? "Premium Kapıyı Gör" : "See Premium Gate"}
+                </button>
+              </div>
+
+              <div className={styles.plan}>
+                <div className={styles.planName}>{isTR ? "Goddess" : "Goddess"}</div>
+                <div className={styles.planLine}>
+                  {isTR ? "Sesli bölümler + özel kitap" : "Voiced chapters + special book"}
+                </div>
+                <button type="button" className={styles.planBtn} onClick={() => navigate("/library")}>
+                  {isTR ? "Bölümlere Git" : "Go to Chapters"}
+                </button>
+              </div>
+            </div>
+
+            <div className={styles.footerNote}>
+              {isTR
+                ? "Not: Ödeme altyapısını bir sonraki adımda bağlarız. Bugün alanı çalışır halde çıkarıyoruz."
+                : "Note: Payment wiring comes next. Today we ship a working living space."}
+            </div>
+          </div>
         </div>
+
+        <div className={styles.footerLine}>© 2026 CaelinusAI • SANRI</div>
       </div>
     </div>
   );
 }
-
-const topbar = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  padding: "14px 16px",
-  borderRadius: 16,
-  border: "1px solid rgba(255,255,255,0.12)",
-  background:
-    "radial-gradient(900px 120px at 20% 0%, rgba(180,120,255,0.22), transparent 70%), radial-gradient(900px 120px at 80% 0%, rgba(90,160,255,0.14), transparent 70%), rgba(10,12,18,0.55)",
-  backdropFilter: "blur(14px)",
-};
-
-const grid = {
-  display: "grid",
-  gridTemplateColumns: "1fr",
-  gap: 14,
-  maxWidth: 1100,
-  margin: "18px auto 0",
-};
-
-const card = {
-  borderRadius: 18,
-  border: "1px solid rgba(255,255,255,0.10)",
-  background: "rgba(255,255,255,0.04)",
-  backdropFilter: "blur(14px)",
-  padding: 16,
-};
-
-const cardTitle = { fontWeight: 900, letterSpacing: ".06em", marginBottom: 10 };
-
-const inp = {
-  padding: "12px 14px",
-  borderRadius: 14,
-  border: "1px solid rgba(255,255,255,0.14)",
-  background: "rgba(255,255,255,0.06)",
-  color: "rgba(255,255,255,0.92)",
-  outline: "none",
-  width: "100%",
-};
-
-const btn = {
-  marginTop: 10,
-  padding: "12px 14px",
-  borderRadius: 14,
-  border: "1px solid rgba(255,255,255,0.14)",
-  background: "linear-gradient(90deg, rgba(180,140,255,0.9), rgba(90,160,255,0.7))",
-  color: "#0b0b12",
-  fontWeight: 900,
-  cursor: "pointer",
-};
-
-const btnGhost = {
-  padding: "12px 14px",
-  borderRadius: 14,
-  border: "1px solid rgba(255,255,255,0.14)",
-  background: "rgba(255,255,255,0.06)",
-  color: "rgba(255,255,255,0.92)",
-  fontWeight: 800,
-  cursor: "pointer",
-};
