@@ -8,7 +8,7 @@ import PremiumGateModal from "../components/PremiumGateModal";
 
 import { ritualFlows } from "../data/ritualFlows";
 import { useLanguage } from "../contexts/LanguageContext";
-import { unlockAudio } from "../utils/sfx"; // ✅ KRİTİK: unlockAudio buradan gelir
+import { unlockAudio } from "../utils/sfx"; // ✅ KRİTİK
 
 export default function RituelAlaniPage() {
   const navigate = useNavigate();
@@ -17,18 +17,30 @@ export default function RituelAlaniPage() {
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
+  const [fatal, setFatal] = useState("");
+
+  // ✅ MOBİL “SİYAH/BEYAZ EKRAN” = hata yakala
+  useEffect(() => {
+    const onErr = (msg, src, line, col, err) => {
+      setFatal(String(err?.stack || err || msg));
+      return false;
+    };
+    const onRej = (e) => setFatal(String(e?.reason?.stack || e?.reason || e));
+    window.onerror = onErr;
+    window.onunhandledrejection = onRej;
+    return () => {
+      window.onerror = null;
+      window.onunhandledrejection = null;
+    };
+  }, []);
+
   // ---------- DATA ----------
   const flows = useMemo(() => (Array.isArray(ritualFlows) ? ritualFlows : []), []);
   const [activeKey, setActiveKey] = useState(() => flows?.[0]?.key || "vitrin_rituel");
   const [stepIndex, setStepIndex] = useState(0);
 
-  // premium gate
   const [gateOpen, setGateOpen] = useState(false);
 
-  // debug / fatal overlay (mobil beyaz ekran yakalama)
-  const [fatal, setFatal] = useState("");
-
-  // ---------- HELPERS ----------
   const activeFlow = useMemo(() => {
     const found = flows.find((f) => f?.key === activeKey);
     return found || flows?.[0] || null;
@@ -41,41 +53,34 @@ export default function RituelAlaniPage() {
 
   const currentStep = steps[stepIndex] || null;
 
-  // audio path (try to be resilient)
+  // audio
   const rawAudio = activeFlow?.audio?.[isTR ? "tr" : "en"] || "";
-  const fallbackAudio = useMemo(() => {
-    // Eğer eski adlarla kaldıysa otomatik deneme
-    if (!rawAudio && activeFlow?.key === "vitrin_rituel") {
+  const currentAudio = useMemo(() => {
+    if (rawAudio) return rawAudio;
+    if (activeFlow?.key === "vitrin_rituel") {
       return isTR ? "/audio/rituals/vitrin_rituel_tr.mp3" : "/audio/rituals/vitrin_rituel_en.mp3";
     }
-    return rawAudio || "";
+    return "";
   }, [rawAudio, activeFlow?.key, isTR]);
 
-  const currentAudio = fallbackAudio;
-
   const goBackToGates = useCallback(() => {
-    navigate("/");
+    unlockAudio();
+    navigate("/", { state: { skipIntro: true } });
   }, [navigate]);
 
   const openFlow = useCallback(
     (flow) => {
-      try {
-        unlockAudio();
-        setFatal("");
+      unlockAudio();
+      setFatal("");
+      if (!flow?.key) return;
 
-        if (!flow?.key) return;
-
-        // Premium kuralı
-        if (flow.premium) {
-          setGateOpen(true);
-          return;
-        }
-
-        setActiveKey(flow.key);
-        setStepIndex(0);
-      } catch (e) {
-        setFatal(String(e?.message || e));
+      if (flow.premium) {
+        setGateOpen(true);
+        return;
       }
+
+      setActiveKey(flow.key);
+      setStepIndex(0);
     },
     []
   );
@@ -91,12 +96,11 @@ export default function RituelAlaniPage() {
   const goToSanri = useCallback(() => {
     const title = isTR ? activeFlow?.title?.tr : activeFlow?.title?.en;
     const q = encodeURIComponent(String(title || ""));
-    navigate(`/sanriya-sor?prefill=${q}&domain=ritual_space&mode=mirror`);
+    navigate(`/sanriya-sor?prefill=${q}&domain=ritual_space&mode=mirror`, { state: { skipIntro: true } });
   }, [navigate, activeFlow, isTR]);
 
-  // ---------- AUDIO ----------
+  // audio reset
   const audioRef = useRef(null);
-
   useEffect(() => {
     if (!audioRef.current) return;
     try {
@@ -105,68 +109,50 @@ export default function RituelAlaniPage() {
     } catch {}
   }, [currentAudio]);
 
-  // ---------- AUTH HOOKS FOR MODAL ----------
+  // register/login
   const handleRegister = useCallback(
     async ({ email, password }) => {
-      try {
-        if (!API_URL) throw new Error(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
-
-        const res = await fetch(`${API_URL}/api/auth/email/register`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // ✅ cookie gerekiyorsa
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || data?.success === false) throw new Error(data?.detail || data?.error || "Register failed");
-
-        setGateOpen(false);
-        alert(isTR ? "Kayıt başarılı. Şimdi giriş yap." : "Registration successful. Now log in.");
-      } catch (e) {
-        alert(String(e?.message || e));
-      }
+      if (!API_URL) return alert(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
+      const res = await fetch(`${API_URL}/api/auth/email/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) return alert(String(data?.detail || data?.error || "Register failed"));
+      setGateOpen(false);
+      alert(isTR ? "Kayıt başarılı. Şimdi giriş yap." : "Registration successful. Now log in.");
     },
     [API_URL, isTR]
   );
 
   const handleLogin = useCallback(
     async ({ email, password }) => {
-      try {
-        if (!API_URL) throw new Error(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
-
-        const res = await fetch(`${API_URL}/api/auth/email/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "include", // ✅ cookie set edilecekse şart
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || data?.success === false) throw new Error(data?.detail || data?.error || "Login failed");
-
-        setGateOpen(false);
-        alert(isTR ? "Giriş başarılı." : "Login successful.");
-      } catch (e) {
-        alert(String(e?.message || e));
-      }
+      if (!API_URL) return alert(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
+      const res = await fetch(`${API_URL}/api/auth/email/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) return alert(String(data?.detail || data?.error || "Login failed"));
+      setGateOpen(false);
+      alert(isTR ? "Giriş başarılı." : "Login successful.");
     },
     [API_URL, isTR]
   );
 
-  // ---------- UI TEXT ----------
   const pageSubtitle = isTR ? "Ritüel Alanı • Frekans Protokolleri" : "Ritual Space • Frequency Protocols";
-  const leftTitle = isTR ? "RİTÜELLER" : "RITUALS";
-  const rightTitle = isTR ? "SEÇİLİ RİTÜEL" : "SELECTED RITUAL";
-  const audioTitle = isTR ? "Sesli Ritüel" : "Audio Ritual";
-  const audioHint = isTR
-    ? "Not: İlk play için ekrana dokunmuş olman gerekebilir."
-    : "Note: You may need to tap the screen once before audio can play.";
 
-  // ---------- RENDER ----------
   return (
-    <div className={styles.page} onPointerDown={unlockAudio}>
-      {/* Fatal overlay (mobile white screen) */}
+    <div
+      className={styles.page}
+      onPointerDown={unlockAudio}
+      onTouchStart={unlockAudio}
+      onMouseDown={unlockAudio}
+    >
       {fatal ? (
         <div className={styles.fatal}>
           <b>{isTR ? "Ritüel Alanı Hatası" : "Ritual Space Error"}</b>
@@ -175,10 +161,8 @@ export default function RituelAlaniPage() {
         </div>
       ) : null}
 
-      {/* Stars */}
       <StarTrail />
 
-      {/* TOPBAR */}
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
           <span className={styles.brand}>CAELINUS AI</span>
@@ -190,8 +174,6 @@ export default function RituelAlaniPage() {
             type="button"
             className={styles.langBtn}
             onClick={() => setLanguage(isTR ? "en" : "tr")}
-            title={isTR ? "EN" : "TR"}
-            aria-label="Language toggle"
           >
             {isTR ? "EN" : "TR"}
           </button>
@@ -202,11 +184,9 @@ export default function RituelAlaniPage() {
         </div>
       </div>
 
-      {/* LAYOUT */}
       <div className={styles.layout}>
-        {/* LEFT PANEL */}
         <div className={styles.ritualList}>
-          <div className={styles.panelTitle}>{leftTitle}</div>
+          <div className={styles.panelTitle}>{isTR ? "RİTÜELLER" : "RITUALS"}</div>
 
           <div className={styles.listInner}>
             {flows.map((r) => {
@@ -247,19 +227,19 @@ export default function RituelAlaniPage() {
           </div>
         </div>
 
-        {/* RIGHT PANEL */}
         <div className={styles.selectedCard}>
-          <div className={styles.panelTitle}>{rightTitle}</div>
+          <div className={styles.panelTitle}>{isTR ? "SEÇİLİ RİTÜEL" : "SELECTED RITUAL"}</div>
 
           <div className={styles.selectedTitle}>
             {activeFlow ? (isTR ? activeFlow?.title?.tr : activeFlow?.title?.en) : isTR ? "Ritüel" : "Ritual"}
           </div>
 
-          <div className={styles.selectedDesc}>{activeFlow ? (isTR ? activeFlow?.desc?.tr : activeFlow?.desc?.en) : ""}</div>
+          <div className={styles.selectedDesc}>
+            {activeFlow ? (isTR ? activeFlow?.desc?.tr : activeFlow?.desc?.en) : ""}
+          </div>
 
-          {/* AUDIO */}
           <div className={styles.audioBox}>
-            <div className={styles.audioTitle}>{audioTitle}</div>
+            <div className={styles.audioTitle}>{isTR ? "Sesli Ritüel" : "Audio Ritual"}</div>
 
             {currentAudio ? (
               <audio ref={audioRef} src={currentAudio} controls className={styles.audio} preload="metadata" />
@@ -267,10 +247,13 @@ export default function RituelAlaniPage() {
               <div className={styles.audioMissing}>{isTR ? "Ses dosyası bulunamadı." : "Audio file not found."}</div>
             )}
 
-            <div className={styles.audioHint}>{audioHint}</div>
+            <div className={styles.audioHint}>
+              {isTR
+                ? "Not: İlk play için ekrana dokunmuş olman gerekebilir."
+                : "Note: You may need to tap the screen once before audio can play."}
+            </div>
           </div>
 
-          {/* STEPS */}
           <div className={styles.stepsBox}>
             <div className={styles.stepLine}>
               <span className={styles.stepCounter}>
@@ -279,7 +262,9 @@ export default function RituelAlaniPage() {
               {currentStep?.t ? <span className={styles.stepPill}>{currentStep.t}</span> : null}
             </div>
 
-            <div className={styles.stepText}>{currentStep?.b || (isTR ? "Bu ritüel yakında." : "Coming soon.")}</div>
+            <div className={styles.stepText}>
+              {currentStep?.b || (isTR ? "Bu ritüel yakında." : "Coming soon.")}
+            </div>
 
             <div className={styles.stepActions}>
               <button type="button" className={styles.btnGhost} onClick={prevStep} disabled={stepIndex <= 0}>
@@ -306,7 +291,6 @@ export default function RituelAlaniPage() {
         </div>
       </div>
 
-      {/* PREMIUM GATE MODAL */}
       <PremiumGateModal
         open={gateOpen}
         onClose={() => setGateOpen(false)}

@@ -1,3 +1,4 @@
+// src/pages/SanriyaSorPage.jsx
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SanriyaSorPage.module.css";
@@ -66,9 +67,9 @@ export default function SanriyaSorPage() {
 
   const taRef = useRef(null);
 
-  // SFX refs
-  const hasIntroPlayedRef = useRef(false);
-  const hasDoorVoicePlayedRef = useRef(false);
+  // SFX refs (ÖNEMLİ)
+  const hasIntroPlayedRef = useRef(false); // sadece ilk dokunuşta giriş SFX
+  const hasDoorVoicePlayedRef = useRef(false); // sadece ilk submit'te "kapı açılıyor" voice
 
   // typing cancel
   const typingCancelRef = useRef({ alive: true });
@@ -81,6 +82,27 @@ export default function SanriyaSorPage() {
     navigate("/", { replace: false, state: { skipIntro: true } });
   }, [navigate]);
 
+  // ✅ SFX: SADECE USER GESTURE İLE (PC autoplay fix)
+  const ensureIntroOnce = useCallback(() => {
+    if (hasIntroPlayedRef.current) return;
+    hasIntroPlayedRef.current = true;
+
+    try {
+      // TR: whoosh, EN: door-open-en
+      const enterSound = isTR ? "/sfx/door-whoosh.mp3" : "/sfx/door-open-en.mp3";
+      playSfx(enterSound, { volume: 0.45 });
+
+      window.setTimeout(() => {
+        playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
+      }, 550);
+    } catch {}
+  }, [isTR]);
+
+  const onUserGesture = useCallback(() => {
+    unlockAudio();
+    ensureIntroOnce();
+  }, [ensureIntroOnce]);
+
   // Query prefill
   useEffect(() => {
     if (q.mode) setMode(q.mode);
@@ -88,19 +110,6 @@ export default function SanriyaSorPage() {
     if (q.prefill) setText(String(q.prefill));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q.mode, q.domain, q.prefill]);
-
-  // Page enter SFX (ONLY ONCE)
-  useEffect(() => {
-    if (hasIntroPlayedRef.current) return;
-    hasIntroPlayedRef.current = true;
-
-    try {
-      playSfx("/sfx/door-whoosh.mp3", { volume: 0.55 });
-      window.setTimeout(() => {
-        playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
-      }, 450);
-    } catch {}
-  }, []);
 
   // Reply typing effect
   useEffect(() => {
@@ -224,7 +233,7 @@ export default function SanriyaSorPage() {
     setErrorMsg("");
     setIsThinking(false);
     setIsSending(false);
-    hasDoorVoicePlayedRef.current = false; // reset sonrası tekrar ilk soruda çalsın
+    hasDoorVoicePlayedRef.current = false;
     taRef.current?.focus?.();
   }, []);
 
@@ -240,7 +249,8 @@ export default function SanriyaSorPage() {
   );
 
   const handleSubmit = useCallback(async () => {
-    unlockAudio();
+    onUserGesture(); // ✅ submit = kesin user gesture
+
     setErrorMsg("");
 
     const msg = String(text || "").trim();
@@ -282,18 +292,21 @@ export default function SanriyaSorPage() {
       const answer = data?.answer || data?.response || data?.text || data?.message || "";
       setReplyFull(String(answer || "").trim());
     } catch (e) {
-      const msgErr =
-        String(e?.message || "") ||
-        (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
+      const msgErr = String(e?.message || "") || (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
       setErrorMsg(msgErr);
     } finally {
       setIsThinking(false);
       setIsSending(false);
     }
-  }, [API_URL, domain, isTR, isSending, mode, text]);
+  }, [API_URL, domain, isTR, isSending, mode, onUserGesture, text]);
 
   return (
-    <div className={styles.page} onPointerDown={unlockAudio}>
+    <div
+      className={styles.page}
+      onPointerDown={onUserGesture}
+      onMouseDown={onUserGesture}
+      onTouchStart={onUserGesture}
+    >
       <StarTrail />
 
       <div className={styles.topbar}>
@@ -427,8 +440,8 @@ export default function SanriyaSorPage() {
                   type="button"
                   className={styles.askBtn}
                   onClick={() => {
+                    onUserGesture();
                     taRef.current?.focus?.();
-                    unlockAudio();
                     playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
                   }}
                 >
