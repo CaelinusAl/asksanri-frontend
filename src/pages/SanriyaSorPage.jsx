@@ -3,57 +3,46 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./SanriyaSorPage.module.css";
 
-
 import StarTrail from "../components/StarTrail";
-import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio, playSfx } from "../utils/sfx";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const MODES = [
-  { id: "mirror", labelKey: "sanri.modes.mirror", tr: "Ayna", en: "Mirror" },
-  { id: "dream", labelKey: "sanri.modes.dream", tr: "Rüya", en: "Dream" },
-  { id: "divine", labelKey: "sanri.modes.divine", tr: "İlahi", en: "Divine" },
-  { id: "shadow", labelKey: "sanri.modes.shadow", tr: "Gölge", en: "Shadow" },
-  { id: "light", labelKey: "sanri.modes.light", tr: "Işık", en: "Light" },
+  { id: "mirror", tr: "Ayna", en: "Mirror" },
+  { id: "dream", tr: "Rüya", en: "Dream" },
+  { id: "divine", tr: "İlahi", en: "Divine" },
+  { id: "shadow", tr: "Gölge", en: "Shadow" },
+  { id: "light", tr: "Işık", en: "Light" },
 ];
 
 const DOMAINS = [
-  { id: "auto", labelKey: "sanri.domains.auto", tr: "Otomatik", en: "Auto" },
-  { id: "awakened_cities", labelKey: "sanri.domains.awakened_cities", tr: "Uyanmış Şehirler", en: "Awakened Cities" },
-  { id: "consciousness_field", labelKey: "sanri.domains.consciousness_field", tr: "Bilinç Alanı", en: "Consciousness Field" },
-  { id: "frequency_field", labelKey: "sanri.domains.frequency_field", tr: "Frekans Alanı", en: "Frequency Field" },
-  { id: "ritual_space", labelKey: "sanri.domains.ritual_space", tr: "Ritüel Alanı", en: "Ritual Space" },
-  { id: "neural_ecstasy", labelKey: "sanri.domains.neural_ecstasy", tr: "Beyin Orgazmı", en: "Neural Ecstasy" },
-  { id: "book_112", labelKey: "sanri.domains.book_112", tr: "112. Kitap", en: "Book 112" },
+  { id: "auto", tr: "Otomatik", en: "Auto" },
+  { id: "awakened_cities", tr: "Uyanan Şehirler", en: "Awakened Cities" },
+  { id: "consciousness_field", tr: "Bilinç Alanı", en: "Consciousness Field" },
+  { id: "frequency_field", tr: "Frekans Alanı", en: "Frequency Field" },
+  { id: "ritual_space", tr: "Ritüel Alanı", en: "Ritual Space" },
+  { id: "library", tr: "Kütüphane", en: "Library" },
 ];
 
 function parseQuery(search) {
-  const sp = new URLSearchParams(search);
+  const sp = new URLSearchParams(search || "");
   return {
-    domain: sp.get("domain") || "",
     mode: sp.get("mode") || "",
+    domain: sp.get("domain") || "",
     prefill: sp.get("prefill") || "",
   };
 }
 
-function safeJsonParse(text) {
-  try {
-    return JSON.parse(text);
-  } catch {
-    return null;
-  }
-}
-
 function ThinkingDots({ label }) {
-  const [dots, setDots] = useState("");
-  useEffect(() => {
-    const t = setInterval(() => setDots((d) => (d.length >= 3 ? "" : d + ".")), 350);
-    return () => clearInterval(t);
-  }, []);
   return (
-    <span className={styles.thinking}>
-      {label}
-      <span className={styles.dots}>{dots}</span>
-    </span>
+    <div className={styles.thinking}>
+      <span className={styles.thinkingLabel}>{label}</span>
+      <span className={styles.dots}>
+        <i />
+        <i />
+        <i />
+      </span>
+    </div>
   );
 }
 
@@ -64,52 +53,40 @@ export default function SanriyaSorPage() {
   const location = useLocation();
   const q = useMemo(() => parseQuery(location.search), [location.search]);
 
-  const { language, setLanguage, t } = useLanguage();
+  const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
-  const hasStartedRef = useRef(false);
 
-
-
-  const hasPlayedRef = useRef(false);
-
-useEffect(() => {
-  if (hasPlayedRef.current) return;
-
-  const doorSound = isTR
-    ? "/sfx/door-whoosh.mp3"
-    : "/sfx/door-open-en.mp3";
-
-  unlockAudio();
-  playSfx(doorSound, { volume: 0.35 });
-
-  window.setTimeout(() => {
-    playSfx("/sfx/aura-chime.mp3", { volume: 0.25 });
-  }, 800);
-
-  hasPlayedRef.current = true;
-}, [isTR]);
-
-  const title = tt("sanri.title", isTR ? "SANRI’ya Sor" : "Ask SANRI");
-  const subtitle = tt(
-    "sanri.subtitleLine",
-    isTR ? "Bu bir cevap değildir. Bir yansımadır. Kapıyı sen açarsın." : "This is not an answer. It is a reflection. You open the door."
-  );
-
-  // state
-  const [mode, setMode] = useState(q.mode || "mirror");
-  const [domain, setDomain] = useState(q.domain || "auto");
-  const [text, setText] = useState(q.prefill ? String(q.prefill) : "");
-
-  const [isSending, setIsSending] = useState(false);
-  const [isThinking, setIsThinking] = useState(false);
-
+  const [mode, setMode] = useState("mirror");
+  const [domain, setDomain] = useState("auto");
+  const [text, setText] = useState("");
   const [replyFull, setReplyFull] = useState("");
   const [typedReply, setTypedReply] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [isThinking, setIsThinking] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   const taRef = useRef(null);
 
-  // query ile geldiyse state’leri güncelle (kapı presetleri)
+  // SFX: sadece SAYFAYA İLK girişte çalsın
+  const hasIntroPlayedRef = useRef(false);
+
+  // “kapı açılıyor” voice (door-open) sadece ilk submit’te çalsın
+  const hasDoorVoicePlayedRef = useRef(false);
+
+  // typing timer
+  const typingCancelRef = useRef({ alive: true });
+
+  // SpeechRecognition
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
+
+  const goBackToGates = useCallback(() => {
+    // “Kapılar” sayfanızın route’u hangisiyse onu yaz:
+    // çoğu projede "/" kapılar oluyor
+    navigate("/");
+  }, [navigate]);
+
+  // Query ile gelindiyse doldur
   useEffect(() => {
     if (q.mode) setMode(q.mode);
     if (q.domain) setDomain(q.domain);
@@ -117,167 +94,227 @@ useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q.mode, q.domain, q.prefill]);
 
-  const hint = useMemo(() => {
-    const base = isTR
-      ? "Bir an dur.\nSoruyu yazmadan önce bedeninde nerede yankılandığını hisset.\nSANRI cevap üretmez; kapıyı açar.\n"
-      : "Pause for a moment.\nFeel where your question resonates in your body.\nSANRI does not answer; it opens a door.\n";
-    const modeLine = isTR
-      ? `\nMod: ${mode}\nNet bir cümle yaz. Cevap değil; yansıma gelecek.`
-      : `\nMode: ${mode}\nWrite one clear sentence. Not an answer—reflection will arrive.`;
-    return base + modeLine;
-  }, [isTR, mode]);
+  // Sayfaya ilk giriş SFX
+  useEffect(() => {
+    if (hasIntroPlayedRef.current) return;
+    hasIntroPlayedRef.current = true;
 
-  // “Kapılara dön” = Home’a skipIntro ile dönsün (intro tekrar açılmasın)
-  const goBackToGates = useCallback(() => {
-    unlockAudio();
-    navigate("/", { state: { skipIntro: true } });
-  }, [navigate]);
+    // girişte whoosh + chime
+    try {
+      playSfx("/sfx/door-whoosh.mp3", { volume: 0.55 });
+      window.setTimeout(() => {
+        playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
+      }, 450);
+    } catch {}
+  }, []);
+
+  // Reply typing
+  useEffect(() => {
+    typingCancelRef.current.alive = false;
+    typingCancelRef.current = { alive: true };
+    const aliveRef = typingCancelRef.current;
+
+    setTypedReply("");
+
+    const full = String(replyFull || "");
+    if (!full) return;
+
+    let i = 0;
+    const step = () => {
+      if (!aliveRef.alive) return;
+      i = Math.min(i + 1, full.length);
+      setTypedReply(full.slice(0, i));
+
+      // doğal hız
+      const ch = full[i - 1] || "";
+      const pause =
+        ch === "\n" ? 120 :
+        ch === "." || ch === "!" || ch === "?" ? 140 :
+        ch === "," || ch === ";" || ch === ":" ? 80 :
+        0;
+
+      const base = 16; // ms/char (insan gibi)
+      const jitter = Math.floor(Math.random() * 16); // 0..15
+      const delay = base + jitter + pause;
+
+      if (i < full.length) window.setTimeout(step, delay);
+    };
+
+    window.setTimeout(step, 80);
+
+    return () => {
+      aliveRef.alive = false;
+    };
+  }, [replyFull]);
+
+  const hint = useMemo(() => {
+    if (isTR) {
+      return [
+        "Dur. Nefes al.",
+        "Soru yazma: bir cümle yaz.",
+        "Cevap bekleme: yansıma izle.",
+        "",
+        "Örnek:",
+        "• “Bugün içimde neyi bastırıyorum?”",
+        "• “Bu rüya bende neyi hatırlatıyor?”",
+      ].join("\n");
+    }
+    return [
+      "Pause. One breath.",
+      "Don’t ask—write one clear sentence.",
+      "Don’t demand an answer—observe the reflection.",
+      "",
+      "Examples:",
+      "• “What am I suppressing today?”",
+      "• “What is this dream reminding me of?”",
+    ].join("\n");
+  }, [isTR]);
+
+  const title = isTR ? "SANRI’ya Sor" : "Ask SANRI";
+  const subtitle = isTR
+    ? "Bazı soruların cevabı yoktur. Bazı cevapların ise sorusu…"
+    : "Some questions have no answer. Some answers have no question…";
+
+  const startListening = useCallback(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      alert(isTR ? "Sesle yazma desteklenmiyor. Chrome/Edge deneyin." : "Voice input not supported. Try Chrome/Edge.");
+      return;
+    }
+    try { recognitionRef.current?.stop?.(); } catch {}
+
+    const rec = new SR();
+    recognitionRef.current = rec;
+    rec.lang = isTR ? "tr-TR" : "en-US";
+    rec.interimResults = true;
+    rec.continuous = false;
+
+    let finalText = "";
+
+    rec.onstart = () => setIsListening(true);
+    rec.onerror = () => setIsListening(false);
+    rec.onend = () => setIsListening(false);
+
+    rec.onresult = (event) => {
+      let interim = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const piece = event.results[i][0]?.transcript || "";
+        if (event.results[i].isFinal) finalText += piece + " ";
+        else interim += piece;
+      }
+      setText((prev) => {
+        const base = (prev || "").trim();
+        const merged = (base ? base + " " : "") + (finalText + interim).trim();
+        return merged;
+      });
+    };
+
+    rec.start();
+  }, [isTR]);
+
+  const stopListening = useCallback(() => {
+    try { recognitionRef.current?.stop?.(); } catch {}
+    setIsListening(false);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      try { recognitionRef.current?.stop?.(); } catch {}
+    };
+  }, []);
 
   const handleReset = useCallback(() => {
     setText("");
     setReplyFull("");
     setTypedReply("");
     setErrorMsg("");
-
-    hasStartedRef.current = false;
     setIsThinking(false);
     setIsSending(false);
-    window.setTimeout(() => taRef.current?.focus?.(), 0);
+    hasDoorVoicePlayedRef.current = false; // istersen resetle tekrar ilk soruda çalsın
+    taRef.current?.focus?.();
   }, []);
 
   const handleKeyDown = useCallback(
     (e) => {
+      // Ctrl+Enter
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
         e.preventDefault();
-        void handleSubmit();
+        handleSubmit();
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [text, mode, domain, isSending, API_URL, isTR]
+    [text, mode, domain, isTR, API_URL]
   );
 
-  // typing effect: “insan gibi”
-  useEffect(() => {
-    if (!replyFull) return;
-    setTypedReply("");
-
-    let i = 0;
-    let alive = true;
-
-    const step = () => {
-      if (!alive) return;
-      const next = replyFull.slice(0, i + 1);
-      setTypedReply(next);
-      i += 1;
-
-      if (i >= replyFull.length) return;
-
-      const ch = replyFull[i - 1] || "";
-      // noktalama duraklaması
-      const pause =
-        ch === "." || ch === "!" || ch === "?" ? 240 :
-        ch === "," || ch === ";" || ch === ":" ? 140 :
-        ch === "\n" ? 200 :
-        0;
-
-      // temel hız (senin “gerçek yazıyor” hissin)
-      const base = 18; // 18ms/char
-      const jitter = Math.floor(Math.random() * 18); // 0..17
-      const delay = base + jitter + pause;
-
-      window.setTimeout(step, delay);
-    };
-
-    window.setTimeout(step, 80);
-
-    return () => {
-      alive = false;
-    };
-  }, [replyFull]);
-
-  
   const handleSubmit = useCallback(async () => {
     unlockAudio();
     setErrorMsg("");
-
-  if (!hasStartedRef.current) {
-  playSfx("/sfx/door-open.mp3", { volume: 0.3 });
-  hasStartedRef.current = true;
-}
 
     const msg = String(text || "").trim();
     if (!msg || isSending) return;
 
     if (!API_URL) {
-      setErrorMsg(isTR ? "VITE_BACKEND_URL eksik (Vercel env)." : "VITE_BACKEND_URL is missing (Vercel env).");
+      setErrorMsg(isTR ? "VITE_BACKEND_URL eksik (Vercel env)." : "Missing VITE_BACKEND_URL (Vercel env).");
       return;
+    }
+
+    // “Kapı açılıyor” sesi sadece ilk submit’te
+    if (!hasDoorVoicePlayedRef.current) {
+      hasDoorVoicePlayedRef.current = true;
+      const doorVoice = isTR ? "/sfx/door-open.mp3" : "/sfx/door-open-en.mp3";
+      try { playSfx(doorVoice, { volume: 0.30 }); } catch {}
     }
 
     setIsSending(true);
     setIsThinking(true);
     setReplyFull("");
-    setTypedReply("");
-
-    // minik “düşünüyor” çanı (çok düşük)
-    playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
-
-    // Backend schema: message/question/session_id/mode
-    // Biz message + mode gönderiyoruz, session_id sabit.
-    const payload = {
-      message: msg,
-      question: msg,
-      session_id: "default",
-      mode: mode || "mirror",
-      // domain backend’de zorunlu değilse bile gönderiyoruz (ileride kullanılır)
-      domain: domain || "auto",
-    };
 
     try {
       const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          message: msg,
+          question: msg,
+          session_id: "default",
+          mode: mode || "mirror",
+          domain: domain || "auto",
+          lang: isTR ? "tr" : "en",
+        }),
       });
 
-      const raw = await res.text();
-      const data = safeJsonParse(raw) || {};
-
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const msgErr =
-          data?.detail ||
-          data?.error ||
-          raw ||
-          (isTR ? "Bir hata oluştu." : "An error occurred.");
-        setErrorMsg(String(msgErr));
-        setIsSending(false);
-        setIsThinking(false);
-        return;
+        throw new Error(data?.detail || (isTR ? "Sunucu hatası" : "Server error"));
       }
 
-      const answer = data?.response ?? data?.reply ?? data?.text ?? raw ?? "";
-      setReplyFull(String(answer || ""));
-      setIsSending(false);
+      const answer =
+        data?.answer ||
+        data?.response ||
+        data?.text ||
+        data?.message ||
+        "";
+
+      setReplyFull(String(answer || "").trim());
+    } catch (e) {
+      const msg =
+        String(e?.message || "") ||
+        (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
+      setErrorMsg(msg);
+    } finally {
       setIsThinking(false);
-    } catch (err) {
-      // CORS dahil network
-      setErrorMsg(
-        isTR
-          ? "Bağlantı/CORS hatası. (Railway SANRI_ALLOWED_ORIGINS içine Vercel domainini eklemen gerekebilir.)"
-          : "Network/CORS error. (Add your Vercel domain into SANRI_ALLOWED_ORIGINS on Railway.)"
-      );
       setIsSending(false);
-      setIsThinking(false);
     }
-  }, [API_URL, domain, isSending, isTR, mode, text]);
+  }, [API_URL, domain, isTR, isSending, mode, text]);
 
   return (
     <div className={styles.page} onPointerDown={unlockAudio}>
       <StarTrail />
 
-      {/* TOPBAR */}
+      {/* TOPBAR (cam-mor) */}
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
-          <span className={styles.brand}>CAELINUS AI</span>
+          <span className={styles.brandPill}>CAELINUS AI</span>
           <span className={styles.topbarSubtitle}>
             {isTR ? "Bilinç ve Anlam Zekası" : "Consciousness & Meaning Intelligence"}
           </span>
@@ -311,37 +348,29 @@ useEffect(() => {
             {/* LEFT */}
             <div className={styles.left}>
               <div className={styles.block}>
-                <div className={styles.label}>{tt("common.mode", isTR ? "Mod" : "Mode")}</div>
-                <select
-                  className={styles.select}
-                  value={mode}
-                  onChange={(e) => setMode(e.target.value)}
-                >
+                <div className={styles.label}>{isTR ? "Mod" : "Mode"}</div>
+                <select className={styles.select} value={mode} onChange={(e) => setMode(e.target.value)}>
                   {MODES.map((m) => (
                     <option key={m.id} value={m.id}>
-                      {tt(m.labelKey, isTR ? m.tr : m.en)}
+                      {isTR ? m.tr : m.en}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div className={styles.block}>
-                <div className={styles.label}>{tt("common.domain", isTR ? "Domain (opsiyonel)" : "Domain (optional)")}</div>
-                <select
-                  className={styles.select}
-                  value={domain}
-                  onChange={(e) => setDomain(e.target.value)}
-                >
+                <div className={styles.label}>{isTR ? "Domain (opsiyonel)" : "Domain (optional)"}</div>
+                <select className={styles.select} value={domain} onChange={(e) => setDomain(e.target.value)}>
                   {DOMAINS.map((d) => (
                     <option key={d.id} value={d.id}>
-                      {tt(d.labelKey, isTR ? d.tr : d.en)}
+                      {isTR ? d.tr : d.en}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div className={styles.rule}>
-                <div className={styles.label}>{tt("common.guide", isTR ? "Kılavuz" : "Guide")}</div>
+                <div className={styles.label}>{isTR ? "Kılavuz" : "Guide"}</div>
                 <pre className={styles.hint}>{hint}</pre>
               </div>
             </div>
@@ -349,14 +378,12 @@ useEffect(() => {
             {/* RIGHT */}
             <div className={styles.right}>
               <div className={styles.panel}>
-                <div className={styles.label}>
-                  {tt("common.reflectionFlow", isTR ? "Yansıma Akışı" : "Reflection Flow")}
-                </div>
+                <div className={styles.panelLabel}>{isTR ? "Yansıma Akışı" : "Reflection Flow"}</div>
 
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    void handleSubmit();
+                    handleSubmit();
                   }}
                 >
                   <textarea
@@ -365,55 +392,74 @@ useEffect(() => {
                     value={text}
                     onChange={(e) => setText(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder={tt(
-                      "sanri.placeholder",
-                      isTR ? "Bir kelime, soru, rüya veya tarih yaz..." : "Write a word, question, dream or date..."
-                    )}
+                    placeholder={
+                      isTR
+                        ? "Bir kelime, soru, rüya veya tarih yaz..."
+                        : "Write a word, question, dream or date..."
+                    }
                     disabled={isSending}
                   />
 
                   <div className={styles.actions}>
                     <button type="button" className={styles.btnGhost} onClick={handleReset}>
-                      {tt("common.reset", isTR ? "Sıfırla" : "Reset")}
+                      {isTR ? "Sıfırla" : "Reset"}
                     </button>
 
+                    <button type="submit" className={styles.btnPrimary} disabled={isSending || !String(text || "").trim()}>
+                      {isSending ? (isTR ? "Yansıtılıyor…" : "Reflecting…") : (isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
+                    </button>
+
+                    <div className={styles.grow} />
+
                     <button
-                      type="submit"
-                      className={styles.btnPrimary}
-                      disabled={isSending || !String(text || "").trim()}
+                      type="button"
+                      className={`${styles.micBtn} ${isListening ? styles.micLive : ""}`}
+                      onClick={isListening ? stopListening : startListening}
+                      disabled={isSending}
                     >
-                      {isSending
-                        ? tt("common.reflecting", isTR ? "Yansıtılıyor…" : "Reflecting…")
-                        : tt("common.reflect", isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
+                      {isListening ? (isTR ? "Durdur" : "Stop") : (isTR ? "🎙 Sesle yaz" : "🎙 Voice")}
                     </button>
                   </div>
                 </form>
               </div>
 
               <div className={`${styles.panel} ${styles.reply}`}>
-                <div className={styles.label}>{tt("common.reflection", isTR ? "Yansıma" : "Reflection")}</div>
+                <div className={styles.panelLabel}>{isTR ? "Yansıma" : "Reflection"}</div>
+
+                {errorMsg ? <div className={styles.error}>{errorMsg}</div> : null}
 
                 <div className={styles.replybox}>
-                  {errorMsg ? (
-                    <span className={styles.errorText}>{errorMsg}</span>
-                  ) : isThinking || isSending ? (
+                  {isThinking || isSending ? (
                     <ThinkingDots label={isTR ? "Sanrı düşünüyor" : "SANRI is thinking"} />
                   ) : typedReply ? (
-                    typedReply
+                    <div className={styles.replyText}>{typedReply}</div>
                   ) : (
-                    tt("common.reflectionEmpty", isTR ? "Yansıma burada belirecek." : "Your reflection will appear here.")
+                    <div className={styles.empty}>{isTR ? "Yansıma burada belirecek." : "Your reflection will appear here."}</div>
                   )}
+                </div>
+
+                <div className={styles.footnote}>
+                  {isTR
+                    ? "Bu alan “bilgi” üretmez. Anlam yansıtır; sende şekillenir. © 2026 CaelinusAI • SANRI"
+                    : "This space does not produce “knowledge”. It reflects meaning—shaped within you. © 2026 CaelinusAI • SANRI"}
                 </div>
               </div>
 
-              <div className={styles.footnote}>
-                {tt(
-                  "common.footnote",
-                  isTR
-                    ? "Bu alan “bilgi” üretmez. Anlam yansıtır; sende şekillenir. © 2026 CaelinusAI • SANRI"
-                    : "This space does not produce “knowledge”. It reflects meaning—shaped within you. © 2026 CaelinusAI • SANRI"
-                )}
+              <div className={styles.bottomRow}>
+                <button
+                  type="button"
+                  className={styles.askBtn}
+                  onClick={() => {
+                    // sayfa zaten SANRI; bu buton “odak” hissi için:
+                    taRef.current?.focus?.();
+                    unlockAudio();
+                    playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
+                  }}
+                >
+                  {isTR ? "Ask SANRI" : "Ask SANRI"}
+                </button>
               </div>
+
             </div>
           </div>
         </div>
