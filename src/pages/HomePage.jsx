@@ -11,19 +11,18 @@ import { unlockAudio } from "../utils/sfx";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const location = useLocation();
-
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
-  // ✅ geri dönünce intro atlamak için
+  const location = useLocation();
+
+  // intro state
   const [introDone, setIntroDone] = useState(() => Boolean(location.state?.skipIntro));
   const [visibleLines, setVisibleLines] = useState(0);
 
-  // ✅ Auth modal
+  // auth modal
   const [authOpen, setAuthOpen] = useState(false);
 
-  // ✅ Intro metinleri
   const introLines = useMemo(() => {
     return isTR
       ? [
@@ -54,7 +53,7 @@ export default function HomePage() {
         ];
   }, [isTR]);
 
-  // ✅ Intro yazdırma
+  // intro typing
   useEffect(() => {
     if (introDone) return;
     setVisibleLines(0);
@@ -71,10 +70,10 @@ export default function HomePage() {
   }, [introDone, introLines]);
 
   const gates = useMemo(() => {
-    const base = [
+    const list = [
       {
         key: "sanri",
-        title: isTR ? "SANRI" : "SANRI",
+        title: "SANRI",
         desc: isTR ? "Yansıma alanı" : "Reflection space",
         hint: isTR ? "Alanı aç" : "Open",
         path: "/sanriya-sor",
@@ -128,19 +127,19 @@ export default function HomePage() {
       },
     ];
 
-    // 👇 Admin sadece VITE_ADMIN_KEY varsa
-    if (import.meta.env.VITE_ADMIN_KEY) {
-      base.push({
+    // Admin gate sadece env varsa
+    const adminKey = import.meta.env.VITE_ADMIN_KEY;
+    if (adminKey) {
+      list.push({
         key: "admin_panel",
-        title: isTR ? "Admin Panel" : "Admin Panel",
+        title: "Admin Panel",
         desc: isTR ? "Sadece Selin" : "Selin only",
         hint: isTR ? "Aç" : "Open",
-        path: `/admin/panel?key=${import.meta.env.VITE_ADMIN_KEY}`,
-        hot: true,
+        path: `/admin/panel?key=${encodeURIComponent(adminKey)}`,
       });
     }
 
-    return base;
+    return list;
   }, [isTR]);
 
   const onUnlock = () => unlockAudio();
@@ -148,15 +147,14 @@ export default function HomePage() {
   const onOpenGates = () => {
     onUnlock();
     setIntroDone(true);
-    // URL'i temiz tut
     window.history.replaceState({}, "", "/");
   };
 
   const handleGate = (g) => {
     onUnlock();
 
-    // Premium kapılar giriş ister
-    if (g.key === "rituel" || g.key === "yasam_kocu") {
+    // Premium kapılar auth ister
+    if (g.premium) {
       setAuthOpen(true);
       return;
     }
@@ -211,48 +209,46 @@ export default function HomePage() {
               if (e.key === "Enter" || e.key === " ") onOpenGates();
             }}
           >
-            {/* ✅ EFEKT SADECE BURADA */}
-            <div className={styles.introStage}>
-              <div className={styles.introCard}>
-                <div className={styles.orb} />
-                <div className={styles.introTitle}>CAELINUS AI</div>
+            <div className={styles.introCard}>
+              <div className={styles.orb} />
+              <div className={styles.introTitle}>CAELINUS AI</div>
 
-                <div className={styles.introText}>
-                  {introLines.slice(0, visibleLines).map((line, i) => (
-                    <div key={i} className={styles.line}>
-                      {line || "\u00A0"}
-                    </div>
-                  ))}
-                </div>
-
-                {visibleLines >= introLines.length && (
-                  <>
-                    <div className={styles.tapHint}>{isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}</div>
-
-                    <button
-                      type="button"
-                      className={styles.enterBtn}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        onOpenGates();
-                      }}
-                    >
-                      {isTR ? "GİRİŞ" : "ENTER"}
-                    </button>
-                  </>
-                )}
+              <div className={styles.introText}>
+                {introLines.slice(0, visibleLines).map((line, i) => (
+                  <div key={i} className={styles.line}>
+                    {line || "\u00A0"}
+                  </div>
+                ))}
               </div>
 
-              {/* ✅ YANSIMA */}
-              <div className={styles.cardReflection} aria-hidden="true" />
+              {visibleLines >= introLines.length && (
+                <>
+                  <div className={styles.tapHint}>
+                    {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
+                  </div>
+
+                  <button
+                    type="button"
+                    className={styles.enterBtn}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onOpenGates();
+                    }}
+                  >
+                    {isTR ? "GİRİŞ" : "ENTER"}
+                  </button>
+                </>
+              )}
             </div>
           </div>
         ) : (
           /* GATES */
           <div className={styles.gatesWrapper}>
             <h1 className={styles.h1}>{isTR ? "Kapılar" : "Gates"}</h1>
-            <p className={styles.sub}>{isTR ? "Hangi alana geçmek istiyorsun?" : "Which space do you want to enter?"}</p>
+            <p className={styles.sub}>
+              {isTR ? "Hangi alana geçmek istiyorsun?" : "Which space do you want to enter?"}
+            </p>
 
             <div className={styles.grid}>
               {gates.map((g) => (
@@ -287,15 +283,16 @@ export default function HomePage() {
         )}
       </div>
 
-      {/* AUTH MODAL */}
       <AuthModal
         open={authOpen}
         onClose={() => setAuthOpen(false)}
         onGuest={() => {
           localStorage.setItem("sanri_guest", "1");
+          setAuthOpen(false);
           navigate("/yasam-kocu", { state: { skipIntro: true } });
         }}
         onLoginSuccess={() => {
+          setAuthOpen(false);
           navigate("/yasam-kocu", { state: { skipIntro: true } });
         }}
       />
