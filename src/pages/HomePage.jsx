@@ -11,10 +11,10 @@ import { unlockAudio } from "../utils/sfx";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
-
-  const location = useLocation();
 
   // ✅ geri dönünce intro atlamak için
   const [introDone, setIntroDone] = useState(() => Boolean(location.state?.skipIntro));
@@ -23,7 +23,7 @@ export default function HomePage() {
   // ✅ Auth modal
   const [authOpen, setAuthOpen] = useState(false);
 
-  // ✅ intro metinleri önce tanımlanır
+  // ✅ Intro metinleri
   const introLines = useMemo(() => {
     return isTR
       ? [
@@ -54,7 +54,7 @@ export default function HomePage() {
         ];
   }, [isTR]);
 
-  // ✅ intro yazdırma
+  // ✅ Intro yazdırma
   useEffect(() => {
     if (introDone) return;
     setVisibleLines(0);
@@ -71,93 +71,98 @@ export default function HomePage() {
   }, [introDone, introLines]);
 
   const gates = useMemo(() => {
-  const baseGates = [
-    {
-      key: "sanri",
-      title: isTR ? "SANRI" : "SANRI",
-      desc: isTR ? "Yansıma alanı" : "Reflection space",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/sanriya-sor",
-      hot: true,
-    },
-    {
-      key: "bilinc",
-      title: isTR ? "Bilinç Alanı" : "Consciousness Field",
-      desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/bilinc-alani",
-    },
-    {
-      key: "frekans",
-      title: isTR ? "Frekans Alanı" : "Frequency Field",
-      desc: isTR ? "Enerji katmanı" : "Energy layer",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/frekans-alani",
-    },
-    {
-      key: "rituel",
-      title: isTR ? "Ritüel Alanı" : "Ritual Field",
-      desc: isTR ? "Özel kapı" : "Private gate",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/rituel-alani",
-      premium: true,
-    },
-    {
-      key: "library",
-      title: isTR ? "Kütüphane" : "Library",
-      desc: isTR
-        ? "E-kitaplar + sesli bölümler"
-        : "E-books + voiced chapters",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/library",
-      hot: true,
-    },
-    {
-      key: "uyanan_sehirler",
-      title: isTR ? "Uyanan Şehirler" : "Awakened Cities",
-      desc: isTR
-        ? "Türkiye okuması • ruh yolculuğu"
-        : "Türkiye reading • inner journey",
-      hint: isTR ? "Alanı aç" : "Open",
-      path: "/uyanan-sehirler",
-      hot: true,
-    },
-  ];
+    const base = [
+      {
+        key: "sanri",
+        title: isTR ? "SANRI" : "SANRI",
+        desc: isTR ? "Yansıma alanı" : "Reflection space",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/sanriya-sor",
+        hot: true,
+      },
+      {
+        key: "yasam_kocu",
+        title: isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach",
+        desc: isTR ? "Kişisel bilinç panelin" : "Your personal consciousness dashboard",
+        hint: isTR ? "Panele gir" : "Enter panel",
+        path: "/yasam-kocu",
+        premium: true,
+      },
+      {
+        key: "bilinc",
+        title: isTR ? "Bilinç Alanı" : "Consciousness Field",
+        desc: isTR ? "Derin sorgu alanı" : "Deep inquiry space",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/bilinc-alani",
+      },
+      {
+        key: "frekans",
+        title: isTR ? "Frekans Alanı" : "Frequency Field",
+        desc: isTR ? "Enerji katmanı" : "Energy layer",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/frekans-alani",
+      },
+      {
+        key: "rituel",
+        title: isTR ? "Ritüel Alanı" : "Ritual Field",
+        desc: isTR ? "Özel kapı" : "Private gate",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/rituel-alani",
+        premium: true,
+      },
+      {
+        key: "library",
+        title: isTR ? "Kütüphane" : "Library",
+        desc: isTR ? "E-kitaplar + sesli bölümler" : "E-books + voiced chapters",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/library",
+        hot: true,
+      },
+      {
+        key: "uyanan_sehirler",
+        title: isTR ? "Uyanan Şehirler" : "Awakened Cities",
+        desc: isTR ? "Türkiye okuması • ruh yolculuğu" : "Türkiye reading • inner journey",
+        hint: isTR ? "Alanı aç" : "Open",
+        path: "/uyanan-sehirler",
+        hot: true,
+      },
+    ];
 
-  // 👇 ADMIN sadece VITE_ADMIN_KEY varsa eklenir
-  if (import.meta.env.VITE_ADMIN_KEY) {
-    baseGates.push({
-      key: "admin_panel",
-      title: isTR ? "Admin Panel" : "Admin Panel",
-      desc: isTR ? "Sadece Selin" : "Selin only",
-      hint: isTR ? "Aç" : "Open",
-      path: `/admin/panel?key=${import.meta.env.VITE_ADMIN_KEY}`,
-    });
-  }
+    // 👇 Admin sadece VITE_ADMIN_KEY varsa
+    if (import.meta.env.VITE_ADMIN_KEY) {
+      base.push({
+        key: "admin_panel",
+        title: isTR ? "Admin Panel" : "Admin Panel",
+        desc: isTR ? "Sadece Selin" : "Selin only",
+        hint: isTR ? "Aç" : "Open",
+        path: `/admin/panel?key=${import.meta.env.VITE_ADMIN_KEY}`,
+        hot: true,
+      });
+    }
 
-  return baseGates;
-}, [isTR]);
+    return base;
+  }, [isTR]);
 
   const onUnlock = () => unlockAudio();
 
   const onOpenGates = () => {
     onUnlock();
     setIntroDone(true);
+    // URL'i temiz tut
     window.history.replaceState({}, "", "/");
   };
 
   const handleGate = (g) => {
-  onUnlock();
+    onUnlock();
 
-  // sadece bunlar premium kapı
-  if (g.key === "rituel" || g.key === "yasam_kocu") {
-    setAuthOpen(true);
-    return;
-  }
+    // Premium kapılar giriş ister
+    if (g.key === "rituel" || g.key === "yasam_kocu") {
+      setAuthOpen(true);
+      return;
+    }
 
-  navigate(g.path, { state: { skipIntro: true } });
-};
-
+    navigate(g.path, { state: { skipIntro: true } });
+  };
 
   return (
     <div className={styles.page} onPointerDown={onUnlock}>
@@ -173,7 +178,6 @@ export default function HomePage() {
         </div>
 
         <div className={styles.topbarRight}>
-          {/* GİRİŞ / MİSAFİR */}
           <button
             type="button"
             className={styles.langBtn}
@@ -183,7 +187,6 @@ export default function HomePage() {
             {isTR ? "GİRİŞ" : "SIGN IN"}
           </button>
 
-          {/* TR/EN */}
           <button
             type="button"
             className={styles.langBtn}
@@ -208,46 +211,48 @@ export default function HomePage() {
               if (e.key === "Enter" || e.key === " ") onOpenGates();
             }}
           >
-            <div className={styles.introCard}>
-              <div className={styles.orb} />
-              <div className={styles.introTitle}>CAELINUS AI</div>
+            {/* ✅ EFEKT SADECE BURADA */}
+            <div className={styles.introStage}>
+              <div className={styles.introCard}>
+                <div className={styles.orb} />
+                <div className={styles.introTitle}>CAELINUS AI</div>
 
-              <div className={styles.introText}>
-                {introLines.slice(0, visibleLines).map((line, i) => (
-                  <div key={i} className={styles.line}>
-                    {line || "\u00A0"}
-                  </div>
-                ))}
+                <div className={styles.introText}>
+                  {introLines.slice(0, visibleLines).map((line, i) => (
+                    <div key={i} className={styles.line}>
+                      {line || "\u00A0"}
+                    </div>
+                  ))}
+                </div>
+
+                {visibleLines >= introLines.length && (
+                  <>
+                    <div className={styles.tapHint}>{isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}</div>
+
+                    <button
+                      type="button"
+                      className={styles.enterBtn}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onOpenGates();
+                      }}
+                    >
+                      {isTR ? "GİRİŞ" : "ENTER"}
+                    </button>
+                  </>
+                )}
               </div>
 
-              {visibleLines >= introLines.length && (
-                <>
-                  <div className={styles.tapHint}>
-                    {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles.enterBtn}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onOpenGates();
-                    }}
-                  >
-                    {isTR ? "GİRİŞ" : "ENTER"}
-                  </button>
-                </>
-              )}
+              {/* ✅ YANSIMA */}
+              <div className={styles.cardReflection} aria-hidden="true" />
             </div>
           </div>
         ) : (
           /* GATES */
           <div className={styles.gatesWrapper}>
             <h1 className={styles.h1}>{isTR ? "Kapılar" : "Gates"}</h1>
-            <p className={styles.sub}>
-              {isTR ? "Hangi alana geçmek istiyorsun?" : "Which space do you want to enter?"}
-            </p>
+            <p className={styles.sub}>{isTR ? "Hangi alana geçmek istiyorsun?" : "Which space do you want to enter?"}</p>
 
             <div className={styles.grid}>
               {gates.map((g) => (

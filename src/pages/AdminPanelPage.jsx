@@ -61,16 +61,11 @@ export default function AdminPanelPage() {
       setStats(sJson);
 
       // USERS (opsiyonel endpoint varsa)
-      const uRes = await fetch(`${API}/api/admin/users?key=${keyParam}&limit=50&offset=0`, {
-        method: "GET",
-        credentials: "include",
-      });
-      const uJson = await uRes.json().catch(() => ([]));
-      if (!uRes.ok) {
-        // users endpoint yoksa panel yine çalışsın
-        setUsers([]);
-      } else {
-        setUsers(Array.isArray(uJson) ? uJson : (uJson?.users || []));
+      const uRes = await fetch(`${API}/api/admin/users?key=${keyParam}&limit=50&offset=0`);
+      const uJson = await uRes.json().catch(() => ({}));
+      if (!uRes.ok) throw new Error(uJson?.detail || "users failed");
+      setUsers(Array.isArray(uJson?.users) ? uJson.users : []);
+
       }
     } catch (e) {
       setErr(String(e?.message || e));
@@ -80,6 +75,13 @@ export default function AdminPanelPage() {
   }, [API, adminKey, keyParam, isTR]);
 
   // Sayfa açılınca: queryKey varsa otomatik yükle
+
+  useEffect(() => {
+  load();
+  const t = setInterval(load, 20000);
+  return () => clearInterval(t);
+}, [adminKey]); 
+
   useEffect(() => {
     if (queryKey && queryKey !== adminKey) setAdminKey(queryKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
