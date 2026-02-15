@@ -35,44 +35,47 @@ export default function AdminPanelPage() {
 
   const keyParam = useMemo(() => encodeURIComponent(adminKey || ""), [adminKey]);
 
-  const load = useCallback(async () => {
-    setErr("");
+  const load = async () => {
+  setErr("");
 
-    if (!API) {
-      setErr("VITE_BACKEND_URL missing");
-      return;
+  if (!API) {
+    setErr("VITE_BACKEND_URL missing");
+    return;
+  }
+
+  if (!adminKey) {
+    setErr(isTR ? "ADMIN_KEY gerekli" : "ADMIN_KEY required");
+    return;
+  }
+
+  localStorage.setItem("ADMIN_KEY", adminKey);
+  setLoading(true);
+
+  try {
+    const sRes = await fetch(`${API}/api/admin/stats?key=${encodeURIComponent(adminKey)}`);
+    const sJson = await sRes.json();
+
+    if (!sRes.ok) {
+      throw new Error(sJson?.detail || "Stats request failed");
     }
-    if (!adminKey) {
-      setErr(isTR ? "ADMIN_KEY gerekli" : "ADMIN_KEY required");
-      return;
+
+    setStats(sJson);
+
+    const uRes = await fetch(`${API}/api/admin/users?key=${encodeURIComponent(adminKey)}`);
+    const uJson = await uRes.json();
+
+    if (!uRes.ok) {
+      throw new Error(uJson?.detail || "Users request failed");
     }
 
-    localStorage.setItem("ADMIN_KEY", adminKey);
-    setLoading(true);
+    setUsers(Array.isArray(uJson) ? uJson : []);
 
-    try {
-      // STATS
-      const sRes = await fetch(`${API}/api/admin/stats?key=${keyParam}`, {
-        method: "GET",
-        credentials: "include",
-      });
-      const sJson = await sRes.json().catch(() => ({}));
-      if (!sRes.ok) throw new Error(sJson?.detail || `stats failed (${sRes.status})`);
-      setStats(sJson);
-
-      // USERS (opsiyonel endpoint varsa)
-      const uRes = await fetch(`${API}/api/admin/users?key=${keyParam}&limit=50&offset=0`);
-      const uJson = await uRes.json().catch(() => ({}));
-      if (!uRes.ok) throw new Error(uJson?.detail || "users failed");
-      setUsers(Array.isArray(uJson?.users) ? uJson.users : []);
-
-      }
-    } catch (e) {
-      setErr(String(e?.message || e));
-    } finally {
-      setLoading(false);
-    }
-  }, [API, adminKey, keyParam, isTR]);
+  } catch (e) {
+    setErr(String(e?.message || e));
+  } finally {
+    setLoading(false);
+  }
+}; [API, adminKey, keyParam, isTR]);
 
   // Sayfa açılınca: queryKey varsa otomatik yükle
 
