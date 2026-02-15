@@ -68,7 +68,7 @@ export default function AdminPanelPage() {
       throw new Error(uJson?.detail || "Users request failed");
     }
 
-    setUsers(Array.isArray(uJson) ? uJson : []);
+    setUsers(Array.isArray(uJson) ? uJson : (uJson?.users || []));
 
   } catch (e) {
     setErr(String(e?.message || e));
