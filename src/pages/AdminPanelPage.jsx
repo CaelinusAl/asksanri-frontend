@@ -1,16 +1,33 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+// src/pages/AdminPanelPage.jsx
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 
+function StatBox({ label, value }) {
+  return (
+    <div style={styles.stat}>
+      <div style={styles.statLabel}>{label}</div>
+      <div style={styles.statValue}>{value ?? "-"}</div>
+    </div>
+  );
+}
+
 export default function AdminPanelPage() {
   const API = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
+  const { search } = useLocation();
+
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
-  const [adminKey, setAdminKey] = useState(() => localStorage.getItem("ADMIN_KEY") || "");
+  const queryKey = useMemo(() => {
+    const sp = new URLSearchParams(search || "");
+    return sp.get("key") || "";
+  }, [search]);
+
+  const [adminKey, setAdminKey] = useState(() => queryKey || localStorage.getItem("ADMIN_KEY") || "");
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [err, setErr] = useState("");
@@ -18,37 +35,60 @@ export default function AdminPanelPage() {
 
   const keyParam = useMemo(() => encodeURIComponent(adminKey || ""), [adminKey]);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setErr("");
-    if (!API) return setErr("VITE_BACKEND_URL missing");
-    if (!adminKey) return setErr(isTR ? "ADMIN_KEY gerekli" : "ADMIN_KEY required");
+
+    if (!API) {
+      setErr("VITE_BACKEND_URL missing");
+      return;
+    }
+    if (!adminKey) {
+      setErr(isTR ? "ADMIN_KEY gerekli" : "ADMIN_KEY required");
+      return;
+    }
 
     localStorage.setItem("ADMIN_KEY", adminKey);
     setLoading(true);
 
     try {
-      const sRes = await fetch(`${API}/api/admin/stats?key=${keyParam}`);
+      // STATS
+      const sRes = await fetch(`${API}/api/admin/stats?key=${keyParam}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const sJson = await sRes.json().catch(() => ({}));
-      if (!sRes.ok) throw new Error(sJson?.detail || "stats failed");
+      if (!sRes.ok) throw new Error(sJson?.detail || `stats failed (${sRes.status})`);
       setStats(sJson);
 
-      const uRes = await fetch(`${API}/api/admin/users?key=${keyParam}&limit=50&offset=0`);
+      // USERS (opsiyonel endpoint varsa)
+      const uRes = await fetch(`${API}/api/admin/users?key=${keyParam}&limit=50&offset=0`, {
+        method: "GET",
+        credentials: "include",
+      });
       const uJson = await uRes.json().catch(() => ([]));
-      if (!uRes.ok) throw new Error(uJson?.detail || "users failed");
-      setUsers(Array.isArray(uJson) ? uJson : (uJson?.users || []));
+      if (!uRes.ok) {
+        // users endpoint yoksa panel yine çalışsın
+        setUsers([]);
+      } else {
+        setUsers(Array.isArray(uJson) ? uJson : (uJson?.users || []));
+      }
     } catch (e) {
       setErr(String(e?.message || e));
     } finally {
       setLoading(false);
     }
-  };
+  }, [API, adminKey, keyParam, isTR]);
+
+  // Sayfa açılınca: queryKey varsa otomatik yükle
+  useEffect(() => {
+    if (queryKey && queryKey !== adminKey) setAdminKey(queryKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryKey]);
 
   useEffect(() => {
-  fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/stats?key=${import.meta.env.VITE_ADMIN_KEY}`)
-    .then(r => r.json())
-    .then(setData)
-    .catch(console.error);
-}, []);
+    if (adminKey) load();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [adminKey]);
 
   return (
     <div style={styles.page} onPointerDown={unlockAudio}>
@@ -64,6 +104,7 @@ export default function AdminPanelPage() {
           <button style={styles.btn} type="button" onClick={() => navigate("/", { state: { skipIntro: true } })}>
             {isTR ? "← Kapılar" : "← Gates"}
           </button>
+
           <button
             style={styles.btn}
             type="button"
@@ -79,9 +120,7 @@ export default function AdminPanelPage() {
         <div style={styles.card}>
           <div style={styles.h1}>{isTR ? "Admin Panel" : "Admin Panel"}</div>
           <div style={styles.p}>
-            {isTR
-              ? "Bu alan sadece sana ait. ADMIN_KEY ile kilitli."
-              : "This space is yours only. Locked by ADMIN_KEY."}
+            {isTR ? "Bu alan sadece sana ait. ADMIN_KEY ile kilitli." : "This space is yours only. Locked by ADMIN_KEY."}
           </div>
 
           <div style={styles.row}>
@@ -109,7 +148,7 @@ export default function AdminPanelPage() {
 
             <div style={styles.list}>
               {(users || []).slice(0, 50).map((u) => (
-                <div key={u.id} style={styles.item}>
+                <div key={u.id || u.email} style={styles.item}>
                   <div style={{ fontWeight: 800 }}>{u.email || `#${u.id}`}</div>
                   <div style={styles.muted}>
                     {u.created_at ? new Date(u.created_at).toLocaleString() : ""}
@@ -120,20 +159,9 @@ export default function AdminPanelPage() {
             </div>
           </div>
 
-          <div style={styles.foot}>
-            © 2026 CaelinusAI • SANRI
-          </div>
+          <div style={styles.foot}>© 2026 CaelinusAI • SANRI</div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function StatBox({ label, value }) {
-  return (
-    <div style={styles.stat}>
-      <div style={styles.statLabel}>{label}</div>
-      <div style={styles.statValue}>{value ?? "-"}</div>
     </div>
   );
 }
