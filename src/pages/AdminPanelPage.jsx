@@ -75,7 +75,9 @@ export default function AdminPanelPage() {
   } finally {
     setLoading(false);
   }
-}; [API, adminKey, keyParam, isTR]);
+}; useEffect(() => {
+  load();
+}, [adminKey]);
 
   // Sayfa açılınca: queryKey varsa otomatik yükle
 
