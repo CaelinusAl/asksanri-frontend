@@ -1,13 +1,5 @@
-import { stopSfx } from "../utils/sfx";
-
-useEffect(() => {
-  return () => {
-    stopSfx();
-  };
-}, []);
-
 let audioUnlocked = false;
-let currentAudio = null; // aktif çalan ses
+let currentAudio = null;
 
 export function unlockAudio() {
   if (!audioUnlocked) {
@@ -18,7 +10,6 @@ export function unlockAudio() {
 }
 
 export function playSfx(src, options = {}) {
-  // Eğer başka bir ses çalıyorsa durdur
   if (currentAudio) {
     currentAudio.pause();
     currentAudio.currentTime = 0;
