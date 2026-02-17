@@ -10,55 +10,71 @@
     linear-gradient(180deg, #070810 0%, #0b0d18 50%, #06070c 100%);
 }
 
-/* TOPBAR */
-.topbar {
+/* TOPBAR — glass + purple aura */
+.topbar{
   position: sticky;
   top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 22px;
+  z-index: 9999;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 14px 18px;
 
+  /* cam tabaka */
+  background: rgba(10, 10, 18, 0.42);
   backdrop-filter: blur(18px);
-  background: rgba(15, 18, 30, 0.55);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+
+  /* “ışık yansıması” hissi */
+  box-shadow:
+    0 18px 60px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+
+  overflow: hidden;
 }
 
-.topbarLeft {
-  display: flex;
-  flex-direction: column;
+/* Topbar üstten mor ışık akışı */
+.topbar::before{
+  content:"";
+  position:absolute;
+  inset:-2px -2px auto -2px;
+  height: 120px;
+  background:
+    radial-gradient(600px 120px at 30% 0%, rgba(180,120,255,0.35), transparent 70%),
+    radial-gradient(520px 110px at 75% 0%, rgba(120,180,255,0.22), transparent 72%),
+    linear-gradient(180deg, rgba(190,130,255,0.10), transparent);
+  pointer-events:none;
+  filter: blur(8px);
+  opacity: 0.95;
 }
 
-.brand {
-  font-weight: 900;
-  letter-spacing: .18em;
-  font-size: 13px;
+/* camın kenar parıltısı */
+.topbar::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-bottom: 1px solid rgba(200,160,255,0.20);
+  pointer-events:none;
+  opacity: 0.55;
 }
 
-.topbarSubtitle {
-  font-size: 11px;
-  opacity: 0.6;
+/* İçerik üstte kalsın */
+.topbarLeft, .topbarRight{
+  position: relative;
+  z-index: 2;
+}
+.langBtn{
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 18px rgba(170,120,255,0.22);
 }
 
-.topbarRight {
-  display: flex;
-  gap: 10px;
-}
-
-.langBtn {
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.05);
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-
-.langBtn:hover {
-  box-shadow: 0 0 18px rgba(170,120,255,0.6);
+.langBtn:hover{
+  box-shadow: 0 0 22px rgba(180,120,255,0.55);
 }
 
 /* INTRO */

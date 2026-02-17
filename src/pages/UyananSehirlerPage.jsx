@@ -16,21 +16,29 @@ export default function UyananSehirlerPage() {
   const [loading, setLoading] = useState(true);
   const [gatesRaw, setGatesRaw] = useState(null);
   const [activeKey, setActiveKey] = useState("0");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
+      setError(null);
+
       const res = await fetch(`${API}/api/gates/v2`);
+      if (!res.ok) throw new Error(`API error: ${res.status}`);
+
       const data = await res.json();
       setGatesRaw(data);
       setLoading(false);
 
-      // default seçili: 0
-      const firstKey = data?.gates ? Object.keys(data.gates).sort((a,b)=>Number(a)-Number(b))[0] : "0";
+      // default seçili: ilk anahtar
+      const firstKey = data?.gates
+        ? Object.keys(data.gates).sort((a, b) => Number(a) - Number(b))[0]
+        : "0";
       setActiveKey(firstKey || "0");
-    })().catch(() => {
+    })().catch((e) => {
       setGatesRaw(null);
       setLoading(false);
+      setError(e?.message || "fetch_failed");
     });
   }, [API]);
 
@@ -38,10 +46,69 @@ export default function UyananSehirlerPage() {
     const obj = gatesRaw?.gates || {};
     return Object.keys(obj)
       .sort((a, b) => Number(a) - Number(b))
-      .map((k) => ({ key: k, ...obj[k] }));
+      .map((k) => {
+        const g = obj[k] || {};
+
+        // ✅ Normalize: backend farklı isimler yollasa bile UI dolsun
+        const mission =
+          g.mission ??
+          g.misyon ??
+          g.amac ??
+          g.purpose ??
+          g.hedef ??
+          g.mission_tr ??
+          g.mission_en ??
+          "";
+
+        const mantra =
+          g.mantra ??
+          g.mantra_tr ??
+          g.mantra_en ??
+          g.motto ??
+          g.affirmation ??
+          g.niyet ??
+          "";
+
+        const rituel =
+          g.rituel ??
+          g.ritual ??
+          g.rituel_tr ??
+          g.rituel_en ??
+          g.rituel_text ??
+          "";
+
+        const rules =
+          g.rules ??
+          g.kurallar ??
+          g.rules_tr ??
+          g.rules_en ??
+          g.rule_list ??
+          [];
+
+        const examples =
+          g.examples ??
+          g.ornekler ??
+          g.examples_tr ??
+          g.examples_en ??
+          g.sample ??
+          [];
+
+        return {
+          key: k,
+          ...g,
+          mission,
+          mantra,
+          rituel,
+          rules,
+          examples,
+        };
+      });
   }, [gatesRaw]);
 
-  const active = useMemo(() => gates.find((g) => String(g.key) === String(activeKey)) || gates[0], [gates, activeKey]);
+  const active = useMemo(
+    () => gates.find((g) => String(g.key) === String(activeKey)) || gates[0],
+    [gates, activeKey]
+  );
 
   const goBackToGates = useCallback(() => {
     unlockAudio();
@@ -51,7 +118,9 @@ export default function UyananSehirlerPage() {
   const goToSanri = useCallback(() => {
     unlockAudio();
     const prefill = encodeURIComponent(`${active?.sehir || ""} • ${active?.baslik || ""}`);
-    navigate(`/sanriya-sor?prefill=${prefill}&domain=awakened_cities&mode=mirror`, { state: { skipIntro: true } });
+    navigate(`/sanriya-sor?prefill=${prefill}&domain=awakened_cities&mode=mirror`, {
+      state: { skipIntro: true },
+    });
   }, [navigate, active]);
 
   return (
@@ -119,7 +188,10 @@ export default function UyananSehirlerPage() {
                   );
                 })
               ) : (
-                <div className={styles.error}>{isTR ? "Kapılar yüklenemedi." : "Could not load gates."}</div>
+                <div className={styles.error}>
+                  {isTR ? "Kapılar yüklenemedi." : "Could not load gates."}
+                  {error ? ` (${error})` : ""}
+                </div>
               )}
             </div>
 
@@ -140,12 +212,12 @@ export default function UyananSehirlerPage() {
 
                   <div className={styles.block}>
                     <div className={styles.label}>{isTR ? "Misyon" : "Mission"}</div>
-                    <div className={styles.text}>{active.mission}</div>
+                    <div className={styles.text}>{active.mission || (isTR ? "—" : "—")}</div>
                   </div>
 
                   <div className={styles.block}>
                     <div className={styles.label}>{isTR ? "Mantra" : "Mantra"}</div>
-                    <div className={styles.text}>{active.mantra}</div>
+                    <div className={styles.text}>{active.mantra || (isTR ? "—" : "—")}</div>
                   </div>
 
                   {active.rituel ? (
@@ -193,9 +265,7 @@ export default function UyananSehirlerPage() {
             </div>
           </div>
 
-          <div className={styles.foot}>
-            © 2026 CaelinusAI • SANRI
-          </div>
+          <div className={styles.foot}>© 2026 CaelinusAI • SANRI</div>
         </div>
       </div>
     </div>
