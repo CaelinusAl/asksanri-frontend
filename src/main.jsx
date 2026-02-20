@@ -1,16 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+
 import App from "./App";
+
+import { LanguageProvider } from "./contexts/LanguageContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import { DoorNavProvider } from "./contexts/DoorNavContext";
+
 import "./index.css";
 
-const rootEl = document.getElementById("root");
-if (!rootEl) throw new Error("root element not found");
-
-ReactDOM.createRoot(rootEl).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <LanguageProvider>
+        <AuthProvider>
+          <DoorNavProvider>
+            <App />
+          </DoorNavProvider>
+        </AuthProvider>
+      </LanguageProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
