@@ -50,6 +50,7 @@ export default function SanriyaSorPage() {
   const API_URL =
     (import.meta?.env?.VITE_BACKEND_URL && String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
     "https://api.asksanri.com";
+    console.log("API_URL =", API_URL);
 
   const navigate = useNavigate();
   const location = useLocation();
