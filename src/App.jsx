@@ -1,14 +1,25 @@
 import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+
+// Eğer senin sayfaların varsa bunları import edeceğiz.
+// Şimdilik en minimal çalışan yapı:
+function Home() {
+  return (
+    <div style={{ minHeight: "100vh", background: "#07080d", color: "white", padding: 16 }}>
+      <h1 style={{ margin: 0, fontSize: 22 }}>AskSanri</h1>
+      <p style={{ opacity: 0.7, marginTop: 8 }}>
+        Web frontend ayağa kalktı. (Vercel build OK)
+      </p>
+    </div>
+  );
+}
 
 export default function App() {
   return (
-    <div style={{ width: "100vw", height: "100vh", backgroundColor: "#000" }}>
-      <iframe
-        src="https://asksanri.com"
-        title="AskSanri"
-        style={{ width: "100%", height: "100%", border: "none" }}
-        allow="camera; microphone; autoplay; clipboard-read; clipboard-write"
-      />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      {/* Bilinmeyen route'ları anasayfaya yönlendir (SPA fix) */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

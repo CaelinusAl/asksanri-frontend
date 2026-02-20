@@ -98,10 +98,22 @@ export default function SanriyaSorPage() {
     } catch {}
   }, [isTR]);
 
+  const gestureLockRef = useRef(false);
+
+
   const onUserGesture = useCallback(() => {
-    unlockAudio();
-    ensureIntroOnce();
-  }, [ensureIntroOnce]);
+  if (gestureLockRef.current) return;
+  gestureLockRef.current = true;
+
+  unlockAudio();
+  ensureIntroOnce();
+
+  // 300ms sonra tekrar izin ver (çift tık/geri bas gibi durumları yutar)
+  window.setTimeout(() => {
+    gestureLockRef.current = false;
+  }, 300);
+}, [ensureIntroOnce]);
+
 
   // Query prefill
   useEffect(() => {
@@ -302,11 +314,10 @@ export default function SanriyaSorPage() {
 
   return (
     <div
-      className={styles.page}
-      onPointerDown={onUserGesture}
-      onMouseDown={onUserGesture}
-      onTouchStart={onUserGesture}
-    >
+  className={styles.page}
+  onPointerDown={onUserGesture}
+>
+
       <StarTrail />
 
       <div className={styles.topbar}>
