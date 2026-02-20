@@ -1,13 +1,14 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import SanriyaSorPage from "./pages/SanriyaSorPage";
-
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/*" element={<SanriyaSorPage />} />
-      </Routes>
-    </BrowserRouter>
+    <div style={{
+      background: "black",
+      color: "white",
+      height: "100vh",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    }}>
+      WEB ROOT ÇALIŞIYOR
+    </div>
   );
 }
