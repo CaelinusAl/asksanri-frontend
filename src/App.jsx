@@ -1,11 +1,6 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
 import SanriyaSorPage from "./pages/SanriyaSorPage";
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <SanriyaSorPage />
-    </BrowserRouter>
-  );
+  return <SanriyaSorPage />;
 }
