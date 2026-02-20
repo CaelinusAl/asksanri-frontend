@@ -47,12 +47,15 @@ function ThinkingDots({ label }) {
 }
 
 export default function SanriyaSorPage() {
-  const API_URL = import.meta.env.VITE_BACKEND_URL;
+  const API_URL =
+    (import.meta?.env?.VITE_BACKEND_URL && String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+    "https://api.asksanri.com";
 
   const navigate = useNavigate();
   const location = useLocation();
   const q = useMemo(() => parseQuery(location.search), [location.search]);
 
+  // ⚠️ Eğer LanguageProvider yoksa burada patlar.
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
@@ -67,9 +70,9 @@ export default function SanriyaSorPage() {
 
   const taRef = useRef(null);
 
-  // SFX refs (ÖNEMLİ)
-  const hasIntroPlayedRef = useRef(false); // sadece ilk dokunuşta giriş SFX
-  const hasDoorVoicePlayedRef = useRef(false); // sadece ilk submit'te "kapı açılıyor" voice
+  // SFX refs
+  const hasIntroPlayedRef = useRef(false);
+  const hasDoorVoicePlayedRef = useRef(false);
 
   // typing cancel
   const typingCancelRef = useRef({ alive: true });
@@ -82,13 +85,12 @@ export default function SanriyaSorPage() {
     navigate("/", { replace: false, state: { skipIntro: true } });
   }, [navigate]);
 
-  // ✅ SFX: SADECE USER GESTURE İLE (PC autoplay fix)
+  // ✅ SFX: only after user gesture
   const ensureIntroOnce = useCallback(() => {
     if (hasIntroPlayedRef.current) return;
     hasIntroPlayedRef.current = true;
 
     try {
-      // TR: whoosh, EN: door-open-en
       const enterSound = isTR ? "/sfx/door-whoosh.mp3" : "/sfx/door-open-en.mp3";
       playSfx(enterSound, { volume: 0.45 });
 
@@ -100,27 +102,23 @@ export default function SanriyaSorPage() {
 
   const gestureLockRef = useRef(false);
 
-
   const onUserGesture = useCallback(() => {
-  if (gestureLockRef.current) return;
-  gestureLockRef.current = true;
+    if (gestureLockRef.current) return;
+    gestureLockRef.current = true;
 
-  unlockAudio();
-  ensureIntroOnce();
+    unlockAudio();
+    ensureIntroOnce();
 
-  // 300ms sonra tekrar izin ver (çift tık/geri bas gibi durumları yutar)
-  window.setTimeout(() => {
-    gestureLockRef.current = false;
-  }, 300);
-}, [ensureIntroOnce]);
-
+    window.setTimeout(() => {
+      gestureLockRef.current = false;
+    }, 300);
+  }, [ensureIntroOnce]);
 
   // Query prefill
   useEffect(() => {
     if (q.mode) setMode(q.mode);
     if (q.domain) setDomain(q.domain);
     if (q.prefill) setText(String(q.prefill));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q.mode, q.domain, q.prefill]);
 
   // Reply typing effect
@@ -137,6 +135,7 @@ export default function SanriyaSorPage() {
     let i = 0;
     const step = () => {
       if (!aliveRef.alive) return;
+
       i = Math.min(i + 1, full.length);
       setTypedReply(full.slice(0, i));
 
@@ -249,31 +248,23 @@ export default function SanriyaSorPage() {
     taRef.current?.focus?.();
   }, []);
 
-  const handleKeyDown = useCallback(
-    (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-        e.preventDefault();
-        handleSubmit();
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [text, mode, domain, isTR, API_URL]
-  );
+  const handleKeyDown = useCallback((e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      // eslint-disable-next-line no-use-before-define
+      handleSubmit();
+    }
+  }, []);
 
   const handleSubmit = useCallback(async () => {
-    onUserGesture(); // ✅ submit = kesin user gesture
+    onUserGesture();
 
     setErrorMsg("");
 
     const msg = String(text || "").trim();
     if (!msg || isSending) return;
 
-    if (!API_URL) {
-      setErrorMsg(isTR ? "VITE_BACKEND_URL eksik (Vercel env)." : "Missing VITE_BACKEND_URL (Vercel env).");
-      return;
-    }
-
-    // Voice only once, on first submit (language-based)
+    // Voice only once, on first submit
     if (!hasDoorVoicePlayedRef.current) {
       hasDoorVoicePlayedRef.current = true;
       const doorVoice = isTR ? "/sfx/door-open.mp3" : "/sfx/door-open-en.mp3";
@@ -313,11 +304,7 @@ export default function SanriyaSorPage() {
   }, [API_URL, domain, isTR, isSending, mode, onUserGesture, text]);
 
   return (
-    <div
-  className={styles.page}
-  onPointerDown={onUserGesture}
->
-
+    <div className={styles.page} onPointerDown={onUserGesture}>
       <StarTrail />
 
       <div className={styles.topbar}>
@@ -424,40 +411,19 @@ export default function SanriyaSorPage() {
                 </form>
               </div>
 
-              <div className={`${styles.panel} ${styles.reply}`}>
-                <div className={styles.panelLabel}>{isTR ? "Yansıma" : "Reflection"}</div>
+              <div className={`${styles.panel} ${styles.replyPanel || ""}`}>
+                <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
 
-                {errorMsg ? <div className={styles.error}>{errorMsg}</div> : null}
+                {errorMsg ? (
+                  <div className={styles.errorBox}>
+                    <div className={styles.errorTitle}>{isTR ? "Hata" : "Error"}</div>
+                    <div className={styles.errorText}>{errorMsg}</div>
+                  </div>
+                ) : null}
 
-                <div className={styles.replybox}>
-                  {isThinking || isSending ? (
-                    <ThinkingDots label={isTR ? "Sanrı düşünüyor" : "SANRI is thinking"} />
-                  ) : typedReply ? (
-                    <div className={styles.replyText}>{typedReply}</div>
-                  ) : (
-                    <div className={styles.empty}>{isTR ? "Yansıma burada belirecek." : "Your reflection will appear here."}</div>
-                  )}
-                </div>
+                {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
 
-                <div className={styles.footnote}>
-                  {isTR
-                    ? "Bu alan “bilgi” üretmez. Anlam yansıtır; sende şekillenir. © 2026 CaelinusAI • SANRI"
-                    : "This space does not produce “knowledge”. It reflects meaning—shaped within you. © 2026 CaelinusAI • SANRI"}
-                </div>
-              </div>
-
-              <div className={styles.bottomRow}>
-                <button
-                  type="button"
-                  className={styles.askBtn}
-                  onClick={() => {
-                    onUserGesture();
-                    taRef.current?.focus?.();
-                    playSfx("/sfx/aura-chime.mp3", { volume: 0.18 });
-                  }}
-                >
-                  Ask SANRI
-                </button>
+                <pre className={styles.reply}>{typedReply || ""}</pre>
               </div>
             </div>
           </div>
