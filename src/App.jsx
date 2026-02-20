@@ -1,7 +1,13 @@
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import SanriyaSorPage from "./pages/SanriyaSorPage";
+
 export default function App() {
   return (
-    <div style={{ color: "white", padding: 24, fontSize: 18 }}>
-      ✅ WEB ÇALIŞIYOR — App.jsx render oldu.
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/*" element={<SanriyaSorPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
