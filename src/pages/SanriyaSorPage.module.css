@@ -1,3 +1,8 @@
+/* ================================
+   CAELINUS AI • SANRI — Module CSS
+   FIX: reply overflow + scroll
+   ================================ */
+
 .page{
   min-height:100vh;
   color: rgba(255,255,255,.92);
@@ -7,6 +12,9 @@
     radial-gradient(900px 700px at 55% 85%, rgba(160,120,255,.12), transparent 62%),
     linear-gradient(180deg, #06070c 0%, #070a12 40%, #050610 100%);
   padding-bottom: 60px;
+
+  /* ✅ genel taşma koruması */
+  overflow-x: hidden;
 }
 
 /* TOPBAR */
@@ -25,11 +33,7 @@
     rgba(10,12,18,.55);
   backdrop-filter: blur(14px);
 }
-.topbarLeft{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+.topbarLeft{ display:flex; align-items:center; gap:12px; min-width:0; }
 .brandPill{
   padding: 6px 10px;
   border-radius: 999px;
@@ -43,12 +47,12 @@
   opacity:.82;
   font-size: 13px;
   letter-spacing:.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 52vw;
 }
-.topbarRight{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+.topbarRight{ display:flex; align-items:center; gap:10px; }
 .backBtn{
   border:1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.06);
@@ -107,11 +111,13 @@
   line-height: 1.5;
 }
 
+/* ✅ grid taşma fix */
 .grid{
   margin-top: 22px;
   display:grid;
   grid-template-columns: 360px 1fr;
   gap: 16px;
+  overflow: hidden;
 }
 @media (max-width: 980px){
   .grid{ grid-template-columns: 1fr; }
@@ -123,6 +129,7 @@
   display:flex;
   flex-direction:column;
   gap: 14px;
+  min-width: 0;
 }
 .block{
   border: 1px solid rgba(255,255,255,.10);
@@ -165,13 +172,20 @@
   display:flex;
   flex-direction:column;
   gap: 14px;
+  min-width: 0; /* ✅ */
 }
+
 .panel{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.16);
   border-radius: 18px;
   padding: 14px;
+
+  /* ✅ panel taşma fix */
+  min-width: 0;
+  overflow: hidden;
 }
+
 .panelLabel{
   font-size: 12px;
   letter-spacing: .14em;
@@ -179,6 +193,7 @@
   font-weight: 900;
   margin-bottom: 10px;
 }
+
 .textarea{
   width: 100%;
   min-height: 140px;
@@ -190,6 +205,9 @@
   outline: none;
   resize: vertical;
   line-height: 1.5;
+
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .actions{
@@ -239,24 +257,56 @@
   background: rgba(160,123,255,.18);
 }
 
-.reply{
-  position: relative;
+/* =========================
+   ✅ REPLY FIX (ASIL ÇÖZÜM)
+   ========================= */
+
+.replyPanel{
+  display:flex;
+  flex-direction:column;
+  min-height: 220px;
 }
+
+/* bu container scroll alanı */
 .replybox{
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(255,255,255,.04);
   padding: 14px;
-  min-height: 140px;
+
+  /* ✅ scroll burada */
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
 }
+
+/* pre/text */
 .replyText{
+  margin: 0;
+
   white-space: pre-wrap;
   line-height: 1.62;
   font-size: 14px;
+
+  /* ✅ taşmayı bitir */
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  width: 100%;
+  max-width: 100%;
 }
-.empty{
-  opacity:.65;
-}
+
+/* scrollbar */
+.replybox::-webkit-scrollbar { width: 8px; }
+.replybox::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 999px; }
+.replybox::-webkit-scrollbar-track { background: transparent; }
+
+.empty{ opacity:.65; }
+
 .error{
   border: 1px solid rgba(255,80,120,.35);
   background: rgba(255,80,120,.10);
@@ -274,20 +324,9 @@
 }
 
 /* thinking */
-.thinking{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.thinkingLabel{
-  opacity:.8;
-  font-weight: 800;
-}
-.dots{
-  display:inline-flex;
-  gap:6px;
-  align-items:center;
-}
+.thinking{ display:flex; align-items:center; gap:10px; }
+.thinkingLabel{ opacity:.8; font-weight: 800; }
+.dots{ display:inline-flex; gap:6px; align-items:center; }
 .dots i{
   width:6px;height:6px;border-radius:999px;
   background: rgba(255,255,255,.7);
@@ -300,10 +339,7 @@
   40% { transform: translateY(-5px); opacity:1; }
 }
 
-.bottomRow{
-  display:flex;
-  justify-content:flex-end;
-}
+.bottomRow{ display:flex; justify-content:flex-end; }
 .askBtn{
   border:1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.06);

@@ -411,21 +411,21 @@ export default function SanriyaSorPage() {
 
               {/* ✅ REPLY PANEL (FIXED) */}
               <div className={`${styles.panel} ${styles.replyPanel}`}>
-                <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
+  <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
 
-                {errorMsg ? (
-                  <div className={styles.errorBox}>
-                    <div className={styles.errorTitle}>{isTR ? "Hata" : "Error"}</div>
-                    <div className={styles.errorText}>{errorMsg}</div>
-                  </div>
-                ) : null}
+  {errorMsg ? (
+    <div className={styles.errorBox}>
+      <div className={styles.errorTitle}>{isTR ? "Hata" : "Error"}</div>
+      <div className={styles.errorText}>{errorMsg}</div>
+    </div>
+  ) : null}
 
-                {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
+  {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
 
-                <div className={styles.replyBox}>
-                  <pre className={styles.reply}>{typedReply || ""}</pre>
-                </div>
-              </div>
+  <div className={styles.replyBox}>
+    <pre className={styles.reply}>{typedReply || ""}</pre>
+  </div>
+</div>
 
             </div>
           </div>
