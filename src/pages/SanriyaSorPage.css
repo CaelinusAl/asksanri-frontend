@@ -192,6 +192,14 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   white-space: pre-wrap;
   line-height: 1.5;
+
+ .reply .replybox::-webkit-scrollbar { width: 8px; }
+.reply .replybox::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 999px; }
+.reply .replybox::-webkit-scrollbar-track { background: transparent; }
+  max-height: 260px;
+  overflow-y: auto;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .footnote {
