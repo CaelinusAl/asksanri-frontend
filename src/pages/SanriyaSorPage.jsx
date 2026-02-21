@@ -48,15 +48,14 @@ function ThinkingDots({ label }) {
 
 export default function SanriyaSorPage() {
   const API_URL =
-    (import.meta?.env?.VITE_BACKEND_URL && String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+    (import.meta?.env?.VITE_BACKEND_URL &&
+      String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
     "https://api.asksanri.com";
-    console.log("API_URL =", API_URL);
 
   const navigate = useNavigate();
   const location = useLocation();
   const q = useMemo(() => parseQuery(location.search), [location.search]);
 
-  // ⚠️ Eğer LanguageProvider yoksa burada patlar.
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
@@ -102,7 +101,6 @@ export default function SanriyaSorPage() {
   }, [isTR]);
 
   const gestureLockRef = useRef(false);
-
   const onUserGesture = useCallback(() => {
     if (gestureLockRef.current) return;
     gestureLockRef.current = true;
@@ -252,14 +250,13 @@ export default function SanriyaSorPage() {
   const handleKeyDown = useCallback((e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
       e.preventDefault();
-      // eslint-disable-next-line no-use-before-define
       handleSubmit();
     }
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, mode, domain, isTR, API_URL, isSending]);
 
   const handleSubmit = useCallback(async () => {
     onUserGesture();
-
     setErrorMsg("");
 
     const msg = String(text || "").trim();
@@ -412,32 +409,27 @@ export default function SanriyaSorPage() {
                 </form>
               </div>
 
-              <div className={`${styles.panel} ${styles.replyPanel || ""}`}>
-  <div className={styles.panelLabel}>
-    {isTR ? "Cevap" : "Reply"}
-  </div>
+              {/* ✅ REPLY PANEL (FIXED) */}
+              <div className={`${styles.panel} ${styles.replyPanel}`}>
+                <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
 
-  {errorMsg ? (
-    <div className={styles.errorBox}>
-      <div className={styles.errorTitle}>
-        {isTR ? "Hata" : "Error"}
-      </div>
-      <div className={styles.errorText}>
-        {errorMsg}
-      </div>
-    </div>
-  ) : null}
+                {errorMsg ? (
+                  <div className={styles.errorBox}>
+                    <div className={styles.errorTitle}>{isTR ? "Hata" : "Error"}</div>
+                    <div className={styles.errorText}>{errorMsg}</div>
+                  </div>
+                ) : null}
 
-  {isThinking ? (
-    <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} />
-  ) : null}
-   <div className={styles.replyBox}></div>
-  <pre className={styles.reply}>
-    {typedReply || ""}
-  </pre>
-</div>
+                {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
+
+                <div className={styles.replyBox}>
+                  <pre className={styles.reply}>{typedReply || ""}</pre>
+                </div>
+              </div>
+
             </div>
           </div>
+
         </div>
       </div>
     </div>
