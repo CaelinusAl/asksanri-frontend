@@ -431,7 +431,7 @@ export default function SanriyaSorPage() {
   {isThinking ? (
     <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} />
   ) : null}
-
+   <div className={styles.replyBox}></div>
   <pre className={styles.reply}>
     {typedReply || ""}
   </pre>
