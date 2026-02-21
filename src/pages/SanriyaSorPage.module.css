@@ -262,48 +262,44 @@
    ========================= */
 
 .replyPanel{
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   min-height: 220px;
 }
 
-/* bu container scroll alanı */
-.replybox{
+/* Scroll burada olacak */
+.replyBox{
+  margin-top: 10px;
   border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.04);
   padding: 14px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.10);
 
-  /* ✅ scroll burada */
   max-height: 260px;
   overflow-y: auto;
   overflow-x: hidden;
 
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 0;
+  /* uzun kelimeler taşmasın */
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
-/* pre/text */
+/* pre'nin default margin'i var — kaldır */
 .replyText{
   margin: 0;
-
   white-space: pre-wrap;
   line-height: 1.62;
   font-size: 14px;
 
-  /* ✅ taşmayı bitir */
   word-break: break-word;
   overflow-wrap: anywhere;
-
-  width: 100%;
-  max-width: 100%;
 }
 
-/* scrollbar */
-.replybox::-webkit-scrollbar { width: 8px; }
-.replybox::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 999px; }
-.replybox::-webkit-scrollbar-track { background: transparent; }
+/* Scrollbar */
+.replyBox::-webkit-scrollbar { width: 8px; }
+.replyBox::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 999px; }
+.replyBox::-webkit-scrollbar-track { background: transparent; }
+
 
 .empty{ opacity:.65; }
 

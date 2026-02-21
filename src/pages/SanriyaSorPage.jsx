@@ -73,6 +73,7 @@ export default function SanriyaSorPage() {
   // SFX refs
   const hasIntroPlayedRef = useRef(false);
   const hasDoorVoicePlayedRef = useRef(false);
+  const gestureLockRef = useRef(false);
 
   // typing cancel
   const typingCancelRef = useRef({ alive: true });
@@ -85,7 +86,6 @@ export default function SanriyaSorPage() {
     navigate("/", { replace: false, state: { skipIntro: true } });
   }, [navigate]);
 
-  // ✅ SFX: only after user gesture
   const ensureIntroOnce = useCallback(() => {
     if (hasIntroPlayedRef.current) return;
     hasIntroPlayedRef.current = true;
@@ -100,7 +100,6 @@ export default function SanriyaSorPage() {
     } catch {}
   }, [isTR]);
 
-  const gestureLockRef = useRef(false);
   const onUserGesture = useCallback(() => {
     if (gestureLockRef.current) return;
     gestureLockRef.current = true;
@@ -140,10 +139,13 @@ export default function SanriyaSorPage() {
 
       const ch = full[i - 1] || "";
       const pause =
-        ch === "\n" ? 120 :
-        ch === "." || ch === "!" || ch === "?" ? 140 :
-        ch === "," || ch === ";" || ch === ":" ? 80 :
-        0;
+        ch === "\n"
+          ? 120
+          : ch === "." || ch === "!" || ch === "?"
+          ? 140
+          : ch === "," || ch === ";" || ch === ":"
+          ? 80
+          : 0;
 
       const base = 16;
       const jitter = Math.floor(Math.random() * 16);
@@ -191,10 +193,16 @@ export default function SanriyaSorPage() {
   const startListening = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      alert(isTR ? "Sesle yazma desteklenmiyor. Chrome/Edge deneyin." : "Voice input not supported. Try Chrome/Edge.");
+      alert(
+        isTR
+          ? "Sesle yazma desteklenmiyor. Chrome/Edge deneyin."
+          : "Voice input not supported. Try Chrome/Edge."
+      );
       return;
     }
-    try { recognitionRef.current?.stop?.(); } catch {}
+    try {
+      recognitionRef.current?.stop?.();
+    } catch {}
 
     const rec = new SR();
     recognitionRef.current = rec;
@@ -226,13 +234,17 @@ export default function SanriyaSorPage() {
   }, [isTR]);
 
   const stopListening = useCallback(() => {
-    try { recognitionRef.current?.stop?.(); } catch {}
+    try {
+      recognitionRef.current?.stop?.();
+    } catch {}
     setIsListening(false);
   }, []);
 
   useEffect(() => {
     return () => {
-      try { recognitionRef.current?.stop?.(); } catch {}
+      try {
+        recognitionRef.current?.stop?.();
+      } catch {}
     };
   }, []);
 
@@ -247,14 +259,6 @@ export default function SanriyaSorPage() {
     taRef.current?.focus?.();
   }, []);
 
-  const handleKeyDown = useCallback((e) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      e.preventDefault();
-      handleSubmit();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [text, mode, domain, isTR, API_URL, isSending]);
-
   const handleSubmit = useCallback(async () => {
     onUserGesture();
     setErrorMsg("");
@@ -266,7 +270,9 @@ export default function SanriyaSorPage() {
     if (!hasDoorVoicePlayedRef.current) {
       hasDoorVoicePlayedRef.current = true;
       const doorVoice = isTR ? "/sfx/door-open.mp3" : "/sfx/door-open-en.mp3";
-      try { playSfx(doorVoice, { volume: 0.30 }); } catch {}
+      try {
+        playSfx(doorVoice, { volume: 0.30 });
+      } catch {}
     }
 
     setIsSending(true);
@@ -290,16 +296,31 @@ export default function SanriyaSorPage() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.detail || (isTR ? "Sunucu hatası" : "Server error"));
 
-      const answer = data?.answer || data?.response || data?.text || data?.message || "";
+      const answer =
+        data?.answer || data?.response || data?.text || data?.message || "";
       setReplyFull(String(answer || "").trim());
     } catch (e) {
-      const msgErr = String(e?.message || "") || (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
+      const msgErr =
+        String(e?.message || "") ||
+        (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
       setErrorMsg(msgErr);
     } finally {
       setIsThinking(false);
       setIsSending(false);
     }
   }, [API_URL, domain, isTR, isSending, mode, onUserGesture, text]);
+
+  const handleSubmitRef = useRef(handleSubmit);
+  useEffect(() => {
+    handleSubmitRef.current = handleSubmit;
+  }, [handleSubmit]);
+
+  const handleKeyDown = useCallback((e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      handleSubmitRef.current?.();
+    }
+  }, []);
 
   return (
     <div className={styles.page} onPointerDown={onUserGesture}>
@@ -337,6 +358,7 @@ export default function SanriyaSorPage() {
           <div className={styles.subtitle}>{subtitle}</div>
 
           <div className={styles.grid}>
+            {/* LEFT */}
             <div className={styles.left}>
               <div className={styles.block}>
                 <div className={styles.label}>{isTR ? "Mod" : "Mode"}</div>
@@ -366,7 +388,9 @@ export default function SanriyaSorPage() {
               </div>
             </div>
 
+            {/* RIGHT */}
             <div className={styles.right}>
+              {/* INPUT PANEL */}
               <div className={styles.panel}>
                 <div className={styles.panelLabel}>{isTR ? "Yansıma Akışı" : "Reflection Flow"}</div>
 
@@ -392,7 +416,9 @@ export default function SanriyaSorPage() {
                     </button>
 
                     <button type="submit" className={styles.btnPrimary} disabled={isSending || !String(text || "").trim()}>
-                      {isSending ? (isTR ? "Yansıtılıyor…" : "Reflecting…") : (isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
+                      {isSending
+                        ? (isTR ? "Yansıtılıyor…" : "Reflecting…")
+                        : (isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
                     </button>
 
                     <div className={styles.grow} />
@@ -411,25 +437,29 @@ export default function SanriyaSorPage() {
 
               {/* ✅ REPLY PANEL (FIXED) */}
               <div className={`${styles.panel} ${styles.replyPanel}`}>
-  <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
+                <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
 
-  {errorMsg ? (
-    <div className={styles.errorBox}>
-      <div className={styles.errorTitle}>{isTR ? "Hata" : "Error"}</div>
-      <div className={styles.errorText}>{errorMsg}</div>
-    </div>
-  ) : null}
+                {errorMsg ? (
+                  <div className={styles.error}>
+                    {errorMsg}
+                  </div>
+                ) : null}
 
-  {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
+                {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
 
-  <div className={styles.replyBox}>
-    <pre className={styles.reply}>{typedReply || ""}</pre>
-  </div>
-</div>
+                <div className={styles.replyBox}>
+                  <pre className={styles.replyText}>{typedReply || ""}</pre>
+                </div>
+
+                {!typedReply && !errorMsg && !isThinking ? (
+                  <div className={styles.empty}>
+                    {isTR ? "Yansıma burada belirecek." : "Your reflection will appear here."}
+                  </div>
+                ) : null}
+              </div>
 
             </div>
           </div>
-
         </div>
       </div>
     </div>
