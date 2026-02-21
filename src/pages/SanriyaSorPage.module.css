@@ -1,8 +1,6 @@
-/* ================================
-   CAELINUS AI • SANRI — Module CSS
-   FIX: reply overflow + scroll
-   ================================ */
+/* src/pages/SanriyaSorPage.module.css */
 
+/* PAGE */
 .page{
   min-height:100vh;
   color: rgba(255,255,255,.92);
@@ -12,9 +10,6 @@
     radial-gradient(900px 700px at 55% 85%, rgba(160,120,255,.12), transparent 62%),
     linear-gradient(180deg, #06070c 0%, #070a12 40%, #050610 100%);
   padding-bottom: 60px;
-
-  /* ✅ genel taşma koruması */
-  overflow-x: hidden;
 }
 
 /* TOPBAR */
@@ -32,8 +27,13 @@
     radial-gradient(900px 140px at 80% 0%, rgba(90,160,255,.14), transparent 70%),
     rgba(10,12,18,.55);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
-.topbarLeft{ display:flex; align-items:center; gap:12px; min-width:0; }
+.topbarLeft{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 .brandPill{
   padding: 6px 10px;
   border-radius: 999px;
@@ -47,12 +47,12 @@
   opacity:.82;
   font-size: 13px;
   letter-spacing:.04em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 52vw;
 }
-.topbarRight{ display:flex; align-items:center; gap:10px; }
+.topbarRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 .backBtn{
   border:1px solid rgba(255,255,255,.14);
   background: rgba(255,255,255,.06);
@@ -80,23 +80,21 @@
   margin: 18px auto 0;
   padding: 0 18px;
 }
-
 .card{
   border: 1px solid rgba(255,255,255,.10);
   border-radius: 26px;
   background: rgba(255,255,255,.04);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 30px 120px rgba(0,0,0,.55);
   padding: 22px;
 }
-
 .kicker{
   font-size: 12px;
   letter-spacing: .22em;
   opacity: .68;
   font-weight: 800;
 }
-
 .h1{
   margin-top: 10px;
   font-size: 56px;
@@ -111,13 +109,11 @@
   line-height: 1.5;
 }
 
-/* ✅ grid taşma fix */
 .grid{
   margin-top: 22px;
   display:grid;
   grid-template-columns: 360px 1fr;
   gap: 16px;
-  overflow: hidden;
 }
 @media (max-width: 980px){
   .grid{ grid-template-columns: 1fr; }
@@ -129,7 +125,6 @@
   display:flex;
   flex-direction:column;
   gap: 14px;
-  min-width: 0;
 }
 .block{
   border: 1px solid rgba(255,255,255,.10);
@@ -172,20 +167,13 @@
   display:flex;
   flex-direction:column;
   gap: 14px;
-  min-width: 0; /* ✅ */
 }
-
 .panel{
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.16);
   border-radius: 18px;
   padding: 14px;
-
-  /* ✅ panel taşma fix */
-  min-width: 0;
-  overflow: hidden;
 }
-
 .panelLabel{
   font-size: 12px;
   letter-spacing: .14em;
@@ -205,9 +193,9 @@
   outline: none;
   resize: vertical;
   line-height: 1.5;
-
-  box-sizing: border-box;
-  max-width: 100%;
+}
+.textarea::placeholder{
+  color: rgba(210,195,255,.35);
 }
 
 .actions{
@@ -257,72 +245,22 @@
   background: rgba(160,123,255,.18);
 }
 
-/* =========================
-   ✅ REPLY FIX (ASIL ÇÖZÜM)
-   ========================= */
-
-.replyPanel{
-  display: flex;
-  flex-direction: column;
-  min-height: 220px;
-}
-
-/* Scroll burada olacak */
-.replyBox{
-  margin-top: 10px;
-  border-radius: 16px;
-  padding: 14px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.10);
-
-  max-height: 260px;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  /* uzun kelimeler taşmasın */
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-
-/* pre'nin default margin'i var — kaldır */
-.replyText{
-  margin: 0;
-  white-space: pre-wrap;
-  line-height: 1.62;
-  font-size: 14px;
-
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-
-/* Scrollbar */
-.replyBox::-webkit-scrollbar { width: 8px; }
-.replyBox::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 999px; }
-.replyBox::-webkit-scrollbar-track { background: transparent; }
-
-
-.empty{ opacity:.65; }
-
-.error{
-  border: 1px solid rgba(255,80,120,.35);
-  background: rgba(255,80,120,.10);
-  color: rgba(255,200,220,.95);
-  padding: 10px 12px;
-  border-radius: 12px;
+/* THINKING */
+.thinking{
+  display:flex;
+  align-items:center;
+  gap:10px;
   margin-bottom: 10px;
 }
-
-.footnote{
-  margin-top: 10px;
-  opacity: .58;
-  font-size: 12px;
-  line-height: 1.45;
+.thinkingLabel{
+  opacity:.8;
+  font-weight: 800;
 }
-
-/* thinking */
-.thinking{ display:flex; align-items:center; gap:10px; }
-.thinkingLabel{ opacity:.8; font-weight: 800; }
-.dots{ display:inline-flex; gap:6px; align-items:center; }
+.dots{
+  display:inline-flex;
+  gap:6px;
+  align-items:center;
+}
 .dots i{
   width:6px;height:6px;border-radius:999px;
   background: rgba(255,255,255,.7);
@@ -335,14 +273,77 @@
   40% { transform: translateY(-5px); opacity:1; }
 }
 
-.bottomRow{ display:flex; justify-content:flex-end; }
-.askBtn{
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.92);
-  padding: 10px 14px;
-  border-radius: 14px;
-  cursor: pointer;
-  font-weight: 900;
-  letter-spacing: .06em;
+/* ✅ ERROR */
+.error{
+  border: 1px solid rgba(255,80,120,.35);
+  background: rgba(255,80,120,.10);
+  color: rgba(255,200,220,.95);
+  padding: 10px 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+/* ✅ REPLY PANEL — overflow fix */
+.replyPanel{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+/* scroll container */
+.replyBox{
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+
+  padding: 14px;
+  min-height: 140px;
+
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* actual text */
+.replyText{
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  line-height: 1.62;
+  font-size: 14px;
+}
+
+/* scrollbar */
+.replyBox::-webkit-scrollbar{ width: 8px; }
+.replyBox::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.18); border-radius: 999px; }
+.replyBox::-webkit-scrollbar-track{ background: transparent; }
+
+/* empty hint under box */
+.empty{
+  opacity:.65;
+  font-size: 13px;
+}
+
+/* optional footer */
+.footnote{
+  margin-top: 10px;
+  opacity: .58;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* mobile tightening */
+@media (max-width: 480px){
+  .shell{ padding: 0 12px; }
+  .card{ padding: 16px; }
+  .replyBox{ max-height: 220px; }
 }
