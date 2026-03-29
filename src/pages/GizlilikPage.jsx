@@ -31,7 +31,7 @@ const GizlilikPage = () => {
 **Toplamadığımız Veriler:**
 • Konum bilgisi
 • Cihaz tanımlayıcıları
-• Finansal bilgiler (uygulama içi satın alma yoktur)`
+• Finansal bilgiler (ödemeler Apple/Google tarafından işlenir, biz saklamayız)`
         },
         {
           icon: Shield,
@@ -100,7 +100,7 @@ Bu hakları kullanmak için:
 **Data We Don't Collect:**
 • Location data
 • Device identifiers
-• Financial information (no in-app purchases)`
+• Financial information (payments processed by Apple/Google, not stored by us)`
         },
         {
           icon: Shield,

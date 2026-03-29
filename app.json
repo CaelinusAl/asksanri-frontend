@@ -3,7 +3,8 @@
     "extra": {
       "eas": {
         "projectId": "3f92c07d-47ba-4d13-8718-d6fc72c6f66b"
-      }
+      },
+      "EXPO_PUBLIC_API_BASE": "https://sanri-api-2.onrender.com"
     }
   }
 }

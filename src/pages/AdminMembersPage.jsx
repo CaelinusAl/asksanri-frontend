@@ -14,11 +14,15 @@ export default function AdminMembersPage() {
     localStorage.setItem("admin_key", key);
 
     try {
-      const s = await fetch(`${API}/api/admin/stats?key=${encodeURIComponent(key)}`).then(r => r.json());
+      const s = await fetch(`${API}/admin/overview`, {
+        headers: { "X-Admin-Token": key },
+      }).then(r => r.json());
       setStats(s);
 
-      const u = await fetch(`${API}/api/admin/users?key=${encodeURIComponent(key)}&limit=50&offset=0`).then(r => r.json());
-      setUsers(Array.isArray(u) ? u : []);
+      const u = await fetch(`${API}/admin/events?limit=50`, {
+        headers: { "X-Admin-Token": key },
+      }).then(r => r.json());
+      setUsers(Array.isArray(u?.items) ? u.items : []);
     } catch (e) {
       setErr("Fetch failed");
     }

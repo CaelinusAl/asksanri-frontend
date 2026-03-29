@@ -57,8 +57,8 @@ export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
     try {
       const url =
         tab === "login"
-          ? `${api}/api/auth/email/login`
-          : `${api}/api/auth/email/register`;
+          ? `${api}/auth/login`
+          : `${api}/auth/register`;
 
       const res = await fetch(url, {
         method: "POST",

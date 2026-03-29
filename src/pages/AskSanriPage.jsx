@@ -7,7 +7,7 @@ export default function AskSanriPage({ mode = "ayna_sade" }) {
   ]);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
 
   const send = async () => {
     const userText = question.trim();
@@ -20,7 +20,7 @@ export default function AskSanriPage({ mode = "ayna_sade" }) {
     try {
       if (!API_URL) throw new Error("_API_URL missing");
 
-      const res = await fetch(${API_URL}/ask, {
+      const res = await fetch(`${API_URL}/ask`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: userText, mode }),

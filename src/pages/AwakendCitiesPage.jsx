@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./AwakenedCitiesPage.module.css";
+import styles from "./AwakendCitiesPage.module.css";
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
-import { awakenedCities } from "../data/awakenedCities";
+import { awakenedCities } from "../data/awakendCities";
 
 export default function AwakenedCitiesPage() {
   const navigate = useNavigate();

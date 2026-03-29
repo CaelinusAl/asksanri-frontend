@@ -1,235 +1,512 @@
-/* src/pages/RituelAlaniPage.module.css */
+/* Ritüel Kubbesi — sihirli ritüel alanı */
 
-.page{
-  min-height: 100vh;
-  padding: 22px 18px 64px;
-  color: rgba(255,255,255,.92);
-
-  background:
-    radial-gradient(900px 600px at 20% 15%, rgba(170,120,255,.22), transparent 62%),
-    radial-gradient(900px 600px at 80% 30%, rgba(90,160,255,.16), transparent 60%),
-    linear-gradient(180deg, #07080d 0%, #0b0d14 48%, #06070b 100%);
+@keyframes domeBreathe {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(1.04); }
+}
+@keyframes orbPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(200, 170, 255, 0.15), inset 0 0 60px rgba(120, 80, 180, 0.08); }
+  50% { box-shadow: 0 0 80px rgba(255, 210, 150, 0.2), inset 0 0 80px rgba(160, 100, 220, 0.12); }
+}
+@keyframes sigilFloat {
+  0%, 100% { transform: translateY(0); opacity: 0.9; }
+  50% { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes dust {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 0.35; }
 }
 
-.fatal{
+.page {
+  min-height: 100vh;
+  padding: 0 0 80px;
+  color: rgba(255, 255, 255, 0.92);
+  position: relative;
+  overflow-x: hidden;
+  --ritual-gold: 230, 190, 120;
+  --ritual-violet: 150, 110, 220;
+  --ritual-deep: 8, 6, 18;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(var(--ritual-violet), 0.25), transparent 55%),
+    radial-gradient(900px 500px at 15% 40%, rgba(100, 60, 140, 0.35), transparent 60%),
+    radial-gradient(800px 500px at 85% 60%, rgba(60, 40, 100, 0.4), transparent 55%),
+    linear-gradient(185deg, #05040a 0%, #0c0818 45%, #06040e 100%);
+}
+
+.page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.fatal {
   position: fixed;
   inset: 0;
   z-index: 999999;
   background: #0b0d14;
   color: #fff;
   padding: 16px;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: ui-monospace, monospace;
   white-space: pre-wrap;
 }
 
-.topbar{
+/* —— Hero —— */
+.ritualHero {
+  position: relative;
+  text-align: center;
+  padding: 28px 20px 8px;
+  z-index: 1;
+}
+.heroGlow {
+  position: absolute;
+  top: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(90vw, 520px);
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(var(--ritual-violet), 0.35), transparent 70%);
+  animation: domeBreathe 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.heroEyebrow {
+  position: relative;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 220, 180, 0.45);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.heroTitle {
+  position: relative;
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  background: linear-gradient(180deg, #fff 20%, rgba(var(--ritual-gold), 0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 40px rgba(var(--ritual-violet), 0.3);
+}
+.heroSub {
+  position: relative;
+  margin: 12px auto 0;
+  max-width: 420px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.42);
+  font-style: italic;
+}
+
+/* —— Topbar —— */
+.topbar {
   position: sticky;
   top: 0;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 16px;
-
-  background:
-    radial-gradient(900px 120px at 20% 0%, rgba(180,120,255,.22), transparent 62%),
-    radial-gradient(800px 120px at 80% 0%, rgba(120,160,255,.16), transparent 62%),
-    rgba(8,10,14,.55);
-  backdrop-filter: blur(14px);
-}
-
-.topbarLeft{ display:flex; align-items:center; gap:12px; min-width:0; }
-.brand{
-  padding: 6px 10px;
-  border: 1px solid rgba(255,255,255,.12);
+  padding: 12px 20px;
+  margin: 0 16px 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  font-weight: 700;
-  letter-spacing: .18em;
-  font-size: 12px;
-  background: rgba(255,255,255,.06);
+  background: rgba(12, 8, 22, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
-.topbarSubtitle{
-  opacity: .82;
-  font-size: 12px;
+.topbarLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.brand {
+  padding: 6px 12px;
+  border: 1px solid rgba(var(--ritual-gold), 0.25);
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  font-size: 11px;
+  color: rgba(255, 230, 200, 0.85);
+  background: rgba(var(--ritual-gold), 0.08);
+}
+.topbarSubtitle {
+  opacity: 0.65;
+  font-size: 11px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: 0.06em;
 }
-
-.topbarRight{ display:flex; align-items:center; gap:10px; }
-
-.langBtn, .backBtn{
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(160,123,255,.12);
-  color: rgba(255,255,255,.92);
-  padding: 10px 12px;
-  border-radius: 12px;
+.topbarRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.langBtn,
+.backBtn {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.88);
+  padding: 8px 14px;
+  border-radius: 999px;
   cursor: pointer;
-  font-weight: 800;
-  letter-spacing: .08em;
-}
-.backBtn{
-  background: rgba(255,255,255,.06);
   font-weight: 700;
-  letter-spacing: .02em;
-}
-
-.layout{
-  margin: 18px auto 0;
-  max-width: 1180px;
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 18px;
-}
-
-@media (max-width: 980px){
-  .layout{ grid-template-columns: 1fr; }
-}
-
-.ritualList, .selectedCard{
-  border: 1px solid rgba(255,255,255,.10);
-  border-radius: 18px;
-  background: rgba(255,255,255,.04);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 22px 60px rgba(0,0,0,.35);
-}
-
-.panelTitle{
-  padding: 14px 16px 8px;
   font-size: 12px;
-  letter-spacing: .14em;
-  opacity: .82;
+  letter-spacing: 0.04em;
+  transition: background 0.2s, border-color 0.2s;
+}
+.langBtn:hover,
+.backBtn:hover {
+  background: rgba(var(--ritual-violet), 0.15);
+  border-color: rgba(var(--ritual-violet), 0.35);
+}
+
+/* —— Layout —— */
+.layout {
+  margin: 20px auto 0;
+  max-width: 1200px;
+  padding: 0 18px;
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* —— Sacred nav (ritual list) —— */
+.ritualList {
+  border: 1px solid rgba(var(--ritual-gold), 0.12);
+  border-radius: 22px;
+  background: linear-gradient(165deg, rgba(30, 20, 50, 0.5), rgba(10, 8, 20, 0.85));
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+}
+.panelTitle {
+  padding: 16px 18px 8px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: rgba(var(--ritual-gold), 0.55);
   font-weight: 800;
 }
-
-.listInner{ padding: 10px 12px 12px; display:grid; gap:10px; }
-
-.ritualItem{
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.12);
-  cursor: pointer;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
-  outline: none;
-}
-.ritualItem:hover{ transform: translateY(-1px); border-color: rgba(180,120,255,.22); }
-.active{
-  background: rgba(170,120,255,.12);
-  border-color: rgba(180,120,255,.28);
-}
-
-.itemTitle{ font-weight: 900; font-size: 14px; margin-bottom: 4px; }
-.itemDesc{ opacity: .78; font-size: 12px; line-height: 1.35; }
-
-.badges{ display:flex; gap:8px; margin-top: 10px; }
-.premiumBadge, .freeBadge{
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .08em;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-}
-.premiumBadge{
-  background: rgba(255, 210, 120, .14);
-  border-color: rgba(255, 210, 120, .28);
-}
-.freeBadge{
-  background: rgba(160,123,255,.14);
-  border-color: rgba(160,123,255,.24);
-}
-
-.note{
-  padding: 0 14px 14px;
-  opacity: .72;
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.selectedCard{ padding-bottom: 16px; }
-.selectedTitle{
-  padding: 0 16px;
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: .02em;
-}
-.selectedDesc{
-  padding: 6px 16px 10px;
-  opacity: .80;
-  font-size: 13px;
-}
-
-.audioBox{
-  margin: 12px 16px;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-}
-.audioTitle{ font-size: 12px; letter-spacing: .10em; opacity:.86; font-weight: 900; margin-bottom: 8px; }
-.audio{ width: 100%; }
-.audioHint{ margin-top: 8px; opacity: .72; font-size: 12px; }
-.audioMissing{ opacity: .72; font-size: 12px; padding: 10px 0; }
-
-.stepsBox{
-  margin: 12px 16px 8px;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.10);
-  background: rgba(255,255,255,.03);
-}
-.stepLine{ display:flex; align-items:center; justify-content: space-between; gap: 10px; }
-.stepCounter{ opacity: .82; font-size: 12px; font-weight: 800; }
-.stepPill{
-  font-size: 11px;
-  font-weight: 900;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.06);
-}
-.stepText{
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.45;
-}
-
-.stepActions{
-  margin-top: 12px;
-  display:flex;
-  align-items:center;
+.listInner {
+  padding: 8px 12px 16px;
+  display: grid;
   gap: 10px;
 }
-.grow{ flex: 1; }
+.ritualItem {
+  position: relative;
+  padding: 14px 14px 14px 48px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.ritualItem:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--ritual-violet), 0.35);
+  box-shadow: 0 8px 24px rgba(80, 40, 120, 0.25);
+}
+.active {
+  border-color: rgba(var(--ritual-gold), 0.4);
+  background: linear-gradient(135deg, rgba(var(--ritual-violet), 0.15), rgba(var(--ritual-gold), 0.06));
+  box-shadow: 0 0 0 1px rgba(var(--ritual-gold), 0.15), 0 12px 40px rgba(100, 60, 160, 0.2);
+}
+.itemSymbol {
+  position: absolute;
+  left: 17px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  line-height: 1;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 8px rgba(255, 200, 150, 0.35));
+}
+.itemTitle {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+  font-family: Georgia, serif;
+}
+.itemDesc {
+  opacity: 0.72;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.premiumBadge,
+.freeBadge {
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.premiumBadge {
+  background: linear-gradient(135deg, rgba(var(--ritual-gold), 0.2), rgba(180, 100, 80, 0.15));
+  border-color: rgba(var(--ritual-gold), 0.35);
+  color: rgba(255, 230, 200, 0.95);
+}
+.freeBadge {
+  background: rgba(var(--ritual-violet), 0.2);
+  border-color: rgba(var(--ritual-violet), 0.35);
+  color: rgba(220, 200, 255, 0.9);
+}
+.note {
+  padding: 0 16px 16px;
+  opacity: 0.55;
+  font-size: 11px;
+  line-height: 1.5;
+  font-style: italic;
+}
 
-.btnGhost, .btnPrimary, .btnSanri{
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 14px;
-  padding: 10px 14px;
+/* —— Sanctuary (selected ritual) —— */
+.selectedCard {
+  border: 1px solid rgba(var(--ritual-gold), 0.15);
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgba(25, 18, 45, 0.65), rgba(8, 6, 16, 0.92));
+  backdrop-filter: blur(16px);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding-bottom: 20px;
+  overflow: hidden;
+}
+.selectedCard .panelTitle {
+  padding-top: 20px;
+}
+
+.selectedTitle {
+  padding: 0 22px;
+  font-family: Georgia, serif;
+  font-size: clamp(22px, 3.5vw, 30px);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #fff, rgba(var(--ritual-gold), 0.9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.selectedDesc {
+  padding: 8px 22px 16px;
+  opacity: 0.65;
+  font-size: 13px;
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Orb + step verse */
+.orbSection {
+  position: relative;
+  margin: 8px 20px 20px;
+  padding: 32px 24px 36px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(var(--ritual-violet), 0.12), transparent 60%),
+    rgba(0, 0, 0, 0.35);
+  animation: orbPulse 6s ease-in-out infinite;
+}
+.progressRingWrap {
+  position: relative;
+  width: min(200px, 55vw);
+  height: min(200px, 55vw);
+  margin: 0 auto 20px;
+}
+.progressRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* --progress: 0–100 (inline from JSX) */
+  background: conic-gradient(
+    from -90deg,
+    rgba(var(--ritual-gold), 0.9) 0%,
+    rgba(var(--ritual-gold), 0.75) calc(var(--progress, 0) * 1%),
+    rgba(80, 60, 120, 0.25) calc(var(--progress, 0) * 1%),
+    rgba(80, 60, 120, 0.25) 100%
+  );
+  mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #fff calc(100% - 5px));
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 5px), #fff calc(100% - 5px));
+  opacity: 0.92;
+}
+.progressRingInner {
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, rgba(60, 40, 90, 0.5), rgba(5, 3, 12, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 40px rgba(100, 60, 160, 0.15);
+}
+.stepSigil {
+  font-size: 42px;
+  line-height: 1;
+  animation: sigilFloat 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255, 200, 150, 0.4));
+}
+.phaseLabel {
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(var(--ritual-gold), 0.55);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.stepTag {
+  display: inline-block;
+  margin: 0 auto 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  border: 1px solid rgba(var(--ritual-gold), 0.35);
+  color: rgba(255, 220, 190, 0.95);
+  background: rgba(var(--ritual-gold), 0.08);
+  text-align: center;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+.stepVerse {
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(17px, 2.5vw, 22px);
+  line-height: 1.65;
+  color: rgba(255, 250, 245, 0.92);
+  max-width: 520px;
+  margin: 0 auto;
+  text-shadow: 0 0 30px rgba(150, 100, 200, 0.25);
+}
+
+/* Audio sanctum */
+.audioSanctum {
+  margin: 0 20px 16px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(var(--ritual-gold), 0.2);
+  background: linear-gradient(180deg, rgba(var(--ritual-gold), 0.06), rgba(0, 0, 0, 0.25));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.audioTitle {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(var(--ritual-gold), 0.65);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.audio {
+  width: 100%;
+  height: 40px;
+  border-radius: 999px;
+  filter: sepia(0.15) saturate(1.1);
+}
+.audioHint {
+  margin-top: 10px;
+  opacity: 0.45;
+  font-size: 11px;
+  font-style: italic;
+}
+.audioMissing {
+  opacity: 0.55;
+  font-size: 12px;
+  padding: 12px 0;
+}
+
+.stepsBox {
+  margin: 0 20px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+.stepLine {
+  display: none;
+}
+.stepActions {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+.grow {
+  flex: 1;
+  min-width: 40px;
+}
+
+.btnGhost,
+.btnPrimary,
+.btnSanri {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 12px 20px;
   cursor: pointer;
   font-weight: 800;
-  color: rgba(255,255,255,.92);
-  background: rgba(255,255,255,.06);
-}
-.btnPrimary{
-  background: rgba(120,160,255,.16);
-  border-color: rgba(120,160,255,.32);
-}
-.btnSanri{
-  background: linear-gradient(135deg, rgba(255, 210, 120, .22), rgba(170,120,255,.20));
-  border-color: rgba(255, 210, 120, .32);
-}
-
-.btnGhost:disabled, .btnPrimary:disabled{
-  opacity: .45;
-  cursor: not-allowed;
-}
-
-.footnote{
-  padding: 10px 16px 0;
-  opacity: .72;
   font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btnGhost:hover:not(:disabled),
+.btnPrimary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(var(--ritual-violet), 0.4);
+}
+.btnPrimary {
+  background: linear-gradient(135deg, rgba(var(--ritual-violet), 0.35), rgba(80, 50, 140, 0.4));
+  border-color: rgba(var(--ritual-violet), 0.45);
+}
+.btnSanri {
+  background: linear-gradient(135deg, rgba(var(--ritual-gold), 0.25), rgba(var(--ritual-violet), 0.25));
+  border-color: rgba(var(--ritual-gold), 0.4);
+  color: rgba(255, 245, 230, 0.98);
+  box-shadow: 0 4px 20px rgba(100, 60, 160, 0.25);
+}
+.btnSanri:hover {
+  box-shadow: 0 6px 28px rgba(180, 120, 220, 0.35);
+}
+.btnGhost:disabled,
+.btnPrimary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.footnote {
+  padding: 16px 22px 0;
+  opacity: 0.45;
+  font-size: 11px;
+  line-height: 1.55;
+  text-align: center;
+  font-style: italic;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: 8px;
 }

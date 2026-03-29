@@ -4,7 +4,7 @@ export default function AdminStatsPage() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/admin/stats`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/overview`)
       .then(res => res.json())
       .then(data => setStats(data));
   }, []);

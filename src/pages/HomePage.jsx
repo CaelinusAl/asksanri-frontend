@@ -82,8 +82,10 @@ export default function HomePage() {
       {
         key: "yasam_kocu",
         title: isTR ? "Sanrı Yaşam Koçu" : "Sanri Life Coach",
-        desc: isTR ? "Kişisel bilinç panelin" : "Your personal consciousness dashboard",
-        hint: isTR ? "Panele gir" : "Enter panel",
+        desc: isTR
+          ? "PREMIUM • Farkındalık sahnesi — alanı sen şekillendirirsin"
+          : "PREMIUM • Awareness stage — you shape the space",
+        hint: isTR ? "Alanını aç" : "Open your space",
         path: "/yasam-kocu",
         premium: true,
       },
@@ -152,13 +154,6 @@ export default function HomePage() {
 
   const handleGate = (g) => {
     onUnlock();
-
-    // Premium kapılar auth ister
-    if (g.premium) {
-      setAuthOpen(true);
-      return;
-    }
-
     navigate(g.path, { state: { skipIntro: true } });
   };
 

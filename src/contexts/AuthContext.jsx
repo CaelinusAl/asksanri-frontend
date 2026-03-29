@@ -21,34 +21,44 @@ export function AuthProvider({ children }) {
     setError("");
 
     try {
-      // 1) auth/me
-      const meRes = await fetch(`${API}/api/auth/me`, {
+      const token =
+        document.cookie.split(";").find((c) => c.trim().startsWith("access_token=")) ||
+        localStorage.getItem("access_token") ||
+        sessionStorage.getItem("access_token") ||
+        "";
+
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
+      const meRes = await fetch(`${API}/auth/me`, {
         method: "GET",
         credentials: "include",
       });
 
-      const me = await meRes.json().catch(() => ({}));
-
-      // Eğer backend 401 dönüyorsa: login değil
       if (!meRes.ok) {
         setUser(null);
         setLoading(false);
         return;
       }
 
-      // 2) subscription/status (premium bilgisini buradan çekelim)
+      const me = await meRes.json().catch(() => ({}));
+
       let sub = {};
       try {
         const subRes = await fetch(`${API}/api/subscription/status`, {
           method: "GET",
           credentials: "include",
         });
-        sub = await subRes.json().catch(() => ({}));
+        if (subRes.ok) {
+          sub = await subRes.json().catch(() => ({}));
+        }
       } catch {
         sub = {};
       }
 
-      // normalize
       const normalized = {
         ...me,
         authenticated: me?.authenticated ?? true,
@@ -66,7 +76,6 @@ export function AuthProvider({ children }) {
       setUser(normalized);
       setLoading(false);
     } catch (e) {
-      setError("Auth network error");
       setUser(null);
       setLoading(false);
     }
@@ -80,7 +89,7 @@ export function AuthProvider({ children }) {
     async ({ email, password }) => {
       if (!API) throw new Error("VITE_BACKEND_URL missing");
 
-      const res = await fetch(`${API}/api/auth/email/login`, {
+      const res = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -100,7 +109,7 @@ export function AuthProvider({ children }) {
     async ({ email, password }) => {
       if (!API) throw new Error("VITE_BACKEND_URL missing");
 
-      const res = await fetch(`${API}/api/auth/email/register`, {
+      const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -119,7 +128,7 @@ export function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     if (!API) return;
     try {
-      await fetch(`${API}/api/auth/logout`, {
+      await fetch(`${API}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });

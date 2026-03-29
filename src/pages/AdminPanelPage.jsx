@@ -52,7 +52,9 @@ export default function AdminPanelPage() {
   setLoading(true);
 
   try {
-    const sRes = await fetch(`${API}/api/admin/stats?key=${encodeURIComponent(adminKey)}`);
+    const sRes = await fetch(`${API}/admin/overview`, {
+      headers: { "X-Admin-Token": adminKey },
+    });
     const sJson = await sRes.json();
 
     if (!sRes.ok) {
@@ -61,7 +63,9 @@ export default function AdminPanelPage() {
 
     setStats(sJson);
 
-    const uRes = await fetch(`${API}/api/admin/users?key=${encodeURIComponent(adminKey)}`);
+    const uRes = await fetch(`${API}/admin/events?limit=50`, {
+      headers: { "X-Admin-Token": adminKey },
+    });
     const uJson = await uRes.json();
 
     if (!uRes.ok) {

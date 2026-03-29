@@ -10,6 +10,7 @@ export const FEATURES = {
   RITUEL_ALANI: "rituel_alani",
   FREKANS_ALANI: "frekans_alani",
   BILINC_ALANI: "bilinc_alani",
+  PROFILE_MIRROR: "profile_mirror",
 };
 
 const PremiumContext = createContext(null);
