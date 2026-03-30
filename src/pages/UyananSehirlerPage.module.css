@@ -25,7 +25,7 @@
 
 /* GATES COSMIC BACKGROUND */
 .gatesWrap{ position:relative;min-height:calc(100vh - 90px);overflow:hidden; }
-.gatesBg{ position:absolute;inset:0;background:url(/assets/gates/13kapi.png) center center/cover no-repeat;opacity:.22;pointer-events:none;z-index:0; }
+.gatesBg{ position:absolute;inset:0;background:url(/assets/gates/anadolu.jpg) center center/cover no-repeat;opacity:.22;pointer-events:none;z-index:0; }
 .gatesBgOverlay{ position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
     linear-gradient(to bottom, rgba(6,7,11,.50) 0%, rgba(6,7,11,.35) 30%, rgba(6,7,11,.45) 65%, rgba(6,7,11,.80) 100%),
