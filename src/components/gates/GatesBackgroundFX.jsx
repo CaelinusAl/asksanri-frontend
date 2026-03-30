@@ -46,9 +46,14 @@ if (typeof document !== "undefined" && !document.getElementById(CSS_ID)) {
     .g-hero-card:hover {
       transform: translateY(-5px);
       box-shadow:
-        0 8px 60px rgba(255,180,60,.12),
-        0 2px 30px rgba(160,100,240,.10),
+        0 8px 60px rgba(255,180,60,.15),
+        0 2px 30px rgba(160,100,240,.12),
         inset 0 1px 0 rgba(255,255,255,.06) !important;
+    }
+    .g-hero-card:hover .g-hero-bg {
+      filter: blur(2px) !important;
+      opacity: .80 !important;
+      transform: scale(1.08) !important;
     }
     .g-hero-card:focus-visible {
       outline: 2px solid rgba(255,200,100,.5);
@@ -60,6 +65,11 @@ if (typeof document !== "undefined" && !document.getElementById(CSS_ID)) {
     }
     .g-card:hover {
       transform: translateY(-6px) scale(1.012);
+    }
+    .g-card:hover .g-card-bg {
+      filter: blur(3px) !important;
+      opacity: .78 !important;
+      transform: scale(1.08) !important;
     }
     .g-card:focus-visible {
       outline: 2px solid rgba(179,136,255,.5);

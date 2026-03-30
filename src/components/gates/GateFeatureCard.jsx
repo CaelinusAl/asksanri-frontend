@@ -1,72 +1,65 @@
 import React from "react";
 
 /*
-  Visual energy map — each gate has a unique gradient atmosphere.
-  Colors are layered over a dark glass base to create distinct identities.
+  Visual energy + background image map per gate.
+  Images are decorative: blurred, dark overlay, atmosphere only.
 */
 const ENERGY = {
   sanri: {
-    bg:
-      "radial-gradient(ellipse 65% 70% at 20% 80%, rgba(160,100,255,.14) 0%, transparent 60%)," +
-      "radial-gradient(ellipse 50% 55% at 80% 20%, rgba(120,70,220,.08) 0%, transparent 55%)",
+    img: "/assets/gates/sanri.jpg",
     accent: "#b388ff",
     glow: "rgba(179,136,255,.14)",
     border: "rgba(179,136,255,.12)",
     iconGlow: "0 0 30px rgba(179,136,255,.25), 0 0 60px rgba(140,80,240,.10)",
+    overlayTint: "rgba(30,15,60,.75)",
   },
   bilinc: {
-    bg:
-      "radial-gradient(ellipse 60% 65% at 75% 70%, rgba(80,140,240,.12) 0%, transparent 58%)," +
-      "radial-gradient(ellipse 45% 50% at 25% 25%, rgba(100,180,255,.07) 0%, transparent 50%)",
+    img: "/assets/gates/bilinc.jpg",
     accent: "#64b5f6",
     glow: "rgba(100,181,246,.12)",
     border: "rgba(100,181,246,.10)",
     iconGlow: "0 0 30px rgba(100,181,246,.22), 0 0 60px rgba(80,140,240,.08)",
+    overlayTint: "rgba(10,20,50,.75)",
   },
   frekans: {
-    bg:
-      "radial-gradient(ellipse 55% 60% at 50% 75%, rgba(255,170,50,.12) 0%, transparent 55%)," +
-      "radial-gradient(ellipse 40% 45% at 70% 20%, rgba(255,200,80,.06) 0%, transparent 50%)",
+    img: "/assets/gates/frekans.jpg",
     accent: "#ffb347",
     glow: "rgba(255,179,71,.12)",
     border: "rgba(255,179,71,.10)",
     iconGlow: "0 0 30px rgba(255,179,71,.25), 0 0 60px rgba(255,140,40,.10)",
+    overlayTint: "rgba(40,20,10,.75)",
   },
   rituel: {
-    bg:
-      "radial-gradient(ellipse 50% 55% at 30% 70%, rgba(255,100,160,.10) 0%, transparent 55%)," +
-      "radial-gradient(ellipse 35% 40% at 75% 30%, rgba(255,80,140,.06) 0%, transparent 50%)",
+    img: "/assets/gates/rituel.jpg",
     accent: "#ff6b9d",
     glow: "rgba(255,107,157,.10)",
     border: "rgba(255,107,157,.10)",
     iconGlow: "0 0 30px rgba(255,107,157,.20), 0 0 60px rgba(255,80,140,.08)",
+    overlayTint: "rgba(40,10,25,.75)",
   },
   yanki: {
-    bg:
-      "radial-gradient(ellipse 55% 60% at 60% 65%, rgba(240,160,210,.10) 0%, transparent 55%)," +
-      "radial-gradient(ellipse 40% 45% at 30% 30%, rgba(255,180,220,.06) 0%, transparent 50%)",
+    img: "/assets/gates/sanri.jpg",
     accent: "#f8bbd0",
     glow: "rgba(248,187,208,.10)",
     border: "rgba(248,187,208,.10)",
     iconGlow: "0 0 30px rgba(248,187,208,.20), 0 0 60px rgba(240,160,210,.08)",
+    overlayTint: "rgba(35,15,35,.75)",
   },
   library: {
-    bg:
-      "radial-gradient(ellipse 60% 65% at 25% 75%, rgba(255,200,100,.10) 0%, transparent 55%)," +
-      "radial-gradient(ellipse 45% 50% at 80% 20%, rgba(200,170,120,.06) 0%, transparent 50%)",
+    img: "/assets/gates/kutuphane.jpg",
     accent: "#ffd54f",
     glow: "rgba(255,213,79,.10)",
     border: "rgba(255,213,79,.10)",
     iconGlow: "0 0 30px rgba(255,213,79,.22), 0 0 60px rgba(200,170,120,.08)",
+    overlayTint: "rgba(35,25,10,.75)",
   },
   admin: {
-    bg:
-      "radial-gradient(ellipse 55% 60% at 70% 65%, rgba(120,140,170,.08) 0%, transparent 55%)," +
-      "radial-gradient(ellipse 40% 45% at 30% 30%, rgba(160,180,200,.05) 0%, transparent 50%)",
+    img: "/assets/gates/admin.jpg",
     accent: "#90a4ae",
     glow: "rgba(144,164,174,.08)",
     border: "rgba(144,164,174,.08)",
     iconGlow: "0 0 30px rgba(144,164,174,.15), 0 0 60px rgba(120,140,170,.06)",
+    overlayTint: "rgba(15,18,25,.80)",
   },
 };
 
@@ -88,27 +81,37 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
         overflow: "hidden",
         cursor: "pointer",
         border: `1px solid ${e.border}`,
-        background: "rgba(12,10,24,.60)",
-        backdropFilter: "blur(16px) saturate(1.15)",
         boxShadow: `0 4px 40px rgba(0,0,0,.35), 0 8px 30px ${e.glow}, inset 0 1px 0 rgba(255,255,255,.04)`,
         animation: `g-fade-up .5s ${0.15 + delay * 0.06}s ease both`,
-        minHeight: 180,
+        minHeight: 200,
       }}
     >
-      {/* Energy gradient background */}
+      {/* Background image — blurred, decorative */}
+      <div style={{
+        position: "absolute", inset: -8,
+        backgroundImage: `url(${e.img})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        filter: "blur(6px)",
+        opacity: 0.65,
+        transition: "filter .5s ease, opacity .5s ease, transform .5s ease",
+        transform: "scale(1.05)",
+      }} className="g-card-bg" />
+
+      {/* Dark gradient overlay */}
       <div style={{
         position: "absolute", inset: 0,
-        background: e.bg,
+        background: `linear-gradient(160deg, ${e.overlayTint} 0%, rgba(10,10,20,.88) 100%)`,
         transition: "opacity .4s",
       }} />
 
-      {/* Top accent line — visible on hover via CSS */}
+      {/* Inner glow accent */}
       <div style={{
-        position: "absolute", top: 0, left: 0, right: 0, height: 2,
-        background: `linear-gradient(90deg, transparent, ${e.accent}66, transparent)`,
-        opacity: 0,
-        transition: "opacity .3s",
-      }} className="g-card-accent" />
+        position: "absolute", inset: 0,
+        background:
+          `radial-gradient(ellipse 60% 50% at 80% 90%, ${e.accent}18, transparent 60%)`,
+        pointerEvents: "none",
+      }} />
 
       {/* Content */}
       <div style={{
@@ -126,7 +129,8 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           alignItems: "center",
           justifyContent: "center",
           fontSize: 20,
-          background: `rgba(255,255,255,.04)`,
+          background: "rgba(0,0,0,.25)",
+          backdropFilter: "blur(8px)",
           border: `1px solid ${e.border}`,
           boxShadow: e.iconGlow,
           marginBottom: 4,
@@ -138,17 +142,19 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
         <div style={{
           fontSize: 18,
           fontWeight: 800,
-          color: "rgba(255,255,255,.93)",
+          color: "rgba(255,255,255,.95)",
           letterSpacing: ".01em",
+          textShadow: "0 2px 10px rgba(0,0,0,.5)",
         }}>
           {gate.title}
         </div>
 
         <div style={{
           fontSize: 13,
-          color: "rgba(255,255,255,.45)",
+          color: "rgba(255,255,255,.55)",
           lineHeight: 1.6,
           minHeight: 36,
+          textShadow: "0 1px 6px rgba(0,0,0,.4)",
         }}>
           {gate.desc}
         </div>
@@ -157,10 +163,11 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           fontSize: 13,
           fontWeight: 700,
           color: e.accent,
-          opacity: 0.75,
+          opacity: 0.85,
           letterSpacing: ".02em",
           marginTop: 4,
           transition: "opacity .3s",
+          textShadow: "0 1px 8px rgba(0,0,0,.4)",
         }}>
           {gate.hint} →
         </div>
@@ -172,12 +179,13 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           position: "absolute", top: 16, right: 16,
           padding: "4px 10px",
           borderRadius: 8,
-          background: "linear-gradient(135deg, rgba(255,200,100,.18), rgba(180,120,255,.12))",
-          border: "1px solid rgba(255,200,100,.25)",
+          background: "linear-gradient(135deg, rgba(255,200,100,.22), rgba(180,120,255,.15))",
+          border: "1px solid rgba(255,200,100,.30)",
+          backdropFilter: "blur(8px)",
           fontSize: 10,
           fontWeight: 900,
           letterSpacing: "1.5px",
-          color: "rgba(255,220,150,.85)",
+          color: "rgba(255,220,150,.90)",
           zIndex: 3,
         }}>
           VIP

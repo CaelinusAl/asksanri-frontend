@@ -16,13 +16,17 @@ export default function GatesHeroCard({ gate, onClick, isTR }) {
         animation: "g-fade-up .6s .1s ease both",
       }}
     >
-      {/* ── Gradient artwork layers ── */}
-      <div style={S.artBase} />
+      {/* ── Background image — blurred, decorative ── */}
+      <div style={S.bgImage} className="g-hero-bg" />
+
+      {/* Dark overlay to ensure readability */}
+      <div style={S.darkOverlay} />
+
+      {/* ── Gradient artwork layers on top of image ── */}
       <div style={S.artGold} />
       <div style={S.artRing1} />
       <div style={S.artRing2} />
       <div style={S.artPurple} />
-      <div style={S.artRose} />
       <div style={S.artVignette} />
 
       {/* Shimmer sweep */}
@@ -30,7 +34,7 @@ export default function GatesHeroCard({ gate, onClick, isTR }) {
         <div style={S.shimmer} />
       </div>
 
-      {/* Purple underglow */}
+      {/* Underglow */}
       <div style={S.underglow} />
 
       {/* ── Content ── */}
@@ -58,24 +62,37 @@ const S = {
     overflow: "hidden",
     cursor: "pointer",
     marginBottom: 32,
-    minHeight: 260,
+    minHeight: 280,
     border: "1px solid rgba(255,200,100,.12)",
     boxShadow:
       "0 4px 50px rgba(0,0,0,.4), " +
-      "0 8px 40px rgba(255,180,60,.06), " +
+      "0 8px 40px rgba(255,180,60,.08), " +
       "0 16px 60px rgba(140,80,240,.05), " +
       "inset 0 1px 0 rgba(255,255,255,.05)",
   },
 
-  /* Gradient art layers — create cosmic heart/energy without images */
-  artBase: {
-    position: "absolute", inset: 0,
-    background: "linear-gradient(135deg, rgba(20,15,40,.95) 0%, rgba(15,12,30,.90) 50%, rgba(25,18,45,.92) 100%)",
+  bgImage: {
+    position: "absolute",
+    inset: -12,
+    backgroundImage: "url(/assets/gates/anadolu.jpg)",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    filter: "blur(4px)",
+    opacity: 0.7,
+    transition: "filter .6s ease, opacity .6s ease, transform .6s ease",
+    transform: "scale(1.06)",
   },
+
+  darkOverlay: {
+    position: "absolute", inset: 0,
+    background:
+      "linear-gradient(135deg, rgba(15,10,30,.80) 0%, rgba(10,8,20,.65) 40%, rgba(20,15,35,.75) 100%)",
+  },
+
   artGold: {
     position: "absolute", inset: 0,
     background:
-      "radial-gradient(ellipse 55% 70% at 65% 50%, rgba(255,180,60,.16) 0%, rgba(255,140,40,.06) 40%, transparent 70%)",
+      "radial-gradient(ellipse 55% 70% at 65% 50%, rgba(255,180,60,.14) 0%, rgba(255,140,40,.05) 40%, transparent 70%)",
     animation: "g-hero-pulse 6s ease-in-out infinite",
   },
   artRing1: {
@@ -84,8 +101,8 @@ const S = {
     transform: "translate(-50%,-50%)",
     width: 320, height: 320,
     borderRadius: "50%",
-    border: "1px solid rgba(255,200,100,.08)",
-    boxShadow: "0 0 40px rgba(255,180,60,.04), inset 0 0 40px rgba(255,180,60,.03)",
+    border: "1px solid rgba(255,200,100,.06)",
+    boxShadow: "0 0 40px rgba(255,180,60,.03), inset 0 0 40px rgba(255,180,60,.02)",
   },
   artRing2: {
     position: "absolute",
@@ -93,23 +110,21 @@ const S = {
     transform: "translate(-50%,-50%)",
     width: 200, height: 200,
     borderRadius: "50%",
-    border: "1px solid rgba(255,200,100,.06)",
-    boxShadow: "0 0 60px rgba(255,200,100,.06), inset 0 0 30px rgba(255,180,60,.04)",
+    border: "1px solid rgba(255,200,100,.05)",
+    boxShadow: "0 0 60px rgba(255,200,100,.04), inset 0 0 30px rgba(255,180,60,.03)",
     animation: "g-hero-pulse 4s 1s ease-in-out infinite",
   },
   artPurple: {
     position: "absolute", inset: 0,
     background:
-      "radial-gradient(ellipse 40% 60% at 15% 60%, rgba(160,100,255,.12) 0%, transparent 60%)," +
-      "radial-gradient(ellipse 30% 40% at 85% 20%, rgba(140,80,240,.08) 0%, transparent 55%)",
-  },
-  artRose: {
-    position: "absolute", inset: 0,
-    background: "radial-gradient(ellipse 25% 35% at 50% 15%, rgba(255,120,180,.05) 0%, transparent 60%)",
+      "radial-gradient(ellipse 40% 60% at 15% 60%, rgba(160,100,255,.10) 0%, transparent 60%)," +
+      "radial-gradient(ellipse 30% 40% at 85% 20%, rgba(140,80,240,.06) 0%, transparent 55%)",
   },
   artVignette: {
     position: "absolute", inset: 0,
-    background: "linear-gradient(90deg, rgba(10,8,20,.7) 0%, transparent 45%, rgba(10,8,20,.3) 100%)",
+    background:
+      "linear-gradient(90deg, rgba(10,8,20,.75) 0%, transparent 40%, rgba(10,8,20,.35) 100%)," +
+      "linear-gradient(180deg, rgba(10,8,20,.3) 0%, transparent 30%, rgba(10,8,20,.5) 100%)",
   },
 
   shimmerWrap: {
@@ -149,14 +164,14 @@ const S = {
     color: "#fff",
     lineHeight: 1.2,
     marginTop: 4,
-    textShadow: "0 2px 20px rgba(0,0,0,.4)",
+    textShadow: "0 2px 20px rgba(0,0,0,.5)",
   },
   desc: {
     fontSize: 15,
-    color: "rgba(255,255,255,.60)",
+    color: "rgba(255,255,255,.65)",
     lineHeight: 1.65,
     maxWidth: 460,
-    textShadow: "0 1px 8px rgba(0,0,0,.3)",
+    textShadow: "0 1px 10px rgba(0,0,0,.4)",
   },
   cta: {
     display: "inline-flex",
@@ -167,6 +182,7 @@ const S = {
     borderRadius: 12,
     border: "1px solid rgba(255,200,100,.20)",
     background: "rgba(255,200,100,.08)",
+    backdropFilter: "blur(8px)",
     width: "fit-content",
     transition: "all .3s",
   },
