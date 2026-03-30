@@ -41,40 +41,34 @@ if (typeof document !== "undefined" && !document.getElementById(CSS_ID)) {
     }
 
     .g-hero-card {
-      transition: all .45s cubic-bezier(.23,1,.32,1);
+      transition: all .35s cubic-bezier(.23,1,.32,1);
     }
     .g-hero-card:hover {
-      transform: translateY(-5px) scale(1.008);
-      border-color: rgba(255,200,100,.22) !important;
-      box-shadow:
-        0 12px 70px rgba(255,180,60,.18),
-        0 4px 35px rgba(160,100,240,.14),
-        0 0 0 1px rgba(255,200,100,.08),
-        inset 0 1px 0 rgba(255,255,255,.08) !important;
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,.12) !important;
+      box-shadow: 0 8px 40px rgba(0,0,0,.35), 0 4px 20px rgba(255,200,100,.06) !important;
     }
     .g-hero-card:hover .g-hero-bg {
-      filter: blur(2px) !important;
-      opacity: .82 !important;
-      transform: scale(1.09) !important;
+      transform: scale(1.02) !important;
     }
     .g-hero-card:hover .g-hero-glow-overlay {
-      opacity: .6 !important;
+      opacity: 1 !important;
     }
     .g-hero-card:focus-visible {
-      outline: 2px solid rgba(255,200,100,.5);
-      outline-offset: 4px;
+      outline: 2px solid rgba(255,200,100,.4);
+      outline-offset: 3px;
     }
 
     .g-card {
-      transition: all .4s cubic-bezier(.23,1,.32,1);
+      transition: all .3s cubic-bezier(.23,1,.32,1);
     }
     .g-card:hover {
-      transform: translateY(-7px) scale(1.018);
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(255,255,255,.12) !important;
+      box-shadow: 0 8px 35px rgba(0,0,0,.35) !important;
     }
     .g-card:hover .g-card-bg {
-      filter: blur(3px) !important;
-      opacity: .78 !important;
-      transform: scale(1.10) !important;
+      transform: scale(1.03) !important;
     }
     .g-card:hover .g-card-glow {
       opacity: 1 !important;
@@ -83,8 +77,8 @@ if (typeof document !== "undefined" && !document.getElementById(CSS_ID)) {
       opacity: 1 !important;
     }
     .g-card:focus-visible {
-      outline: 2px solid rgba(179,136,255,.5);
-      outline-offset: 4px;
+      outline: 2px solid rgba(179,136,255,.4);
+      outline-offset: 3px;
     }
 
     @media (max-width: 900px) {

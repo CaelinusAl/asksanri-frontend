@@ -16,34 +16,21 @@ export default function GatesHeroCard({ gate, onClick, isTR }) {
         animation: "g-fade-up .6s .1s ease both",
       }}
     >
-      {/* ── Background image — blurred, decorative ── */}
+      {/* Background image — SHARP */}
       <div style={S.bgImage} className="g-hero-bg" />
 
-      {/* Dark overlay to ensure readability */}
-      <div style={S.darkOverlay} />
+      {/* Single clean overlay — left side darker for text */}
+      <div style={S.overlay} />
 
-      {/* Glassmorphism frost */}
-      <div style={S.frost} />
-
-      {/* ── Gradient artwork layers on top of image ── */}
-      <div style={S.artGold} />
-      <div style={S.artRing1} />
-      <div style={S.artRing2} />
-      <div style={S.artPurple} />
-      <div style={S.artVignette} />
-
-      {/* Hover glow overlay */}
+      {/* Hover glow — only on hover */}
       <div className="g-hero-glow-overlay" style={S.hoverGlow} />
 
-      {/* Shimmer sweep */}
+      {/* Subtle shimmer */}
       <div style={S.shimmerWrap}>
         <div style={S.shimmer} />
       </div>
 
-      {/* Underglow */}
-      <div style={S.underglow} />
-
-      {/* ── Content ── */}
+      {/* Content */}
       <div className="g-hero-inner" style={S.inner}>
         <GateBadge color="rgba(255,210,120,.90)">
           {isTR ? "ANADOLU RUHU" : "SOUL OF ANATOLIA"}
@@ -64,164 +51,92 @@ export default function GatesHeroCard({ gate, onClick, isTR }) {
 const S = {
   wrap: {
     position: "relative",
-    borderRadius: 28,
+    borderRadius: 24,
     overflow: "hidden",
     cursor: "pointer",
-    marginBottom: 32,
-    minHeight: 280,
-    border: "1px solid rgba(255,200,100,.12)",
-    backdropFilter: "blur(24px) saturate(1.2)",
-    WebkitBackdropFilter: "blur(24px) saturate(1.2)",
-    boxShadow:
-      "0 4px 50px rgba(0,0,0,.45), " +
-      "0 8px 40px rgba(255,180,60,.10), " +
-      "0 16px 60px rgba(140,80,240,.06), " +
-      "inset 0 1px 0 rgba(255,255,255,.06), " +
-      "inset 0 -1px 0 rgba(255,255,255,.02)",
+    marginBottom: 28,
+    minHeight: 260,
+    border: "1px solid rgba(255,255,255,.07)",
+    boxShadow: "0 2px 30px rgba(0,0,0,.35)",
   },
 
   bgImage: {
-    position: "absolute",
-    inset: -14,
+    position: "absolute", inset: 0,
     backgroundImage: "url(/assets/gates/anadolu.jpg)",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    filter: "blur(4px) saturate(1.4)",
-    opacity: 0.7,
-    transition: "filter .6s ease, opacity .6s ease, transform .6s ease",
-    transform: "scale(1.07)",
+    opacity: 0.9,
+    transition: "opacity .5s ease, transform .5s ease",
   },
 
-  darkOverlay: {
+  overlay: {
     position: "absolute", inset: 0,
     background:
-      "linear-gradient(135deg, rgba(15,10,30,.78) 0%, rgba(10,8,20,.60) 40%, rgba(20,15,35,.72) 100%), " +
-      "linear-gradient(to top, rgba(0,0,0,.35) 0%, transparent 40%)",
-  },
-
-  frost: {
-    position: "absolute", inset: 0,
-    background: "rgba(10,8,20,.18)",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
+      "linear-gradient(90deg, rgba(8,10,20,.85) 0%, rgba(8,10,20,.55) 50%, rgba(8,10,20,.20) 100%), " +
+      "linear-gradient(to top, rgba(8,10,20,.50) 0%, transparent 40%)",
   },
 
   hoverGlow: {
     position: "absolute", inset: 0,
-    background:
-      "radial-gradient(ellipse 60% 50% at 50% 90%, rgba(255,200,100,.12), transparent 60%), " +
-      "radial-gradient(ellipse 40% 40% at 70% 40%, rgba(160,100,240,.06), transparent 50%)",
+    background: "linear-gradient(90deg, transparent 40%, rgba(255,200,100,.06) 70%, transparent 100%)",
     opacity: 0,
-    transition: "opacity .45s ease",
+    transition: "opacity .4s ease",
     pointerEvents: "none",
-  },
-
-  artGold: {
-    position: "absolute", inset: 0,
-    background:
-      "radial-gradient(ellipse 55% 70% at 65% 50%, rgba(255,180,60,.14) 0%, rgba(255,140,40,.05) 40%, transparent 70%)",
-    animation: "g-hero-pulse 6s ease-in-out infinite",
-  },
-  artRing1: {
-    position: "absolute",
-    top: "50%", left: "60%",
-    transform: "translate(-50%,-50%)",
-    width: 320, height: 320,
-    borderRadius: "50%",
-    border: "1px solid rgba(255,200,100,.06)",
-    boxShadow: "0 0 40px rgba(255,180,60,.03), inset 0 0 40px rgba(255,180,60,.02)",
-  },
-  artRing2: {
-    position: "absolute",
-    top: "50%", left: "60%",
-    transform: "translate(-50%,-50%)",
-    width: 200, height: 200,
-    borderRadius: "50%",
-    border: "1px solid rgba(255,200,100,.05)",
-    boxShadow: "0 0 60px rgba(255,200,100,.04), inset 0 0 30px rgba(255,180,60,.03)",
-    animation: "g-hero-pulse 4s 1s ease-in-out infinite",
-  },
-  artPurple: {
-    position: "absolute", inset: 0,
-    background:
-      "radial-gradient(ellipse 40% 60% at 15% 60%, rgba(160,100,255,.10) 0%, transparent 60%)," +
-      "radial-gradient(ellipse 30% 40% at 85% 20%, rgba(140,80,240,.06) 0%, transparent 55%)",
-  },
-  artVignette: {
-    position: "absolute", inset: 0,
-    background:
-      "linear-gradient(90deg, rgba(10,8,20,.75) 0%, transparent 40%, rgba(10,8,20,.35) 100%)," +
-      "linear-gradient(180deg, rgba(10,8,20,.3) 0%, transparent 30%, rgba(10,8,20,.5) 100%)",
   },
 
   shimmerWrap: {
     position: "absolute", inset: 0,
     overflow: "hidden",
-    borderRadius: 28,
+    borderRadius: 24,
   },
   shimmer: {
     position: "absolute",
     top: 0, left: 0,
-    width: "50%", height: "100%",
-    background: "linear-gradient(105deg, transparent 30%, rgba(255,220,150,.04) 50%, transparent 70%)",
-    animation: "g-hero-shimmer 6s 2s ease-in-out infinite",
-  },
-
-  underglow: {
-    position: "absolute",
-    bottom: -20, left: "50%",
-    transform: "translateX(-50%)",
-    width: "70%", height: 60,
-    borderRadius: "50%",
-    background: "radial-gradient(ellipse, rgba(255,180,60,.14) 0%, rgba(160,100,240,.06) 50%, transparent 80%)",
-    filter: "blur(24px)",
-    zIndex: -1,
+    width: "40%", height: "100%",
+    background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,.02) 50%, transparent 65%)",
+    animation: "g-hero-shimmer 8s 3s ease-in-out infinite",
   },
 
   inner: {
     position: "relative", zIndex: 2,
-    padding: "44px 40px",
+    padding: "40px 38px",
     display: "flex",
     flexDirection: "column",
-    gap: 14,
+    gap: 12,
   },
   title: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 900,
     color: "#fff",
     lineHeight: 1.2,
     marginTop: 4,
-    textShadow: "0 2px 20px rgba(0,0,0,.5)",
   },
   desc: {
     fontSize: 15,
-    color: "rgba(255,255,255,.65)",
-    lineHeight: 1.65,
-    maxWidth: 460,
-    textShadow: "0 1px 10px rgba(0,0,0,.4)",
+    color: "rgba(255,255,255,.60)",
+    lineHeight: 1.6,
+    maxWidth: 420,
   },
   cta: {
     display: "inline-flex",
     alignItems: "center",
     gap: 8,
     marginTop: 6,
-    padding: "10px 22px",
-    borderRadius: 12,
-    border: "1px solid rgba(255,200,100,.20)",
-    background: "rgba(255,200,100,.08)",
-    backdropFilter: "blur(8px)",
+    padding: "9px 20px",
+    borderRadius: 10,
+    border: "1px solid rgba(255,200,100,.18)",
+    background: "rgba(0,0,0,.30)",
     width: "fit-content",
     transition: "all .3s",
   },
   ctaText: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: 700,
-    color: "rgba(255,210,130,.90)",
+    color: "rgba(255,210,130,.85)",
     letterSpacing: ".02em",
   },
   ctaArrow: {
-    fontSize: 16,
-    color: "rgba(255,210,130,.70)",
-    transition: "transform .3s",
+    fontSize: 15,
+    color: "rgba(255,210,130,.60)",
   },
 };
