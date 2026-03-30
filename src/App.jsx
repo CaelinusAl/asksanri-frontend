@@ -13,13 +13,11 @@ import LibraryPage from "./pages/LibraryPage";
 import UyananSehirlerPage from "./pages/UyananSehirlerPage";
 import YasamKocuPage from "./pages/YasamKocuPage";
 
-import AdminPanelPage from "./pages/AdminPanelPage";
-import AdminMembersPage from "./pages/AdminMembersPage";
-import AdminStatsPage from "./pages/AdminStatsPage";
+import AdminPage from "./pages/AdminPage";
 
 import YankiAlaniPage from "./pages/YankiAlaniPage";
 import YankiYeniPage from "./pages/YankiYeniPage";
-import YankiAdminPage from "./pages/admin/YankiAdminPage";
+
 
 import ProfilePage from "./pages/ProfilePage";
 import SubscriptionPage from "./pages/SubscriptionPage";
@@ -81,10 +79,11 @@ export default function App() {
       <Route path="/yanki-alani/yeni" element={<YankiYeniPage />} />
 
       {/* Admin pages */}
-      <Route path="/admin/panel" element={<AdminPanelPage />} />
-      <Route path="/admin/members" element={<AdminMembersPage />} />
-      <Route path="/admin/stats" element={<AdminStatsPage />} />
-      <Route path="/admin/yanki" element={<YankiAdminPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/admin/panel" element={<AdminPage />} />
+      <Route path="/admin/members" element={<AdminPage />} />
+      <Route path="/admin/stats" element={<AdminPage />} />
+      <Route path="/admin/yanki" element={<AdminPage />} />
 
       {/* Legal pages - App Store / Play Store required */}
       <Route path="/privacy" element={<GizlilikPage />} />

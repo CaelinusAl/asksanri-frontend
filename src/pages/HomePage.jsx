@@ -145,15 +145,15 @@ export default function HomePage() {
       },
     ];
 
-    const adminKey = import.meta.env.VITE_ADMIN_KEY;
-    if (adminKey) {
+    const token = localStorage.getItem("sanri_token");
+    if (token) {
       list.push({
         key: "admin_panel",
         icon: "⚙",
         title: "Admin Panel",
-        desc: isTR ? "Yönetim paneli" : "Management panel",
-        hint: isTR ? "Aç" : "Open",
-        path: `/admin/panel?key=${encodeURIComponent(adminKey)}`,
+        desc: isTR ? "Yönetim ve analitik paneli" : "Management & analytics panel",
+        hint: isTR ? "Paneli Aç" : "Open Panel",
+        path: "/admin",
         accent: "admin",
       });
     }
