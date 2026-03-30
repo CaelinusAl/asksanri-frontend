@@ -116,35 +116,35 @@ function DataFall() {
 function FrequencyCore({ size = 72 }) {
   return (
     <div style={{ position: "relative", width: size, height: size, margin: "0 auto" }}>
-      {/* Purple halo glow behind the sphere */}
+      {/* Wide purple halo */}
       <div style={{
         position: "absolute", left: "50%", top: "50%",
         transform: "translate(-50%, -50%)",
-        width: size * 2.8, height: size * 2.8, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(140,100,220,.14) 0%, rgba(120,80,200,.06) 40%, transparent 70%)",
-        filter: "blur(16px)",
+        width: size * 3.2, height: size * 3.2, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(160,80,240,.20) 0%, rgba(130,60,220,.10) 35%, rgba(100,40,200,.04) 60%, transparent 80%)",
+        filter: "blur(20px)",
         pointerEvents: "none",
       }} />
       {/* Rotating ring */}
       <div style={{
         position: "absolute", left: "50%", top: "50%",
-        width: size * 2, height: size * 2, borderRadius: "50%",
-        background: "conic-gradient(from 0deg, transparent, rgba(180,140,255,.08), transparent, rgba(140,100,220,.06), transparent)",
+        width: size * 2.2, height: size * 2.2, borderRadius: "50%",
+        background: "conic-gradient(from 0deg, transparent, rgba(180,100,255,.12), transparent, rgba(160,60,240,.08), transparent)",
         animation: "sg-glow-rotate 14s linear infinite",
         filter: "blur(10px)",
       }} />
-      {/* Core sphere */}
+      {/* Core sphere — purple dominant */}
       <div className="sg-core" style={{
         position: "relative", width: size, height: size, borderRadius: "50%",
-        background: `radial-gradient(circle at 42% 38%, rgba(240,242,255,.32), rgba(220,215,255,.18) 35%, rgba(180,160,240,.10) 60%, transparent 100%)`,
-        border: "1px solid rgba(200,190,255,.15)",
-        boxShadow: `0 0 ${size * 0.8}px rgba(160,130,240,.18), 0 0 ${size * 1.6}px rgba(140,100,220,.10), 0 0 ${size * 2.5}px rgba(120,80,200,.05), inset 0 0 ${size * 0.4}px rgba(220,210,255,.10)`,
+        background: `radial-gradient(circle at 42% 36%, rgba(220,200,255,.45), rgba(180,140,255,.30) 30%, rgba(150,90,240,.20) 55%, rgba(120,60,220,.10) 75%, transparent 100%)`,
+        border: "1px solid rgba(180,140,255,.20)",
+        boxShadow: `0 0 ${size * 0.6}px rgba(160,100,255,.30), 0 0 ${size * 1.2}px rgba(140,70,240,.18), 0 0 ${size * 2}px rgba(120,50,220,.10), inset 0 0 ${size * 0.35}px rgba(200,170,255,.15)`,
         animation: "sg-breathe 4.5s ease-in-out infinite",
       }}>
         <div style={{
-          position: "absolute", top: "20%", left: "26%",
-          width: "32%", height: "32%", borderRadius: "50%",
-          background: "rgba(240,240,255,.18)", filter: "blur(5px)",
+          position: "absolute", top: "18%", left: "24%",
+          width: "34%", height: "34%", borderRadius: "50%",
+          background: "rgba(230,220,255,.25)", filter: "blur(6px)",
         }} />
       </div>
     </div>
@@ -195,50 +195,57 @@ function ThresholdIntro({ isTR, onEnter }) {
   return (
     <div style={T.wrap} onClick={allRevealed ? onEnter : undefined}>
       <div style={T.content}>
-        <div style={T.contentGlow} aria-hidden="true" />
-        <div style={{ ...T.fadeIn, animationDelay: "0s" }}>
-          <FrequencyCore size={80} />
+
+        {/* Glass card wrapping everything */}
+        <div style={T.glassCard}>
+          {/* Purple glow under card */}
+          <div style={T.glassGlow} aria-hidden="true" />
+
+          <div style={{ ...T.fadeIn, animationDelay: "0s" }}>
+            <FrequencyCore size={80} />
+          </div>
+
+          <h1 className="sg-intro-brand" style={{
+            ...T.brand,
+            ...T.fadeIn,
+            animationDelay: ".2s",
+          }}>
+            SANRI
+          </h1>
+
+          <div style={T.lines}>
+            {lines.map((line, i) => (
+              <p key={i} style={{
+                ...T.line,
+                fontWeight: line.bold ? 600 : 400,
+                marginTop: line.pause ? 20 : 4,
+                opacity: i < visibleCount ? 1 : 0,
+                transform: i < visibleCount ? "translateY(0)" : "translateY(8px)",
+                transition: "opacity .5s ease, transform .5s ease",
+              }}>
+                {line.text}
+              </p>
+            ))}
+          </div>
+
+          <div style={{
+            ...T.cta,
+            opacity: allRevealed ? 1 : 0,
+            transform: allRevealed ? "translateY(0)" : "translateY(12px)",
+            transition: "opacity .6s ease, transform .6s ease",
+          }}>
+            <button
+              className="sg-threshold-cta"
+              onClick={onEnter}
+              style={T.ctaBtn}
+              aria-label={isTR ? "Kapıları aç" : "Open the gates"}
+            >
+              {isTR ? "Dokun → Kapılar açılır" : "Touch → The gates open"}
+            </button>
+            <span style={T.cursor}>▌</span>
+          </div>
         </div>
 
-        <h1 className="sg-intro-brand" style={{
-          ...T.brand,
-          ...T.fadeIn,
-          animationDelay: ".2s",
-        }}>
-          SANRI
-        </h1>
-
-        <div style={T.lines}>
-          {lines.map((line, i) => (
-            <p key={i} style={{
-              ...T.line,
-              fontWeight: line.bold ? 600 : 400,
-              marginTop: line.pause ? 20 : 4,
-              opacity: i < visibleCount ? 1 : 0,
-              transform: i < visibleCount ? "translateY(0)" : "translateY(8px)",
-              transition: "opacity .5s ease, transform .5s ease",
-            }}>
-              {line.text}
-            </p>
-          ))}
-        </div>
-
-        <div style={{
-          ...T.cta,
-          opacity: allRevealed ? 1 : 0,
-          transform: allRevealed ? "translateY(0)" : "translateY(12px)",
-          transition: "opacity .6s ease, transform .6s ease",
-        }}>
-          <button
-            className="sg-threshold-cta"
-            onClick={onEnter}
-            style={T.ctaBtn}
-            aria-label={isTR ? "Kapıları aç" : "Open the gates"}
-          >
-            {isTR ? "Dokun → Kapılar açılır" : "Touch → The gates open"}
-          </button>
-          <span style={T.cursor}>▌</span>
-        </div>
       </div>
     </div>
   );
@@ -256,22 +263,43 @@ const T = {
   },
   content: {
     textAlign: "center",
-    maxWidth: 520,
+    maxWidth: 560,
+    width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     gap: 0,
-    position: "relative",
   },
-  contentGlow: {
+  glassCard: {
+    position: "relative",
+    borderRadius: 28,
+    border: "1px solid rgba(160,130,240,.10)",
+    background: "rgba(10,12,20,.55)",
+    backdropFilter: "blur(20px) saturate(1.15)",
+    boxShadow:
+      "0 4px 50px rgba(0,0,0,.4), " +
+      "0 10px 40px rgba(140,80,240,.07), " +
+      "inset 0 1px 0 rgba(255,255,255,.04)",
+    padding: "48px 44px 40px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 0,
+    overflow: "visible",
+    width: "100%",
+    maxWidth: 520,
+    boxSizing: "border-box",
+  },
+  glassGlow: {
     position: "absolute",
-    bottom: -40, left: "50%",
+    bottom: -24, left: "50%",
     transform: "translateX(-50%)",
-    width: 360, height: 120,
+    width: "75%", height: 90,
     borderRadius: "50%",
-    background: "radial-gradient(ellipse, rgba(140,100,220,.12) 0%, rgba(120,80,200,.05) 50%, transparent 80%)",
-    filter: "blur(24px)",
+    background: "radial-gradient(ellipse, rgba(150,80,240,.22) 0%, rgba(130,60,220,.10) 45%, transparent 80%)",
+    filter: "blur(30px)",
     pointerEvents: "none",
+    zIndex: -1,
   },
   fadeIn: {
     animation: "sg-fade-up .7s ease both",
