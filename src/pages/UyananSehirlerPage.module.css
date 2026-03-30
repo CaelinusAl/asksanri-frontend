@@ -23,7 +23,11 @@
 .h1{ position:relative;z-index:1;font-size:clamp(22px,4.5vw,36px);font-weight:900;letter-spacing:.04em;margin:0 0 8px;background:linear-gradient(180deg,#fff 30%,rgba(var(--gr,180),var(--gg,150),var(--gb,255),.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 .hsub{ position:relative;z-index:1;max-width:540px;margin:0 auto;font-size:13px;line-height:1.7;opacity:.45; }
 
-/* GRID */
+/* RADIAL GRID (gates tab) */
+.radialGrid{ display:grid;grid-template-columns:minmax(320px,500px) minmax(280px,1fr);gap:28px;max-width:1100px;margin:0 auto;padding:0 24px 60px;align-items:start; }
+@media(max-width:860px){ .radialGrid{grid-template-columns:1fr;gap:16px} }
+
+/* LIST GRID (cities tab) */
 .grid{ display:grid;grid-template-columns:280px 1fr;gap:0;max-width:1200px;margin:0 auto;padding:0 24px 60px;min-height:55vh; }
 @media(max-width:860px){ .grid{grid-template-columns:1fr} .side{max-height:240px;overflow-y:auto} }
 
