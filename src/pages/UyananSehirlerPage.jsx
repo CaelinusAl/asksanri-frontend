@@ -291,114 +291,141 @@ export default function UyananSehirlerPage() {
       )}
 
       {/* ════════════════════════════════════════
-           CITIES TAB — 81 Uyanan Şehir (unchanged)
+           CITIES TAB — 81 Uyanan Şehir
          ════════════════════════════════════════ */}
-      {tab === "cities" && (<>
-        <div className={styles.hero} style={{"--gr":cityColor.split(",")[0],"--gg":cityColor.split(",")[1],"--gb":cityColor.split(",")[2]}}>
-          <div className={styles.glow}/><h1 className={styles.h1}>{isTR?"81 Şehir. 81 Ruh. 1 Anadolu.":"81 Cities. 81 Souls. 1 Anatolia."}</h1>
-          <p className={styles.hsub}>{isTR?"Her şehir bir bilinç kapısı. Plaka kodundan isim çözümüne, elementinden arketipine — ruhsal harita.":"Each city is a gate of consciousness. The spiritual map of Anatolia."}</p>
-        </div>
-        <div className={styles.grid}>
-          <div className={styles.side}>
-            {allCitiesTR.map(c => {
-              const pl = String(c.id).padStart(2,"0"); const on = pl===activePlate;
-              const ec = getElColor(c.element);
-              return <button key={pl} className={`${styles.si} ${on?styles.siOn:""}`} style={{"--ir":ec.split(",")[0],"--ig":ec.split(",")[1],"--ib":ec.split(",")[2]}} onClick={() => { setActivePlate(pl); cityDetailRef.current?.scrollTo({top:0,behavior:"smooth"}); }}>
-                <span className={styles.plate}>{pl}</span>
-                <div className={styles.sit}><b>{isTR?c.name:(allCitiesEN.find(x=>x.id===c.id)||c).name}</b><span className={styles.sis}>{isTR?c.symbol:(allCitiesEN.find(x=>x.id===c.id)||c).symbol} • {isTR?c.element:(allCitiesEN.find(x=>x.id===c.id)||c).element}</span></div>
-              </button>;
-            })}
+      {tab === "cities" && (
+        <div className={styles.citiesWrap}>
+          <div className={styles.citiesBg} />
+          <div className={styles.citiesBgOverlay} />
+
+          <div className={styles.citiesHero}>
+            <h1 className={styles.citiesH1}>{isTR ? "81 Şehir. 81 Ruh. 1 Anadolu." : "81 Cities. 81 Souls. 1 Anatolia."}</h1>
+            <p className={styles.citiesSub}>{isTR ? "Her şehir bir bilinç kapısı — ruhsal harita." : "Each city is a gate of consciousness."}</p>
           </div>
 
-          <div className={styles.det} ref={cityDetailRef} style={{"--gr":cityColor.split(",")[0],"--gg":cityColor.split(",")[1],"--gb":cityColor.split(",")[2]}}>
-            {cityLoading ? <div className={styles.muted}>...</div> : <>
-              <div className={styles.cityHead}>
-                <div className={styles.cityPlBig}>{activePlate}</div>
-                <div>
-                  <div className={styles.dn}>{city?.name}</div>
-                  <div className={styles.dd}>{city?.symbol} • {city?.element}</div>
-                </div>
-              </div>
-
-              <div className={styles.archBlock}>
-                <div className={styles.archLabel}>{isTR ? "Arketip" : "Archetype"}</div>
-                <div className={styles.archName}>{portal.a}</div>
-                <div className={styles.archCore}>{portal.c}</div>
-              </div>
-
-              {availableLayers.length > 0 && (
-                <div className={styles.layerNav}>
-                  {availableLayers.map(l => (
-                    <button key={l.key} className={`${styles.layerBtn} ${activeLayer===l.key?styles.layerOn:""}`} onClick={() => setActiveLayer(l.key)}>
-                      <span className={styles.layerIcon}>{l.icon}</span>
-                      <span>{isTR ? l.tr : l.en}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              {currentLayerBlock ? (
-                <div className={styles.layerContent} key={activeLayer}>
-                  <div className={styles.layerTitle}>{currentLayerBlock.title}</div>
-                  <div className={styles.layerStory}>
-                    {currentLayerBlock.story?.split("\n").map((line, i) => {
-                      const t = line.trim();
-                      if (!t) return <br key={i} />;
-                      if (t.startsWith("$")) return null;
-                      if (t.startsWith("◆")) return <div key={i} className={styles.layerSection}>{t}</div>;
-                      if (t.startsWith("•")) return <div key={i} className={styles.layerBullet}>{t}</div>;
-                      if (t === "—") return <div key={i} className={styles.layerDivider} />;
-                      return <p key={i}>{line}</p>;
-                    })}
-                  </div>
-                  {currentLayerBlock.reflection && (
-                    <div className={styles.reflectionBox}>
-                      <div className={styles.reflLabel}>{isTR ? "Yansıma Sorusu" : "Reflection"}</div>
-                      <div className={styles.reflText}>&ldquo;{currentLayerBlock.reflection}&rdquo;</div>
+          <div className={styles.citiesGrid} style={{"--gr":cityColor.split(",")[0],"--gg":cityColor.split(",")[1],"--gb":cityColor.split(",")[2]}}>
+            {/* ── City Sidebar ── */}
+            <div className={styles.citySide}>
+              {allCitiesTR.map(c => {
+                const pl = String(c.id).padStart(2,"0");
+                const on = pl === activePlate;
+                return (
+                  <button key={pl}
+                    className={`${styles.cityItem} ${on ? styles.cityItemOn : ""}`}
+                    onClick={() => { setActivePlate(pl); cityDetailRef.current?.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  >
+                    <span className={styles.cityPl}>{pl}</span>
+                    <div className={styles.cityInfo}>
+                      <span className={styles.cityName}>{isTR ? c.name : (allCitiesEN.find(x => x.id === c.id) || c).name}</span>
+                      <span className={styles.cityMeta}>{isTR ? c.symbol : (allCitiesEN.find(x => x.id === c.id) || c).symbol} · {isTR ? c.element : (allCitiesEN.find(x => x.id === c.id) || c).element}</span>
                     </div>
-                  )}
-                </div>
-              ) : (
-                <div className={styles.soul}><p>{city?.description}</p></div>
-              )}
+                  </button>
+                );
+              })}
+            </div>
 
-              {hasJourney && activeLayer === "base" && cityJourney?.sections?.map((sec, i) => (
-                <div key={i} className={styles.jItem}>
-                  <div className={styles.jLabel}>{sec.label}</div>
-                  <div className={styles.jText}>{sec.text}</div>
+            {/* ── City Detail Panel ── */}
+            <div className={styles.cityPanel} ref={cityDetailRef}>
+              {cityLoading ? <div className={styles.muted}>...</div> : (<>
+                {/* Hero header */}
+                <div className={styles.cpHead}>
+                  <div className={styles.cpPlate}>{activePlate}</div>
+                  <div>
+                    <div className={styles.cpName}>{city?.name}</div>
+                    <div className={styles.cpEl}>{city?.symbol} · {city?.element}</div>
+                  </div>
                 </div>
-              ))}
 
-              {activeLayer === "base" && cityGateData?.sanri_layer?.ayna_cumleleri?.length > 0 && (
-                <div className={styles.trigger}>
-                  <div className={styles.tl}>{isTR ? "Ayna Cümleleri" : "Mirror Sentences"}</div>
-                  {cityGateData.sanri_layer.ayna_cumleleri.map((l,i) => (
-                    <div key={i} className={styles.tt} style={{fontSize:"15px",marginBottom:"6px"}}>&ldquo;{l}&rdquo;</div>
-                  ))}
+                {/* Archetype */}
+                <div className={styles.cpArch}>
+                  <span className={styles.cpArchLabel}>{isTR ? "ARKETİP" : "ARCHETYPE"}</span>
+                  <span className={styles.cpArchName}>{portal.a}</span>
+                  <span className={styles.cpArchCore}>{portal.c}</span>
                 </div>
-              )}
 
-              {activeLayer === "base" && cityGateData?.sanri_layer?.bilinc_oyunu?.length > 0 && (
-                <div className={styles.soul}>
-                  <div className={styles.tl} style={{marginBottom:"10px"}}>{isTR ? "Bilinç Oyunu" : "Consciousness Game"}</div>
-                  {cityGateData.sanri_layer.bilinc_oyunu.map((l,i) => (
-                    <p key={i} style={{marginBottom:"6px",opacity:.85}}>{l}</p>
-                  ))}
+                {/* Layer tabs */}
+                {availableLayers.length > 0 && (
+                  <div className={styles.cpTabs}>
+                    {availableLayers.map(l => (
+                      <button key={l.key}
+                        className={`${styles.cpTab} ${activeLayer === l.key ? styles.cpTabOn : ""}`}
+                        onClick={() => setActiveLayer(l.key)}
+                      >
+                        <span className={styles.cpTabIcon}>{l.icon}</span>
+                        {isTR ? l.tr : l.en}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Layer content */}
+                {currentLayerBlock ? (
+                  <div className={styles.cpContent} key={activeLayer}>
+                    <div className={styles.cpContentTitle}>{currentLayerBlock.title}</div>
+                    <div className={styles.cpStory}>
+                      {currentLayerBlock.story?.split("\n").map((line, i) => {
+                        const t = line.trim();
+                        if (!t) return <br key={i} />;
+                        if (t.startsWith("$")) return null;
+                        if (t.startsWith("◆")) return <div key={i} className={styles.cpSection}>{t}</div>;
+                        if (t.startsWith("•")) return <div key={i} className={styles.cpBullet}>{t}</div>;
+                        if (t === "—") return <div key={i} className={styles.cpDivider} />;
+                        return <p key={i}>{line}</p>;
+                      })}
+                    </div>
+                    {currentLayerBlock.reflection && (
+                      <div className={styles.cpReflection}>
+                        <div className={styles.cpReflLabel}>{isTR ? "YANSIMA SORUSU" : "REFLECTION"}</div>
+                        <div className={styles.cpReflText}>&ldquo;{currentLayerBlock.reflection}&rdquo;</div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className={styles.cpStory}><p>{city?.description}</p></div>
+                )}
+
+                {/* Journey sections */}
+                {hasJourney && activeLayer === "base" && cityJourney?.sections?.map((sec, i) => (
+                  <div key={i} className={styles.cpCard}>
+                    <div className={styles.cpCardLabel}>{sec.label}</div>
+                    <div className={styles.cpCardText}>{sec.text}</div>
+                  </div>
+                ))}
+
+                {/* Ayna cümleleri */}
+                {activeLayer === "base" && cityGateData?.sanri_layer?.ayna_cumleleri?.length > 0 && (
+                  <div className={styles.cpReflection}>
+                    <div className={styles.cpReflLabel}>{isTR ? "AYNA CÜMLELERİ" : "MIRROR SENTENCES"}</div>
+                    {cityGateData.sanri_layer.ayna_cumleleri.map((l, i) => (
+                      <div key={i} className={styles.cpReflText} style={{ fontSize: 15, marginBottom: 6 }}>&ldquo;{l}&rdquo;</div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Bilinç oyunu */}
+                {activeLayer === "base" && cityGateData?.sanri_layer?.bilinc_oyunu?.length > 0 && (
+                  <div className={styles.cpCard}>
+                    <div className={styles.cpCardLabel}>{isTR ? "BİLİNÇ OYUNU" : "CONSCIOUSNESS GAME"}</div>
+                    {cityGateData.sanri_layer.bilinc_oyunu.map((l, i) => (
+                      <p key={i} className={styles.cpCardText}>{l}</p>
+                    ))}
+                  </div>
+                )}
+
+                {/* CTA */}
+                <div className={styles.cpCta}>
+                  <button className={styles.cpCtaBtn} style={{ background: `linear-gradient(135deg, rgba(${cityColor},1), rgba(${cityColor},.75))` }} onClick={goToSanriCity}>
+                    ✦ {isTR ? "Bu Şehrin Ruhuna Gir" : "Enter This City\u2019s Soul"}
+                  </button>
+                  <p className={styles.cpCtaHint}>{isTR ? "SANRI bu şehrin enerjisinden konuşacak." : "SANRI will speak through this city\u2019s energy."}</p>
                 </div>
-              )}
-
-              <div className={styles.cta}>
-                <button className={styles.ctaBtn} style={{background:`linear-gradient(135deg, rgba(${cityColor},1), rgba(${cityColor},.7))`}} onClick={goToSanriCity}>
-                  ✦ {isTR ? "Bu Şehrin Ruhuna Gir" : "Enter This City\u2019s Soul"}
-                </button>
-                <p className={styles.ctaH}>{isTR?"SANRI bu şehrin enerjisinden konuşacak.":"SANRI will speak through this city\u2019s energy."}</p>
-              </div>
-            </>}
+              </>)}
+            </div>
           </div>
-        </div>
-      </>)}
 
-      {tab === "cities" && <div className={styles.foot}>© 2026 SANRI</div>}
+          <div className={styles.citiesFoot}>© 2026 SANRI</div>
+        </div>
+      )}
     </div>
   );
 }
