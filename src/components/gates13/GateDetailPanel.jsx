@@ -13,9 +13,8 @@ export default function GateDetailPanel({
       <div style={S.head}>
         <div style={{
           ...S.icon,
-          borderColor: `rgba(${ec},.25)`,
-          boxShadow: `0 0 20px rgba(${ec},.10)`,
-          background: `radial-gradient(circle, rgba(${ec},.12), rgba(${ec},.03))`,
+          borderColor: `rgba(${ec},.22)`,
+          background: `radial-gradient(circle, rgba(${ec},.10), rgba(${ec},.02))`,
         }}>
           {energy?.s || "○"}
         </div>
@@ -30,9 +29,9 @@ export default function GateDetailPanel({
         {[gate.faz, gate.element].filter(Boolean).map((t, i) => (
           <span key={i} style={{
             ...S.tag,
-            borderColor: `rgba(${ec},.18)`,
-            background: `rgba(${ec},.06)`,
-            color: `rgba(${ec},.90)`,
+            borderColor: `rgba(${ec},.15)`,
+            background: `rgba(${ec},.05)`,
+            color: `rgba(${ec},.85)`,
           }}>{t}</span>
         ))}
       </div>
@@ -71,8 +70,8 @@ export default function GateDetailPanel({
       <div style={S.ctaWrap}>
         <button className="g13-cta" style={{
           ...S.ctaBtn,
-          background: `linear-gradient(135deg, rgba(${ec},1), rgba(${ec},.7))`,
-          boxShadow: `0 0 24px rgba(${ec},.20), 0 4px 16px rgba(0,0,0,.30)`,
+          background: `linear-gradient(135deg, rgba(${ec},1), rgba(${ec},.75))`,
+          boxShadow: `0 0 20px rgba(${ec},.18), 0 4px 14px rgba(0,0,0,.25)`,
         }} onClick={onEnter}>
           {energy?.s || "✦"} {isTR ? "Bu Kapıdan Geç" : "Enter This Gate"}
         </button>
@@ -88,36 +87,35 @@ export default function GateDetailPanel({
 
 const S = {
   card: {
-    background: "rgba(8,6,16,.55)",
-    border: "1px solid rgba(255,255,255,.07)",
-    borderRadius: 22,
-    padding: "30px 28px",
-    maxHeight: "68vh",
+    background: "rgba(6,5,14,.60)",
+    border: "1px solid rgba(255,255,255,.06)",
+    borderRadius: 20,
+    padding: "36px 32px",
+    maxHeight: "72vh",
     overflowY: "auto",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(255,255,255,.06) transparent",
-    boxShadow: "0 4px 40px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.04)",
+    boxShadow: "0 4px 30px rgba(0,0,0,.25)",
   },
 
   head: {
-    display: "flex", alignItems: "center", gap: 16, marginBottom: 20,
+    display: "flex", alignItems: "center", gap: 16, marginBottom: 24,
   },
   icon: {
-    width: 50, height: 50,
+    width: 48, height: 48,
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 22, borderRadius: "50%",
+    fontSize: 20, borderRadius: "50%",
     border: "1px solid", flexShrink: 0,
   },
   name: {
-    fontSize: 22, fontWeight: 900, letterSpacing: ".04em", color: "#fff",
-    textShadow: "0 2px 10px rgba(0,0,0,.3)",
+    fontSize: 20, fontWeight: 900, letterSpacing: ".04em", color: "#fff",
   },
   sub: {
-    fontSize: 11, opacity: .45, marginTop: 2,
+    fontSize: 11, opacity: .40, marginTop: 3,
   },
 
   tags: {
-    display: "flex", gap: 7, marginBottom: 18, flexWrap: "wrap",
+    display: "flex", gap: 8, marginBottom: 24, flexWrap: "wrap",
   },
   tag: {
     padding: "5px 12px", borderRadius: 999,
@@ -126,53 +124,53 @@ const S = {
   },
 
   soul: {
-    marginBottom: 18, padding: 18, borderRadius: 14,
+    marginBottom: 24, padding: 20, borderRadius: 14,
     background: "rgba(255,255,255,.025)",
     border: "1px solid rgba(255,255,255,.04)",
   },
   soulP: {
-    fontSize: 14, lineHeight: 1.75, margin: 0, opacity: .82,
+    fontSize: 14, lineHeight: 1.85, margin: 0, opacity: .80,
   },
 
   trigger: {
-    marginBottom: 18, padding: 18, borderRadius: 14,
-    background: "rgba(0,0,0,.20)",
+    marginBottom: 24, padding: 22, borderRadius: 14,
+    background: "rgba(0,0,0,.15)",
     border: "1px solid rgba(255,255,255,.04)",
     textAlign: "center",
   },
   trigLabel: {
     fontSize: 9, letterSpacing: ".18em", textTransform: "uppercase",
-    opacity: .3, marginBottom: 8,
+    opacity: .28, marginBottom: 10,
   },
   trigText: {
-    fontSize: 17, fontWeight: 700, lineHeight: 1.5,
+    fontSize: 17, fontWeight: 700, lineHeight: 1.55,
   },
 
   ritual: {
-    marginBottom: 18,
+    marginBottom: 24,
     border: "1px solid rgba(255,255,255,.04)",
-    borderRadius: 12, overflow: "hidden",
+    borderRadius: 14, overflow: "hidden",
   },
   ritBtn: {
     width: "100%", display: "flex", justifyContent: "space-between",
-    alignItems: "center", padding: "12px 16px",
-    background: "rgba(255,255,255,.025)", border: "none",
-    color: "rgba(255,255,255,.55)", cursor: "pointer", fontSize: 12,
+    alignItems: "center", padding: "13px 18px",
+    background: "rgba(255,255,255,.02)", border: "none",
+    color: "rgba(255,255,255,.50)", cursor: "pointer", fontSize: 12,
   },
   ritBody: {
-    padding: "14px 16px", fontSize: 13, lineHeight: 1.7,
-    opacity: .65, borderTop: "1px solid rgba(255,255,255,.04)",
+    padding: "16px 18px", fontSize: 13, lineHeight: 1.8,
+    opacity: .60, borderTop: "1px solid rgba(255,255,255,.04)",
   },
 
-  ctaWrap: { textAlign: "center", paddingTop: 8 },
+  ctaWrap: { textAlign: "center", paddingTop: 10 },
   ctaBtn: {
     display: "inline-flex", alignItems: "center", gap: 10,
-    padding: "14px 28px", border: "none", borderRadius: 14,
-    fontSize: 14, fontWeight: 800, cursor: "pointer",
+    padding: "16px 32px", border: "none", borderRadius: 14,
+    fontSize: 15, fontWeight: 800, cursor: "pointer",
     color: "#06070b",
     transition: "transform .2s, box-shadow .2s",
   },
   ctaHint: {
-    marginTop: 8, fontSize: 11, opacity: .3, fontStyle: "italic",
+    marginTop: 10, fontSize: 11, opacity: .25, fontStyle: "italic",
   },
 };

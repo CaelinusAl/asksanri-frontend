@@ -18,23 +18,23 @@
 .tabOn{ color:#fff !important;border-color:rgba(var(--gr,180),var(--gg,120),var(--gb,255),.30) !important;background:rgba(var(--gr,180),var(--gg,120),var(--gb,255),.08) !important; }
 
 /* HERO */
-.hero{ position:relative;text-align:center;padding:36px 24px 28px;overflow:hidden; }
+.hero{ position:relative;text-align:center;padding:28px 24px 20px;overflow:hidden; }
 .glow{ position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:700px;height:350px;border-radius:50%;background:radial-gradient(ellipse,rgba(var(--gr,140),var(--gg,120),var(--gb,200),.22),transparent 70%);animation:breathe 6s ease-in-out infinite;pointer-events:none;z-index:0; }
-.h1{ position:relative;z-index:1;font-size:clamp(24px,5vw,40px);font-weight:900;letter-spacing:.05em;margin:0 0 10px;background:linear-gradient(180deg,rgba(255,245,210,1) 0%,rgba(210,180,100,.85) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3)); }
-.hsub{ position:relative;z-index:1;max-width:540px;margin:0 auto;font-size:13px;line-height:1.7;color:rgba(255,255,255,.50); }
+.h1{ position:relative;z-index:1;font-size:clamp(20px,3.5vw,30px);font-weight:900;letter-spacing:.05em;margin:0 0 8px;background:linear-gradient(180deg,rgba(255,245,210,.95) 0%,rgba(210,180,100,.80) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+.hsub{ position:relative;z-index:1;max-width:480px;margin:0 auto;font-size:12px;line-height:1.6;color:rgba(255,255,255,.40); }
 
 /* GATES COSMIC BACKGROUND */
 .gatesWrap{ position:relative;min-height:calc(100vh - 90px);overflow:hidden; }
-.gatesBg{ position:absolute;inset:0;background:url(/assets/gates/13kapi.png) center 20%/cover no-repeat;opacity:.55;pointer-events:none;z-index:0; }
+.gatesBg{ position:absolute;inset:0;background:url(/assets/gates/13kapi.png) center center/cover no-repeat;opacity:.22;pointer-events:none;z-index:0; }
 .gatesBgOverlay{ position:absolute;inset:0;z-index:1;pointer-events:none;
   background:
-    linear-gradient(to bottom, rgba(6,7,11,.30) 0%, rgba(6,7,11,.10) 25%, rgba(6,7,11,.20) 60%, rgba(6,7,11,.70) 100%),
-    radial-gradient(ellipse 70% 50% at 50% 40%, transparent 0%, rgba(6,7,11,.40) 100%);
+    linear-gradient(to bottom, rgba(6,7,11,.50) 0%, rgba(6,7,11,.35) 30%, rgba(6,7,11,.45) 65%, rgba(6,7,11,.80) 100%),
+    radial-gradient(ellipse 60% 50% at 50% 45%, transparent 0%, rgba(6,7,11,.55) 100%);
 }
 
 /* RADIAL GRID (gates tab) */
-.radialGrid{ position:relative;z-index:2;display:grid;grid-template-columns:minmax(320px,520px) minmax(280px,1fr);gap:28px;max-width:1140px;margin:0 auto;padding:0 24px 60px;align-items:start; }
-@media(max-width:860px){ .radialGrid{grid-template-columns:1fr;gap:20px} }
+.radialGrid{ position:relative;z-index:2;display:grid;grid-template-columns:minmax(340px,560px) minmax(300px,1fr);gap:32px;max-width:1180px;margin:0 auto;padding:0 28px 40px;align-items:start; }
+@media(max-width:900px){ .radialGrid{grid-template-columns:1fr;gap:24px;padding:0 20px 40px} }
 
 /* LIST GRID (cities tab) */
 .grid{ display:grid;grid-template-columns:280px 1fr;gap:0;max-width:1200px;margin:0 auto;padding:0 24px 60px;min-height:55vh; }
