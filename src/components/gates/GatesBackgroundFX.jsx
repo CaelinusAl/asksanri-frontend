@@ -44,16 +44,21 @@ if (typeof document !== "undefined" && !document.getElementById(CSS_ID)) {
       transition: all .45s cubic-bezier(.23,1,.32,1);
     }
     .g-hero-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-5px) scale(1.008);
+      border-color: rgba(255,200,100,.22) !important;
       box-shadow:
-        0 8px 60px rgba(255,180,60,.15),
-        0 2px 30px rgba(160,100,240,.12),
-        inset 0 1px 0 rgba(255,255,255,.06) !important;
+        0 12px 70px rgba(255,180,60,.18),
+        0 4px 35px rgba(160,100,240,.14),
+        0 0 0 1px rgba(255,200,100,.08),
+        inset 0 1px 0 rgba(255,255,255,.08) !important;
     }
     .g-hero-card:hover .g-hero-bg {
       filter: blur(2px) !important;
-      opacity: .80 !important;
-      transform: scale(1.08) !important;
+      opacity: .82 !important;
+      transform: scale(1.09) !important;
+    }
+    .g-hero-card:hover .g-hero-glow-overlay {
+      opacity: .6 !important;
     }
     .g-hero-card:focus-visible {
       outline: 2px solid rgba(255,200,100,.5);
@@ -64,12 +69,18 @@ if (typeof document !== "undefined" && !document.getElementById(CSS_ID)) {
       transition: all .4s cubic-bezier(.23,1,.32,1);
     }
     .g-card:hover {
-      transform: translateY(-6px) scale(1.012);
+      transform: translateY(-7px) scale(1.018);
     }
     .g-card:hover .g-card-bg {
       filter: blur(3px) !important;
       opacity: .78 !important;
-      transform: scale(1.08) !important;
+      transform: scale(1.10) !important;
+    }
+    .g-card:hover .g-card-glow {
+      opacity: 1 !important;
+    }
+    .g-card:hover .g-card-accent-line {
+      opacity: 1 !important;
     }
     .g-card:focus-visible {
       outline: 2px solid rgba(179,136,255,.5);

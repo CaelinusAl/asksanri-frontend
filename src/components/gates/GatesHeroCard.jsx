@@ -22,12 +22,18 @@ export default function GatesHeroCard({ gate, onClick, isTR }) {
       {/* Dark overlay to ensure readability */}
       <div style={S.darkOverlay} />
 
+      {/* Glassmorphism frost */}
+      <div style={S.frost} />
+
       {/* ── Gradient artwork layers on top of image ── */}
       <div style={S.artGold} />
       <div style={S.artRing1} />
       <div style={S.artRing2} />
       <div style={S.artPurple} />
       <div style={S.artVignette} />
+
+      {/* Hover glow overlay */}
+      <div className="g-hero-glow-overlay" style={S.hoverGlow} />
 
       {/* Shimmer sweep */}
       <div style={S.shimmerWrap}>
@@ -64,29 +70,50 @@ const S = {
     marginBottom: 32,
     minHeight: 280,
     border: "1px solid rgba(255,200,100,.12)",
+    backdropFilter: "blur(24px) saturate(1.2)",
+    WebkitBackdropFilter: "blur(24px) saturate(1.2)",
     boxShadow:
-      "0 4px 50px rgba(0,0,0,.4), " +
-      "0 8px 40px rgba(255,180,60,.08), " +
-      "0 16px 60px rgba(140,80,240,.05), " +
-      "inset 0 1px 0 rgba(255,255,255,.05)",
+      "0 4px 50px rgba(0,0,0,.45), " +
+      "0 8px 40px rgba(255,180,60,.10), " +
+      "0 16px 60px rgba(140,80,240,.06), " +
+      "inset 0 1px 0 rgba(255,255,255,.06), " +
+      "inset 0 -1px 0 rgba(255,255,255,.02)",
   },
 
   bgImage: {
     position: "absolute",
-    inset: -12,
+    inset: -14,
     backgroundImage: "url(/assets/gates/anadolu.jpg)",
     backgroundSize: "cover",
     backgroundPosition: "center",
-    filter: "blur(4px)",
+    filter: "blur(4px) saturate(1.4)",
     opacity: 0.7,
     transition: "filter .6s ease, opacity .6s ease, transform .6s ease",
-    transform: "scale(1.06)",
+    transform: "scale(1.07)",
   },
 
   darkOverlay: {
     position: "absolute", inset: 0,
     background:
-      "linear-gradient(135deg, rgba(15,10,30,.80) 0%, rgba(10,8,20,.65) 40%, rgba(20,15,35,.75) 100%)",
+      "linear-gradient(135deg, rgba(15,10,30,.78) 0%, rgba(10,8,20,.60) 40%, rgba(20,15,35,.72) 100%), " +
+      "linear-gradient(to top, rgba(0,0,0,.35) 0%, transparent 40%)",
+  },
+
+  frost: {
+    position: "absolute", inset: 0,
+    background: "rgba(10,8,20,.18)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  },
+
+  hoverGlow: {
+    position: "absolute", inset: 0,
+    background:
+      "radial-gradient(ellipse 60% 50% at 50% 90%, rgba(255,200,100,.12), transparent 60%), " +
+      "radial-gradient(ellipse 40% 40% at 70% 40%, rgba(160,100,240,.06), transparent 50%)",
+    opacity: 0,
+    transition: "opacity .45s ease",
+    pointerEvents: "none",
   },
 
   artGold: {

@@ -1,9 +1,5 @@
 import React from "react";
 
-/*
-  Visual energy + background image map per gate.
-  Images are decorative: blurred, dark overlay, atmosphere only.
-*/
 const ENERGY = {
   sanri: {
     img: "/assets/gates/sanri.jpg",
@@ -81,36 +77,69 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
         overflow: "hidden",
         cursor: "pointer",
         border: `1px solid ${e.border}`,
-        boxShadow: `0 4px 40px rgba(0,0,0,.35), 0 8px 30px ${e.glow}, inset 0 1px 0 rgba(255,255,255,.04)`,
+        backdropFilter: "blur(20px) saturate(1.2)",
+        WebkitBackdropFilter: "blur(20px) saturate(1.2)",
+        boxShadow:
+          `0 4px 40px rgba(0,0,0,.40), ` +
+          `0 8px 30px ${e.glow}, ` +
+          `inset 0 1px 0 rgba(255,255,255,.05), ` +
+          `inset 0 -1px 0 rgba(255,255,255,.02)`,
         animation: `g-fade-up .5s ${0.15 + delay * 0.06}s ease both`,
         minHeight: 200,
       }}
     >
       {/* Background image — blurred, decorative */}
-      <div style={{
-        position: "absolute", inset: -8,
+      <div className="g-card-bg" style={{
+        position: "absolute", inset: -10,
         backgroundImage: `url(${e.img})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        filter: "blur(6px)",
-        opacity: 0.65,
+        filter: "blur(6px) saturate(1.3)",
+        opacity: 0.6,
         transition: "filter .5s ease, opacity .5s ease, transform .5s ease",
-        transform: "scale(1.05)",
-      }} className="g-card-bg" />
-
-      {/* Dark gradient overlay */}
-      <div style={{
-        position: "absolute", inset: 0,
-        background: `linear-gradient(160deg, ${e.overlayTint} 0%, rgba(10,10,20,.88) 100%)`,
-        transition: "opacity .4s",
+        transform: "scale(1.06)",
       }} />
 
-      {/* Inner glow accent */}
+      {/* Multi-layer gradient overlay */}
       <div style={{
         position: "absolute", inset: 0,
         background:
-          `radial-gradient(ellipse 60% 50% at 80% 90%, ${e.accent}18, transparent 60%)`,
+          `linear-gradient(160deg, ${e.overlayTint} 0%, rgba(10,10,20,.85) 100%), ` +
+          `linear-gradient(to top, rgba(0,0,0,.4) 0%, transparent 50%)`,
+      }} />
+
+      {/* Glassmorphism frost layer */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "rgba(12,10,24,.25)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+      }} />
+
+      {/* Corner energy accents */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background:
+          `radial-gradient(ellipse 70% 60% at 85% 95%, ${e.accent}1a, transparent 55%), ` +
+          `radial-gradient(ellipse 40% 35% at 10% 10%, ${e.accent}0d, transparent 50%)`,
         pointerEvents: "none",
+      }} />
+
+      {/* Hover glow — intensifies on hover via CSS class */}
+      <div className="g-card-glow" style={{
+        position: "absolute", inset: 0,
+        background: `radial-gradient(ellipse 80% 70% at 50% 100%, ${e.accent}18, transparent 60%)`,
+        opacity: 0,
+        transition: "opacity .4s ease",
+        pointerEvents: "none",
+      }} />
+
+      {/* Top accent line — appears on hover */}
+      <div className="g-card-accent-line" style={{
+        position: "absolute", top: 0, left: 0, right: 0, height: 2,
+        background: `linear-gradient(90deg, transparent 10%, ${e.accent}88, transparent 90%)`,
+        opacity: 0,
+        transition: "opacity .35s ease",
       }} />
 
       {/* Content */}
@@ -121,7 +150,6 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
         flexDirection: "column",
         gap: 8,
       }}>
-        {/* Icon with glow */}
         <div style={{
           width: 44, height: 44,
           borderRadius: 14,
@@ -129,8 +157,9 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           alignItems: "center",
           justifyContent: "center",
           fontSize: 20,
-          background: "rgba(0,0,0,.25)",
-          backdropFilter: "blur(8px)",
+          background: "rgba(0,0,0,.30)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
           border: `1px solid ${e.border}`,
           boxShadow: e.iconGlow,
           marginBottom: 4,
@@ -144,7 +173,7 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           fontWeight: 800,
           color: "rgba(255,255,255,.95)",
           letterSpacing: ".01em",
-          textShadow: "0 2px 10px rgba(0,0,0,.5)",
+          textShadow: "0 2px 12px rgba(0,0,0,.5)",
         }}>
           {gate.title}
         </div>
@@ -166,7 +195,6 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           opacity: 0.85,
           letterSpacing: ".02em",
           marginTop: 4,
-          transition: "opacity .3s",
           textShadow: "0 1px 8px rgba(0,0,0,.4)",
         }}>
           {gate.hint} →
@@ -182,6 +210,7 @@ export default function GateFeatureCard({ gate, onClick, delay = 0 }) {
           background: "linear-gradient(135deg, rgba(255,200,100,.22), rgba(180,120,255,.15))",
           border: "1px solid rgba(255,200,100,.30)",
           backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
           fontSize: 10,
           fontWeight: 900,
           letterSpacing: "1.5px",
