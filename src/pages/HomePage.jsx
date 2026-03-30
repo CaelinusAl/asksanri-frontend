@@ -145,18 +145,15 @@ export default function HomePage() {
       },
     ];
 
-    const token = localStorage.getItem("sanri_token");
-    if (token) {
-      list.push({
-        key: "admin_panel",
-        icon: "⚙",
-        title: "Admin Panel",
-        desc: isTR ? "Yönetim ve analitik paneli" : "Management & analytics panel",
-        hint: isTR ? "Paneli Aç" : "Open Panel",
-        path: "/admin",
-        accent: "admin",
-      });
-    }
+    list.push({
+      key: "admin_panel",
+      icon: "⬡",
+      title: isTR ? "Control Tower" : "Control Tower",
+      desc: isTR ? "Yönetim, analitik ve güvenlik merkezi" : "Management, analytics & security center",
+      hint: isTR ? "Merkeze Gir" : "Enter Tower",
+      path: "/admin",
+      accent: "admin",
+    });
 
     return list;
   }, [isTR]);
