@@ -122,6 +122,17 @@ export default function HomePage() {
         premium: true,
       },
       {
+        key: "yanki",
+        icon: "◎",
+        title: isTR ? "Yankı Alanı" : "Echo Field",
+        desc: isTR
+          ? "Topluluk alanı — içini dök, bilinç yankılansın"
+          : "Community space — pour your heart, let consciousness echo",
+        hint: isTR ? "Yankı Bırak" : "Leave an Echo",
+        path: "/yanki-alani",
+        accent: "yanki",
+      },
+      {
         key: "library",
         icon: "▣",
         title: isTR ? "Kütüphane" : "Library",
