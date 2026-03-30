@@ -18,14 +18,23 @@
 .tabOn{ color:#fff !important;border-color:rgba(var(--gr,180),var(--gg,120),var(--gb,255),.30) !important;background:rgba(var(--gr,180),var(--gg,120),var(--gb,255),.08) !important; }
 
 /* HERO */
-.hero{ position:relative;text-align:center;padding:36px 24px 24px;overflow:hidden; }
+.hero{ position:relative;text-align:center;padding:36px 24px 28px;overflow:hidden; }
 .glow{ position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:700px;height:350px;border-radius:50%;background:radial-gradient(ellipse,rgba(var(--gr,140),var(--gg,120),var(--gb,200),.22),transparent 70%);animation:breathe 6s ease-in-out infinite;pointer-events:none;z-index:0; }
-.h1{ position:relative;z-index:1;font-size:clamp(22px,4.5vw,36px);font-weight:900;letter-spacing:.04em;margin:0 0 8px;background:linear-gradient(180deg,#fff 30%,rgba(var(--gr,180),var(--gg,150),var(--gb,255),.7) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
-.hsub{ position:relative;z-index:1;max-width:540px;margin:0 auto;font-size:13px;line-height:1.7;opacity:.45; }
+.h1{ position:relative;z-index:1;font-size:clamp(24px,5vw,40px);font-weight:900;letter-spacing:.05em;margin:0 0 10px;background:linear-gradient(180deg,rgba(255,245,210,1) 0%,rgba(210,180,100,.85) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3)); }
+.hsub{ position:relative;z-index:1;max-width:540px;margin:0 auto;font-size:13px;line-height:1.7;color:rgba(255,255,255,.50); }
+
+/* GATES COSMIC BACKGROUND */
+.gatesWrap{ position:relative;min-height:calc(100vh - 90px);overflow:hidden; }
+.gatesBg{ position:absolute;inset:0;background:url(/assets/gates/13kapi.png) center 20%/cover no-repeat;opacity:.55;pointer-events:none;z-index:0; }
+.gatesBgOverlay{ position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(to bottom, rgba(6,7,11,.30) 0%, rgba(6,7,11,.10) 25%, rgba(6,7,11,.20) 60%, rgba(6,7,11,.70) 100%),
+    radial-gradient(ellipse 70% 50% at 50% 40%, transparent 0%, rgba(6,7,11,.40) 100%);
+}
 
 /* RADIAL GRID (gates tab) */
-.radialGrid{ display:grid;grid-template-columns:minmax(320px,500px) minmax(280px,1fr);gap:28px;max-width:1100px;margin:0 auto;padding:0 24px 60px;align-items:start; }
-@media(max-width:860px){ .radialGrid{grid-template-columns:1fr;gap:16px} }
+.radialGrid{ position:relative;z-index:2;display:grid;grid-template-columns:minmax(320px,520px) minmax(280px,1fr);gap:28px;max-width:1140px;margin:0 auto;padding:0 24px 60px;align-items:start; }
+@media(max-width:860px){ .radialGrid{grid-template-columns:1fr;gap:20px} }
 
 /* LIST GRID (cities tab) */
 .grid{ display:grid;grid-template-columns:280px 1fr;gap:0;max-width:1200px;margin:0 auto;padding:0 24px 60px;min-height:55vh; }

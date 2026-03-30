@@ -247,40 +247,48 @@ export default function UyananSehirlerPage() {
       {/* ════════════════════════════════════════
            GATES TAB — Radial Navigation
          ════════════════════════════════════════ */}
-      {tab === "gates" && (<>
-        <div className={styles.hero}>
-          <div className={styles.glow} />
-          <h1 className={styles.h1}>
-            {isTR ? "13 Kapı. 13 Ayna. 1 Sen." : "13 Gates. 13 Mirrors. 1 You."}
-          </h1>
-          <p className={styles.hsub}>
-            {isTR
-              ? "Her kapı bilincinin farklı bir katmanı."
-              : "Each gate is a different layer of consciousness."}
-          </p>
-        </div>
+      {tab === "gates" && (
+        <div className={styles.gatesWrap}>
+          {/* Full cosmic background — 13kapi image */}
+          <div className={styles.gatesBg} />
+          <div className={styles.gatesBgOverlay} />
 
-        {gatesLoading ? (
-          <div className={styles.muted} style={{ padding: 60 }}>...</div>
-        ) : (
-          <div className={styles.radialGrid}>
-            <RadialGateRing
-              activeKey={activeGateKey}
-              onSelect={(k) => { setActiveGateKey(k); setRitualOpen(false); }}
-              isTR={isTR}
-            />
-            <GateDetailPanel
-              gate={activeGate}
-              energy={energy}
-              soul={soul}
-              isTR={isTR}
-              onEnter={goToSanriGate}
-              ritualOpen={ritualOpen}
-              onToggleRitual={() => setRitualOpen(p => !p)}
-            />
+          {/* Hero text */}
+          <div className={styles.hero} style={{ position: "relative", zIndex: 2 }}>
+            <h1 className={styles.h1}>
+              {isTR ? "13 Kapı. 13 Ayna. 1 Sen." : "13 Gates. 13 Mirrors. 1 You."}
+            </h1>
+            <p className={styles.hsub}>
+              {isTR
+                ? "Her kapı bilincinin farklı bir katmanı."
+                : "Each gate is a different layer of consciousness."}
+            </p>
           </div>
-        )}
-      </>)}
+
+          {gatesLoading ? (
+            <div className={styles.muted} style={{ padding: 60, position: "relative", zIndex: 2 }}>...</div>
+          ) : (
+            <div className={styles.radialGrid}>
+              <RadialGateRing
+                activeKey={activeGateKey}
+                onSelect={(k) => { setActiveGateKey(k); setRitualOpen(false); }}
+                isTR={isTR}
+              />
+              <GateDetailPanel
+                gate={activeGate}
+                energy={energy}
+                soul={soul}
+                isTR={isTR}
+                onEnter={goToSanriGate}
+                ritualOpen={ritualOpen}
+                onToggleRitual={() => setRitualOpen(p => !p)}
+              />
+            </div>
+          )}
+
+          <div className={styles.foot} style={{ position: "relative", zIndex: 2 }}>© 2026 SANRI</div>
+        </div>
+      )}
 
       {/* ════════════════════════════════════════
            CITIES TAB — 81 Uyanan Şehir (unchanged)
@@ -390,7 +398,7 @@ export default function UyananSehirlerPage() {
         </div>
       </>)}
 
-      <div className={styles.foot}>© 2026 SANRI</div>
+      {tab === "cities" && <div className={styles.foot}>© 2026 SANRI</div>}
     </div>
   );
 }

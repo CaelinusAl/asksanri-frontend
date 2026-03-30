@@ -8,14 +8,14 @@ export default function GateDetailPanel({
   const ec = energy?.c || "180,150,100";
 
   return (
-    <div style={S.panel}>
+    <div className="g13-glass-panel" style={S.card}>
       {/* Header */}
       <div style={S.head}>
         <div style={{
           ...S.icon,
-          borderColor: `rgba(${ec},.22)`,
-          boxShadow: `0 0 18px rgba(${ec},.08)`,
-          background: `radial-gradient(circle, rgba(${ec},.10), rgba(${ec},.02))`,
+          borderColor: `rgba(${ec},.25)`,
+          boxShadow: `0 0 20px rgba(${ec},.10)`,
+          background: `radial-gradient(circle, rgba(${ec},.12), rgba(${ec},.03))`,
         }}>
           {energy?.s || "○"}
         </div>
@@ -30,9 +30,9 @@ export default function GateDetailPanel({
         {[gate.faz, gate.element].filter(Boolean).map((t, i) => (
           <span key={i} style={{
             ...S.tag,
-            borderColor: `rgba(${ec},.14)`,
-            background: `rgba(${ec},.05)`,
-            color: `rgba(${ec},.85)`,
+            borderColor: `rgba(${ec},.18)`,
+            background: `rgba(${ec},.06)`,
+            color: `rgba(${ec},.90)`,
           }}>{t}</span>
         ))}
       </div>
@@ -72,7 +72,7 @@ export default function GateDetailPanel({
         <button className="g13-cta" style={{
           ...S.ctaBtn,
           background: `linear-gradient(135deg, rgba(${ec},1), rgba(${ec},.7))`,
-          boxShadow: `0 0 22px rgba(${ec},.16), 0 4px 14px rgba(0,0,0,.25)`,
+          boxShadow: `0 0 24px rgba(${ec},.20), 0 4px 16px rgba(0,0,0,.30)`,
         }} onClick={onEnter}>
           {energy?.s || "✦"} {isTR ? "Bu Kapıdan Geç" : "Enter This Gate"}
         </button>
@@ -87,11 +87,16 @@ export default function GateDetailPanel({
 }
 
 const S = {
-  panel: {
+  card: {
+    background: "rgba(8,6,16,.55)",
+    border: "1px solid rgba(255,255,255,.07)",
+    borderRadius: 22,
+    padding: "30px 28px",
     maxHeight: "68vh",
     overflowY: "auto",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(255,255,255,.06) transparent",
+    boxShadow: "0 4px 40px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.04)",
   },
 
   head: {
@@ -105,33 +110,34 @@ const S = {
   },
   name: {
     fontSize: 22, fontWeight: 900, letterSpacing: ".04em", color: "#fff",
+    textShadow: "0 2px 10px rgba(0,0,0,.3)",
   },
   sub: {
-    fontSize: 11, opacity: .4, marginTop: 2,
+    fontSize: 11, opacity: .45, marginTop: 2,
   },
 
   tags: {
     display: "flex", gap: 7, marginBottom: 18, flexWrap: "wrap",
   },
   tag: {
-    padding: "4px 10px", borderRadius: 999,
+    padding: "5px 12px", borderRadius: 999,
     fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase",
     border: "1px solid",
   },
 
   soul: {
     marginBottom: 18, padding: 18, borderRadius: 14,
-    background: "linear-gradient(135deg, rgba(210,175,80,.035), rgba(210,175,80,.01))",
-    border: "1px solid rgba(210,175,80,.05)",
+    background: "rgba(255,255,255,.025)",
+    border: "1px solid rgba(255,255,255,.04)",
   },
   soulP: {
-    fontSize: 14, lineHeight: 1.75, margin: 0, opacity: .8,
+    fontSize: 14, lineHeight: 1.75, margin: 0, opacity: .82,
   },
 
   trigger: {
     marginBottom: 18, padding: 18, borderRadius: 14,
-    background: "rgba(0,0,0,.18)",
-    border: "1px solid rgba(210,175,80,.06)",
+    background: "rgba(0,0,0,.20)",
+    border: "1px solid rgba(255,255,255,.04)",
     textAlign: "center",
   },
   trigLabel: {
@@ -144,21 +150,21 @@ const S = {
 
   ritual: {
     marginBottom: 18,
-    border: "1px solid rgba(255,255,255,.05)",
+    border: "1px solid rgba(255,255,255,.04)",
     borderRadius: 12, overflow: "hidden",
   },
   ritBtn: {
     width: "100%", display: "flex", justifyContent: "space-between",
-    alignItems: "center", padding: "11px 14px",
+    alignItems: "center", padding: "12px 16px",
     background: "rgba(255,255,255,.025)", border: "none",
     color: "rgba(255,255,255,.55)", cursor: "pointer", fontSize: 12,
   },
   ritBody: {
-    padding: "12px 14px", fontSize: 13, lineHeight: 1.7,
+    padding: "14px 16px", fontSize: 13, lineHeight: 1.7,
     opacity: .65, borderTop: "1px solid rgba(255,255,255,.04)",
   },
 
-  ctaWrap: { textAlign: "center", paddingTop: 6 },
+  ctaWrap: { textAlign: "center", paddingTop: 8 },
   ctaBtn: {
     display: "inline-flex", alignItems: "center", gap: 10,
     padding: "14px 28px", border: "none", borderRadius: 14,
