@@ -116,24 +116,35 @@ function DataFall() {
 function FrequencyCore({ size = 72 }) {
   return (
     <div style={{ position: "relative", width: size, height: size, margin: "0 auto" }}>
+      {/* Purple halo glow behind the sphere */}
+      <div style={{
+        position: "absolute", left: "50%", top: "50%",
+        transform: "translate(-50%, -50%)",
+        width: size * 2.8, height: size * 2.8, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(140,100,220,.14) 0%, rgba(120,80,200,.06) 40%, transparent 70%)",
+        filter: "blur(16px)",
+        pointerEvents: "none",
+      }} />
+      {/* Rotating ring */}
       <div style={{
         position: "absolute", left: "50%", top: "50%",
         width: size * 2, height: size * 2, borderRadius: "50%",
-        background: "conic-gradient(from 0deg, transparent, rgba(200,210,255,.06), transparent, rgba(160,140,255,.04), transparent)",
+        background: "conic-gradient(from 0deg, transparent, rgba(180,140,255,.08), transparent, rgba(140,100,220,.06), transparent)",
         animation: "sg-glow-rotate 14s linear infinite",
         filter: "blur(10px)",
       }} />
+      {/* Core sphere */}
       <div className="sg-core" style={{
         position: "relative", width: size, height: size, borderRadius: "50%",
-        background: `radial-gradient(circle at 42% 38%, rgba(230,235,255,.28), rgba(200,210,255,.15) 40%, rgba(160,150,220,.08) 65%, transparent 100%)`,
-        border: "1px solid rgba(200,210,255,.12)",
-        boxShadow: `0 0 ${size}px rgba(200,210,255,.12), 0 0 ${size * 1.5}px rgba(160,140,255,.05), inset 0 0 ${size * 0.4}px rgba(220,225,255,.08)`,
+        background: `radial-gradient(circle at 42% 38%, rgba(240,242,255,.32), rgba(220,215,255,.18) 35%, rgba(180,160,240,.10) 60%, transparent 100%)`,
+        border: "1px solid rgba(200,190,255,.15)",
+        boxShadow: `0 0 ${size * 0.8}px rgba(160,130,240,.18), 0 0 ${size * 1.6}px rgba(140,100,220,.10), 0 0 ${size * 2.5}px rgba(120,80,200,.05), inset 0 0 ${size * 0.4}px rgba(220,210,255,.10)`,
         animation: "sg-breathe 4.5s ease-in-out infinite",
       }}>
         <div style={{
           position: "absolute", top: "20%", left: "26%",
           width: "32%", height: "32%", borderRadius: "50%",
-          background: "rgba(235,240,255,.14)", filter: "blur(5px)",
+          background: "rgba(240,240,255,.18)", filter: "blur(5px)",
         }} />
       </div>
     </div>
@@ -184,6 +195,7 @@ function ThresholdIntro({ isTR, onEnter }) {
   return (
     <div style={T.wrap} onClick={allRevealed ? onEnter : undefined}>
       <div style={T.content}>
+        <div style={T.contentGlow} aria-hidden="true" />
         <div style={{ ...T.fadeIn, animationDelay: "0s" }}>
           <FrequencyCore size={80} />
         </div>
@@ -249,6 +261,17 @@ const T = {
     flexDirection: "column",
     alignItems: "center",
     gap: 0,
+    position: "relative",
+  },
+  contentGlow: {
+    position: "absolute",
+    bottom: -40, left: "50%",
+    transform: "translateX(-50%)",
+    width: 360, height: 120,
+    borderRadius: "50%",
+    background: "radial-gradient(ellipse, rgba(140,100,220,.12) 0%, rgba(120,80,200,.05) 50%, transparent 80%)",
+    filter: "blur(24px)",
+    pointerEvents: "none",
   },
   fadeIn: {
     animation: "sg-fade-up .7s ease both",
@@ -458,6 +481,7 @@ export default function GirisPage() {
 
           {/* ── AUTH CARD ── */}
           <div className="sg-card" style={{ ...P.card, ...anim(0.12) }}>
+            <div style={P.cardGlow} aria-hidden="true" />
             {mode === "welcome" ? (
               <>
                 <div style={P.cardGreet}>
@@ -665,12 +689,28 @@ const P = {
 
   card: {
     width: "100%", borderRadius: 24,
-    border: "1px solid rgba(255,255,255,.07)",
+    border: "1px solid rgba(160,140,220,.10)",
     background: "rgba(12,14,22,.65)",
     backdropFilter: "blur(24px) saturate(1.2)",
-    boxShadow: "0 4px 60px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04)",
+    boxShadow:
+      "0 4px 60px rgba(0,0,0,.45), " +
+      "0 12px 50px rgba(140,100,220,.08), " +
+      "0 24px 80px rgba(120,80,200,.05), " +
+      "inset 0 1px 0 rgba(255,255,255,.04)",
     padding: "36px 32px 28px",
     display: "grid", gap: 14,
+    position: "relative",
+  },
+  cardGlow: {
+    position: "absolute",
+    bottom: -20, left: "50%",
+    transform: "translateX(-50%)",
+    width: "80%", height: 80,
+    borderRadius: "50%",
+    background: "radial-gradient(ellipse, rgba(140,100,220,.15) 0%, rgba(120,80,200,.06) 50%, transparent 80%)",
+    filter: "blur(28px)",
+    pointerEvents: "none",
+    zIndex: -1,
   },
   cardGreet: {
     fontSize: 20, fontWeight: 700, textAlign: "center",
