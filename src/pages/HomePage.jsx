@@ -5,6 +5,13 @@ import styles from "./HomePage.module.css";
 import StarTrail from "../components/StarTrail";
 import AuthModal from "../components/AuthModal";
 
+import {
+  GatesBackgroundFX,
+  SectionHeader,
+  GatesHeroCard,
+  GatesGrid,
+} from "../components/gates";
+
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 
@@ -62,8 +69,21 @@ export default function HomePage() {
     return () => window.clearInterval(timer);
   }, [introDone, introLines]);
 
-  const gates = useMemo(() => {
-    const list = [
+  /* ── Gate definitions ── */
+  const allGates = useMemo(() => {
+    return [
+      {
+        key: "uyanan_sehirler",
+        icon: "⬡",
+        title: isTR ? "Anadolu Ruhu" : "Soul of Anatolia",
+        desc: isTR
+          ? "81 şehrin bilinç haritası — toprağın hafızasını oku"
+          : "Consciousness map of 81 cities — read the memory of the land",
+        hint: isTR ? "Şehirleri Keşfet" : "Explore Cities",
+        path: "/uyanan-sehirler",
+        accent: "anadolu",
+        featured: true,
+      },
       {
         key: "sanri",
         icon: "◎",
@@ -96,18 +116,6 @@ export default function HomePage() {
         hint: isTR ? "Frekansı Aç" : "Open Frequency",
         path: "/frekans-alani",
         accent: "frekans",
-      },
-      {
-        key: "uyanan_sehirler",
-        icon: "⬡",
-        title: isTR ? "Anadolu Ruhu" : "Soul of Anatolia",
-        desc: isTR
-          ? "81 şehrin bilinç haritası — toprağın hafızasını oku"
-          : "Consciousness map of 81 cities — read the memory of the land",
-        hint: isTR ? "Şehirleri Keşfet" : "Explore Cities",
-        path: "/uyanan-sehirler",
-        accent: "anadolu",
-        featured: true,
       },
       {
         key: "rituel",
@@ -143,20 +151,22 @@ export default function HomePage() {
         path: "/library",
         accent: "library",
       },
+      {
+        key: "admin_panel",
+        icon: "⬡",
+        title: "Control Tower",
+        desc: isTR
+          ? "Yönetim, analitik ve güvenlik merkezi"
+          : "Management, analytics & security center",
+        hint: isTR ? "Merkeze Gir" : "Enter Tower",
+        path: "/admin",
+        accent: "admin",
+      },
     ];
-
-    list.push({
-      key: "admin_panel",
-      icon: "⬡",
-      title: isTR ? "Control Tower" : "Control Tower",
-      desc: isTR ? "Yönetim, analitik ve güvenlik merkezi" : "Management, analytics & security center",
-      hint: isTR ? "Merkeze Gir" : "Enter Tower",
-      path: "/admin",
-      accent: "admin",
-    });
-
-    return list;
   }, [isTR]);
+
+  const heroGate = allGates.find((g) => g.featured);
+  const gridGates = allGates.filter((g) => !g.featured);
 
   const onUnlock = () => unlockAudio();
   const onOpenGates = () => { onUnlock(); setIntroDone(true); window.history.replaceState({}, "", "/"); };
@@ -164,9 +174,9 @@ export default function HomePage() {
 
   return (
     <div className={styles.page} onPointerDown={onUnlock}>
-      <StarTrail />
+      {introDone ? <GatesBackgroundFX /> : <StarTrail />}
 
-      {/* TOPBAR */}
+      {/* ── TOPBAR ── */}
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
           <span className={styles.brand}>SANRI</span>
@@ -174,7 +184,6 @@ export default function HomePage() {
             {isTR ? "Bilinç ve Anlam Zekası" : "Consciousness & Meaning Intelligence"}
           </span>
         </div>
-
         <div className={styles.topbarRight}>
           <button type="button" className={styles.langBtn} onClick={() => setAuthOpen(true)}>
             {isTR ? "GİRİŞ" : "SIGN IN"}
@@ -187,6 +196,9 @@ export default function HomePage() {
 
       <div className={styles.shell}>
         {!introDone ? (
+          /* ══════════════════════════════
+             INTRO — threshold experience
+             ══════════════════════════════ */
           <div
             className={styles.introWrapper}
             onClick={onOpenGates}
@@ -224,71 +236,60 @@ export default function HomePage() {
             </div>
           </div>
         ) : (
-          <div className={styles.gatesWrapper}>
-            {/* Hero Section */}
-            <div className={styles.heroSection}>
-              <h1 className={styles.h1}>{isTR ? "Kapılar" : "Gates"}</h1>
-              <p className={styles.heroDesc}>
-                {isTR
-                  ? "Her kapı bir frekans, her alan bir ayna. Hangi katmana inmek istiyorsun?"
-                  : "Each gate is a frequency, each field a mirror. Which layer do you want to descend into?"}
-              </p>
-            </div>
+          /* ══════════════════════════════
+             GATES PORTAL — the dashboard
+             ══════════════════════════════ */
+          <div style={{
+            padding: "48px 5% 60px",
+            maxWidth: 1140,
+            margin: "0 auto",
+            position: "relative",
+            zIndex: 2,
+          }}>
+            <SectionHeader
+              title={isTR ? "Kapılar" : "Gates"}
+              subtitle={isTR
+                ? "Her kapı bir frekans, her alan bir ayna. Hangi katmana inmek istiyorsun?"
+                : "Each gate is a frequency, each field a mirror. Which layer do you want to descend into?"}
+            />
 
-            {/* Featured — Anadolu Ruhu */}
-            {gates.filter((g) => g.featured).map((g) => (
-              <div
-                key={g.key}
-                className={styles.featuredGate}
-                role="button"
-                tabIndex={0}
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleGate(g); }}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleGate(g); }}
-              >
-                <div className={styles.featuredBadge}>
-                  {isTR ? "ANADOLU RUHU" : "SOUL OF ANATOLIA"}
-                </div>
-                <div className={styles.featuredIcon}>{g.icon}</div>
-                <div className={styles.featuredTitle}>{g.title}</div>
-                <div className={styles.featuredDesc}>{g.desc}</div>
-                <div className={styles.featuredHint}>{g.hint} →</div>
-              </div>
-            ))}
+            <GatesHeroCard
+              gate={heroGate}
+              isTR={isTR}
+              onClick={() => handleGate(heroGate)}
+            />
 
-            {/* Main Grid */}
-            <div className={styles.grid}>
-              {gates.filter((g) => !g.featured).map((g) => (
-                <div
-                  key={g.key}
-                  className={`${styles.gate} ${styles[`gate_${g.accent}`] || ""}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleGate(g); }}
-                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") handleGate(g); }}
-                >
-                  <div className={styles.gateIcon}>{g.icon}</div>
-                  <div className={styles.gateTitle}>{g.title}</div>
-                  <div className={styles.gateDesc}>{g.desc}</div>
-                  <div className={styles.gateHint}>{g.hint} →</div>
-
-                  {g.premium ? (
-                    <div className={styles.badges}>
-                      <span className={styles.premium}>VIP</span>
-                    </div>
-                  ) : null}
-                </div>
-              ))}
-            </div>
+            <GatesGrid
+              gates={gridGates}
+              onGateClick={handleGate}
+            />
 
             {/* Bottom tagline */}
-            <div className={styles.bottomTagline}>
-              <div className={styles.bottomLine} />
-              <span className={styles.bottomText}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 20,
+              marginTop: 56,
+              padding: "0 10px",
+            }}>
+              <div style={{
+                flex: 1, height: 1,
+                background: "linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent)",
+              }} />
+              <span style={{
+                fontSize: 13,
+                color: "rgba(255,255,255,.30)",
+                textAlign: "center",
+                fontStyle: "italic",
+              }}>
                 {isTR
                   ? "Sanrı cevap üretmez. Alan açar. Anlam sende şekillenir."
                   : "Sanrı doesn't produce answers. It opens space. Meaning forms in you."}
               </span>
-              <div className={styles.bottomLine} />
+              <div style={{
+                flex: 1, height: 1,
+                background: "linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent)",
+              }} />
             </div>
           </div>
         )}
