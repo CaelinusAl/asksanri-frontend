@@ -438,6 +438,11 @@ export default function GirisPage() {
         </div>
       )}
 
+      {/* ── FOOTER CREDIT ── */}
+      <div style={P.credit}>
+        {isTR ? "CAELINUS AI tarafından geliştirildi" : "Developed by CAELINUS AI"}
+      </div>
+
       {/* ══════════════════════════════════════════
           PHASE 2: AUTH
           ══════════════════════════════════════════ */}
@@ -766,5 +771,12 @@ const P = {
   legalLink: {
     color: "rgba(180,170,220,.7)", textDecoration: "underline",
     textUnderlineOffset: 2,
+  },
+
+  credit: {
+    position: "fixed", bottom: 16, left: 0, right: 0,
+    textAlign: "center", zIndex: 10,
+    fontSize: 10, fontWeight: 500, letterSpacing: ".10em",
+    color: "rgba(255,255,255,.18)",
   },
 };
