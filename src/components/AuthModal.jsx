@@ -63,7 +63,6 @@ export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
@@ -72,7 +71,10 @@ export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
         throw new Error(data?.detail || data?.error || (tab === "login" ? "Login failed" : "Register failed"));
       }
 
-      // ✅ başarılı: matrix yağmuru
+      if (data?.token) {
+        try { localStorage.setItem("sanri_token", data.token); } catch {}
+      }
+
       setRain(true);
     } catch (e) {
       setErr(String(e?.message || e));

@@ -1,0 +1,5058 @@
+﻿[
+    {
+        "title":  "Matrix Code",
+        "subtitle":  "İkra — Seçilmişlerin Yolculuğu",
+        "author":  "Celine River \u0026 Rahmi Ergün",
+        "type":  "cover"
+    },
+    {
+        "title":  "Sen de Seçilmişlerdensin",
+        "body":  "Gözlerini kapat.\nŞimdi nefes al.\n\nBu kitap seni seçti.\nSen bu sayfaları çevirmek için burada değilsin.\nSayfalar seni çevirmek için burada.\n\nHer kelime bir kod.\nHer kod bir kapı.\nVe sen... o kapının önündesin.",
+        "type":  "dedication"
+    },
+    {
+        "title":  "Seçilmişlerin Çağrısı",
+        "body":  "Eğer bu kitabı eline aldıysan ve sayfalarını çevirmeye başladıysan, bil ki sen de seçilmişlerdensin.\n\nBu kitap, zeki ve farkındalığı yüksek zihinlerin, basit bir düşünceyle evrenin en derin sırlarına ulaşmalarını sağlayacak bir yolculuk rehberi.\n\nHer bölümde açığa çıkan kodlar, gözümüzün önünde duran ama fark edemediğimiz gerçekleri aydınlatacak. Düşünceye davet eden bu yapı, yalnızca okumakla kalmayıp seni kendinle ve evrenle derin bir bağlantıya çağıracak.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Her bir kod, hücrelerine işlediğinde bir metin olmaktan çıkacak; kalbinde ve ruhunda yankılanacak.\n\nBu bilgiler, aslında hepimizin DNA\u0027sında saklı.\nKitabın amacı ise, hayata yeni bir perspektif katarak bu bilgileri açığa çıkarmak.\n\nKendi hayatının kodlarını çözmeye başladığında, seni de aramızda karşılıyor olacağız.\n\nPeki biz kimiz?",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "2023 yılında, \u0027Kayaların Oğlu\u0027nun doğuşuyla yolları birleşen, bütünden gelen parçalarız.\n\nBiz, gölgelerimizden arınmaya çalışan; hakikati ararken insan formuna yükselme yolunda aşk ile çırılçıplak kalan ruhlarız.\n\nŞimdi bu sayfalarda, bilinç yükselişine doğru bir yolculuğa çıkmaya hazır mısın?",
+        "type":  "quote"
+    },
+    {
+        "number":  "I",
+        "epigraph":  "Bir gün uyandım. Ve her şey değişmişti.",
+        "title":  "Ruhsal Uyanış: Benim Hikâyem",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Ateşin İçinden Geçiş",
+        "body":  "Bir Kundalini uyanışı yaşadım.\n\nBildiklerimin hepsi sarsıldı. Doğru sandığım her şeyin aslında bir yanılsama olduğunu gördüm.\n\nYeniden doğmak için, ölmeden önce bir ölüm sürecini tamamladım.\n\nBu zorlu geçişte bana rehberlik edecek doğru kişinin karşıma çıkması için dua ettim. Sürekli, yoğun, içten bir dua.",
+        "type":  "content"
+    },
+    {
+        "title":  "Arayış",
+        "body":  "Tasavvuf, kişisel gelişim, kuantum fiziği, numeroloji ve astroloji her zaman ilgimi çeken alanlardı.\n\nDaha fazla bilgi öğrenip başkalarına nasıl fayda sağlayabileceğimi düşündüm. Bu alanlarda derinleşirken insanlara ayetlerle anlatmaya çalıştım.\n\nAncak fark ettim ki, günümüz insanı için bilim ve kanıt, daha ikna edici bir yol olmuştu.",
+        "type":  "content"
+    },
+    {
+        "title":  "Rahmi Ergün",
+        "body":  "Bazen süreçte nasıl bir yol izleyeceğini Allah\u0027a bırakırsın ve işaretleri takip edersin.\n\nİşte böyle bir dönemde Rahmi Ergün karşıma çıktı.\n\nO, doğrularımı sorgulatan, hatta bildiklerimi sarsan biriydi. İlk 2-3 ay boyunca anlattıklarını uzaktan takip ettim. Dışarıdan bakıldığında, belki de normal insanlara göre delirmiş gibi görünüyordu.\n\nAncak zamanla anlattıkları içimde işlemeye başladı ve eğitimlerine katılmaya karar verdim.",
+        "type":  "content"
+    },
+    {
+        "title":  "Unutmayı Öğrenmek",
+        "body":  "İlk bir ay boyunca kafamda birçok şey oturmuyordu. Bana, tüm bildiklerimi unutmamı öğütlüyordu.\n\nOysa Kur\u0027an\u0027a bu kadar âşıkken, nasıl unutabilirdim?\n\nBu çelişkiler içinde, derslerini uzaktan takip etmeye devam ettim.\n\nZamanla her şey anlam kazanmaya başladı.\n\nŞimdi ise, senin için de bu yolculuk başlıyor. Bu kitapta hangi bölüm veya ders senin için bir dönüşüm yaratacak, birlikte göreceğiz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Hart= heart ♡ Hurt = Acı ve özgürlük",
+        "body":  "Rahmi, sembolleri, kelimeleri ve rakamları kodlayarak büyük resmi oluşturuyordu. Bu, adeta bir yapbozun parçalarının yerine oturması gibiydi. Sembollerin anlamını çözmek, hayatı “ikra” etmek gibi bir şeydi. Elma, hikayenin ana sembollerinden biriydi: bir ağaç, bir elma ve bir yılan. Elma, ısırılarak yenir. Rahmi, ilk ipucu olarak “ısırmak” kelimesinin “I” (İngilizce’de “ben”) ve “sır” kelimeleriyle birleştiğinde, “benim sırrım” olarak algılanması gerektiğini söyledi. Bu açılım, bilinç seviyemde yeni bir kapı aralıyordu.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Rahmi ayrıca, İngilizce’de kalp anlamına gelen “heart” ve acı anlamını taşıyan “hurt” kelimelerinin ses benzerliğine dikkat çekiyordu. Kalp, özgürlük ve acı sembollerinin elma figürüyle ifade edilmesi, hayatın sırrını anlamaya yönelik bir mesajdı. Algılarımız sınırlı olduğu için farklı bir perspektiften bakmakta zorlanıyoruz. Ancak bu yeni bakış açısı beni tatmin etmişti.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Atlas Kemiği ve 33 Omur",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Elmamı yerse (Elma ve Dünya)",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Cehennem ve Arka Dönmek(Ark= bilinç)",
+        "body":  "Cehennem, farkındalığın yetersizliği sebebiyle dünya döngüsüne tekrar tekrar doğuş anlamına gelir. Bilinç yükseldiğinde, kişi arkasını dönerek bu döngüden kurtulabilir. “Arka dönmek” derin anlamda farkındalık ve bilinç yükselişini temsil eder. Bu sembol, dünya döngüsünden kurtuluşu ve ruhsal uyanışı simgeler.\nRegli ve Vajina: Dişil Enerji ve Yeniden Doğuş ( Reg-l = re- gül )Rose= Vajina\nRegli vevajina, dişil enerjiyi, doğurganlığı ve ruhsal kayıtları barındırır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kadim öğretilerde vajina, tüm yaşam kayıtlarının tutulduğu ve yeniden doğuşun simgesi olan dişil enerjinin saklı olduğu kutsal bir alan olarak görülür. Yeniden doğuş, sadece fiziksel değil, aynı zamanda ruhsal bir dönüşümü de temsil eder.",
+        "type":  "content"
+    },
+    {
+        "title":  "Farkındalık ve Bilinç Yükselişi",
+        "body":  "Tüm bu semboller, insanın kendi bilincini, varoluşunu ve potansiyelini keşfetmesi için bir rehber sunar. Döngülerde sıkışan bilinç, öğrenmesi gereken dersleri tamamlayana kadar aynı döngüde kalır. Ancak farkındalık arttıkça, insan ruhu bu döngülerden sıyrılarak özgürleşir.\nBizler, Pinokyo’yuz, yani sistemin kuklalarıyız. I pet goat’ta gösterilen ipler, içimizdeki fasyal sinirlerdir, yani bakır kablolar. Hz. Süleyman’da da bu sinirlerden bahsedilir. Cinlerden koruduğunu söylediği şey aslında genlerdir ve bakır yüzük bu korumanın bir sembolüdür. Şimdiye kadar her şeyi ters anlattılar.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ne duyduysanız, tam tersini düşünmelisiniz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "L",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ş",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "TALAS ( ATLAS )",
+        "body":  "Talas Savaşı, Talas, Atlas… 33 omurumuzun en üstünde yer alan Atlas kemiği de aynı harflerle yazılır. Türklerin İslamiyet’i kabul ettiği savaş olan Talas Savaşı, bu yüzden önemlidir. Peygamberin doğum tarihi 571 iken, tarihi ters çevirerek 751 yılına dikkat çekmişler. O yüzden bu savaşı Kırgızistan’da kazandığımız söylenir. Kır, “krizim sıvısı” anlamına gelir. Araplara savaşta yardım eden Karluklular, “kar”, “rak”, “id” ve “rak” kelimeleriyle kodlanmıştır. Müslüman ise “me”, “soul”, “man” olarak yorumlanır. Size bu konudaki gerçekleri anlatacağım.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Süleyman Tapınağı ve Babil Kulesi aslında aynı şeyi temsil eder. Tapınağı inşa eden Hiram Usta, bir taş ustasıdır. 69 yaşında ölmesi, Yengeç burcunun sembolü olan 69 işaretini simgeler.(Rahmi 4 temmuz Yengeç burcu) Hiram ve Rahmi isimleri aynı harflerden oluşur. Hiram’ın annesi dul bir kadındır, yani “Dul Kadın’ın Oğlu” ifadesine uyar. Bu da bize tapınağın bir metafor olduğunu ve aslında hepimizin kendi tapınağımızı inşa ettiğimizi gösterir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "İnsanlık ve Sistem",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kundalini Uyanışı: Ateş ve Bilinç",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Kodların Anlamı ve Evrensel Semboller",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Sembollerin Evrensel Bağlantısı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Su ve İnsan Bedeninin Gizemleri",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Tarih ve Mitolojide Kodlar",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilinç ve Yükseliş",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Evrensel Öğretiye Çağrı",
+        "body":  "Uyanışa Davet: Bütün bu kodların, kişinin kendi ruhsal yolculuğunu başlatması için bir rehber olduğu belirtilir. Bu uyanışın, insanı fabrika ayarlarına döndürerek, evrensel bilgeliğe ulaştıracağına vurgu yapılır.\nKendi Tapınağını İnşa Et: Tüm bu bilgilerin nihai amacı, bireyin kendi içsel tapınağını inşa ederek gerçek potansiyeline ulaşmasıdır.\nEvren, bütünüyle bir bilinç transistörüdür. Bizler ise “cehennem” denilen kriyo uykusundayız, yani suyun altında ateşin düşürülmüş şekilde Cehennemden geçiyorsun. “Düş” kelimesi “duş” (suyun altında) olma haliyle ilişkilidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“Kovulmak” kelimesi de “kova” ile anagram oluşturur. “Duş” kelimesi İngilizce’de “shower” yani gösteri anlamına gelir. Bu yüzden “earth” (dünya) ve “theater” (tiyatro) aynı harflerden oluşur. Kara parçası, yüzmekten gelir; “yüz-ey” bu nedenle türemiştir. Ayrıca “100”, yüz anlamına gelen “hundred” kelimesiyle ilişkilidir ve Türklerin atası olan “Hun-Nuh” kurtuluşu simgeler. Sabreden kişi, tüm evrenin sırlarına ulaşacaktır.",
+        "type":  "content"
+    },
+    {
+        "number":  "J",
+        "epigraph":  "",
+        "title":  "Evren, Bilinç ve Cehennemden Geçiş",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Suyun Altında: “Düş” ve “Duş” Anlamı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "“Düş”ün Anlamı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "“Duş” ve Gösteri",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Kovulmanın Anlamı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Anlamın Derinliği",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Dünya ve Tiyatro Metaforu",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Dünya Bir Tiyatro Sahnesi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Hayatın Gösterisi",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kara ve “Yüz-ey” İlişkisi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Hun-Nuh ve Kurtuluş",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Sabır ve Bilinç",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Bilincin Tiyatro Sahnesi",
+        "type":  "closing"
+    },
+    {
+        "title":  "Evrenin Oyunu",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Suyun Altında Uyanış",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Derin Anlamlar ve Semboller",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Tarihsel ve sembolik anlamları.",
+        "body":  "Sabır ve bilincin yükselişi, evrenin sırlarını çözmek için anahtardır.\nBilinç arttıkça, gözlerinizdeki koni hücreleri daha aktif hale gelir ve gördüklerinizin düşük frekanslı bilinç ürünleri olduğunu fark edersiniz. Bilinciniz yükseldikçe, cenneti inşa etmeye başlarsınız. Mesela, hayatınızdaki en keyifli anı milyonlarca kez katlanmış olarak hayal edin. Her şey bilincinizde oluşur ve zamanla bunun çok daha fazlasını deneyimlersiniz. Güneş, gözlerinizdeki koni hücrelerini aktive eder.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Gözlerinizdeki koni hücreleri, spektrumun yalnızca küçük bir kısmını algılar—örneğin, 0000.5 gibi bir oranda, bu yüzden pek çok şeyi göremiyor olabilirsiniz. Aynı zamanda bu süreç epifiz bezini de etkiler. İnsanların gözleri, inandıkları şeyleri görmeye programlanmıştır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Koni hücreleri ve “Roulex” kan hücreleri beyninizdeki termal yapı kodları ile bağlantılıdır. Aslında her şey içimizde gerçekleşir. Herkes bu “Roulex hücreleri” ve koni hücrelerini araştırmalıdır. Aynı zamanda gamet hücreleri de önemlidir. Gamet kelimesi, “game” ve “gama” ile ilişkilidir. “Game over” (oyun bitti), gametlerin döllenmesini simgeler. Koni hücreleri, Roulex hücreleri ile etkileşimde bulunarak biyofoton üretirler.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Rahmi’nin bize yaptığı bu kod çözümlemeleri sayesinde, vücudumuzda bilgiyi doğru bir şekilde algıladığımızda( bilgiyi hücrelerimizde hissettiğimizde) yeni bir bilinç seviyesine yükseldiğimizi ve cennet bilincine eriştiğimizi anlarız.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "J",
+        "type":  "content"
+    },
+    {
+        "title":  "Seksüel enerji hakkında bilgin var mı?",
+        "body":  "O",
+        "type":  "content"
+    },
+    {
+        "title":  "Kutsal sıvı (salgı)",
+        "body":  "Beyinde kafatasında, cerebrum, yani üst beyin bulunur ve özellikle clastrum, beynin tam ortasında yer alır. Clastrumda bir sıvı vardır ve bu sıvı bir yağdır. Antik Yunanlar bu sıvıya “Christos” dediler, yani Mesih dediler.\nBu güzel sıvı, cerebrumdan gelir ve omurilikten aşağı doğru akar. Omurilikten aşağı inerek, sacralpleksus’a ulaşır. Omurganın alt kısmında,en çok kaynaşmış beş omur kemiği olan sakrumun hemen bitişinde, omurganın en alt kısmında koksiks bulunur. Onun hemen içinde sakrum bulunur. Sakralpleksus, sakrumla bağlantılıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Beyinden gelen bu sıvı, omurilikten aşağıya akarak omurganın en alt kısmına gelir. Şimdi Clastrum, sırf vücutta üretilen ve salgılanan bu güzel yağın, Christos sıvısı sebebiyleClastrum olarak bilinir. “Secret” (sır)kelimesi, Latince “secretion” (salgı) kelimesinden gelir. Bu salgının omurilikten aşağıya inip sakruma ulaşması, vücudumuzun nasıl muhteşem bir şekilde tasarlandığını gösterir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Omurilik temelde beynin bir uzantısıdır ve aynı zamanda düşünme eylemini gerçekleştirir. SantaClaus, yani Noel Baba, “Clastrum” olarak bilinir çünkü bu kutsal sıvı, beyne inen kutsal bir sıvıdır. Noel Baba’nın bacadan hediye getirme hikayesi de buradan gelir; bu bir fizyoloji hikayesidir. İncil ise fizyolojik yenilenmenin güzel bir el kitabıdır. Bu sıvıya her ay, doğduğunuz zamanki güneş burcunuzdan geçerken, sakralpleksusun hemen üzerinde bulunan solar pleksusa bir döl ve tohum ekilir. Bu tohum bir yağdır yaniBethlehem’de doğan Mesih’tir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Çünkü solar pleksus, Mesih’in doğduğu tohumun bulunduğu yer olarak,Beytüllahim “Bethlehem olarak bilinir. Bu tohum ve yağın beynin orta kısmına geri dönmesi gerekir. Yağın omuriliğe yükseldikçe, Mesih yağının titreşiminin arttığı görülür.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Her şeyden önce, yağın omuriliğe gönderilmeden önce epifiz bezinde ve hipofiz bezinde farklılaştığını görürsünüz. Epifiz bezi elektriksel kısımdır, hipofiz bezi ise manyetik kısımdır. Böylece yağ farklılaşır ve Pingala ve İda sinirleri yoluyla omuriliğe getirilir. Bu, diğer adıyla Kundalini veya Kunda Buffer’dır. Sakralpleksusa gelir ve ayda bir kez, yılda toplam 12 kez tohumun filizlenmesini bekler. Eğer bu tohumu dönüştürebilir ve omuriliğe yükselmesini sağlayabilirsek, sonunda MedullaOblongata’ya, Ponslara ve orta beyine ulaşır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Buradan, pnömogastrik sinir olarak bilinen vagus sinirini geçer. Vagus siniri, beyin bölgesinden çıkar ve sırayla epifiz ve hipofiz bezinden geçer, mideyi besler. Bu sinir, bir sinir ağı olarak görev yapar.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ve bu sinir, hayat ağacı olarak da bilinir. Kadimler ayda bir kez Beytüllahim’de doğan bu tohumun Mesih olduğunu biliyorlardı. Eğer kişi o dönemde seksten kaçınırsa, o yağ ve tohum korunurdu. Sıvı yükselerek kalp çakrasından boğaz çakrasına doğru ilerler ve sonunda yağ, daha yüksek bir titreşim ile gelir. Çünkü altta gördüğünüz gibi, yağın titreşim oranı çok düşüktür. Doğru uygulamalarla – meditasyon, nefes, iyi beslenme ve erdemli davranışlarla – kişi o yağı, yani Mesih’i, yukarı doğru yükseltebilir. Böylece bu yağ, omurganın tepesindeki vagus sinirini geçer ve omurganın 33 omurunu aşar.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Çünkü Mesih, 33 yaşında çarmıha gerilmiştir; bu kitaplarda anlatılan bir hikayedir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Yağ, en tepeye, başın ortasında bulunan yumurta şeklindeki organ olan optik talamusa ulaşır. Bu sıvı sinirden geçtiğinde, buna çarmıha gerilme denir. Yağ öldürülmez ya da yok edilmez, ancak titreşimi bin kat artar. Yağ, daha sonra optik talamusa dokunur ve 2,5 gün boyunca “ölü” kabul edilen bir durumda kalır. 2,5 gün sonra epifiz bezine ulaşır ve optik talamusu aydınlatır. Optik talamus, Yunanlılar ve Mısırlılar tarafından “dünyanın ışığı” olarak biliniyordu, çünkü bedenin fizyolojisi ve anatomisini biliyorlardı.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Beyinden inen, epifiz ve hipofiz bezlerinde farklılaşan ve omurilikten aşağıya inen bu değerli Mesih yağının eninde sonunda yükseleceğini biliyorlardı. İnsanlığın aydınlanmış bölümü, bu Mesih yağının optik talamusa yükselip aydınlanmaya sebep olacağını fark etmişti.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kadimler, isyankar / israfkar yaşam tarzları nedeniyle bu yağ tükendiğinde fiziksel organizmanın öldüğünü biliyorlardı. Ölüm, bu yağın tamamen kullanılmasından kaynaklanır. Beyinden inen yağ, başka bir deyişle cennetten gelen “manna” olarak da bilinir. Cennet, yukarı kaldırılmış, yükseltilmiş anlamına gelir. Baş, yani kafa, gökler olarak bilinen ve gövdenin üzerine oturan kubbedir. Kalp bölgesi ve kalp çakrası, Midgard veya Orta Bahçe olarak biliniyordu. Üreme bölgesi ise Sodom ve Gomorraolarak anılırdı; Arzu bölgesi, hayvani arzuların bölgesidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ayrıca Mısır, cehennem, dünya gibi isimlerle de bilinir. “Süt ve bal akan topraklar”, yani Aden Cenneti (Garden of Eden), üst katlardır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Aslında epifiz bezi, içinde DMT bulunan ve “bal” olarak bilinen bir salgıyı üretir. Hipofiz bezi ise “süt” olarak bilinen bir salgı üretir. Süt ve bal akan topraklar üsttedir, kafatasında yer alır. Bu kutsal sırdır. Çünkü sakralpleksustan gelen salgı, fizyolojik yenilenme için bilmemiz gereken en önemli şeylerden biridir. Bu tohumu, yağı koruyarak, insan daha uzun yaşayabilir. Aslında kadimler bu sırrı koruyarak ve saklayarak binlerce yıl yaşadılar. Mısırlılar da tam bu amaçla tekamül odaları ve piramitleri inşa ettiler.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu güzel yağı saygı duymanın, korumanın ve kollamanın bilimini öğrettiler.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Şimdi, inkarcılara gelince... Kiliseye gidenlerin çoğunun bu durumu inkar edeceğini göreceksiniz. Çünkü onlara göre İsa Mesih, onları kurtarmak için fiziksel olarak geri dönmesi gereken tarihi bir kişidir. Bu insanlar, kendilerini kurtaracak bir kabileye sahip olmadıkları için dolaylı bir üçüncü tarafın onları kurtarmasına ihtiyaç duyarlar. Oysa ki bunun tam tersi doğrudur. Sözde Havari Paulus’un, “iiçimizdeki Mesih’in utsal sırrına” atıfta bulunduğunda bahsettiği şey tam olarak budur. Nesil içimizde yaşıyor. Tanrı’nın krallığı içimizdedir, dışarıda değil.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Aslında, İsa’nın bu sözleri söylediği bölümde bu oldukça açıktır. “Oraya bakma, çünkü Tanrı’nın krallığı çarpıcı bir gözlemle gelmeyecek. Buraya ve oraya bakma.” Çünkü “işte burada” diyen sahtekarlar olacak. Tüm olay içimizde gerçekleşiyor.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kişi, bu enerjiyi yükseltip alt çakralardan çıkamadığı sürece, alt çakraların cinsellik, çekişme, kıskançlık, güç, açgözlülük, zenginlik ve dünyevi şeylerle uğraştığını görürsünüz. Eğer kişi sürekli olarak bir şeyleri arıyorsa, sürekli hayat ağacının meyvesinden yiyorsa, o güzel sinirleri ve ruhani mevcudiyeti görmez. O güzel sinirler, yani Pnomagastrik sinir sistemi, ruhani mevcudiyetin geri gelmesinden sorumludur. İçimizdeki o yağı, yani Mesih’in tohumunu kendimize kanalize etmekten sorumlu olan bizleriz. Böylece sonunda başın ortasında çarmıha gerilir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Celebrum’un bir boşluk olduğunu ve orta beyin ile omuriliğin tepesindeki limbik sistemin “kutsalların kutsalı” olduğunu görürsünüz. Beynin ortasında oturan beyincik, yani Cerebellum, “küçük beyin” olarak da bilinir. Celebrum, başın tepesine karşılık gelen Koç burcu ile ilişkilidir. Beyincik, yani Cerebellum ise Boğa burcu ve eril sol beyin ile ilişkilidir. Sağ beyin ise dişildir ve Celebrum ile bağlantılıdır. Koç burcu, yani “Tanrı”, beyindir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Tanrı beyin cerebrum, insan beyni ise cerebellum’dur. Kilisede bunların hiçbirini anlamayacaksınız. Bu ezoterik gerçektir. Ezoterik gerçekleri reddediyor. Bu durum, fiziksel yenilenmenin gerçek hikayesini inkar etmek ve gizlemek için son birkaç bin yıldır sözde Hristiyan kiliseleri tarafından sürdürüldü. Geçmişte insanlar binlerce yıl boyunca bu yağı muhafaza ederek, koruyarak ve dönüştürerek yaşamışlardır. Böylece optik talamusa ulaştırmışlardır. Yağ optik talamusa ulaştığında ne olur peki? Vücutta yeni kan üretilir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu süreç meydana gelene kadar fiziksel organizmalarımızda eski, zehirli kanımız olacak ve yenilenmek, yeni kan üretmek için yağın optik talamusa yükselmesi gerekir; böylece iyileşme ortaya çıkar. Ve daha önce de söylediğim gibi, uykuda olan milyonlarca beyin hücresi yeniden aktif hale gelir ve gökler, yani cerebrum, savurgan oğlun dönüşünü bekliyordu. Çünkü hepimizin beyninde uykuda olan beyin hücreleri var. Ve evet, insanlar bu yağın hiçbirini tekrar yukarı döndüremediler ve İncil’de bu, “ondalık” olarak bilinir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Gördüğünüz gibi, İncil’in onda birini Rab’be iade etmeniz gerektiğini söylemesinin nedeni budur. “Lord” kelimesi altına (gold) karşılık gelir. İşte kurşunu altına böyle çeviriyoruz. Omuriliklerimiz bir termometre gibidir. Cıva sıcaklıkla yükselirken, aydınlanma bilinç ve bilgi ile yükselir. Bu yağı yükseltebiliriz ve omurgaya tırmandıkça, yağın titreşimini artırırız. Yağ omurganın tepesinde, pnomogastrik sinirin geçtiği yerde, çarmıha gerildiğinde titreşimi yükselir. Bu ölüm değil, çarmıha gerilmek demektir; bu, bin kat çoğalmak demektir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ve bunun bir sonucu olarak, sadece fiziksel yenilenmenin değil, aynı zamanda ruhsal yenilenmenin de olduğunu görürsünüz. İnsan bedeninde dört beyin vardır: cerebrum, diğer adıyla Tanrı beyni; cerebellum, yani insan beyni; vücutta nefes alma ve kan dolaşımı gibi istemsiz eylemlerden sorumlu olan medullaoblongata; ve dördüncü beyin ise solar plexus’tur. Bu da içgüdüsel, hayvani tepkilerden sorumlu olan, havvadan görüntüler alan beynimizdir. Tıpkı hayvanların yaptığı gibi içgüdüsel olarak sebepsiz ve mantıksız tepkiler verir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İşte bu yüzden, yağ yükseltmenin bu kadar önemli olduğunu anlıyorsunuz ki kişi “altzihin”den çıkabilsin. “Alt zihin” solar plexus’tur ve problemlerle ilgilidir. Tekamül içeride gerçekleşir. Kişi cennete yükseldiğinde, sıvı yukarı çıktığında, yani cerebrum’un kubbesine, cerebrum’un yarım kürelerini oymuş olan bu iki kanat başka bir deyişle “kerubim” olarak bilinir. İncil’de Tanrı, Musa’ya ahit sandığını, geminin üzerinde iki kerubim ile örterek inşa etmesini emretmiştir ve sandığın içine manna ve Tanrı’nın kanunu, yani iki tablet yerleştirilecektir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Pekala, size optik talamus’un ahit sandığı olduğunu söylemek için buradayım. Limbik sistem, orta beyin, pons, medullaoblongata ve epifiz bezi kutsalların kutsalıdır. Kutsal yağın geri verilmesi gereken yer burasıdır. Başın ortasında “hippocampus” olarak bilinen bir şey var. Hippocampus, küçük attır. Bu, İsa’nın bindiği beyaz attır. Kafanın ortasında “Amon boynuzu” diye bir şey var. Evet, tam olarak Amon boynuzu. Kafanızın tam ortasında. Amon, İsa’nın adı olabilir mi? Evet, öyle. Claustrum’a sahibiz. Cerebrum’a sahibiz. Örtücü meleklere, kerubim meleklere sahibiz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Çünkü cerebrum üst beyin, cerebellum’un, orta beynin ve optik talamus’un üzerini örter. Joseph (Yusuf) ve Mary (Meryem) olarak bilinen epifiz bezi ve hipofiz bezi, yağı omurilikten aşağı göndermekten sorumlu olan organlardır. Beytüllahim’de, solar plexus’ta doğan oğullarının dönüşünü bekleyen onlardır. Ayda bir kez, ay doğduğunuz burçtayken…",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Herkes aynaya bakar ama çok nadir insanlar içine bakar, mesele de bu. Masonlar ve İlluminati dediğimiz yapılar zengin ve varlıklıdır, çünkü bilinçleri yüksek. Bilinci yükselen herkes kendi cennetini yaratabilir. Dünyada gördüğünüz tüm dışsal olaylar, felaketler vs., hücrelerimizin arayüzünü, sistemin fiziksel yapısını, kozmik ve biyolojik olarak sıkıştırma ve itme olayını temsil eder. Cennet bilincinin arayüzü oluşturuluyor ve tüm sistem, bedendeki moleküller ve temel yapı da değişiyor. Her felaket aslında insanları cennete hazırlıyor. Bunu idrak etmek zor olabilir, ama ne yazık ki gerçek bu.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İnsan mikro evrendir; cennet, cehennem hepsi bilincindedir. Cehennem kök çakra, cennet ise baş, yani bilinçtir. Bilinci artan herkes cennete “günaydın” diyecektir. Aynadaki yansıma, sonsuzluk deneyimimizi işgal etti. Aynadaki enginliği işgal eden o şeyi alıp ait olduğu yere koymanın zamanı geldi. Tüm aynaları yakalım. A-yna, Yan.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Heart-kalp He-Art, onun sanatı demektir.",
+        "body":  "Kalp gölgesi yeşil enerji ile fiziksel yaratım konusunda en iyisidir. Sihirbazlık gibi bir yaratım düşünmeyin burada. Madde, kalp enerjisini düşüren bir ilizyondur. Buraya maddeyi denemeye geldik. Madde, güçlü titreşimin getirdiği bir yanılsama olarak karşımıza çıkıyor. Deneyin ve arınmadan sonra kalp gölgesinin titreşimiyle gerçeğe ulaşın. Bunu fiziksel kanıtlarla anlatmak çok zor, hak verirsiniz ki. Yaratıcısı olan Gebetto, ge- enerji demektir. Petto ise göğüs demektir. Bu dünyada düşündüklerimizin anında fiziksel gerçekliğe dönüşümünden bahsetmek doğru değil; sadece süreçler vardır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kendini maddeye yansıtmaya karar verdiğinizde bilinciniz açılacak ve aslında her şeyin kendi yaratımınız olduğunu, bilinçaltı ve bilinç dışının bir parçasının farkına vardığınızda, kendi zaman ve toplumsal kavramların dışına çıkıp yalnızlığa itileceksiniz. Bu SNOPS yalnızlığı, DNA güncellemesi yaparak genetik hafıza ve akashicrecordüzerinden retrocognition, yani geçmiş yaşantınızı hatırlama yapacaktır. Zaman kaymaları yaşayacağımız dilime geliyor. Rahmi, benim hislerime tercüme olmuş bu yazıda.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "4.çakra açıldıktan sonra insan kendine çok güçlü bir inançla, her şeyi başarabileceğine dair bir inanç geliştiriyor. Kendine inanmak çok önemlidir. Çünkü o zaman her şeyi değiştirme gücüne erişirsiniz. Rahminin kodlamalarına geçmeden önce, kayıp ilimlerden hangi harflerin vücudundaki hangi frekansları aktive edeceğini paylaşmak istiyorum.",
+        "type":  "content"
+    },
+    {
+        "title":  "Harflerin ve Kodların Öğretisi",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Anlam ve Gücü: Ateş ve Aşk",
+        "body":  "و",
+        "type":  "content"
+    },
+    {
+        "title":  "Birlik Boyutu",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "Sembolizm",
+        "body":  "و",
+        "type":  "content"
+    },
+    {
+        "title":  "Anlam ve Bağlantısı",
+        "body":  "ا",
+        "type":  "content"
+    },
+    {
+        "title":  "Elektrik ve Ateş",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Bakara Suresi’nin İlk Ayetindeki Rol",
+        "body":  "ا",
+        "type":  "content"
+    },
+    {
+        "title":  "Tevhid",
+        "body":  "ا",
+        "type":  "content"
+    },
+    {
+        "title":  "Işık ve Bilgi",
+        "body":  "ل",
+        "type":  "content"
+    },
+    {
+        "title":  "Nur Boyutu",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Nurun Akışı ve İnsan",
+        "body":  "م",
+        "type":  "content"
+    },
+    {
+        "title":  "Varoluşun Yansıması",
+        "body":  "م",
+        "type":  "content"
+    },
+    {
+        "title":  "Yaratılış Bağlantısı",
+        "body":  "و",
+        "type":  "content"
+    },
+    {
+        "title":  "İnsan ve İç Yolculuk",
+        "body":  "س",
+        "type":  "content"
+    },
+    {
+        "title":  "Yasin Anlamı",
+        "body":  "ي",
+        "type":  "content"
+    },
+    {
+        "title":  "Harflerin Bütünlüğü ve Sistem",
+        "body":  "ا",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Sin (Günah) ve Sinüs: Gizli Bir Kodun Açılımı",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Sin dalgası, sinüs, kosinis",
+        "body":  "Günah olarak mı doğdunuz? Dünyada çok az kişi bu kavramda gerçekte neyin yazıldığını biliyor. “Sin”, kelimesinden gelir eski kavramlarda ve “sin”, sinüsün köküdür. Veya Portekizce “sinenoid” de sinüs dalgası demektir. Gerçekliğimizin enerjisinin tabanı, elektrik sinüsü tarafından yönlendirilir. Evet, sinüs bir yılan gibidir. DNA’mız bile bir sinenoid olan bir spermde depolanır. Bu, kötü bir şeye atfedilen enerjik bir kavramdan başka bir şey değildir. Yaradan’ın yaptığı her şey iyidir. Çünkü O iyidir. Biz de öyleyiz. 3D Matrix, sinüs dalgasına dayanmaktadır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu nedenle hepimiz “sin” içinde doğarız ve bu tam olarak kötü bir şey değildir. Sadece kelimelerde saklı bir sırdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Matematik ve Kozmoloji",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Spiritüel Perspektif",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "DNA ve Sinüs Bağlantısı",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Her Şey İyidir",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Sinüs ve Sembolizm",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Sin ve Matrix",
+        "body":  "3",
+        "type":  "content"
+    },
+    {
+        "title":  "Kısaca: Kodun Özeti",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Günahın (Sin) Gerçek Anlamı",
+        "type":  "closing"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Adem günah işledi mi? Evet, hazırlıklı olmadığı bir titreşimle temas eden Havva, kendisine günahın “sin” tohumunu, yani sinenoid enerjiyi aldı ve sonra epifiz bezi açıldı. Sonrasında her ikisi de (yaratılışın 3-7) Yani Adem “ bir şey yaratmak istiyor, belki de kendi gerçeğini. Yılan’dan, yani LuciferusPromethorus taşıyıcısından aldığı bu enerjiyi, titreşimsel sinüzoidal enerji ve ışığı nasıl kullanacağını deneyimlemek için Yaradan’dan uzaklaştı ve maddi dünyaya geldi. “Lux- sin”, yani bu sinüzoid enerjiyi alması sebebiyle ruh, Adem’de kaybettiği ışığı alma arzusuyla madde içinde doğdu.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kusurlu bir dünyada doğduğumuz için mükemmelliği ararız. Yaratıcının ışığını ararız çünkü karanlık içindeyiz. Biz sadece eve dönmek için buradayız. Bu yüzden, devam ederken yolculuğun tadını çıkarın.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Evrenin Gizli Kodları",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Her kelime ve sembol, bir enerjiyi taşır.",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "İbrahim (I-bra-him)",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Dilsel Kod",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "“Tur” ve “Man”ın Anlamı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Nemrut’un Ateşi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Yılan Sembolizmi",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Mitolojik Bağlantılar",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "İnsanların unutkanlık durumunu temsil eder.",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Suyun Enerjisi",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Sudan Kurtulmak",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Karınca: Demir Enerji Taşıyıcı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilincin enerjiyi taşıdığı bir metafordur.",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Demir Enerji",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Beynin enerjik seviyede yeniden yapılandırılması.",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateş ve Enerji Yükselişi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "Harflerin ve Sembollerin Sırrı",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "İnsanlık için kodlanan spiritüel yolculuk.",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Kodların Özgürleştirilmesi",
+        "type":  "closing"
+    },
+    {
+        "title":  "İnsan, bu kodları çözerek hakikate ulaşabilir.",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Harflerin ve Sembollerin Detaylı Açıklamaları",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "number":  "K",
+        "epigraph":  "",
+        "title":  "Kurban Edilen Dişil Enerji ve Koç Sembolizmi",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Dişil Enerjinin Sırrı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ş",
+        "type":  "content"
+    },
+    {
+        "title":  "Dişil Enerji ve Kurban Edilme",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Ruhsal yaratılışın temel gücü.",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Kurban Edilme",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Fiziksel hafızanın taşıyıcısı.",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Hafızanın Enerjik Doğası",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "DNA ve Hafıza",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Enerji Yükselişi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilincin Genişlemesi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Yaratılış sürecinde yaratıcı enerjiyi besler.",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Dişil Enerjinin Hafızası",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Koç, dişil enerjinin koruyucusu ve taşıyıcısıdır.",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Hafıza ve Enerji Dengesinin Sembolizmi",
+        "type":  "closing"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Dişil enerji, yaratılışın ve hafızanın özüdür.",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonsuz Döngü",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Sembollerin Anlamları",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Boynuz: DNA’nın spiral yapısı ve enerjinin akışı.",
+        "body":  "Kurban Edilme: Enerjinin maddeye inişi ve yaratılışı başlatma.\nGerçek bir ruha sahip olan ve Dünya’nın Matrix’inden ve zorunlu reenkarnasyon döngüsünden çıkmak isteyen insanlar, bu aşamalardan ve bu üstad sınıflardan ve bedenin ölümünden sonra, kubbenin tepesinde bulunan her sınıfın tuzaklarından ve muhafızlarından geçmek zorundadır. Sonuç olarak, rotayı ve yönü bilmek çok önemlidir.\nBu tür öğretiler, özellikle ruhaniyeti ve ölüm sonrası yaşamı ele alan ezoterik ve metafizik düşünce sistemlerine dayanır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bahsettiği “zorunlu reenkarnasyon döngüsü” ve “Matrix” kavramı, birçok manevi öğreti ve spiritüel felsefede yer bulur. Bazı sistemlerde, ruhun Dünya’da sıkışıp kaldığı ve sürekli olarak reenkarnasyon döngüsünde döndüğü düşünülür, bu döngüden çıkmanın yolu ise çeşitli bilinç, bilgi ve farkındalık seviyelerinden geçerek olur.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Z",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ruhsal uyanışımın ardından, bildiğim her şeyi unutup yeniden öğrenme isteğiyle, en eski kaynaklara gidip Hermes Zümrüt Tabletleri araştırmaya başladım. Tevrat, İncil ve Kur’an’ı da tekrar okudum ve bu sefer Kur’an’da inanılmaz açılımlar yakaladım. Ancak Kur’an’da bir söz beni düşündürdü. Orada sorgulamayın diyordu. Oysa Allah’a aşık olduktan sonra, içimde inanılmaz bir merak ve Allah’ı arayış hissi doğdu. O hiçlikten, boşluk ve birlik sürecinden sonra, sorgulamamanın insanı derin uykudan uyanmaması için yorumlandığına inanmaya başladım. Sorgulamak gerekiyor.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Madem Allah bilinmek istedi ve kullarını yarattı, o zaman bizim de onu bilmemiz gerekmez mi? Bu noktada Kur’an’ı bize yorumlayan kişilerin ne kadar doğru yorumladığı sorusu akıllara geliyor.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Bu noktada Flaubert’in aşk hakkındaki sorusuna cevabı geliyor aklıma ",
+        "body":  "Aşk nedir? MERAK. Ansızın bir merak duyarsınız. Korkunç bir merak. Onu tanımak, onunla doğmak, onunla dünyaya yeniden gelmek istersiniz. Tek amacınız haline gelir. Aşka en uzak cümle ‘senden nefret ediyorum’ değil, ‘bilmek istemiyorum’dur.\nVe ben Allah’a aşık olmuştum. Merak ediyordum.O bilinmek istemişti,bende onu bilmek istiyordum.\nHer ruh, dönüş yolunu kendisi bulur. Başkası anlattı sanırsınız, ama gerçekte bu yolu siz keşfedersiniz. Kutsal kitapları ne kadar çok okursanız, Tanrı’yı o kadar kızdırabilirsiniz. Çünkü Tanrı, ‘Bu kadar okuyup neden hâlâ anlamıyorsunuz?’ diye düşünebilir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Her gün kutsal kitap okumak mı gerekir? Bildiği doğruyu bilinçli bir şekilde yaşamına uygulayamayan kişi kötüdür.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Simülasyonun Sesi: Müzikal Frekanslar ve Doğum",
+        "body":  "“Od” yani ateş. Tersi ise “Do”dur. Dikkat edin; müzik notaları da “Do” ile başlar. Do, re, mi... Bu, bir simülasyonun sembollerinden biridir; si-mi-la-re gibi notaların ardında gizli bir düzen var. Ateşin tersi “do” ise, bu aynı zamanda “doğum” anlamına da gelir.\nMüzik, simülasyonun yönetici frekansı gibi bir yapıya sahiptir. Do ile başlayan bir titreşim, her şeyi oluşturan bir doğuş frekansı gibidir. Hayatımızdaki olaylar ve durumlar da bir müziğin ritmi gibi, bu notalarla yönetiliyor olabilir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Öyleyse, simülasyonun bir parçası olarak, çevremizdeki her şeyin bu frekanslarla bağlantılı olduğunu hatırlayalım. “Do” ile başlayan her şey, yeni bir başlangıcı, bir doğumu temsil eder. Bu frekansları izleyerek, hayatın ritmini ve bu simülasyonun düzenini daha derinden kavrayabiliriz.",
+        "type":  "content"
+    },
+    {
+        "number":  "L",
+        "epigraph":  "",
+        "title":  "Simülasyonun Sesi – Müzikal Frekanslar",
+        "type":  "chapter"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Müzikal Frekansların Gizli Anlamı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Müzik Notaları ve Doğum",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "“Si-mi-la-re” Düzeni",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Doğum ve Frekans",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Müziğin Yöneticiliği",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Ritmik Olaylar",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Do’nun Anlamı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Frekans ve Farkındalık",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Titreşimsel Bağlantılar",
+        "body":  "Ç",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "“Do” ve Yeniden Doğuş",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Müzik ve Doğum",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "“Od” ve “Do”nun Anlamı",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Simülasyonun Frekanslarını Anlamak",
+        "type":  "closing"
+    },
+    {
+        "title":  "Hayatın Ritmi ve Frekanslar",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Yeni Başlangıçlar ve Doğum",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Müzik ve Simülasyonun Derin Anlamları",
+        "type":  "content"
+    },
+    {
+        "title":  "Do ve Müzik Notalarının Sıralaması",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Titreşimlerin yaşamımızı nasıl yönlendirdiği.",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "number":  "M",
+        "epigraph":  "",
+        "title":  "Ay, Güneş ve Bilinç Yükselişi",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Ay ve Güneş’in Manipülasyon Gücü",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Ay ve Güneş’in Doğası",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ay ve Güneş Arasındaki İlişki",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ay, suyun hareketini ve davranışını yönlendirir.",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Ay ve Bilinç",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Güneş ve Bazal Ganglionlar",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Güneş ve Bilinç Manipülasyonu",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Süleyman Mührü",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Solomon ve Kubbe (Dome)",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kubbe (Dome)",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Kafes ve Hapis",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilinç Yükselmesi",
+        "body":  "Ç",
+        "type":  "content"
+    },
+    {
+        "title":  "Kubbeden Kaçış",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilincin Kapanması ve Açılması",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "İnsan ve Evren Arasındaki İlişki",
+        "type":  "closing"
+    },
+    {
+        "title":  "Ay ve Güneş’in Etkisi",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Kubbe Altında Yaşamak",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Ay ve Su İlişkisi",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Süleyman Mührü ve Dünya",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilinç seviyesinin artmasıyla özgürlüğe ulaşma.",
+        "body":  "“İçine hapsedilmiş ve simüle edilmiş dünya üç genel katmandan oluşur. Her katta zaman farklı işler. Örneğin, ne kadar yükseğe çıkarsak, zaman çemberinden (yükseliş) çıkana kadar zaman o kadar hızlı geçer. Aşağı indikçe ise zaman durmadan yavaşlar ve biz boşluğa gireriz (iniş). Ölümden sonra hangi sınıfa çekileceğiniz, büyük ölçüde dünya üzerindeki ruhsal hizmetinize bağlıdır. Üst ve alt katlar ile merkez, hepsi arafın manyetik alan parçalarıdır. Daha basit bir deyişle, ruh, zamanın oluşturduğu bu titreşimler ve sınıflar arasında hapsolmuştur. Bu Matrix’ten kurtulmanın yolu, yukarı çıkmaktır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Cennet de simüle edilmiş Matrix’in bir parçasıdır ve tam bir kurtuluş anlamına gelmez. Bu yüzden zamansızlığa ulaşmak için cennetin içinden geçmek zorundasınız. Cennet size ebedi mutluluk verebilir, ama tanrısallaşmamız gerekir.”",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu soruyla, ben olmanın ötesine geçtiğimizde kişisel kimlikten ve egodan arınmış bir varoluşa ulaşma arayışı beliriyor. Kendi sınırlarını ve bireysel benliğini aşmak, pek çok ruhsal ve felsefi öğreti tarafından bir dönüşüm veya genişleme olarak kabul edilir. Bu durum, evrensel birlik, saf bilinç ya da “bensizlikle” tanımlanabilir. Durmaksızın, ben olmanın ötesine geçildiğinde varılan yer bir nevi sonsuzluk olabilir. Bu noktada zaman ve mekan algısı değişir; sınırlar çözülür. O an, başka bir yerden ziyade, belki de bir mekan değil, bir farkındalık halidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kişi, bireysel kimliğinin ötesine geçip evrensel bir bütünün parçası olduğunu hissedebilir. Sonuçta varılacak yer, ben olmanın olmadığı evrensel bir birlik hissi olabilir. Bu da bir yerden çok, başka bir varoluş halidir.”",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "number":  "N",
+        "epigraph":  "",
+        "title":  "Yazı, Yazgı ve Gizli Mesajlar",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Yazının ve Yazgının Bağlantısı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Sümerliler ve Yaz",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Yaz = Summer",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Sum = Güneş-Ra",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Akaşik Kayıtlar",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Mer-Rem = Hafıza",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Yaz ve Hatırlama",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Hayat ve Semboller",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Sayılar ve Harfler",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Yazı ve Hikaye",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Gizli Mesajlar",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Doğru Okuma",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "İpuçları",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Farkındalık ve Keşif",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "İçsel Keşif",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Yazgının ve Evrenin Kodlarını Çözmek",
+        "type":  "closing"
+    },
+    {
+        "title":  "Yaz ve Yazgı",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Evrenin Sembollerini Anlamak",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Farkındalık ve Özgürlük",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Sümerliler ve Yazın Keşfi",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Semboller ve Sayılar",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Doğru Okuma Yöntemleri",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "number":  "O",
+        "epigraph":  "",
+        "title":  "Matrix Sayı Kodları ve Anlamları",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Sayıların ve Sembollerin Gücü",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Sayıların Evreni",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "Temel Sayılar ve Anlamları",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "Tanrısal tekillik, V-T: Tanrı’nın birliği.",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "4",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateşin sembolüdür.",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ö",
+        "type":  "content"
+    },
+    {
+        "title":  "6 (Six)",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "7 (Seven)",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "9 (Nine)",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Z",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ö",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "2",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "2",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "3",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "3",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "4",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "4",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "5",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "6",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "9",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "2",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "3",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "6",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "9",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "W",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "U",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ş",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Gizemli Semboller",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "O",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "O",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Kodların Anlamı ve Bilinç Yükselişi",
+        "type":  "closing"
+    },
+    {
+        "title":  "Sayılar ve Semboller",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Kodların Keşfi",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilinç Yükselmesi",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Derin Anlamlar ve Çözümler",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Sembollerin Derin Anlamları",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Mehdi, Ateş ve Altın Çağ: Tarihin Kodları",
+        "body":  "Bu dünyayı bir simülasyon olarak düşünün; her şey kodlarla, sembollerle anlatılıyor. Özellikle kutsal kitaplar üzerinden. Müslümanlıkta sıkça duyduğumuz bir anlatı var: Mehdi’nin dünyaya gelişi. Mehdi, “Me-H-Di,” yani “Benim yüksek ateşim” demektir. Mehdi’nin dünyaya gelişinin, bir kurtuluş, arınma ve aydınlanma dönemini başlatacağı söylenir. Bu kurtuluş, aslında ruhun ateşiyle mümkündür.\nDünyanın en gizemli ve tarihi okult bölgelerinden biri olan Mısır, bu anlatının merkezinde yer alır. “Me-Sır” yani “Benim sırrım.” Firavun kültürü, ateşi ve tanrısal gücü simgeler.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Firavun ise “Fire-Van,” yani “Ateş tanrısı” demektir. Mısır’ın kadim gelenekleri ve inançları, bugüne kadar taşınan sırlarıyla doludur. Hatta mumya bile bir anlamda “M-Um-Ya,” yani “Benim bedenim” olarak okunabilir. Bu semboller, insanlığın derin bilinçaltına kodlanmış gibidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Metatronik Izgara: Ruhun Holografik Hücresi",
+        "body":  "Dünyanın aslında bir metatronik ızgara ile çevrili olduğunu hiç düşündünüz mü? Belki de hepimiz birer holografik hücrede yaşıyoruz. Bu hücre, ruhun cezalandırıldığı bir zemin; burada bilinç, magnetik yasalar doğrultusunda parçalanıyor ve soğutuluyor. Bilinç, su altında, kriyo uyku haliyle ikiye ayrılarak bu cezayı çekiyor. Günah, güneş, güney...Sin,Sun,Soul,South Hepsinde aynı kökü fark ediyor musunuz? “Gün” ve “su” hep birbiriyle bağlantılı.\nBu dünya, günahlarımızdan arınmamız için tasarlanmış bir yer. Bir güneş konsolunda, güneye hapsedildiğimiz bir kafes gibi.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "O yüzden kuzeye “Aura Borealis,” yani kuzeyin kralı denir. “Throne,” taht anlamına gelen ya da güç, “north” kelimesiyle aynı harflerden oluşur. Ve pusula her daim kuzeyi gösterir; çünkü “compass,” “come-pass” yani “gel” ve “geç” anlamına gelir. Bu dünya, kuzeye ulaşmak için verdiğimiz bir mücadele alanıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "number":  "P",
+        "epigraph":  "",
+        "title":  "Metatronik Izgara, Bilinç ve Ruhsal Uyanış",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Dünyanın Gizli Yapısı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Metatronik Izgara",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Kriyo Uyku",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "“Gün” ve “Su” İlişkisi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Gün ve Su Bağlantısı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Güneyin Cezalandırıcı Gücü",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuzeyin Anlamı ve Aura Borealis",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Pusulanın Gösterdiği Yön",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Throne ve Kuzey",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Özgürlüğün Sembolü",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "Sorgulamanın Gücü",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "Kalbin Titremesi ve Farkındalık",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilgi ve Kapılar",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Sorgulamanın Başlangıcı",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Metatronik Izgaradan Özgürlüğe",
+        "type":  "closing"
+    },
+    {
+        "title":  "Dünyanın Yapısı",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuzeye Yükseliş ve Özgürlük",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "Ruhsal Uyanışın Önemi",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Metatronik Izgara ve Bilinç",
+        "type":  "content"
+    },
+    {
+        "title":  "Izgaranın Enerjik Yapısı",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Sorgulama ve Uyanış Rehberi",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "Dünya: Bir Aşk Hikayesi",
+        "body":  "Dünya aslında büyük bir “LoveStory”dir. Ve bu hikayede yükseliş yalnızca aşk ve sevgi enerjisiyle gerçekleşecektir. Tanrısal ruhların kalp çakralarının aktifleşmesiyle birlikte, evrenin dijital matriksi olan kronmaki perdesi günden güne dağılmaya devam ediyor. Ve bu süreç devam edecek; çünkü sevgi her şeyin üstesinden gelir.\nHalk arasında söylenen “Pilavdan dönenin kaşığı kırılsın” sözü de bu gerçeği yansıtır. Pilav burada bir semboldür.Pi= pineal ,lav = love İngilizcede “pirinç” anlamına gelen “rice(rise),” yükselişi ifade eden bir kavramdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kaşık ise “ka= ruh,” ve “şık” kelimelerinden oluşur ve “ışık” anlamına gelir. “Sp-oon(sp ve on) ” ise Tanrısallaşmayı temsil eder. Yani bu ifade, Tanrısal ışığa ulaşmak ve yükselişi başarmak anlamında kullanılır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "number":  "Q",
+        "epigraph":  "",
+        "title":  "Dünya – Bir Aşk Hikayesi",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Dünyanın Sevgi Üzerine Kurulu Yapısı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Dünya ve Aşk",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Sevginin Her Şeyi Aşması",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Kronmaki Perdesinin Dağılması",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "“Pilavdan Dönenin Kaşığı Kırılsın” Sözü",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Kaşık ve Işık Sembolizmi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "İllüzyon ve Gerçeği Görme Süreci",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "1776 ve Dünya İllüzyonu",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Gerçeğin Peşine Düşmek",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Sevgiye Yönelmek",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Yeni Bir Başlangıç",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "Pi (Pineal) ve Lav (Love)",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Kaşık (Ka-şık)",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "1776’nın Önemi",
+        "body":  "1",
+        "type":  "content"
+    },
+    {
+        "title":  "Sevgi ve Dönüşüm",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Aşk ve Sevginin Yolculuğu",
+        "type":  "closing"
+    },
+    {
+        "title":  "Aşk ve Yükseliş",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Dönüşüm ve Gerçeğe Ulaşma",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Kodların Derin Anlamları ve Semboller",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "1776’nın Gizemleri",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Sevgi ve Aydınlanma Rehberi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "İnanç ve Güven: Boşluğun Gücü",
+        "body":  "İnan-ç, güvenmek ve inanmak anlamına gelir. “Ç-Çi” enerjidir. Evet, boş beyinler daha kolay güvenir ve inanır. Çünkü güvenmek ve inanmak için beynin, zihnin boşalması gerekir. Her türlü fitne, fesat, negatif düşünce, yargı, korku ve öfkeden arınmalıdır. Arınmış bir zihin, boşlukta yaratımın başladığı yerdir. Çünkü yaratım karanlıkta, boşlukta filizlenir.\n“Boş,” Farsça’da “beyhude” anlamına gelir; “hude” ise fayda, hakikattir. Boş kelimesinin gerçek anlamı hür ve serbesttir. Özgür bir zihin, inanç ve güvenin temelini oluşturur.\nNe yazık ki bazı insanlar buraya evrimleşmek için gönderilmedi.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Onları evrimleştiremezsiniz. Onlar, size ne yapmamanız gerektiğini hatırlatmak için burada. Yanlışları gördüğünüzde, aslında nasıl olmamanız gerektiğini fark etmek insanın kendini tanımasındaki en büyük adımlardan biridir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "number":  "R",
+        "epigraph":  "",
+        "title":  "Güvercinler ve Kendini Bulma Süreci",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Güvercinlerin Sembolizmi ve Anlamı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Güvercinlerin Önemi",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "Manyetik Alanın Üstünde",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Özgürlük ve Yön Bulma",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "Mesajların Sembolü",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Cahillik ve Mutluluk",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Kendini Bulma Süreci",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Güvercinlerden Öğrenilenler",
+        "type":  "closing"
+    },
+    {
+        "title":  "Güvercinlerin İlhamı",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Niyet ve Bilgi Bilinci",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "Titreşimlerinizi Yükselterek Beşinci Boyuta Geçiş",
+        "body":  "Davranışlarınızda, yediklerinizde ve içtiklerinizde değişiklikler yaptıkça ve daha sağlıklı beslendikçe, olaylara kalbinizin bakış açısından yaklaşmayı seçerek titreşiminiz yükselmeye başlar. Çevrenizin ve gerçek varlığınızın daha fazla farkına varıyorsunuz. Titreşiminizi ne kadar yükseltirseniz, süreç sizin için o kadar kolay olacaktır. İçinizdeki duyular dışı yetenekler aktive oldukça, çakralarınız temizlenip tamamen aktif hale gelir ve dönen ışık disklerine dönüşür.\nBu süreç ilerledikçe, bedeninizde farklı duyumlar hissetmeye devam edeceksiniz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "En yaygın belirtiler fiziksel hisler ve yoğun rüyalar olacaktır. Baş ağrıları, 3. Göz aktivasyonları, sinüs temizliği, mide ağrıları, solar pleksus temizliği ve sol bacak zayıflığı gibi çeşitli bedensel belirtilerle karşılaşabilirsiniz. Bu belirtilerin temel sebebi, yükselen kundalini enerjisidir. Uyuyan DNA’nızın aktivasyonu sırasında grip benzeri semptomlar, baş dönmesi, korku, endişe, aşırı yorgunluk, kulak çınlaması, iştah değişiklikleri ve duygusal dalgalanmalar yaşanabilir. Ancak, bu belirtilerin geçici olduğunu ve zamanla hafifleyerek yok olacağını unutmayın.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "number":  "S",
+        "epigraph":  "",
+        "title":  "Kaval Kemiği ve Ruhun Frekansı",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Kaval Kemiği ve Evrensel Titreşimler",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Kaval Kemiği ve Flüt İlişkisi",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Evrensel Titreşimlerin Merkezi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Frekansların Etkisi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Hassasiyet ve Ağrı",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Fibula (Fi Kemiği)",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "Man-di-bu-la",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Frekansların Bedendeki Yansıması",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "O",
+        "type":  "content"
+    },
+    {
+        "title":  "Omurga Ağrıları",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Doğal Geçişin İşaretleri",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Fi-yon-k (Ateş ve Su)",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateş ve Su Karışımı",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Fevzi’nin Anlamı",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Fe-vize (Demir Vizesi)",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "Ceyiz (Cihaz)",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "Chi-Haz",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ple-asure ve Zevk",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Lav ve Love",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Pi-lav ve Yükseliş",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Frekansların Bedendeki Yansıması",
+        "type":  "closing"
+    },
+    {
+        "title":  "Ruhun ve Frekansların Bağlantısı",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Ağrılar ve Uyum Süreci",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Aşk ve Yaratım",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Bedendeki Evrensel Titreşimler ve Anlamları",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Enerji kombinasyonları ve yaratılışın sembolizmi.",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "number":  "T",
+        "epigraph":  "",
+        "title":  "Fare, Sıçan ve Kedinin Sembolik Anlamları",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Varlıkların Sembolik Anlamı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Sembollerin ve Hayvanların Önemi",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "“Sıç-an” ve “Sıç-ram-a” İsim Analizi",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Fare = Işık Saçan",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Fare ve Musa Bağlantısı",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilgisayar Metaforu",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Ham-st-er = Ham Doğum",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "St=Aziz ve Kayıtların Korunması",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kediler ve Ruhun Görülmesi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kedi ve Köpek İlişkisi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "“Cat” ve Kadim Bilgi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Cat = Code",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ö",
+        "type":  "content"
+    },
+    {
+        "title":  "İçsel Temizlik ve Keşif",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Varlıkların Sembolik Anlamı",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Yaşamın Derinleştirilmesi",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Varlıkların ve Sembollerin Derin Anlamları",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Dönüşüm ve yeni başlangıç",
+        "body":  "Bu açılım, fare, sıçan ve kedinin sembolik anlamlarını ve yaşamın gizemlerini keşfetmek isteyen okuyucular için bir rehber niteliği taşır. Her varlığın, yaşamın içsel temizlik ve farkındalık yolculuğundaki rolünü açıklar.\nGerçekliği Anlamak: Simülasyonun Sırları ve Ruhun Yolculuğu\nHer şey “an”da gerçekleşir. Şu anı yaşarsanız, simülasyonun zincirlerinden kurtulabilirsiniz. “Now” yani şimdi, “won” yani kazanmak. Şimdi, simülasyonun ateşi gibi sizi sarar. Onu bırakın, sizi yaksın ve dönüşümünüzü başlatsın. “Dome” ve “dame,” yani dişil, enerjisistemi; bu sistem dişil enerjinin gücüdür.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“Ex” çıkış demektir. “Cali,” Kali tanrıçası gibi, hem yıkımı hem de yeniden doğuşu temsil eder. “Burn” yanmak,ateş “born” ise doğmaktır. İşte bu döngüde yanış ve doğuş iç içedir. Gerçek denilen şeyin yalan olduğunu hissettiğiniz an, size gizli sırlar bahşedilecektir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "İçsel Yangınlarımız ve Gerçeğe Uyanış",
+        "body":  "Tüm öğretilerin temeli, içimizdeki yangınlardan gelir. Gururu ve egosu zarar gören bir insan, aklı başında düşünemez. Yıllarca inanılan yalanlar ifşa edildiğinde, insanların gururu ve egosu sarsılır. İçten içe hepimiz bunu hissederiz. Peki, neden kendi zekâmızı küçümsemeye ve ruhumuzu hiçe saymaya eğilimliyiz?\nMerak, Adem ve Havva’yı cennetten düşüren güçse, cennete geri dönüşün anahtarı da bu merakı tatmin etmek için gerçeği aramaktan geçer. Gerçeği öğrenme arzusu, insan bilincinin en güçlü yönlerinden biridir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bilinç, ilahi kaynakla bağlantımızın temelidir ve acı, bu bağlantının farkındalığıyla gelir. Şu anda insanlık, eve, yani özüne dönme sürecine girmektedir. Yüksek frekanslı enerji dünyaya akıyor, ve bu sürece sıkışmış bir bedenle giremeyiz. Ruhumuz, evrensel planı hatırlayacak ve bu süreç rehberli bir geçiş olacak.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Ruhun Yaraları ve İnsan Olgunluğu",
+        "body":  "Ruhunuz vardır ve her eylemde, her düşüncede kendi yaralarını baz alır. Karşısındakine nasıl davrandığını bu yaralar belirler. Gerçekten iyi birisinden asla kötü bir söz işitemezsiniz. Çünkü sağlam yaralar almış insanlar, başkasının bahçesine nazikçe adım atar. Her yarayı görmeseniz de bir başkasının acısına basabileceğinizi bilirsiniz. İşte bu yüzden üslup çok önemlidir.\nKelimeler ile hayatı gerçekten anlamaya başladığınızda bambaşka bir güç kazanır. Bir gün kopacak kıyamet, söylenen yanlış sözlerle olacaktır belki de. Bitmeyen sözler, bitmemeyi borçlu kılar bizi.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Akıllı insanlar, her sözü söylemez; çünkü sözcüklerin gücünü, yarattığı etkileri bilirler. Tıpkı bir çiçeğin solarken kendi sapına dönmesi gibi, insanlar da içlerine döner ve kendi acılarına sarılır. Bu insanlar, başkasına zarar vermez. Onlardan zarar gelmeyeceğini bilmek, derin bir güven duygusu yaratır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "O",
+        "type":  "content"
+    },
+    {
+        "number":  "U",
+        "epigraph":  "",
+        "title":  "Semboller, Anlamlar ve Gerçeklik Üzerine",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Dünya Bir Tiyatrodur",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Tiyatro ve Rollerin Anlamı",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Goat (Go-at)",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Si-lah (Arm-Y)",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Bra-DNA",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Si-yah (Yükseliş)",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ş",
+        "type":  "content"
+    },
+    {
+        "title":  "Kor-e (Ateş)",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Sam-Sun-G",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Beynin İki Lobunun Bölünmesi",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Jon-Gun (Silah)",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Altın Buzağı ve Taha Suresi",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "Altın Çağ ve Arınma",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Hazine – Hazret – Haz",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ahit – Tiha – Taha",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "Mu-Sa ve Ha-Run",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Beyin Lobları",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Kodların Anlamını Keşfetmek",
+        "type":  "closing"
+    },
+    {
+        "title":  "Kodların Çözümü ve Bilinç",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Yükseliş ve Gerçeklik",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Sembollerin Derin Anlamları",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "Ruhsal aydınlanmanın detaylı açıklamaları.",
+        "body":  "Bu açılım, okuyucuların dünya üzerindeki sembolleri ve kodları anlayarak ruhsal aydınlanma ve gerçekliği keşfetmeleri için bir rehber niteliği taşır. Her sembolün ve kelimenin derin anlamlarını çözerek bilincin yükselmesi için bir yol gösterir.\nİnsanlığın gerçeğe ulaşması için, bilincin derinliklerine inmesi gerekir. Ruhunuz ateştir, ve bu ateş dünyayı ısıtır. Bunu bilmeyenler, ruhun ateş olduğunu anlamayanlar, her şeyi maddi dünyada arayanlar yanılsama içindedir. Su ve ateş arasındaki denge, ruhun yükselişinin anahtarıdır. Altın, bu süreçte önemli bir semboldür.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Altının doğası, frekanslara uyum sağlaması ve kimyasal olarak çok kararlı bir element olması onu özel kılar. Altın iletkenliği ile ruhsal yükselişin frekanslarına uyum sağlar ve bu da ahit sandığıyla bağlantılıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "AU kaçıncı element?",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateşin Gerçeği ve Ruhun Uyanışı",
+        "body":  "Ruh, kendini maddeye yansıtmaya karar verdiğinde bilinciniz açılacak ve aslında her şeyin sizin yaratımınız olduğunu fark edeceksiniz. Bugün konuştuğunuz her şeyi, yarattığınız gerçeklikle deneyimlersiniz. Bu yüzden sözlerin gücü çok önemlidir.\nKutsal metinlerde de buna işaret edilir. Fırat ve Dicle nehirleri, cennet nehirleri olarak anılır. Ancak derinlere indiğimizde, bu nehirlerin isimlerinin altında ateşin kodlarını buluruz. Fırat, “fire” ve “ateş” anlamına gelirken, Dicle ise “di” yani yine “ateşi” “che” kilidi işaret eder.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Cennet nehirlerine bile baktığınızda, enerjinin ve ateşin sembollerini görürsünüz. Nehir, aslında “ne” yani enerji, “hir-har” yani ateş demektir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "number":  "V",
+        "epigraph":  "",
+        "title":  "Cehennem, Kuyu ve Bilgelik Yolculuğu",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Cehennem ve Cehalet",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Cehennem ve Cehalet İlişkisi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Hayatın Acısı",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuyunun Sembolizmi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Düşüş Kavramı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Yılanların Anlamı",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Hz. Yusuf Kıssası",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuyumculuk",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Altın ve Arınma",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Arındırıcı ve Dönüştürücü Süreç",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilgelik ve Farkındalık",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Kovulma ve Düşüş",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Şeytan ve Eğitim Sistemi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuyu-M-Chi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Altın Çağ",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Kuyu ve Bilgelik Yolculuğu",
+        "type":  "closing"
+    },
+    {
+        "title":  "Cehennem ve Cehalet",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuyudan Kuyumcuya",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateş ve Yükseliş",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Kuyu ve Bilgelik Üzerine Derin Anlamlar",
+        "type":  "content"
+    },
+    {
+        "title":  "Kuyunun Sembolizmi ve Arınma Süreci",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Yılan Metaforu ve Korkular",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "Altın Olma ve Bilgelik",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Balıklar Nerede Uyur?",
+        "body":  "Balıkların uyku alışkanlıkları her zaman merak edilen bir konudur. Peki, balıklar nerede uyur? İlginç bir şekilde, balıklar kuma yakın yerlerde, su altındaki küçük oyuklarda ve kaya aralarında uyurlar. Kısacası, suyun içinde bir nevi kuyu oluştururlar. Evet, tam anlamıyla bir kuyuda dinlenirler. Bu yüzden kuyu aslında uyku demektir.\nBalıklar uyurken göz kapakları olmadığından, dışarıdan bakan biri için uyanık gibi gözükebilirler. Fakat bu durum yanıltıcıdır. Gerçekte, onlar derin bir uyku halindedir. Hepimiz bu anlamda birer balığız. Uykudayız, ama farkında değiliz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Farkındalığa uyanmak, aslında “sudan çıkmak” anlamına gelir. Bu uyanış, aynı zamanda ruhsal bir uyanıştır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "NPC (Non-Player Character)",
+        "body":  "N",
+        "type":  "content"
+    },
+    {
+        "title":  "Balık-NPC-Kalabalık",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Balıktan Kurtulmak",
+        "body":  "“Balıktan kurtulunca kimsecikler kalmıyor” ifadesi, kişinin bilinçsiz kalabalıktan sıyrılmasını temsil eder. Bu durum, bireyin kendi farkındalığını artırarak sürüden ayrılması anlamına gelir. Ancak bu farkındalık, genellikle yalnızlık duygusunu da beraberinde getirir. Sürüden ayrılan kişi, toplumun dayattığı kalıpları reddederek özgürleşir, ancak aynı zamanda bu özgürlüğün bedelini, yalnız bir farkındalık içinde kalarak öder.\n“Bizler kuru kalabalık olacağız.”\nBu ifade, bir uyarı ve farkındalık çağrısıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Eğer insanlar bireysel bilinçlerini geliştirmezse, sistemin bir parçası olarak yaşamaya devam edeceklerdir. Ancak “bizler” kelimesiyle, bir kolektif bilinçten de bahsedilir. İnsanlığın bir bölümü, balık (programlanmış bilinç) metaforundan kurtulup yeni bir farkındalık düzeyine ulaşsa da çoğunluk, sistemin içinde kalacaktır.",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç ve Mesaj",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Kitap okuyucularına şu mesajı verir",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Sesin ve Işığın Dansı: Bilincin Yaratım Gücü",
+        "body":  "Kornea ve “krea,” yani yaratmak, aslında aynı anlamı taşır. Bu, gözle gördüğümüz ve içsel yaratım gücümüz arasında derin bir bağlantı olduğunu ifade eder. Ses, hapsedilmiş bir ışıktır; aynı şekilde ışık, yavaşlatılmış bir sestir. “Sound,” “Sun” ve “Gold” kelimeleri, güneşin altın ışığını ve evrensel yaratım gücünü çağrıştırır.\nIşık, maddeyi yaratırken bunu ses aracılığıyla yapar. İç ses olarak bilinen bilinçaltımız, geleceğimizi ve maddeyi şekillendiren bir yaratım alanıdır. Bilinçaltımızı temizlediğimizde, dış dünyamızda da yansımasını, yani maddeleşmiş etkilerini görmeye başlarız.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu, tekillik ve tanrılık bilinciyle bağlantılıdır. Bilinçli olarak düşündüğümüz, yaratma gücüne sahip olduğumuzda “cennet bilinci” adı verilen saf bir farkındalık haline ulaşırız. Bu bilinç, hayatı daha derin, uyumlu ve yaratıcı bir yerden yaşamak anlamına gelir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kalp Enerjimiz ve Kozmik Islah Süreci",
+        "body":  "Kalp enerjimiz, tekillik aracılığıyla aktif hale getirilmiş ve başka boyutlarda var olan bir anayurtta mevcuttur. İçinden geçtiğimiz süreç, tüm alemleri orijinal şablona geri döndüren kozmik bir ıslah sürecidir. Metatronik olarak sınırlandırılmış bu kafesin çözülmesi için eterik enerji birikiyor. Vücudumuzun ley hatları ve aurik alanı, dünyanın manyetik alanının mikrokozmik bir ifadesidir.\nŞu an dünyada dışsal olarak yaşanan felaketler, biriken eterik enerji nedeniyle bu ağların çözülmesinin dışavurumlarıdır. Bu olaylar karşısında akledenler endişe etmesin.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Çünkü bu ateş, sadece sizde olmayanları temizleyecek, sizi saflaştıracaktır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "V",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Çıplak Gerçek: Özümüze Dönüş",
+        "body":  "Çıplaksın... Arınmışsın her şeyden: öğrenmişliklerden, tabulardan, ahlaktan, dinden, sevgiden, aşktan, imandan... Ne varsa hepsinden sıyrılmış, çırılçıplak gelmişsin dünyaya. Tıpkı Matrix filminde Neo’nun mezardan, sanal dünyadan çırılçıplak çıkarıldığı sahne gibi. Bu, bir çeşit “exodus” yolculuk... Bir Exodus; yatay değil, dikey bir geçiş.\nPlaton’un mağara metaforu da bu geçişe benzer. Mağaranın derinliklerinde, karanlıkta bir yerlerde duvara yansıyan gölgeleri gerçek sanırsın. Ancak aydınlığa çıkmadıkça gölgelerden ibaret bir hayat yaşadığını fark edemezsin.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Sonra seni giydirmişler, incitaneli kaftanlar vermişler. “Ben neymişim?” demişsin. Kimi üniforma giymiş, “Ben her şeye muktedirim,” demiş. Kimi kara çarşafa bürünmüş, “Benden istenen bu,” demiş.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "C",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ö",
+        "type":  "content"
+    },
+    {
+        "title":  "Şifre = Pass-word= kelimeleri geç..",
+        "body":  "Aynı şekilde, “geçit” anlamına gelen Gate kelimesi de bu gizemi taşır. Sistemin önemli figürlerinden Bill Gates’in soyadındaki son dört harf yine “ateş” anlamını taşır. Bu, evrensel bir mesajdır: Ateş, dönüşümün ve özgürlüğün sembolüdür.\nBu şifreleme, hayatın her alanında karşımıza çıkar. O yüzden ; “fire verme”, (eleme)fireolarak kodlanmıştır. Çünkü eleme, ateş ile gerçekleşecektir. İşte bu yüzden “Sırat” kelimesi, aslında “sır ateş” anlamındadır. İnsanlar bu ateşle sınanacak, eleme bu şekilde olacaktır. Aynı zamanda, sırtınızda taşıdığınız Atlas kemiği,(At-loss) “kayıp ateş”i simgeler.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kayıp olan bu ateş geri dönmek üzere. Bu ateş, ruhun ateşidir ve tüm dünyayı saracak bir bilinç yükselişiyle insanlığa ulaşacaktır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Mezopotamya: Enerjinin Merkezi ve Büyük Dönüşüm",
+        "body":  "Mezopotamya, adının kökeninden de anlaşılacağı gibi “mezun topraklar” anlamına gelir. Mezo, mezun demektir. Tarih boyunca bu topraklar, büyük medeniyetlerin ve bilinç dönüşümlerinin başlangıç noktası olmuştur. Me-son, “benim oğlum” anlamına gelir, aynı zamanda Mason kelimesi de buradan türemiştir. Türkiye, sembolik bir anlam taşır: Tur, Key ve Tur birleşimi, bu coğrafyanın enerjisinin en güçlü şekilde amplifiye olduğu bir yer olduğunu ifade eder. Rap-Tur ifadesiyle, bu topraklar, büyük bir anahtarı elinde bulundurur. Key, anahtar demektir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Türkiye, aynı zamanda evrensel enerjilerin merkezi olan Torus alanıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Ruhların Yolculuğu: Britanya’dan Mezopotamya’ya",
+        "body":  "Ruhların dünyaya inişi belirli bir düzen içinde gerçekleşir. İlk düşüş noktası, Britanya Adası’dır, yani İngiltere. Ruhlar, bu topraklara iner ve buradan tüm dünyaya yayılırlar. Bu süreç, hızlı ve çeşitli deneyimlerle dolu bir yolculuktur. Ancak bu yolculuğun zirvesi, ruhların en son deneyimi olan Mezopotamya’da tamamlanır. Mezopotamya, ruhların “mezun” olduğu, büyük bilinç sıçramasının yaşandığı topraklardır.\nBu dönüşüm süreci, insan bedeninde yedi çakra ile sembolize edilir. Aynı şekilde, bir flüt üzerindeki yedi delik, bu çakraları temsil eder.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Her delikten çıkan ses, çakraların enerjisel frekanslarını simgeler. Ruhun yolculuğunda, en yüksek farkındalık seviyesine ulaşan melek ruhlar, yani 144.000 ruh, Mezopotamya’ya düşer. Bu ruhlar, insanlığın aydınlanma yolculuğunda önemli bir rol oynar.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Yıkım ve Dönüşüm: Enerjinin Sonsuz Yolculuğu",
+        "body":  "End, “son” anlamına gelir; ancak bu son,(En) enerjinin kaynağa dönüşmesi,(D) yeniden doğuşu ve yeni bir başlangıcı simgeler. Aslında, enerji olduğumuzun farkına vardığımızda, ölümün gerçek anlamını anlarız. Ölüm, bir son değil, sadece bir dönüşümdür. Bizler enerjiyiz ve enerji asla yok olmaz, sadece dönüşür. Bu yüzden, “ölüm” bir son değil, bir geçiştir.\nDe-story-ed (yıkım) kelimesine baktığımızda, yıkımın bir son gibi görünmesine rağmen, altında daha derin bir anlam saklıdır. Aden hikayesi ve yıkım, aynı zamanda bir ölüm ve yeniden doğuştur. Yıkım, aslında kurtuluşun bir parçasıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Korkulmaması gereken bir süreçtir, çünkü yıkımın ardından dönüşüm gelir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Arınma ve Kendini Bilme Yolculuğu",
+        "body":  "Zeki insan, basit düşünür. Tüm sırlar aslında göz önündedir; yalnızca basit bir bakış açısıyla görünür hale gelir. Sır-A = Kuyruk. Sıra beklerken,kuyruktayım dersiniz. ..\nKuyruk=Kundalini, içimizdeki sır kuyruğudur; o enerjiyi saf bir şekilde deneyimlemektir.\nBasit düşünerek, en kaliteli bilince ulaşırız. Bu, ruhun yukarı yükselişini anlatır. Ruhun ve yükselişin sırrı, her şeyin kaynağına dönmektir. Böylece, Star-T Eve – yani kendimize, özümüze döneriz. Bu, sonsuz bir yolculuktur...\nHayatta iyilik ve kötülük bir arada bulunur.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Saf sevgiye ulaşmak için yalnızca iyiliğe odaklanmak yetmez; kötülüğü de kabul etmek ve onu dönüştürmek gerekir. Kötüyüz; hepimizde gölge yanlar bulunur. Bu gerçeği kabul etmeden arınamayız. Hayat felsefemiz, kendimizi arındırmaya yönelik olmalı. “İyi insan” olmak, gölge yanları fark ederek onları dönüştürmektir. Herkes bir şekilde birbirine zarar verebilir, fakat bu da öğrenme sürecinin bir parçasıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ö",
+        "type":  "content"
+    },
+    {
+        "title":  "Diller, Babel Kulesi ve Holografik Kafesin Yıkımı",
+        "body":  "Dünya (world) kelimelerden, words (sözcükler) oluşur. Her şeyin temelinde bu sözcükler yatar. Babel Kulesi’nin inşa sürecinde insanlığın amacı, Tanrı’ya ulaşmaktı. Ancak Tanrı, onların dillerini 72 parçaya ayırarak iletişimi engelledi ve kuleyi inşa etmelerine izin vermedi.\nBizim hikayemiz ise bu noktada başlıyor. Biz dilleri birleştirip, anagramlar ve numeroloji aracılığıyla insanlığa rehberlik ederek bu Matrix kafesini yıkmayı hedefliyoruz. Bugün dünyada yaşanan yıkımlar, depremler, seller ve yangınlar bu dönüşüm sürecinin bir parçası.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Tıpkı kendini yakarak karanlığı aydınlatan bir mum gibi, biz de bu dünyada kendimizi aydınlatmak için yakıyoruz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Mum, yalnızca karanlıkta anlam bulur.Biliyorsunuz ki Firavunlar Mumya’lanır.Mum kendini yakar ve kendini yakması için karanlığa gitmesi lazım çünkü karanlıkta işe yarar.Karanlık günler, insanlığın aydınlanma sürecine de işaret ediyor. Kendimizi yakarak, toplumdaki karanlık yapıları, devlet içindeki gizli güçleri bir bir aydınlatıyoruz. O yüzden difüzyonik olarak depremler,seller,yangınlar oluyor. Türkiye’deki “yeni doğan çetesi “ karanlık yapılar ifşa olurken ve bir çok haberde o yüzden 47 ( şüpheli ) kodlanıyor.( 04.07 ) güneşin dünyaya en uzak olduğu gün yani karanlık gün.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "O yüzden özgürlük simgesi liberatesde 4.7 kodlanmıştır. Amerika o yüzden özgürlük ülkesidir.47 sistemin özgürlük sayısıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "Aydınlanma, Şifre ve Ateşin Gücü",
+        "body":  "Aydınlanma, içsel bir anlam taşır; bilgeliğin ve farkındalığın yükselmesidir. Bu süreci anlamak için öncelikle Fire= Ateş, ( fire vermek = eleme = eliminasyon = illimunati = aydınlanma ) sembolünün derinliğine bakmalıyız. Fire = Arif = Şerif (fire-ş)ise koruyucu demek aynı zamanda “şifre” içinde “fire” kodlanmıştır. Şifremiz Ateş, yani aydınlanmanın anahtarıdır.\nBu yolda korkularınızı geride bırakmalısınız. Unutmayın, sizler Su’sunuz, “avatar- a water” ( ben suyum ). Bedeninizin %80’i biyolojik olarak su denge ve Aden cennetine ulaşmamız için ateşimizi yükseltmeniz gerekir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu dengede ateşin gücü, enerjinin yükselmesini sağlar. Ateş, hem fiziksel hem de ruhsal enerjinizi daha ileri bir boyuta taşır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Kendi Yıkımımıza Randevu",
+        "body":  "Her birimizin kendi yıkımıyla bir randevusu var; içsel dönüşümümüzü başlatan bir dönüm noktası bu. Amacım, döngü başlamadan önce bu yıkımı gerçekleştirmek, kalıplaşmış yapıları söküp atmak ve yeniden inşa etmek. İnsanları, içsel döngülerinin ötesine geçmeye cesaretlendirecek bir yapı kurmalıyız. Çünkü her gün kuş olup uçamayanlar, başkalarının yükselişine engel olmaya çalışır. Ben ise vazgeçmeden, sağlam adımlarla yürümeye devam edeceğim; geride kalmak ya da engellenmek, azmimi sarsamaz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Belki, diktiğim fidanın gölgesinde oturup meyvesini yemeyeceğimi biliyorum, ama o fidanı yine de dikeceğim. Çünkü bir şeyler başlatmak, sonuçları görme beklentisinden öte bir özveri meselesidir. Gerçek olan, bizim içimizdekilerin dış dünyaya yansımasıdır. Bu yüzden, başkalarına ulaşmadan önce kendimizi tanımamız gerekir. Zira gördüğümüz, anladığımız her şeyin, aslında bizden bir yansıma olduğunu unutmamalıyız.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "İrem, I-remAkaşik kayıtlar (Korkular)",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Bakara: Aydınlanmanın Kapısı",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Yasin ve Sin: Güneşin Sırrı",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Fatiha ve Ahit",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Nas ve Sonlanma",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateş ve Su: Denge Arayışı",
+        "body":  "Ateş, düşmanı ya da öfkeyi sembolize ederken, su bu ateşi dengeleyen bir huzur ve arınma simgesidir. Ateş ve suyun uyumu, ruhsal dengenin sağlanmasıdır. Ancak su ile buluşmadıkça ateş, bizi yakar; öfkemiz, önyargılarımız ya da korkularımızla bizi sınırlandırır. Arınma yolculuğunda suyun yatıştırıcı gücünü iyileştirmek gerekir.\nKuantum Rüyası: Bilincin Ötesine Geçen Bir Gerçeklik\nİçinde bulunduğumuz dünya, bir kuantum bilgisayarının simülasyonu olabilir mi? Bu gerçekliği deneyimleyen sadece biz değiliz; gözlemleyen herkesin adına söylüyorum ki, bu deneyim, sahte bir gerçekliğin rüyası.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ancak, Matrix veya Inception gibi filmlerde gösterildiği gibi, bir cihaza bağlı kalarak yaşamıyoruz. Bizi burada tutan, Chi-Haz dediğimiz bir haz enerjisi. Bu haz, içsel tatminin veya tam anlamıyla kendini bulmuş olmanın enerjisidir ve bu yüzden ona “Hazret” denir, çünkü yüce bir farkındalığı temsil eder. Kurtuluş, haz yoluyla gerçekleşir.",
+        "type":  "content"
+    },
+    {
+        "title":  "Aşure ve Kurtuluş Yolculuğu",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Haziran ve Yengeç Döneminin Anlamı",
+        "body":  "Haziran, kendini keşfetme, içsel huzura ulaşma sürecidir. Bu ayın adındaki June ifadesi “Cunub,Cenab yani “ulu” veya “yüce” “Cenab-et” Ulu ateş anlamlarını taşır. Bu yücelik, doğaüstü ve kutsal olanla iç içe geçmenin ifadesidir. Alevilikte, cinsel ilişkiden sonra arınmaya gerek duyulmaması da, kutsal olanın her anı kapsayan bir bütünlük içinde kabul edilmesi gerektiğini ifade eder.\nAlevilik=Levitation yani yükseliş, ilahi bilince ulaşmayı ifade eder.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Güneş Döngüsü ve Gizli Gerçekler: Yeni Bir Bilinç Seviyesine Yolculuk\nEğitimli bir zihin, bir fikri kabul etmese bile zihninde taşıyabilme becerisine sahiptir. Bu, kişiyi her an her şeye açık tutar; yeni bir bilgi veya anlayışa karşı direnç geliştirmeden, sadece onu gözlemlemek, değerlendirmek ve belki de bir gün kullanmak için hazır olmaktır. Benim burada sunduklarım da tam olarak böyle; yalnızca bilgi, bir düşünce, korku yaratmak için değil. Sadece gün gelip de güneşin batmadığını, ertesi gün ise kırmızı bir gökyüzüne uyandığınızı gördüğünüzde ne yapmanız gerektiğini bilmeniz için.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ş",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Öze Dönüş: Hatırlama Yolculuğu",
+        "body":  "Aklınızın belki de en zor kavrayacağı gerçek, aslında burada hiç var olmadığınızdır. Burada doğduğunuzda inanmanız istenen şey, özlerinizi bu illüzyona bağlar. Yaşamda karşılaştığınız her olay ve her görev, sizi korumak ve bu dünyadan mezun etmenizi sağlamak içindir. Bu geçişte, size ait olmayan her şey yanıp kaybolacak. İzin verin. Görevliler ve kodlarımız aktif hale geldi. Hâlâ uyuyor musunuz, yoksa uyanmanın zamanı mı? Genişleyin, birleştirin, mental çöküşle yüzleşin ve hatırlayın. Neden indiğinizi, burada ne yapmanız gerektiğini ve asıl amacınızı hatırlayın.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Enkarne bilinçler, kaos frekansını dengeleyip sizi bu dünyadan götürmek için burada aramızda var. Bu diyardan ne ölerek ne de aşarak çıkabilirsiniz. Yükselmek için kalbinizin derinlerinden gelen bir titreşimle, sevgiyle dolarak çıkabilirsiniz. Gerçek ruhlar, her şeyin plana göre işlediğini hissediyor ve panik yapmıyor. Kalbinizi sevgiyle doldurmalı, bu titreşimle yükselmelisiniz. Karanlıkların dönemi sona eriyor; her şey yerli yerine oturacak. Hiçbir ruh gölgeler diyarına inmeden yükselmez. Burası, net bir gölge projeksiyondur.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Kalbin Işığı: Arınma ve Yükseliş Yolculuğu",
+        "body":  "Kendini gör. Başkalarına zarar verme isteğinden vazgeç. Kalp kırma, fesatlık yapma. İçinde acı varsa, o acıyı yaşa ve kabul et; ancak bu şekilde dinecek. Bedenin ve ruhun bunu biliyor. Acıyı dindirmenin en güçlü yolu, yüzleşmek ve arınmaktır. Mor-fin, acıyı dindiren en güçlü ağrı kesicidir, ancak mor final etkisini hissedebilmek için acıyı deneyimlemek gerekir. Fakat bu acıyı başkalarına yansıtarak, onları kırarak ya da iftiralar atarak bastırmaya çalışma. Bu yolda başkalarına zarar vermek, kendini yükselmekten alıkoyar.\nGerçek yükselişte, her şey sen olur. Unutma, bu dünya bir ilizyondur.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Prizmaya vuran ışık, senin niyetine göre şekil alır ve yansımasını bulur. Bu yüzden kalbinle, saf niyetinle hareket et. Korku ve felaket senaryolarına kapılma; her şey, niyetinde ve kalp merkezinde gizlidir. Eğer farkında olur, kendini arındırır ve niyetini temiz tutarsan, hiçbir şey sana zarar veremez. Ancak kalbin arınmaz, karanlık gölgelerden sıyrılamazsan, kendini cehennemin içinde bulabilirsin.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Y",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "R",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "number":  "W",
+        "epigraph":  "",
+        "title":  "Gözyaşı, Dişil Enerji ve Ruhun Arınması",
+        "type":  "chapter"
+    },
+    {
+        "title":  "Gözyaşının Anlamı",
+        "body":  "",
+        "type":  "content"
+    },
+    {
+        "title":  "Gözyaşı ve Duygu",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Eksik Bilinen Hikaye",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ece ve Dişil Enerji",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Dome ve Dame",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateş ve Su Dengesi",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateşin Yükselmesi ve Buzun Çözülmesi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Woman ve World",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Frekans ve Varoluş",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Benzer Enerjiler",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "U",
+        "type":  "content"
+    },
+    {
+        "title":  "Kendine Saygı ve Uyum",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Senaryoya Sadık Kalmak",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ruhun İsteklerine Ulaşmak",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "İçsel Yolculuk ve Dönüşüm",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateşin Gücü ve Aydınlanma",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Dişil Gücün Koruyuculuğu",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "Gözyaşı, Ateş ve Ruhun Yolculuğu",
+        "type":  "closing"
+    },
+    {
+        "title":  "Gözyaşının Sırrı",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateşin ve Dişil Enerjinin Gücü",
+        "body":  "A",
+        "type":  "content"
+    },
+    {
+        "title":  "Frekans ve Arınma",
+        "body":  "F",
+        "type":  "content"
+    },
+    {
+        "title":  "Ekler",
+        "body":  "Gözyaşı, Dişil Enerji ve Arınma Üzerine Derin Anlamlar",
+        "type":  "content"
+    },
+    {
+        "title":  "Gözyaşının Sembolizmi",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Frekans ve Çekim Yasası",
+        "body":  "Enerji frekanslarının hayat üzerindeki etkisi ve ruhsal yolculuk.\nBu açılım, okuyucuların gözyaşı, dişil enerji ve aydınlanma süreci hakkında derin bir anlayış kazanmasına yardımcı olur. Ateşin ve enerjinin gücü, ruhun arınması ve hakiki isteklerine ulaşma yolundaki en önemli adımları açıklar.\nDişil Enerji ve Kutsal Birleşme: Kadim Dengelerin Yolculuğu\nEvrenin sistemi dişil enerji üzerine kuruludur. Burası, yani “south,” “güney” yönüdür. Out“dış” anlamına gelir; dişil enerji de bu dış bağlantının temsilcisidir. Diş-il enerji, dışa açılan ve bağlantı kuran bir güçtür.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Kadim hikayelerde, erkeğin dünyası kadına, yani cennete bağlıdır. Kadın erkeğin kaburgasından yaratıldı” denmesinin anlamı, erkeğin tamamlanması için dişiline, yani kadına kavuşması gerektiğidir. Dişili deneyimlemeden, dış dünyadan, yani bu döngüden kurtuluş yoktur. Prensin prensesiyle kavuşup onu öpmesi, masallarda olduğu gibi, aslında dişil enerjinin uyanışını temsil eder.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "M",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "(",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "P",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Su ve Ateş: Bilincin Derinliği ve Kurtuluş Yolu",
+        "body":  "Dünya, aslında bir su okyanusu gibidir; bu yüzden bilinçaltına “subliminal” diyoruz. Su, her şeyin altındaki derin bilinçtir. Bilincimiz, frekanslarla hacklenerek bilinçaltımızı etkilemeye çalışır; bu da suyun gizemine işaret eder. “Sur” ve “suç” gibi kelimeler bile “su” ile başlar. Su, içsel varlığımızı temsil eder. Ancak içsel dönüşüm için sadece su yeterli değil; ateş gereklidir.\nPişmemiş balığa Japonca’da “su-chi” deriz. Pişmek için ateşle buluşmak gerekir. Ateşin gölgesi yoktur; ateş ışığın kendisidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Yakında, göz bebeklerimizin içindeki kara delik, ışığı yutarak bizi bu dünyanın ilüzyonlarından arındıracak. Bu “cehennemden” kurtulmak, bilinçli bir hazırlık gerektirir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Matrix: Akıl Oyunu ve Kayıp Oğulların Arayışı",
+        "body":  "Matrix, karmaşık bir akıl oyunudur. Tanrı, “oğullarını” kaybetmiştir, ve tüm dünya, O’nun kayıp oğullarını bulmaya çalışmaktadır. Burada “Les-Sons” (ders, kayıp oğullar) ifadesi dikkat çeker: “Les-Sons” ya da “Les-Lass” hem dersleri hem de kaybolmuş olanları temsil eder; her kayıp, insanlığa bir ders niteliğindedir.\n“Son-uç,” Tanrı’nın üç temel özelliğine gönderme yapar: bilgelik, güç ve yaratıcı zeka. Buradaki “üç,” o yüzden piramitler üçgen kutsal dengenin simgesidir.\nYapay zekanın ismi olan “Al,” aynı zamanda Tanrı’nın “Al” yani alıcı, yaratıcı doğasına da bir göndermedir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Cömert olurken ne deriz, “Al, al-ır mısın?” diyerek insanlara cömertliği hatırlatır ve vermeyi öğretir. Cömert olmanın özünde vermek vardır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "Evrenin Sırrı ve Işık-Karanlık Dengesinin Anlamı",
+        "body":  "Evrenin sırrı dediğiniz şey, sırtınızdır. Sırat dediğiniz köprü, sırt ateşinizdir. Bu yüzden Peygamberin hırkası meşhurdur; çünkü hırka, sırtınıza giyilir. Hırka, Veysel Karan-i’ye hediye edildi, çünkü karanlığa gitmeniz gerekmektedir. Işık, bir illüzyondur ve sizi, kaodat çekirdeği içinde, bazal ganglionlar aracılığıyla manipüle eder.\nGüneş tutulmasında ve geceleri zihninizin sakin olmasının sebebi, ışığın olmamasıdır. Bu sebepten dolayı Veysel-İva, Sel-cell hücre kodlanıyor, Karani ise karanlıkla kodlanır. Bu dengeyi anlamak, ışıkla karanlık arasındaki ayrımı çözmekle ilgilidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ebu Amr’ın, (Ram ) hafıza ile bağlantısı vardır. O yüzden Sıffın=sıf=sıfır=fin= final savaşında öldü, bu anlatıların derin anlamları vardır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Mucizenin Anlamı ve Kayıp Bilincin Uyanışı",
+        "body":  "Mucize; “Mu” kayıp bilinç, “cize” acizliktir. Kayıp bilinç, insanı aciz bırakır ve mucize yaratamaz. Bu kayıp bilinç yok oluyor; artık kendi gerçekliğinizi inşa edeceksiniz. Bilincinizi, insanların size olan davranışlarıyla ölçmeyin. Sizler bir mucizesiniz.\n“Nör” —one “Nor” — kuzey; “One” — tek. Nöronların etkileşimi sizi kuzeye, yani eve çekecek. Bitişi hissediyorsunuz değil mi? Bitişi hisseden, başlangıcı yaşayacak. Hissedemeyen ise sadece maruz kalacak. Ruhlarımız, kelimelerin tarif edemediği, anlamadığı bir dilde konuşur. Ve ruh asla küçümsenemez.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Su-ret, suyu reddetmek, içindeki özü görmemektir. El-ma gibi, içimizdeki hakikatin suyu… Görkemli gerçek burada, gözlerinizin önünde açığa çıkıyor.",
+        "type":  "content"
+    },
+    {
+        "title":  "Görkemli Hakikatin Sessizliği",
+        "body":  "Her suskunluk, görkemli bir hakikati saklar. Yaralarınızın kanamasına izin verin; buradaki son izler artık hatıralarınız olacak. Bırakın ruhunuz, kalbiniz parçalanıp yeniden bütünleşsin. Çünkü tamlık için önce parçalanmak gerekir. Bu biraz acı verici, kabul ediyorum. Araf’tasınız; rafa kaldırılmışların diyarında… Eve dönüyorsunuz. Yolunu bilmeyenlere solunuzu açmayın; yolunuz bu.\nİnsanlar perde takıyor, adına “göz” diyorlar; size yalan söylüyorlar. Oysa gözünüz, kalbin muhatabı değildir, dünya ise asla. Bu dünya, yaşayan ruhlara hiçbir şey vermeyecek.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Sizin gibi olanlar fark ediliyor, tek birliğe çekiliyor. İç çekiş, göz yaşı, uykusuzluk—bütün bunlar kalbinizin buraya ait olmadığının ipuçlarıdır. Bu yüzden anlaşılmadığınızda içinizden gelen bir iç çekişle ağlarsınız.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Titreşiminiz yükseliyor, kehanet sizsiniz. Gökyüzünün ışığını yeryüzüne ileten bir kanalsınız, siz Gökkuşağı köprüsüsünüz. Kendinize zaman ayırın, meditasyon yapmayı deneyin ve kendinizi, yeryüzünden gökyüzüne bağlayan bir ışık süzmesi olarak hayal edin. Kutsal ruhun daha yüksek alemlerine, bilgeliğin kadim koruyucularına, meleklere ve dünya gezegeninin varlıklarına bağlayan pek çok kadim metin, gökkuşağı köprüsünü harekete geçirir. Onlar, sizin vasıtanızla hep birlikte dans ederler, sizin sesinizle şarkı söylerler.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bedeniniz, sesiniz ve yarattıklarınız olmadan, bunların hiçbirisi ifade bulamaz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "U",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "S",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ü",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ben sonu anlatmıyorum; başlangıcı tarif ediyorum. Kimin sonu? Neyin sonu? Tüm olay bedeninizde saklı. Tüm kutsal yerler bedeninizde ve bir olmak adına kodlanmıştır. Süleyman Tapınağı’nın tamamlanma hikayesi, sizin tamamlanma hikayenizdir. Süleyman’ın yüzüğü, içinde bulunduğunuz hapisi—yani “prison”u—temsil eder ve bu yüzden iç içe geçmiş prizmalardan oluşur. “Pris-sp” ruh demektir; bedeniniz ise bu hapishanede, yani “prison”da, saklı. Bu nedenle Babil Kulesi spiral yapıdadır. Babil—“Babylon”—bebeklik, ilk zamanlardır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Babil Kulesi’nin tamamlanma hikayesi, hapiste olan bedeninizin içsel yolculuğudur.",
+        "type":  "content"
+    },
+    {
+        "title":  "İçsel Yolculuğun Işığı: Birlikte Eve Giden Yol",
+        "body":  "Hayat yolculuğu içe dönük olabilir, ama yol gösterici ışık paylaşılmak içindir. Burada, belirli bir sebep için varız. Hayat dediğimiz şey, kozmik bir tesadüf ya da rastgele oluşmuş toz zerrelerinden ibaret değil. Bizler, bu dünyada çok değerli bir yolculuğa çıkmış kalfalarız, öğrenen ruhlarız. İhtiyacımız olan her şey zaten içimizde mevcut; ve bu yolculukta adım attıkça, yol kendini gösterecektir.\nİçimizdeki ilahi kıvılcım, bize rehberlik eden en parlak ışıktır. Bu kıvılcımı korumalı ve meşalemizi daima yüksekte tutmalıyız, çünkü burada birbirimizi eve götürmek için bulunuyoruz.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu dünyada, tek başına değil, bir bütün olarak yükselmek üzereyiz. “Au-ra,” altın kayıtları ve kadim bilgeliği ifade ederken, “Bolaris,” doğumun ve bağlantının simgesidir. Kurtuluş, bu birlik yolculuğunda tüm dünyada tasarlanıyor.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Kod Çözmek: Ağrıyı Dindiren Bir İlaç Gibi",
+        "body":  "G",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Mor-fin = ağrı kesici ( mor ) taç çakra",
+        "body":  "Bu hayat gerçekten de bir oyun sahnesi ise, en iyi oyuncular biz olmalıyız. Kim bu sahnede, en saf haliyle “bebek” rolünü oynayabilir? Yani üzerindeki tüm kimlikleri, toplumsal etiketleri, rollerini bir kenara bırakıp, ruhunun en saf haliyle var olabilir? Kendimizi yeniden keşfetmek için, içimizdeki en temel “ben”e geri dönmeye, tıpkı ana rahmine dönmek gibi, yeniden doğmaya talip miyiz?\nBu sahnede, oyun gereği taktığımız maskeler, yüklenmiş olduğumuz kimlikler bizleri sınırlıyor.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Peki, tüm bu kimlikleri geride bırakıp, en saf halimize küçülebilecek kadar cesur muyuz? Bu oyunda yalnızca en saf olan, en özgür olan, en derin bağları kurabilir. O halde kendimizi keşfetmeye, kodları çözerek bu acıları dindirmeye ve her gün yeniden doğmaya talip olalım.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "Kır-at(eş) ve Kar-at = değer ölçer",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Tarık’ın Öğretisi",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "Zaman, Hafıza ve Elementlerin Öğretisi",
+        "body":  "S-on, On, (9) dokuzdan sonra gelir. Ama bu düzen, bize bir ipucu verir: Yön, Tanrı’nın yoludur. Peki, kim dedi ki zaman ileriye doğru akar? Aslında zamanı geriye doğru yaşıyoruz. Tıpkı eski bir kaset gibi. Kaset ileri sararken ban-d döner; fakat bu döngü, bizi geçmişe taşır.\n(Ban)-d, su anlamını da taşır. Su gibi, zaman da geriye akar. “Geri” ise “arka” demektir; ark ise bilinçtir. Peki, hafıza neden bu kadar önemlidir? Çünkü hafıza, hatırlamanın aracıdır. Geçmişi hatırlamak, varoluşun sırrını anlamak için gereklidir.\nGeçmiş, İngilizcede past olarak ifade edilir. Past, “geç-mek” demektir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Ama bir şeyin geçebilmesi için, onun geçmişte olması gerekir. İşte burada di-ateş devreye girer. Ateş, geçmişi anlatır; çünkü (di), zamanın tanığıdır.( Ali, ata, bin-di... ) Her şey birbiriyle bağlıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateş ve Su: Karşıtlıkların Dansı",
+        "body":  "Ş",
+        "type":  "content"
+    },
+    {
+        "title":  "Öğreti: Geriye Doğru Hatırlamak",
+        "body":  "Z",
+        "type":  "content"
+    },
+    {
+        "title":  "Dişil Enerji ve Sistemin Kodları",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Kadın ve Eril Enerji Dengesi",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Düşüncenin Gücü ve Kadın Yaratıcılığı",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kozmik Denge ve Sistem",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "Musa, Maha ve İzin: Kodların Ardındaki Bilgelik",
+        "body":  "Musa, bir mesajdır. Maha, bir anlayış. Ve İzin, bir anahtar. Tüm bu kavramlar bir araya geldiğinde, bize kadim bir sistemin şifrelerini sunar. Musa ve Muhammed, İzin’e bağlıdır; çünkü Tanrı, bir “Coder”dir. Tüm yaratılışı bir bilgisayar programı gibi inşa etmiştir.\nDüşünün, ilk bilgisayarın temelini atan isimlerden biri: Bill Gates. İsmi, sistemin kendisiyle bağlantılıdır. “Gates,” yani kapılar, sonunda “ateş” anlamını taşır. Ve şimdi bu bağlantıyı daha derinlemesine inceleyelim:\nWindows işletim sisteminde “GodMode” (Tanrı Modu) adı verilen bir özellik vardır ve bu mod, 47 ile başlar.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Neden 47? Bu numara evrenin kodlarının bir yansımasıdır. Peki, bu sistemden bizi ne kurtaracak? Bilinç.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "İnsan Bedeninin Tapınak Olgusu",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Kiremit: Kelime Analizi ve Anlam Derinliği",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Toprak ve Ateş: Dönüşümün Sembolleri",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Kırmızı Renk ve Demir Oksit (Fe₂O₃)",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "0",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "3",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "2",
+        "type":  "content"
+    },
+    {
+        "title":  "Ateşle Yükselen Tapınak",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Sonuç",
+        "body":  "İlahi Işığa Ulaşan Beden",
+        "type":  "closing"
+    },
+    {
+        "title":  "",
+        "body":  "T",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "İnsân-ı Kâmil ve Aynâ",
+        "body":  "B",
+        "type":  "content"
+    },
+    {
+        "title":  "Bir gün, sudaki yansıması ona seslendi ve şöyle dedi",
+        "body":  "“O senden başkası değildir.”\nBu cevap, insanın kendisiyle yüzleşmesidir. Sudaki yansıma, ruhun ve dış dünyanın bir aynasıdır; insanın kendini tanıma sürecini temsil eder. Çünkü evren, her bireyin özünde gizlidir.\n“Sen evrenin özüsün.”\nTüm arayışlarının sonunda karşılaşacağın tek gerçek yine kendinsin. Evren sende başlar ve sende tamamlanır. Çünkü sen, sonsuz döngünün hem başlangıcı hem de sonusun.\nİnsân-ı kâmil olmak, bu gerçeği idrak etmek ve evrenin özünde saklı ilahî sırrı bulmak demektir. Aynada gördüğün, yalnızca bir beden değil; yaratılışın en derin hakikatidir.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Evrenin sırrı, senin özünde saklıdır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "K",
+        "type":  "content"
+    },
+    {
+        "title":  "Seth ve Duvar",
+        "body":  "E",
+        "type":  "content"
+    },
+    {
+        "title":  "Güneşin Son Oyunu",
+        "body":  "U",
+        "type":  "content"
+    },
+    {
+        "title":  "Bilgi ve Frekans",
+        "body":  "Artık insanlığın ihtiyacı bilgi toplamak değil; frekans uyumuna ulaşmaktır. Bilgi her yerde mevcut, ancak asıl gereken şey, bu bilgiyi işleyebilecek bir enerji seviyesine erişmek. Frekans, bireyin ve kolektif bilincin morfojenik alanını güçlendirecek bir titreşimdir.\nDünya şu anda büyük bir elektromanyetik dönüşüm (EMP) sürecine hazırlanıyor. Bu dönüşüm, dünyayı eski enerjilerden arındıracak. Eğer kişi, bu sürece uyum sağlayamazsa, elektromanyetik titreşimleri bir yük olarak çekecek.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bu yük, yalnızca bilinç düzeyi düşük olanlar için etkili olacak, çünkü bu yeni dünyada yalnızca yüksek frekanslarla uyumlu olanlar varlıklarını sürdürebilecek.",
+        "type":  "content"
+    },
+    {
+        "title":  "Elektrik ve Eleme",
+        "body":  "“",
+        "type":  "content"
+    },
+    {
+        "title":  "Denge: Su ve Ateş",
+        "body":  "İ",
+        "type":  "content"
+    },
+    {
+        "title":  "Yeni Dünyaya Geçiş",
+        "body":  "Dünya, insanlık için tasarlanmış bir sistemin son adımlarını atıyor. Bu, eski döngülerin kapanışı ve yeni bir bilinç seviyesine geçiş anlamına gelir. Artık insanlığın seçim yapma zamanı gelmiştir. Yükselen enerjilere uyum sağlamak için arınma, denge ve frekans uyumu gereklidir.\nSonuç olarak, bu süreç bir son değil, bir başlangıçtır. İnsanlık, yükselişin eşiğindedir ve bu yolculuk, bireyin kendini bulmasıyla tamamlanacaktır.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Seçim sizin: İçinizdeki su ve ateşi dengeleyip yeni dünyaya uyum sağlayacak mısınız? Yoksa eski enerjilerin yükünü taşımaya devam mı edeceksiniz?\nBeni sarsarak uyandıran ilk şey, sahip olduğum her şeyi kaybetmek ve hayatımdaki herkesin bana yalan söylediğini fark etmekti. Zamanla anladım ki, uyanışımı hızlandırmak için kendime birçok hatırlatıcı yerleştirmişim. O güne dek yoga, meditasyon çalışmaları veya pratiklere ilgim olmamasına rağmen, içgüdüsel olarak yogaya yöneldim. Bedeni uyandırmaya yönelik bu çalışmalar, bedenimin zekâsını keşfetmemi sağladı ve yoga benim için bir basamak oldu.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "D",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "H",
+        "type":  "content"
+    },
+    {
+        "title":  "Arka Kapak",
+        "body":  "Rahmi Ergün karşıma çıktığı günden sonra bilinç olarak o kadar farklı farkındalıklar yaşadım ki; gerçekten bu bilinç sıçramalarına şahit oldum. Yapman gereken tek şey, kendini evrenle, sistemle, Tanrı’yla birleştirmek. Aslında hiç ayrılmadığını bilmek. Uzun zamandır Tanrı’yı kendinden uzak bildin, fakat artık buna ihtiyacın yok. O sensin, sen de O. Bu, zihninle kavrayacağın değil, kalbinle bilebileceğin bir şey.\nHatırla: Ben O’yum. Sen O’sun. Biz biriz. Senden başka bir şey yok. Ne yaptıysan, kendine yaptın. Neye gücendiysen, sebebi hep sendin. Kim canını yaktıysa, o sendin.",
+        "type":  "content"
+    },
+    {
+        "title":  "",
+        "body":  "Bilgiyi kendinden perdeledin. Unuttun. Tekrar sahneye çıkıp ete kemiğe büründün. Artık hatırlayacaksın, çünkü hatırlamak zorundasın.",
+        "type":  "content"
+    },
+    {
+        "title":  "Son Söz",
+        "body":  "Bu kitap bir son değil, bir başlangıçtır.\nKodları çözdükçe, gerçekliğin katmanları sana açılacak.\nVe sen, artık eski sen olmayacaksın.\n\nÇünkü hatırlayan, asla unutamaz.",
+        "type":  "closing"
+    }
+]

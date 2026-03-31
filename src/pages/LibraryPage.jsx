@@ -1,33 +1,101 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./LibraryPage.module.css";
+import StarTrail from "../components/StarTrail";
+import { useLanguage } from "../contexts/LanguageContext";
+import { unlockAudio } from "../utils/sfx";
+import { booksMetadata } from "../data/booksContent";
 
 export default function LibraryPage() {
   const navigate = useNavigate();
+  const { language, setLanguage } = useLanguage();
+  const isTR = language === "tr";
+
+  const goBack = () => {
+    unlockAudio();
+    navigate("/", { state: { skipIntro: true } });
+  };
 
   return (
-    <div style={{ minHeight: "100vh", padding: 32, color: "white" }}>
-      <button
-        onClick={() => navigate("/")}
-        style={{
-          marginBottom: 24,
-          padding: "8px 14px",
-          borderRadius: 12,
-          border: "1px solid rgba(255,255,255,0.2)",
-          background: "rgba(255,255,255,0.05)",
-          color: "white",
-          cursor: "pointer"
-        }}
-      >
-        ← Kapılara Dön
-      </button>
+    <div className={styles.page} onPointerDown={unlockAudio}>
+      <StarTrail />
 
-      <h1 style={{ fontSize: 36, marginBottom: 16 }}>
-        📚 Kütüphane
-      </h1>
+      <div className={styles.topbar}>
+        <div className={styles.topbarLeft}>
+          <span className={styles.brand}>CAELINUS AI</span>
+          <span className={styles.subttl}>
+            {isTR ? "Kütüphane • Bilinç Kitaplığı" : "Library • Consciousness Books"}
+          </span>
+        </div>
+        <div className={styles.topbarRight}>
+          <button type="button" className={styles.backBtn} onClick={goBack}>
+            {isTR ? "← Kapılara Dön" : "← Back to Gates"}
+          </button>
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setLanguage(isTR ? "en" : "tr")}
+          >
+            {isTR ? "EN" : "TR"}
+          </button>
+        </div>
+      </div>
 
-      <p style={{ opacity: 0.7 }}>
-        112. Kitap • Sesli Bölümler • Ritüel Arşivi
-      </p>
+      <div className={styles.hero}>
+        <h1 className={styles.h1}>
+          {isTR ? "Kütüphane" : "Library"}
+        </h1>
+        <p className={styles.heroSub}>
+          {isTR
+            ? "Her kitap bir kapı. Sayfalar döndükçe bilinç açılır."
+            : "Each book is a gate. As pages turn, consciousness opens."}
+        </p>
+      </div>
+
+      <div className={styles.grid}>
+        {booksMetadata.map((book) => (
+          <div
+            key={book.id}
+            className={styles.bookCard}
+            onClick={() => navigate(`/library/${book.id}`)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") navigate(`/library/${book.id}`);
+            }}
+          >
+            <div className={styles.bookAccent} style={{ background: book.color }} />
+            <img
+              className={styles.bookCover}
+              src={book.cover}
+              alt={book.title}
+              loading="lazy"
+            />
+            <div className={styles.bookInfo}>
+              <div className={styles.bookTitle}>{book.title}</div>
+              <div className={styles.bookAuthor}>CELINE RIVER</div>
+              <div className={styles.bookDesc}>{book.description}</div>
+              <div className={styles.bookMeta}>
+                <span className={styles.bookPages}>
+                  {book.pageCount} {isTR ? "sayfa" : "pages"}
+                </span>
+                <button
+                  type="button"
+                  className={styles.bookOpenBtn}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/library/${book.id}`);
+                  }}
+                >
+                  {isTR ? "Kitabı Aç" : "Open Book"}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles.footer}>© 2026 CaelinusAI • SANRI</div>
     </div>
   );
 }

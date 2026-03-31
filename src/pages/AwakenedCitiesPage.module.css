@@ -1,0 +1,391 @@
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 520px at 25% 20%, rgba(170,120,255,.14), transparent 60%),
+    radial-gradient(700px 480px at 80% 75%, rgba(80,120,255,.10), transparent 60%),
+    linear-gradient(180deg, #07080d 0%, #0b0d14 55%, #06070b 100%);
+  color: rgba(255,255,255,.92);
+  font-family: "Inter", sans-serif;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 999;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 20px;
+  background: rgba(10,12,18,.65);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.topbarLeft { display: flex; align-items: center; gap: 10px; }
+.topbarRight { display: flex; gap: 8px; }
+.brand {
+  font-weight: 800; letter-spacing: .16em; font-size: 11px;
+  padding: 5px 10px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px;
+}
+.subttl { opacity: .7; font-size: 12px; }
+.backBtn, .langBtn {
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(160,123,255,.08);
+  color: rgba(255,255,255,.9);
+  padding: 8px 12px; border-radius: 10px;
+  cursor: pointer; font-weight: 700; font-size: 12px;
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: calc(100vh - 52px);
+}
+@media (max-width: 860px) {
+  .main { grid-template-columns: 1fr; }
+  .sidebar { max-height: 240px; }
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  border-right: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.15);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sidebarHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px 0;
+}
+.sidebarTitle { font-size: 13px; font-weight: 800; letter-spacing: .12em; opacity: .85; }
+.sidebarCount {
+  font-size: 11px; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+  background: rgba(160,123,255,.15); color: #c8a0ff;
+}
+.searchInput {
+  margin: 10px 12px 8px;
+  padding: 8px 12px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  color: rgba(255,255,255,.9);
+  font-size: 13px; outline: none;
+}
+.searchInput::placeholder { color: rgba(255,255,255,.35); }
+.searchInput:focus { border-color: rgba(180,140,255,.35); }
+
+.cityList {
+  flex: 1; overflow-y: auto; padding: 4px 8px 16px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160,123,255,.25) transparent;
+}
+.cityItem {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; text-align: left;
+  padding: 9px 12px; border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(255,255,255,.82);
+  cursor: pointer; font-size: 13px;
+  transition: all .15s;
+}
+.cityItem:hover { background: rgba(255,255,255,.04); }
+.cityItemActive {
+  background: rgba(160,123,255,.12);
+  border-color: rgba(180,140,255,.28);
+}
+.cityPlate {
+  font-weight: 800; font-size: 12px;
+  min-width: 26px; text-align: center;
+  color: #c8a0ff; opacity: .8;
+}
+.cityName { flex: 1; font-weight: 600; }
+.cityKeywords {
+  font-size: 10px; color: rgba(200,180,230,.35);
+  letter-spacing: .02em; white-space: nowrap;
+}
+.cityDot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #a78bfa; flex-shrink: 0;
+}
+
+/* ── RIGHT PANEL ── */
+.panel {
+  overflow-y: auto; padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160,123,255,.2) transparent;
+}
+
+/* ── GATE IMAGES STRIP ── */
+.gateStrip {
+  display: flex; gap: 4px;
+  padding: 0; overflow: hidden;
+  height: 110px;
+  background: rgba(0,0,0,.3);
+}
+.gateStripImg {
+  flex: 1; min-width: 0;
+  object-fit: cover;
+  opacity: .7;
+  transition: opacity .3s;
+}
+.gateStripImg:hover { opacity: 1; }
+
+/* ── CITY HEADER ── */
+.cityHeader {
+  display: flex; align-items: flex-start; gap: 20px;
+  padding: 24px 32px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.10);
+  position: relative;
+}
+.cityHeaderPlate {
+  font-size: 42px; font-weight: 900;
+  color: rgba(180,140,255,.25);
+  line-height: 1; min-width: 72px; text-align: center;
+}
+.cityHeaderInfo { flex: 1; }
+.cityHeaderName { font-size: 26px; font-weight: 800; margin: 0; }
+.cityHeaderTitle { font-size: 14px; opacity: .65; margin-top: 4px; }
+.cityHeaderMeta { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.metaTag {
+  font-size: 11px; font-weight: 700;
+  padding: 4px 12px; border-radius: 999px;
+  background: rgba(160,123,255,.10);
+  border: 1px solid rgba(160,123,255,.18);
+  color: #c8a0ff;
+}
+
+/* ── ARCHETYPE HERO CARD ── */
+.archetypeCard {
+  margin: 0; padding: 28px 32px;
+  background:
+    radial-gradient(400px 200px at 50% 50%, rgba(170,120,255,.08), transparent 70%),
+    rgba(255,255,255,.015);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  text-align: center;
+}
+.archetypeLabel {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .22em;
+  color: rgba(200,180,230,.4);
+  margin-bottom: 6px;
+}
+.archetypeName {
+  font-size: 36px; font-weight: 300;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.9);
+  margin-bottom: 6px;
+}
+.archetypeDesc {
+  font-size: 14px;
+  color: rgba(200,180,230,.5);
+  font-style: italic;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex; gap: 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: 0 24px;
+  background: rgba(0,0,0,.06);
+  overflow-x: auto;
+}
+.tab {
+  display: flex; align-items: center; gap: 6px;
+  padding: 14px 16px;
+  border: none; background: none;
+  color: rgba(255,255,255,.5);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all .15s;
+}
+.tab:hover { color: rgba(255,255,255,.75); }
+.tabActive {
+  color: #d4b8ff;
+  border-bottom-color: #a78bfa;
+}
+.tabIcon { font-size: 14px; }
+.tabLabel {}
+
+/* ── TAB CONTENT ── */
+.tabPanel { padding: 24px 32px 40px; }
+.tabContent { display: grid; gap: 18px; }
+
+/* ── INFO CARD ── */
+.infoCard {
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 16px;
+  background: rgba(255,255,255,.025);
+  overflow: hidden;
+}
+.infoLabel {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .14em;
+  padding: 12px 18px 10px;
+  color: #c8a0ff; opacity: .85;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  background: rgba(160,123,255,.04);
+}
+.infoBody {
+  padding: 16px 18px;
+  font-size: 14px; line-height: 1.7;
+  color: rgba(255,255,255,.85);
+}
+.infoBody p { margin: 0; }
+
+.coreMsg {
+  font-size: 16px; font-weight: 600;
+  line-height: 1.6;
+  color: rgba(255,255,255,.92);
+}
+
+.twoCol {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (max-width: 720px) {
+  .twoCol { grid-template-columns: 1fr; }
+}
+
+/* ── GATE BANNER ── */
+.entryBanner {
+  font-size: 13px; font-weight: 800;
+  letter-spacing: .1em;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(160,123,255,.12), rgba(80,120,255,.08));
+  border: 1px solid rgba(160,123,255,.18);
+  color: #d4b8ff;
+}
+
+/* ── HISTORY ── */
+.historyText {
+  font-size: 14px; line-height: 1.8;
+}
+
+/* ── NUMEROLOGY ── */
+.numHighlight {
+  font-size: 20px; font-weight: 800;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  color: #d4b8ff;
+}
+
+/* ── RITUAL ── */
+.ritualReflection {
+  text-align: center;
+  padding: 32px 24px;
+  border-radius: 18px;
+  background:
+    radial-gradient(300px 200px at 50% 30%, rgba(170,120,255,.12), transparent 70%),
+    rgba(255,255,255,.02);
+  border: 1px solid rgba(160,123,255,.12);
+}
+.ritualIcon { font-size: 36px; margin-bottom: 12px; opacity: .7; }
+.ritualQ {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .18em;
+  color: #c8a0ff; opacity: .75;
+  margin-bottom: 14px;
+}
+.ritualText {
+  font-size: 18px; font-weight: 600;
+  line-height: 1.6;
+  max-width: 480px; margin: 0 auto;
+  font-style: italic;
+}
+.ritualPractice {
+  font-size: 14px; line-height: 1.8;
+}
+
+.askSanri {
+  display: block; width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(160,123,255,.22);
+  background: rgba(160,123,255,.12);
+  color: #d4b8ff;
+  font-size: 14px; font-weight: 800;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+}
+.askSanri:hover {
+  background: rgba(160,123,255,.22);
+  box-shadow: 0 4px 24px rgba(160,120,255,.25);
+}
+
+/* ── SYMBOL TAGS ── */
+.symbolItems {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.symbolTag {
+  font-size: 12px; font-weight: 700;
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(160,123,255,.10);
+  border: 1px solid rgba(160,123,255,.16);
+  color: #c8a0ff;
+}
+
+/* ── LAB TAB ── */
+.labHeader {
+  font-size: 20px; font-weight: 800;
+  letter-spacing: .04em;
+  color: #d4c07a;
+  padding-bottom: 4px;
+}
+.labIntro {
+  font-size: 14px; line-height: 1.7;
+  color: rgba(255,255,255,.7);
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(255,255,255,.06);
+}
+.labRuleBox {
+  border: 1px solid rgba(212,192,122,.15);
+  border-radius: 16px;
+  background: rgba(212,192,122,.04);
+  padding: 20px 24px;
+  display: grid; gap: 14px;
+}
+.labCommand {
+  font-size: 14px; color: rgba(255,255,255,.65);
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  letter-spacing: .04em;
+}
+.labCommand strong {
+  color: #d4c07a; font-weight: 800;
+}
+.labRule {
+  display: flex; gap: 10px; align-items: baseline;
+  flex-wrap: wrap;
+}
+.labRuleLabel {
+  font-size: 13px; font-weight: 800; color: rgba(255,255,255,.5);
+  min-width: 80px;
+}
+.labRuleValue {
+  font-size: 15px; font-weight: 700;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  color: rgba(255,255,255,.7);
+}
+.labRuleLabelNew {
+  font-size: 13px; font-weight: 800; color: #d4c07a;
+  min-width: 80px;
+}
+.labRuleValueNew {
+  font-size: 15px; font-weight: 700;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+  color: #d4c07a;
+}
+
+/* ── SCROLLBAR ── */
+.cityList::-webkit-scrollbar,
+.panel::-webkit-scrollbar {
+  width: 5px;
+}
+.cityList::-webkit-scrollbar-thumb,
+.panel::-webkit-scrollbar-thumb {
+  background: rgba(160,123,255,.2);
+  border-radius: 999px;
+}

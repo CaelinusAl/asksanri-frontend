@@ -1,0 +1,263 @@
+/* ── PORTAL PAGE ── */
+.page {
+  min-height: 100vh;
+  background: #0a0a12;
+  color: #e8e0f0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 52px;
+  background: rgba(10,10,18,.92);
+  border-bottom: 1px solid rgba(160,123,255,.08);
+  backdrop-filter: blur(12px);
+}
+.topbarLeft { display: flex; align-items: center; gap: 12px; }
+.brand {
+  font-size: 13px; font-weight: 800; letter-spacing: .22em;
+  background: linear-gradient(135deg,#c8a0ff,#7b5ea7);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.topbarRight { display: flex; gap: 8px; }
+.backBtn, .langBtn {
+  background: rgba(160,123,255,.08); border: 1px solid rgba(160,123,255,.12);
+  color: #c8a0ff; padding: 5px 14px; border-radius: 6px;
+  font-size: 11px; cursor: pointer; letter-spacing: .06em;
+  transition: background .2s;
+}
+.backBtn:hover, .langBtn:hover { background: rgba(160,123,255,.18); }
+
+/* ── TAB BAR ── */
+.tabBar {
+  display: flex; justify-content: center; gap: 8px;
+  margin-top: 68px; padding: 12px 0;
+}
+.tabBtn {
+  background: rgba(160,123,255,.06); border: 1px solid rgba(160,123,255,.10);
+  color: rgba(200,160,255,.5); padding: 10px 28px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; letter-spacing: .06em; cursor: pointer;
+  transition: all .25s;
+}
+.tabBtn:hover { background: rgba(160,123,255,.12); color: rgba(200,160,255,.8); }
+.tabBtnActive {
+  background: rgba(160,123,255,.15); border-color: rgba(160,123,255,.35);
+  color: #e0d0ff; box-shadow: 0 0 20px rgba(160,123,255,.08);
+}
+
+/* ── HERO (13 Kapı) ── */
+.hero {
+  text-align: center; padding: 24px 20px 12px;
+}
+.h1 {
+  font-size: 32px; font-weight: 300; letter-spacing: .12em;
+  background: linear-gradient(135deg,#f0e0ff,#c8a0ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+.sub {
+  font-size: 13px; color: rgba(200,180,230,.4); margin-top: 6px;
+  letter-spacing: .04em;
+}
+
+/* ── SPLIT LAYOUT ── */
+.splitMain {
+  display: grid; grid-template-columns: 380px 1fr;
+  gap: 0; max-width: 1200px; margin: 0 auto;
+  min-height: calc(100vh - 200px);
+}
+
+/* ── CONSTELLATION (LEFT) ── */
+.constellation {
+  padding: 24px 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, auto);
+  gap: 10px;
+  align-content: start;
+}
+.gateNode {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 14px 8px; border-radius: 10px;
+  background: rgba(160,123,255,.04);
+  border: 1px solid rgba(160,123,255,.06);
+  cursor: pointer; transition: all .3s;
+  min-height: 72px;
+}
+.gateNode:hover {
+  background: rgba(160,123,255,.10);
+  border-color: rgba(160,123,255,.20);
+  transform: translateY(-2px);
+}
+.gateNodeActive {
+  background: rgba(160,123,255,.14);
+  border-color: rgba(200,160,255,.40);
+  box-shadow: 0 0 24px rgba(160,123,255,.12);
+}
+.gateIcon {
+  font-size: 20px; color: rgba(200,160,255,.6);
+  transition: color .3s;
+}
+.gateNodeActive .gateIcon { color: #d4b8ff; }
+.gateName {
+  font-size: 10px; font-weight: 700; letter-spacing: .14em;
+  color: rgba(200,180,230,.45); text-transform: uppercase;
+  transition: color .3s;
+}
+.gateNodeActive .gateName { color: #e0d0ff; }
+
+/* ── DETAIL PANEL (RIGHT) ── */
+.detail {
+  padding: 24px 32px 32px; overflow-y: auto;
+  max-height: calc(100vh - 180px);
+  border-left: 1px solid rgba(160,123,255,.06);
+}
+.detail::-webkit-scrollbar { width: 4px; }
+.detail::-webkit-scrollbar-track { background: transparent; }
+.detail::-webkit-scrollbar-thumb { background: rgba(160,123,255,.15); border-radius: 4px; }
+
+/* detail images row */
+.detailImages {
+  display: flex; gap: 8px; margin-bottom: 20px;
+}
+.detailImg {
+  width: 100%; height: 90px; object-fit: cover;
+  border-radius: 8px; flex: 1;
+  border: 1px solid rgba(160,123,255,.10);
+}
+
+/* gate header */
+.detailHeader {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 6px;
+}
+.detailIcon {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(160,123,255,.08); border: 1px solid rgba(160,123,255,.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; color: #c8a0ff;
+}
+.detailName {
+  font-size: 22px; font-weight: 700; letter-spacing: .08em;
+  color: #f0e8ff;
+}
+.detailSub {
+  font-size: 12px; color: rgba(200,180,230,.45);
+  margin-bottom: 14px; letter-spacing: .04em;
+}
+
+/* keywords */
+.detailKeywords {
+  display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap;
+}
+.keyword {
+  font-size: 10px; font-weight: 700; letter-spacing: .1em;
+  padding: 4px 14px; border-radius: 4px;
+  background: rgba(160,123,255,.06);
+  border: 1px solid rgba(160,123,255,.10);
+  color: rgba(200,180,230,.55);
+}
+
+/* mantra */
+.mantraBox {
+  background: rgba(160,123,255,.04);
+  border: 1px solid rgba(160,123,255,.08);
+  border-radius: 10px; padding: 18px 20px;
+  margin-bottom: 20px;
+}
+.mantraText {
+  font-size: 14px; line-height: 1.7; color: rgba(230,220,245,.75);
+}
+
+/* tetik soru */
+.tetikBox {
+  border-top: 1px solid rgba(160,123,255,.06);
+  padding-top: 18px; margin-bottom: 20px;
+}
+.tetikLabel {
+  font-size: 10px; font-weight: 700; letter-spacing: .16em;
+  color: rgba(200,180,230,.35); margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.tetikText {
+  font-size: 16px; font-weight: 400; color: #e8e0f0;
+  font-style: italic;
+}
+
+/* rituel */
+.rituelBox {
+  background: rgba(160,123,255,.03);
+  border: 1px solid rgba(160,123,255,.06);
+  border-radius: 10px; padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.rituelHeader {
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+}
+.rituelLabel {
+  font-size: 12px; font-weight: 600; color: rgba(200,180,230,.55);
+}
+.rituelArrow {
+  font-size: 12px; color: rgba(200,180,230,.3);
+  transition: transform .2s;
+}
+.rituelArrowOpen { transform: rotate(180deg); }
+.rituelContent {
+  margin-top: 12px; font-size: 13px; line-height: 1.6;
+  color: rgba(230,220,245,.6);
+}
+
+/* CTA */
+.ctaBtn {
+  width: 100%; padding: 14px 0; border-radius: 10px;
+  background: linear-gradient(135deg, rgba(160,123,255,.20), rgba(120,90,200,.30));
+  border: 1px solid rgba(160,123,255,.25);
+  color: #e0d0ff; font-size: 14px; font-weight: 600;
+  letter-spacing: .06em; cursor: pointer;
+  transition: all .3s;
+  margin-bottom: 12px;
+}
+.ctaBtn:hover {
+  background: linear-gradient(135deg, rgba(160,123,255,.30), rgba(120,90,200,.40));
+  box-shadow: 0 0 24px rgba(160,123,255,.12);
+}
+.ctaFooter {
+  text-align: center; font-size: 11px;
+  color: rgba(200,180,230,.25); letter-spacing: .04em;
+}
+
+/* ── 81 CITIES WRAPPER ── */
+.citiesWrapper {
+  padding-top: 0;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .splitMain {
+    grid-template-columns: 1fr;
+  }
+  .constellation {
+    max-height: 260px;
+    overflow-y: auto;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: auto;
+    gap: 6px;
+  }
+  .gateNode { min-height: 56px; padding: 8px 4px; }
+  .gateIcon { font-size: 16px; }
+  .gateName { font-size: 8px; }
+  .detail { border-left: none; border-top: 1px solid rgba(160,123,255,.06); }
+  .h1 { font-size: 22px; }
+}
+
+@media (max-width: 540px) {
+  .constellation {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .tabBtn { padding: 8px 16px; font-size: 11px; }
+  .detail { padding: 16px; }
+}

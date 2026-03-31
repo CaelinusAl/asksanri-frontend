@@ -1,0 +1,491 @@
+/* ── BOOK READER ── */
+.page {
+  min-height: 100vh;
+  background: #07080d;
+  color: rgba(255,255,255,.92);
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 20px;
+  background: rgba(10,12,18,.85);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  flex-shrink: 0; z-index: 10;
+}
+.topbarLeft { display: flex; align-items: center; gap: 12px; }
+.topbarRight { display: flex; gap: 8px; align-items: center; }
+.brand {
+  font-weight: 800; letter-spacing: .16em; font-size: 10px;
+  padding: 4px 8px; border: 1px solid rgba(255,255,255,.10); border-radius: 999px;
+}
+.bookTitleBar {
+  font-size: 13px; font-weight: 600;
+  color: rgba(200,180,230,.6);
+  max-width: 280px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.backBtn {
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(160,123,255,.08);
+  color: rgba(255,255,255,.85);
+  padding: 6px 12px; border-radius: 8px;
+  cursor: pointer; font-weight: 700; font-size: 11px;
+  transition: background .2s;
+}
+.backBtn:hover { background: rgba(160,123,255,.18); }
+.pageIndicator {
+  font-size: 11px; font-weight: 700;
+  color: rgba(200,180,230,.35);
+  letter-spacing: .06em;
+  min-width: 80px; text-align: center;
+}
+
+/* ── BOOK CONTAINER ── */
+.bookWrap {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px 20px;
+  perspective: 1800px;
+  overflow: hidden;
+}
+.book {
+  position: relative;
+  width: 760px; height: 520px;
+  transform-style: preserve-3d;
+}
+
+/* ── SPREAD ── */
+.spread {
+  position: absolute;
+  width: 100%; height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-radius: 4px 16px 16px 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 48px rgba(0,0,0,.65);
+}
+
+.leftPage, .rightPage {
+  padding: 28px 30px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(160,123,255,.12) transparent;
+  display: flex; flex-direction: column;
+}
+.leftPage {
+  background: linear-gradient(160deg, #0f1019 0%, #131522 100%);
+  border-right: 1px solid rgba(255,255,255,.04);
+  border-radius: 4px 0 0 4px;
+}
+.rightPage {
+  background: linear-gradient(160deg, #131522 0%, #0f1019 100%);
+  border-radius: 0 16px 16px 0;
+}
+.leftPage::-webkit-scrollbar,
+.rightPage::-webkit-scrollbar { width: 4px; }
+.leftPage::-webkit-scrollbar-thumb,
+.rightPage::-webkit-scrollbar-thumb {
+  background: rgba(160,123,255,.12); border-radius: 999px;
+}
+
+.pageNum {
+  font-size: 10px; font-weight: 700;
+  color: rgba(200,180,230,.15);
+  letter-spacing: .1em;
+  margin-bottom: 12px; flex-shrink: 0;
+}
+.pageNumLeft { text-align: left; }
+.pageNumRight { text-align: right; }
+
+.pageInner { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.pageEmpty {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%;
+  color: rgba(200,180,230,.10);
+  font-size: 32px; font-weight: 300;
+}
+
+/* ── FLIP ANIMATION ── */
+.flipPage {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 50%; height: 100%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  z-index: 5;
+  pointer-events: none;
+}
+.flipFront, .flipBack {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  backface-visibility: hidden;
+  overflow: hidden;
+  padding: 28px 30px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.flipFront {
+  background: linear-gradient(160deg, #131522 0%, #0f1019 100%);
+  border-radius: 0 16px 16px 0;
+}
+.flipBack {
+  background: linear-gradient(160deg, #0f1019 0%, #131522 100%);
+  border-radius: 0 16px 16px 0;
+  transform: rotateY(180deg);
+}
+
+/* ═══════════════════════════════════════════════
+   PAGE TYPE STYLES — The Experience Layer
+   ═══════════════════════════════════════════════ */
+
+/* ── COVER ── */
+.pageCover {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; height: 100%;
+  position: relative;
+}
+.coverAccent {
+  width: 40px; height: 3px;
+  border-radius: 2px; margin-bottom: 24px;
+}
+.coverLabel {
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .3em;
+  color: rgba(200,180,230,.3);
+  margin-bottom: 20px;
+}
+.coverTitle {
+  font-size: 28px; font-weight: 300;
+  letter-spacing: .06em;
+  background: linear-gradient(135deg, #f0e0ff, #c8a0ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 0 0 10px;
+  line-height: 1.3;
+}
+.coverSub {
+  font-size: 16px; font-weight: 600;
+  color: rgba(255,255,255,.55);
+  font-style: italic;
+}
+.coverAuthor {
+  margin-top: 28px;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .16em;
+  color: rgba(200,180,230,.25);
+}
+
+/* ── DEDICATION ── */
+.pageDedication {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; height: 100%;
+}
+.dedicationTitle {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .18em;
+  color: rgba(200,180,230,.35);
+  margin-bottom: 20px;
+}
+.dedicationBody {
+  font-size: 16px; line-height: 2;
+  color: rgba(255,255,255,.75);
+  font-style: italic;
+  white-space: pre-wrap;
+  max-width: 280px;
+}
+
+/* ── TABLE OF CONTENTS ── */
+.pageToc { padding: 8px 0; }
+.tocTitle {
+  font-size: 18px; font-weight: 700;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.85);
+  margin-bottom: 8px;
+}
+.tocDesc {
+  font-size: 13px;
+  color: rgba(200,180,230,.45);
+  margin-bottom: 16px;
+}
+.tocList {
+  margin: 0; padding-left: 20px;
+  display: grid; gap: 8px;
+}
+.tocItem {
+  font-size: 14px; line-height: 1.6;
+  color: rgba(255,255,255,.7);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+}
+
+/* ── CHAPTER ── */
+.pageChapter {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; height: 100%;
+}
+.chapterNum {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .2em;
+  color: rgba(200,180,230,.3);
+  margin-bottom: 12px;
+}
+.chapterTitle {
+  font-size: 24px; font-weight: 300;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.9);
+  margin: 0 0 20px;
+  line-height: 1.3;
+}
+.chapterEpigraph {
+  font-size: 14px; line-height: 1.9;
+  color: rgba(200,180,230,.5);
+  font-style: italic;
+  white-space: pre-wrap;
+  max-width: 280px;
+  text-align: center;
+}
+
+/* ── CONTENT ── */
+.pageContentWrap { padding: 0; }
+.contentTitle {
+  font-size: 16px; font-weight: 800;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.85);
+  margin-bottom: 4px;
+}
+.contentSubtitle {
+  font-size: 12px;
+  color: rgba(200,180,230,.4);
+  margin-bottom: 12px;
+}
+.contentQuote {
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border-left: 2px solid rgba(200,160,255,.25);
+  font-size: 15px; font-weight: 600;
+  color: rgba(200,180,230,.65);
+  font-style: italic;
+}
+.contentBody {
+  font-size: 13.5px; line-height: 1.85;
+  color: rgba(255,255,255,.78);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* ── QUOTE PAGE ── */
+.pageQuote {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; height: 100%;
+}
+.quoteTitle {
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .16em;
+  color: rgba(200,180,230,.3);
+  margin-bottom: 20px;
+}
+.quoteBody {
+  font-size: 16px; line-height: 2;
+  color: rgba(255,255,255,.8);
+  font-style: italic;
+  white-space: pre-wrap;
+  max-width: 280px;
+  margin: 0;
+  border: none; padding: 0;
+}
+
+/* ── RITUAL ── */
+.pageRitual {
+  border: 1px solid rgba(200,160,255,.10);
+  border-radius: 14px;
+  padding: 20px;
+  background:
+    radial-gradient(200px 120px at 50% 20%, rgba(170,120,255,.06), transparent 70%),
+    rgba(255,255,255,.01);
+}
+.ritualIcon {
+  font-size: 24px; text-align: center;
+  margin-bottom: 8px; opacity: .5;
+}
+.ritualTitle {
+  font-size: 14px; font-weight: 800;
+  letter-spacing: .04em;
+  color: #d4b8ff;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.ritualBody {
+  font-size: 13.5px; line-height: 1.85;
+  color: rgba(255,255,255,.78);
+  white-space: pre-wrap;
+}
+.ritualQuote {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(200,160,255,.10);
+  font-size: 14px; font-weight: 600;
+  font-style: italic;
+  color: rgba(200,180,230,.5);
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+/* ── CLOSING ── */
+.pageClosing {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; height: 100%;
+}
+.closingTitle {
+  font-size: 18px; font-weight: 300;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.85);
+  margin-bottom: 18px;
+}
+.closingBody {
+  font-size: 15px; line-height: 2;
+  color: rgba(255,255,255,.65);
+  font-style: italic;
+  white-space: pre-wrap;
+  max-width: 280px;
+}
+.closingSymbol {
+  margin-top: 28px;
+  font-size: 20px;
+  color: rgba(200,180,230,.15);
+}
+
+/* ── NAVIGATION ── */
+.navRow {
+  display: flex; justify-content: center; align-items: center;
+  gap: 16px; padding: 12px 20px;
+  flex-shrink: 0;
+  background: rgba(10,12,18,.7);
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.navBtn {
+  padding: 10px 24px; border-radius: 10px;
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: all .2s;
+  letter-spacing: .04em;
+  border: 1px solid rgba(160,123,255,.15);
+  background: rgba(160,123,255,.08);
+  color: rgba(200,180,230,.7);
+}
+.navBtn:hover {
+  background: rgba(160,123,255,.18);
+  color: #d4b8ff;
+}
+.navBtn:disabled { opacity: .3; cursor: default; }
+.navBtn:disabled:hover {
+  background: rgba(160,123,255,.08);
+  color: rgba(200,180,230,.7);
+}
+.navPageNum {
+  font-size: 13px; font-weight: 700;
+  color: rgba(200,180,230,.4);
+  min-width: 100px; text-align: center;
+  letter-spacing: .06em;
+}
+
+/* ── PROGRESS BAR ── */
+.progressBar {
+  height: 3px;
+  background: rgba(255,255,255,.03);
+  flex-shrink: 0;
+}
+.progressFill {
+  height: 100%;
+  transition: width .4s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── CHAPTERS SIDEBAR ── */
+.chaptersToggle {
+  position: fixed;
+  bottom: 80px; right: 20px;
+  z-index: 20;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(160,123,255,.2);
+  background: rgba(16,18,28,.9);
+  color: #c8a0ff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s;
+  backdrop-filter: blur(8px);
+}
+.chaptersToggle:hover {
+  background: rgba(160,123,255,.15);
+  border-color: rgba(160,123,255,.35);
+}
+.chaptersSidebar {
+  position: fixed;
+  top: 0; right: 0; bottom: 0;
+  width: 280px;
+  background: rgba(10,12,18,.95);
+  border-left: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(16px);
+  z-index: 30;
+  padding: 20px 16px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform .3s;
+}
+.chaptersSidebarOpen { transform: translateX(0); }
+.chaptersTitle {
+  font-size: 12px; font-weight: 800;
+  letter-spacing: .14em;
+  color: rgba(200,180,230,.4);
+  margin-bottom: 16px;
+}
+.chapterItem {
+  display: block;
+  width: 100%; text-align: left;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none; background: transparent;
+  color: rgba(255,255,255,.6);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+  margin-bottom: 2px;
+}
+.chapterItem:hover {
+  background: rgba(160,123,255,.08);
+  color: rgba(255,255,255,.85);
+}
+
+/* ── LOADING ── */
+.loading {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(200,180,230,.3);
+  font-size: 14px; letter-spacing: .08em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .book { width: 100%; height: 460px; }
+  .leftPage, .rightPage { padding: 20px 18px; }
+  .coverTitle { font-size: 22px; }
+  .chapterTitle { font-size: 20px; }
+  .contentBody, .ritualBody { font-size: 13px; }
+}
+@media (max-width: 600px) {
+  .book { height: 100%; min-height: 400px; }
+  .spread { grid-template-columns: 1fr; }
+  .leftPage { display: none; }
+  .rightPage { border-radius: 12px; }
+  .flipPage { display: none; }
+  .bookWrap { padding: 8px 12px; }
+}

@@ -1,292 +1,305 @@
-/* ═══ KEYFRAMES ═══ */
-@keyframes ringPulse {
-  0%,100% { transform:translate(-50%,-50%) scale(1); opacity:.18; }
-  50%     { transform:translate(-50%,-50%) scale(1.12); opacity:.35; }
-}
-@keyframes ringGlow {
-  0%,100% { box-shadow:0 0 30px rgba(var(--cg),.12), inset 0 0 20px rgba(var(--cg),.04); }
-  50%     { box-shadow:0 0 55px rgba(var(--cg),.28), inset 0 0 30px rgba(var(--cg),.08); }
-}
-@keyframes breathIn  { from{transform:translate(-50%,-50%) scale(.55)} to{transform:translate(-50%,-50%) scale(1)} }
-@keyframes breathOut { from{transform:translate(-50%,-50%) scale(1)} to{transform:translate(-50%,-50%) scale(.55)} }
-@keyframes breathHold { from{transform:translate(-50%,-50%) scale(1)} to{transform:translate(-50%,-50%) scale(1)} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-@keyframes dotPulse {
-  0%,100%{box-shadow:0 0 6px rgba(var(--ng),.25)}
-  50%{box-shadow:0 0 16px rgba(var(--ng),.55)}
+/* ── FREKANS ALANI — CANLI DENEYİM ── */
+.page {
+  min-height: 100vh;
+  background: #0a0a12;
+  color: #e8e0f0;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* ═══ PAGE ═══ */
-.page{
-  min-height:100vh; overflow-x:hidden;
-  color:rgba(255,255,255,.92);
-  background:
-    radial-gradient(ellipse 600px 400px at 50% 18%, rgba(var(--cg),.08), transparent 70%),
-    linear-gradient(180deg, #060710 0%, #08091a 50%, #06070b 100%);
-  transition:background .6s ease;
+/* ── TOPBAR ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 52px;
+  background: rgba(10,10,18,.92);
+  border-bottom: 1px solid rgba(160,123,255,.08);
+  backdrop-filter: blur(12px);
+}
+.topbarLeft { display: flex; align-items: center; gap: 12px; }
+.brand {
+  font-size: 13px; font-weight: 800; letter-spacing: .22em;
+  background: linear-gradient(135deg,#c8a0ff,#7b5ea7);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.topbarRight { display: flex; gap: 8px; }
+.backBtn, .langBtn {
+  background: rgba(160,123,255,.08); border: 1px solid rgba(160,123,255,.12);
+  color: #c8a0ff; padding: 5px 14px; border-radius: 6px;
+  font-size: 11px; cursor: pointer; letter-spacing: .06em;
+  transition: background .2s;
+}
+.backBtn:hover, .langBtn:hover { background: rgba(160,123,255,.18); }
+
+/* ── SHELL ── */
+.shell {
+  max-width: 920px; margin: 0 auto;
+  padding: 72px 20px 60px;
 }
 
-/* ═══ TOPBAR ═══ */
-.topbar{
-  position:sticky; top:0; z-index:50;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:12px 22px;
-  background:rgba(6,7,11,.85); backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(255,255,255,.05);
+/* ── HERO ── */
+.hero { text-align: center; padding: 20px 0 8px; }
+.h1 {
+  font-size: 30px; font-weight: 300; letter-spacing: .12em;
+  background: linear-gradient(135deg,#f0e0ff,#c8a0ff);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 0;
 }
-.topL{ display:flex; align-items:center; gap:12px; }
-.brand{
-  font-weight:900; font-size:13px; letter-spacing:.20em;
-  background:linear-gradient(90deg,rgba(var(--cg),1),rgba(255,255,255,.7));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.brandSub{ font-size:11px; opacity:.40; }
-.topR{ display:flex; gap:8px; }
-.topBtn{
-  border:1px solid rgba(255,255,255,.08); background:transparent;
-  color:rgba(255,255,255,.6); padding:7px 14px; border-radius:10px;
-  cursor:pointer; font-size:12px; font-weight:600; transition:all .2s;
-}
-.topBtn:hover{ background:rgba(255,255,255,.05); color:#fff; }
-
-/* ═══ CHAKRA NAVIGATION ═══ */
-.chakraNav{
-  display:flex; justify-content:center; gap:6px;
-  padding:20px 16px 8px; flex-wrap:wrap;
-}
-.chakraNode{
-  display:flex; flex-direction:column; align-items:center; gap:5px;
-  padding:10px 12px 8px; border-radius:14px; cursor:pointer;
-  border:1px solid transparent; background:transparent;
-  color:rgba(255,255,255,.38); transition:all .25s; min-width:72px;
-}
-.chakraNode:hover{
-  background:rgba(var(--ng),.04); color:rgba(255,255,255,.65);
-  border-color:rgba(var(--ng),.12);
-}
-.chakraOn{
-  background:rgba(var(--ng),.08) !important;
-  border-color:rgba(var(--ng),.22) !important;
-  color:#fff !important;
-}
-.chakraDot{
-  width:14px; height:14px; border-radius:50%;
-  background:var(--nc); opacity:.50;
-  transition:all .25s;
-}
-.chakraOn .chakraDot{
-  opacity:1; animation:dotPulse 2.5s ease-in-out infinite;
-  box-shadow:0 0 12px rgba(var(--ng),.45);
-}
-.chakraHz{ font-size:9px; font-weight:700; opacity:.45; letter-spacing:.06em; }
-.chakraName{ font-size:10px; font-weight:600; white-space:nowrap; }
-
-/* ═══ MAIN GRID ═══ */
-.mainGrid{
-  display:grid; grid-template-columns:1fr 1fr; gap:20px;
-  max-width:1180px; margin:0 auto; padding:16px 24px 24px;
-  min-height:55vh;
-}
-@media(max-width:900px){ .mainGrid{ grid-template-columns:1fr; gap:16px; padding:12px 16px 20px; } }
-
-/* ═══ INFO PANEL (left) ═══ */
-.infoPanel{
-  padding:28px 24px; border-radius:20px;
-  background:rgba(6,5,14,.50);
-  border:1px solid rgba(255,255,255,.05);
-  animation:fadeUp .4s ease;
-}
-.infoHeader{ margin-bottom:20px; text-align:center; }
-.infoHz{
-  font-size:32px; font-weight:900; letter-spacing:.04em;
-  color:var(--ck); text-shadow:0 0 20px rgba(var(--cg),.30);
-  margin-bottom:4px;
-}
-.infoName{ font-size:20px; font-weight:800; letter-spacing:.03em; margin-bottom:4px; }
-.infoArea{ font-size:12px; opacity:.40; letter-spacing:.06em; }
-
-.infoDesc{
-  font-size:14px; line-height:1.85; opacity:.75;
-  margin-bottom:20px; padding:16px; border-radius:14px;
-  background:rgba(var(--cg),.03); border:1px solid rgba(var(--cg),.06);
+.sub {
+  font-size: 13px; color: rgba(200,180,230,.4); margin-top: 6px;
+  letter-spacing: .04em;
 }
 
-.infoGrid{ display:grid; gap:10px; margin-bottom:18px; }
-.infoCard{
-  padding:14px 16px; border-radius:12px;
-  background:rgba(0,0,0,.15); border:1px solid rgba(255,255,255,.035);
+/* ── CHAKRA SELECTOR ── */
+.selector {
+  display: flex; justify-content: center; gap: 12px;
+  padding: 24px 0 28px; flex-wrap: wrap;
 }
-.infoCardLabel{
-  font-size:9px; letter-spacing:.18em; text-transform:uppercase;
-  color:rgba(var(--cg),.65); margin-bottom:5px;
+.chakraNode {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  cursor: pointer; transition: transform .2s;
+  background: none; border: none; padding: 0;
 }
-.infoCardText{ font-size:13px; line-height:1.7; opacity:.70; }
+.chakraNode:hover { transform: translateY(-3px); }
+.chakraCircle {
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.10);
+  transition: all .3s;
+  position: relative;
+}
+.chakraNodeActive .chakraCircle {
+  border-color: var(--chakra-color);
+  box-shadow: 0 0 20px var(--chakra-color), 0 0 40px color-mix(in srgb, var(--chakra-color) 30%, transparent);
+  transform: scale(1.15);
+}
+.chakraHz {
+  font-size: 9px; font-weight: 700; letter-spacing: .06em;
+  color: rgba(200,180,230,.35); transition: color .3s;
+}
+.chakraNodeActive .chakraHz { color: var(--chakra-color); }
+.chakraLabel {
+  font-size: 9px; color: rgba(200,180,230,.3);
+  letter-spacing: .04em; max-width: 64px;
+  text-align: center; line-height: 1.2;
+}
+.chakraNodeActive .chakraLabel { color: rgba(200,180,230,.6); }
 
-.linkedProto{
-  padding:14px 16px; border-radius:12px;
-  background:rgba(var(--cg),.05); border:1px solid rgba(var(--cg),.12);
-  text-align:center;
+/* ── INFO PANEL ── */
+.infoPanel {
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 16px; padding: 24px;
+  margin-bottom: 28px;
+  transition: border-color .4s;
 }
-.linkedLabel{ font-size:9px; letter-spacing:.16em; text-transform:uppercase; opacity:.35; margin-bottom:4px; }
-.linkedName{ font-size:14px; font-weight:700; color:var(--ck); }
-
-/* ═══ EXPERIENCE PANEL (right) ═══ */
-.expPanel{
-  padding:28px 24px; border-radius:20px;
-  background:rgba(6,5,14,.50);
-  border:1px solid rgba(255,255,255,.05);
-  display:flex; flex-direction:column; align-items:center;
-  animation:fadeUp .4s ease .08s both;
+.infoHeader {
+  display: flex; align-items: baseline; gap: 12px;
+  margin-bottom: 6px;
 }
-
-/* Energy ring */
-.ringWrap{
-  position:relative; width:200px; height:200px;
-  margin-bottom:24px; flex-shrink:0;
+.infoName {
+  font-size: 20px; font-weight: 600; color: #f0e8ff;
 }
-.ringOuter{
-  position:absolute; top:50%; left:50%;
-  width:200px; height:200px; border-radius:50%;
-  border:2px solid rgba(var(--cg),.15);
-  transform:translate(-50%,-50%);
-  animation:ringPulse 4s ease-in-out infinite;
+.infoHz {
+  font-size: 13px; font-weight: 700;
+  color: var(--chakra-color); letter-spacing: .04em;
 }
-.ringInner{
-  position:absolute; top:50%; left:50%;
-  width:140px; height:140px; border-radius:50%;
-  background:radial-gradient(circle, rgba(var(--cg),.10), transparent 70%);
-  transform:translate(-50%,-50%);
-  animation:ringGlow 4s ease-in-out infinite;
-  transition:all .5s;
+.infoTheme {
+  font-size: 13px; color: rgba(200,180,230,.5);
+  margin-bottom: 16px;
 }
-.breathCircle{
-  position:absolute; top:50%; left:50%;
-  width:160px; height:160px; border-radius:50%;
-  background:radial-gradient(circle, rgba(var(--cg),.18), rgba(var(--cg),.04) 70%);
-  border:1px solid rgba(var(--cg),.20);
-  animation-timing-function:ease-in-out;
-  animation-fill-mode:forwards;
+.infoGrid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 16px;
 }
-.ringCenter{
-  position:absolute; top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center; z-index:2;
+.infoCard {
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.05);
+  border-radius: 10px; padding: 14px;
 }
-.ringHz{
-  font-size:36px; font-weight:900; letter-spacing:.02em;
-  color:var(--ck); text-shadow:0 0 16px rgba(var(--cg),.30);
+.infoCardLabel {
+  font-size: 10px; font-weight: 700; letter-spacing: .12em;
+  color: rgba(200,180,230,.35); margin-bottom: 6px;
+  text-transform: uppercase;
 }
-.ringLabel{
-  font-size:16px; font-weight:700; letter-spacing:.10em;
-  text-transform:uppercase; color:var(--ck);
+.infoCardText {
+  font-size: 13px; line-height: 1.6;
+  color: rgba(230,220,245,.7);
 }
-
-/* Controls */
-.controls{
-  display:flex; gap:8px; flex-wrap:wrap; justify-content:center;
-  margin-bottom:20px; width:100%;
-}
-.ctrlBtn{
-  display:flex; align-items:center; gap:7px;
-  padding:10px 16px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.025);
-  color:rgba(255,255,255,.50); cursor:pointer;
-  font-size:12px; font-weight:600; transition:all .25s;
-}
-.ctrlBtn:hover{
-  background:rgba(var(--cg),.06); color:rgba(255,255,255,.80);
-  border-color:rgba(var(--cg),.15);
-}
-.ctrlOn{
-  background:rgba(var(--cg),.10) !important;
-  border-color:rgba(var(--cg),.25) !important;
-  color:#fff !important;
-  box-shadow:0 0 14px rgba(var(--cg),.10);
-}
-.ctrlIcon{ font-size:15px; }
-
-/* Protocol runner */
-.protoRunner{
-  width:100%; padding:18px; border-radius:16px;
-  background:rgba(var(--cg),.05); border:1px solid rgba(var(--cg),.12);
-  animation:fadeUp .3s ease;
-}
-.protoStep{
-  font-size:10px; letter-spacing:.14em; text-transform:uppercase;
-  opacity:.50; margin-bottom:8px;
-}
-.protoBar{
-  height:3px; border-radius:2px; background:rgba(255,255,255,.06);
-  margin-bottom:14px; overflow:hidden;
-}
-.protoFill{
-  height:100%; border-radius:2px;
-  background:linear-gradient(90deg, var(--ck), rgba(var(--cg),.60));
-  transition:width .4s ease;
-}
-.protoText{
-  font-size:15px; line-height:1.75; font-weight:500;
-  margin-bottom:16px;
-}
-.protoBtns{ display:flex; gap:8px; }
-.protoPrimary{
-  flex:1; padding:11px 16px; border-radius:12px;
-  border:1px solid rgba(var(--cg),.30);
-  background:rgba(var(--cg),.15);
-  color:#fff; font-weight:700; cursor:pointer; font-size:13px;
-  transition:all .2s;
-}
-.protoPrimary:hover{ background:rgba(var(--cg),.22); }
-.protoGhost{
-  padding:11px 16px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.03);
-  color:rgba(255,255,255,.60); font-weight:700;
-  cursor:pointer; font-size:13px; transition:all .2s;
-}
-.protoGhost:hover{ background:rgba(255,255,255,.06); }
-
-/* Pulse mode */
-.pulseInfo{
-  text-align:center; animation:fadeUp .3s ease;
-}
-.pulseInfo p{
-  font-size:14px; line-height:1.7; opacity:.65; margin:0 0 14px;
+.infoMessage {
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.05);
+  border-radius: 10px; padding: 16px;
+  font-size: 14px; line-height: 1.7;
+  color: rgba(230,220,245,.75);
+  font-style: italic;
 }
 
-/* Idle CTA */
-.idleCta{ text-align:center; margin-top:4px; }
-.idleText{ font-size:13px; opacity:.35; margin:0 0 14px; }
-.sanriBtn{
-  display:inline-flex; align-items:center; gap:8px;
-  padding:13px 28px; border-radius:14px; border:none;
-  font-size:14px; font-weight:800; cursor:pointer;
-  color:#06070b;
-  background:linear-gradient(135deg, var(--ck), rgba(var(--cg),.70));
-  box-shadow:0 0 18px rgba(var(--cg),.15), 0 4px 12px rgba(0,0,0,.20);
-  transition:transform .2s, box-shadow .2s;
+/* ── SESSION AREA ── */
+.sessionArea {
+  text-align: center; padding: 8px 0 20px;
 }
-.sanriBtn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 0 30px rgba(var(--cg),.25), 0 6px 16px rgba(0,0,0,.25);
+.durationRow {
+  display: flex; justify-content: center; gap: 8px;
+  margin-bottom: 24px;
+}
+.durBtn {
+  padding: 8px 20px; border-radius: 8px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(200,180,230,.5);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all .2s; letter-spacing: .04em;
+}
+.durBtn:hover { background: rgba(255,255,255,.06); }
+.durBtnActive {
+  background: rgba(255,255,255,.06);
+  border-color: var(--chakra-color);
+  color: var(--chakra-color);
 }
 
-/* Footer */
-.foot{
-  text-align:center; padding:14px; font-size:10px; opacity:.14;
+/* energy circle */
+.energyWrap {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; margin-bottom: 24px;
+  position: relative;
+}
+.energyCircle {
+  width: 200px; height: 200px; border-radius: 50%;
+  border: 2px solid var(--chakra-color);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 0 30px color-mix(in srgb, var(--chakra-color) 15%, transparent),
+              inset 0 0 40px color-mix(in srgb, var(--chakra-color) 8%, transparent);
+  transition: box-shadow .4s;
+  position: relative;
+}
+.energyCircleRunning {
+  box-shadow: 0 0 50px color-mix(in srgb, var(--chakra-color) 30%, transparent),
+              inset 0 0 60px color-mix(in srgb, var(--chakra-color) 12%, transparent);
+}
+.breathText {
+  font-size: 16px; font-weight: 300; letter-spacing: .08em;
+  color: rgba(240,232,255,.7);
+}
+.timerText {
+  font-size: 28px; font-weight: 200; letter-spacing: .06em;
+  color: rgba(240,232,255,.85); margin-top: 4px;
+}
+.phaseHint {
+  font-size: 11px; color: rgba(200,180,230,.3);
+  letter-spacing: .06em; margin-top: 2px;
 }
 
-/* ═══ RESPONSIVE ═══ */
-@media(max-width:640px){
-  .chakraNav{ gap:3px; padding:14px 8px 6px; }
-  .chakraNode{ min-width:44px; padding:8px 6px 6px; }
-  .chakraHz{ display:none; }
-  .chakraName{ font-size:8.5px; }
-  .ringWrap{ width:160px; height:160px; }
-  .ringOuter{ width:160px; height:160px; }
-  .ringInner{ width:110px; height:110px; }
-  .breathCircle{ width:130px; height:130px; }
-  .ringHz{ font-size:28px; }
-  .controls{ gap:6px; }
-  .ctrlBtn{ padding:8px 12px; font-size:11px; }
+/* progress ring (SVG behind energy circle) */
+.progressRing {
+  position: absolute; top: -6px; left: -6px;
+  width: 212px; height: 212px;
+  transform: rotate(-90deg);
+}
+.progressTrack {
+  fill: none; stroke: rgba(255,255,255,.04); stroke-width: 3;
+}
+.progressFill {
+  fill: none; stroke: var(--chakra-color); stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset .95s linear;
+}
+
+/* controls */
+.controls {
+  display: flex; justify-content: center; gap: 10px;
+  margin-bottom: 8px;
+}
+.ctrlBtn {
+  padding: 10px 24px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  letter-spacing: .04em; transition: all .2s;
+}
+.ctrlPrimary {
+  background: linear-gradient(135deg, rgba(160,123,255,.20), rgba(120,90,200,.30));
+  border: 1px solid rgba(160,123,255,.25);
+  color: #e0d0ff;
+}
+.ctrlPrimary:hover {
+  background: linear-gradient(135deg, rgba(160,123,255,.30), rgba(120,90,200,.40));
+  box-shadow: 0 0 20px rgba(160,123,255,.10);
+}
+.ctrlGhost {
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(200,180,230,.5);
+}
+.ctrlGhost:hover { background: rgba(255,255,255,.06); }
+
+/* ── SESSION COMPLETE ── */
+.completeArea {
+  text-align: center; padding: 20px 0;
+}
+.completeBadge {
+  display: inline-block;
+  padding: 6px 20px; border-radius: 999px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  color: var(--chakra-color);
+  margin-bottom: 20px;
+}
+.reflectionBox {
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px; padding: 24px;
+  margin-bottom: 16px; max-width: 520px;
+  margin-left: auto; margin-right: auto;
+}
+.reflectionLabel {
+  font-size: 10px; font-weight: 700; letter-spacing: .14em;
+  color: rgba(200,180,230,.35); margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.reflectionText {
+  font-size: 16px; line-height: 1.7;
+  color: rgba(230,220,245,.8); font-style: italic;
+}
+.practiceBox {
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 14px; padding: 20px;
+  margin-bottom: 20px; max-width: 520px;
+  margin-left: auto; margin-right: auto;
+}
+.practiceLabel {
+  font-size: 10px; font-weight: 700; letter-spacing: .14em;
+  color: rgba(200,180,230,.35); margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.practiceText {
+  font-size: 14px; line-height: 1.6;
+  color: rgba(230,220,245,.7);
+}
+.completeActions {
+  display: flex; justify-content: center; gap: 10px;
+  margin-top: 20px;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center; font-size: 11px;
+  color: rgba(200,180,230,.2); padding-top: 32px;
+  letter-spacing: .06em;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+  .infoGrid { grid-template-columns: 1fr; }
+  .h1 { font-size: 24px; }
+  .energyCircle { width: 170px; height: 170px; }
+  .progressRing { width: 182px; height: 182px; }
+}
+@media (max-width: 540px) {
+  .selector { gap: 8px; }
+  .chakraCircle { width: 36px; height: 36px; }
+  .durationRow { flex-wrap: wrap; }
+  .shell { padding: 60px 12px 40px; }
+  .energyCircle { width: 150px; height: 150px; }
+  .progressRing { width: 162px; height: 162px; }
 }

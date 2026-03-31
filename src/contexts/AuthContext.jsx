@@ -2,16 +2,35 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 
 const AuthContext = createContext(null);
 
+const TOKEN_KEY = "sanri_token";
+
+function getStoredToken() {
+  try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
+}
+
+function storeToken(token) {
+  try { if (token) localStorage.setItem(TOKEN_KEY, token); else localStorage.removeItem(TOKEN_KEY); } catch {}
+}
+
+function authHeaders(token) {
+  const h = { "Content-Type": "application/json" };
+  if (token) {
+    h["Authorization"] = `Bearer ${token}`;
+  }
+  return h;
+}
+
 export function AuthProvider({ children }) {
   const API = import.meta.env.VITE_BACKEND_URL;
 
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null); // { email?, is_premium?, authenticated? ... }
+  const [token, setToken] = useState(getStoredToken);
+  const [user, setUser] = useState(null);
   const [error, setError] = useState("");
 
-  const refreshMe = useCallback(async () => {
-    if (!API) {
-      setError("VITE_BACKEND_URL missing");
+  const refreshMe = useCallback(async (overrideToken) => {
+    const t = overrideToken ?? getStoredToken();
+    if (!API || !t) {
       setUser(null);
       setLoading(false);
       return;
@@ -21,61 +40,46 @@ export function AuthProvider({ children }) {
     setError("");
 
     try {
-      const token =
-        document.cookie.split(";").find((c) => c.trim().startsWith("access_token=")) ||
-        localStorage.getItem("access_token") ||
-        sessionStorage.getItem("access_token") ||
-        "";
-
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-
       const meRes = await fetch(`${API}/auth/me`, {
         method: "GET",
-        credentials: "include",
+        headers: authHeaders(t),
       });
 
+      const me = await meRes.json().catch(() => ({}));
+
       if (!meRes.ok) {
+        storeToken(null);
+        setToken(null);
         setUser(null);
         setLoading(false);
         return;
       }
-
-      const me = await meRes.json().catch(() => ({}));
 
       let sub = {};
       try {
         const subRes = await fetch(`${API}/api/subscription/status`, {
           method: "GET",
-          credentials: "include",
+          headers: authHeaders(t),
         });
-        if (subRes.ok) {
-          sub = await subRes.json().catch(() => ({}));
-        }
+        sub = await subRes.json().catch(() => ({}));
       } catch {
         sub = {};
       }
 
       const normalized = {
         ...me,
-        authenticated: me?.authenticated ?? true,
-        email: me?.email ?? me?.user?.email ?? "",
+        authenticated: true,
+        email: me?.email ?? "",
         is_premium:
-          me?.is_premium ??
-          me?.isPremium ??
-          sub?.is_premium ??
-          sub?.isPremium ??
-          sub?.active ??
-          false,
+          me?.is_premium ?? me?.isPremium ??
+          sub?.is_premium ?? sub?.isPremium ?? sub?.active ?? false,
         plan: sub?.plan ?? sub?.current_plan ?? me?.plan ?? null,
       };
 
       setUser(normalized);
       setLoading(false);
-    } catch (e) {
+    } catch {
+      setError("Auth network error");
       setUser(null);
       setLoading(false);
     }
@@ -92,14 +96,18 @@ export function AuthProvider({ children }) {
       const res = await fetch(`${API}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.detail || data?.error || "Login failed");
 
-      await refreshMe();
+      if (data?.token) {
+        storeToken(data.token);
+        setToken(data.token);
+        await refreshMe(data.token);
+      }
+
       return data;
     },
     [API, refreshMe]
@@ -112,29 +120,28 @@ export function AuthProvider({ children }) {
       const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
         body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.detail || data?.error || "Register failed");
 
-      await refreshMe();
+      if (data?.token) {
+        storeToken(data.token);
+        setToken(data.token);
+        await refreshMe(data.token);
+      }
+
       return data;
     },
     [API, refreshMe]
   );
 
-  const logout = useCallback(async () => {
-    if (!API) return;
-    try {
-      await fetch(`${API}/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-      });
-    } catch {}
-    await refreshMe();
-  }, [API, refreshMe]);
+  const logout = useCallback(() => {
+    storeToken(null);
+    setToken(null);
+    setUser(null);
+  }, []);
 
   const value = useMemo(() => {
     const isAuthenticated = Boolean(user?.authenticated);
@@ -142,6 +149,7 @@ export function AuthProvider({ children }) {
 
     return {
       loading,
+      token,
       user,
       error,
       isAuthenticated,
@@ -151,7 +159,7 @@ export function AuthProvider({ children }) {
       registerEmail,
       logout,
     };
-  }, [loading, user, error, refreshMe, loginEmail, registerEmail, logout]);
+  }, [loading, token, user, error, refreshMe, loginEmail, registerEmail, logout]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

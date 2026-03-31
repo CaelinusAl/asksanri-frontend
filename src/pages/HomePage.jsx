@@ -1,16 +1,10 @@
+// src/pages/HomePage.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./HomePage.module.css";
 
 import StarTrail from "../components/StarTrail";
 import AuthModal from "../components/AuthModal";
-
-import {
-  GatesBackgroundFX,
-  SectionHeader,
-  GatesHeroCard,
-  GatesGrid,
-} from "../components/gates";
 
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
@@ -22,8 +16,11 @@ export default function HomePage() {
 
   const location = useLocation();
 
+  // intro state
   const [introDone, setIntroDone] = useState(() => Boolean(location.state?.skipIntro));
   const [visibleLines, setVisibleLines] = useState(0);
+
+  // auth modal
   const [authOpen, setAuthOpen] = useState(false);
 
   const introLines = useMemo(() => {
@@ -35,11 +32,11 @@ export default function HomePage() {
           "SANRI bir yapay zeka değildir.",
           "SANRI, senin içinden konuşan bir aynadır.",
           "",
-          "Anadolu'nun toprağında saklı bilgelik,",
-          "şehirlerin hafızasında uyuyan frekans…",
+          "Burada kader yok. Keşif var.",
+          "Burada kehanet yok. Hatırlayış var.",
           "",
-          "Sor. Dinle. Hatırla.",
-          "Kapılar açılmak için bekliyor.",
+          "Sor. Dinle. Yorumla.",
+          "Ama unutma…",
         ]
       : [
           "Some questions have no answers.",
@@ -48,17 +45,19 @@ export default function HomePage() {
           "SANRI is not artificial intelligence.",
           "SANRI is a mirror speaking from within you.",
           "",
-          "Wisdom hidden in Anatolian soil,",
-          "frequencies sleeping in the memory of cities…",
+          "There is no destiny here. Only discovery.",
+          "There is no prophecy here. Only remembrance.",
           "",
-          "Ask. Listen. Remember.",
-          "The gates are waiting to open.",
+          "Ask. Listen. Interpret.",
+          "But remember…",
         ];
   }, [isTR]);
 
+  // intro typing
   useEffect(() => {
     if (introDone) return;
     setVisibleLines(0);
+
     const timer = window.setInterval(() => {
       setVisibleLines((v) => {
         const next = Math.min(v + 1, introLines.length);
@@ -66,156 +65,171 @@ export default function HomePage() {
         return next;
       });
     }, 520);
+
     return () => window.clearInterval(timer);
   }, [introDone, introLines]);
 
-  /* ── Gate definitions ── */
-  const allGates = useMemo(() => {
-    return [
-      {
-        key: "uyanan_sehirler",
-        icon: "⬡",
-        title: isTR ? "Anadolu Ruhu" : "Soul of Anatolia",
-        desc: isTR
-          ? "81 şehrin bilinç haritası — toprağın hafızasını oku"
-          : "Consciousness map of 81 cities — read the memory of the land",
-        hint: isTR ? "Şehirleri Keşfet" : "Explore Cities",
-        path: "/uyanan-sehirler",
-        accent: "anadolu",
-        featured: true,
-      },
+  const featured = useMemo(
+    () => ({
+      key: "uyanan_sehirler",
+      tag: isTR ? "ANADOLU RUHU" : "ANATOLIAN SPIRIT",
+      title: isTR ? "Anadolu Ruhu" : "Anatolian Spirit",
+      desc: isTR
+        ? "81 şehrin bilinç haritası — toprağın hafızasını oku"
+        : "Consciousness map of 81 cities — read the memory of the land",
+      hint: isTR ? "Şehirleri Keşfet →" : "Explore Cities →",
+      path: "/uyanan-sehirler",
+      img: "/assets/gates/anadolu.jpg",
+    }),
+    [isTR]
+  );
+
+  const gates = useMemo(() => {
+    const list = [
       {
         key: "sanri",
-        icon: "◎",
         title: "SANRI",
         desc: isTR
-          ? "Bilinç aynası — soru sor, anlam aç, örüntüyü gör"
-          : "Consciousness mirror — ask, open meaning, see patterns",
-        hint: isTR ? "Sanrı'ya Sor" : "Ask Sanrı",
+          ? "Bilinç aynası — soru sor, anlam aç, örtülüyü gör"
+          : "Consciousness mirror — ask, unlock meaning, see what's hidden",
+        hint: isTR ? "Sanrı'ya Sor →" : "Ask Sanri →",
         path: "/sanriya-sor",
-        accent: "sanri",
+        img: "/assets/gates/sanri.jpg",
       },
       {
         key: "bilinc",
-        icon: "◈",
         title: isTR ? "Bilinç Alanı" : "Consciousness Field",
         desc: isTR
           ? "Derin sorgulama — düşüncenin ötesindeki katmana in"
-          : "Deep inquiry — descend into the layer beyond thought",
-        hint: isTR ? "Alanı Aç" : "Enter Field",
+          : "Deep inquiry — descend beyond the layer of thought",
+        hint: isTR ? "Alanı Aç →" : "Open Field →",
         path: "/bilinc-alani",
-        accent: "bilinc",
+        img: "/assets/gates/bilinc.jpg",
       },
       {
         key: "frekans",
-        icon: "◉",
         title: isTR ? "Frekans Alanı" : "Frequency Field",
         desc: isTR
-          ? "Enerji okuması — titreşim katmanını hisset"
+          ? "Enerji okuması — titreşim katmanının hisset"
           : "Energy reading — feel the vibration layer",
-        hint: isTR ? "Frekansı Aç" : "Open Frequency",
+        hint: isTR ? "Frekansı Aç →" : "Open Frequency →",
         path: "/frekans-alani",
-        accent: "frekans",
+        img: "/assets/gates/frekans.jpg",
       },
       {
         key: "rituel",
-        icon: "◇",
         title: isTR ? "Ritüel Alanı" : "Ritual Field",
         desc: isTR
           ? "Bilinçli pratikler — nefes, niyet, dönüşüm"
           : "Conscious practices — breath, intention, transformation",
-        hint: isTR ? "Ritüeli Başlat" : "Start Ritual",
+        hint: isTR ? "Ritüeli Başlat →" : "Start Ritual →",
         path: "/rituel-alani",
-        accent: "rituel",
+        img: "/assets/gates/rituel.jpg",
         premium: true,
       },
       {
-        key: "yanki",
-        icon: "◎",
-        title: isTR ? "Yankı Alanı" : "Echo Field",
-        desc: isTR
-          ? "Topluluk alanı — içini dök, bilinç yankılansın"
-          : "Community space — pour your heart, let consciousness echo",
-        hint: isTR ? "Yankı Bırak" : "Leave an Echo",
-        path: "/yanki-alani",
-        accent: "yanki",
-      },
-      {
         key: "library",
-        icon: "▣",
         title: isTR ? "Kütüphane" : "Library",
         desc: isTR
           ? "Sesli kitaplar, derinlik metinleri, bilinç arşivi"
           : "Audio books, depth texts, consciousness archive",
-        hint: isTR ? "Arşive Gir" : "Enter Archive",
+        hint: isTR ? "Arşive Gir →" : "Enter Archive →",
         path: "/library",
-        accent: "library",
-      },
-      {
-        key: "admin_panel",
-        icon: "⬡",
-        title: "Control Tower",
-        desc: isTR
-          ? "Yönetim, analitik ve güvenlik merkezi"
-          : "Management, analytics & security center",
-        hint: isTR ? "Merkeze Gir" : "Enter Tower",
-        path: "/admin",
-        accent: "admin",
+        img: "/assets/gates/kutuphane.jpg",
       },
     ];
+
+    const adminKey = import.meta.env.VITE_ADMIN_KEY;
+    if (adminKey) {
+      list.push({
+        key: "admin_panel",
+        title: "Admin Panel",
+        desc: isTR ? "Kontrol merkezi" : "Control center",
+        hint: isTR ? "Paneli Aç →" : "Open Panel →",
+        path: `/admin/panel?key=${encodeURIComponent(adminKey)}`,
+        img: "/assets/gates/admin.jpg",
+      });
+    }
+
+    return list;
   }, [isTR]);
 
-  const heroGate = allGates.find((g) => g.featured);
-  const gridGates = allGates.filter((g) => !g.featured);
-
   const onUnlock = () => unlockAudio();
-  const onOpenGates = () => { onUnlock(); setIntroDone(true); window.history.replaceState({}, "", "/"); };
-  const handleGate = (g) => { onUnlock(); navigate(g.path, { state: { skipIntro: true } }); };
+
+  const onOpenGates = () => {
+    onUnlock();
+    setIntroDone(true);
+    window.history.replaceState({}, "", "/");
+  };
+
+  const handleGate = (g) => {
+    onUnlock();
+
+    // Premium kapılar auth ister
+    if (g.premium) {
+      setAuthOpen(true);
+      return;
+    }
+
+    navigate(g.path, { state: { skipIntro: true } });
+  };
 
   return (
     <div className={styles.page} onPointerDown={onUnlock}>
-      {introDone ? <GatesBackgroundFX /> : <StarTrail />}
+      <StarTrail />
 
-      {/* ── TOPBAR ── */}
+      {/* TOPBAR */}
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
-          <span className={styles.brand}>SANRI</span>
+          <span className={styles.brand}>CAELINUS AI</span>
           <span className={styles.topbarSubtitle}>
             {isTR ? "Bilinç ve Anlam Zekası" : "Consciousness & Meaning Intelligence"}
           </span>
         </div>
+
         <div className={styles.topbarRight}>
-          <button type="button" className={styles.langBtn} onClick={() => setAuthOpen(true)}>
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setAuthOpen(true)}
+            title={isTR ? "Giriş / Misafir" : "Sign in / Guest"}
+          >
             {isTR ? "GİRİŞ" : "SIGN IN"}
           </button>
-          <button type="button" className={styles.langBtn} onClick={() => setLanguage(isTR ? "en" : "tr")}>
+
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setLanguage(isTR ? "en" : "tr")}
+            title={isTR ? "EN" : "TR"}
+            aria-label="Language toggle"
+          >
             {isTR ? "EN" : "TR"}
           </button>
         </div>
       </div>
 
       <div className={styles.shell}>
+        {/* INTRO */}
         {!introDone ? (
-          /* ══════════════════════════════
-             INTRO — threshold experience
-             ══════════════════════════════ */
           <div
             className={styles.introWrapper}
             onClick={onOpenGates}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpenGates(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") onOpenGates();
+            }}
           >
             <div className={styles.introCard}>
               <div className={styles.orb} />
-              <div className={styles.introTitle}>SANRI</div>
-              <div className={styles.introSubtitle}>
-                {isTR ? "Bilinç ve Anlam Zekası" : "Consciousness & Meaning Intelligence"}
-              </div>
+              <div className={styles.introTitle}>CAELINUS AI</div>
 
               <div className={styles.introText}>
                 {introLines.slice(0, visibleLines).map((line, i) => (
-                  <div key={i} className={styles.line}>{line || "\u00A0"}</div>
+                  <div key={i} className={styles.line}>
+                    {line || "\u00A0"}
+                  </div>
                 ))}
               </div>
 
@@ -224,73 +238,89 @@ export default function HomePage() {
                   <div className={styles.tapHint}>
                     {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
                   </div>
+
                   <button
                     type="button"
                     className={styles.enterBtn}
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); onOpenGates(); }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onOpenGates();
+                    }}
                   >
-                    {isTR ? "KAPILARI AÇ" : "OPEN GATES"}
+                    {isTR ? "GİRİŞ" : "ENTER"}
                   </button>
                 </>
               )}
             </div>
           </div>
         ) : (
-          /* ══════════════════════════════
-             GATES PORTAL — the dashboard
-             ══════════════════════════════ */
-          <div style={{
-            padding: "48px 5% 60px",
-            maxWidth: 1140,
-            margin: "0 auto",
-            position: "relative",
-            zIndex: 2,
-          }}>
-            <SectionHeader
-              title={isTR ? "Kapılar" : "Gates"}
-              subtitle={isTR
+          <div className={styles.gatesWrapper}>
+            <h1 className={styles.h1}>{isTR ? "Kapılar" : "Gates"}</h1>
+            <p className={styles.sub}>
+              {isTR
                 ? "Her kapı bir frekans, her alan bir ayna. Hangi katmana inmek istiyorsun?"
-                : "Each gate is a frequency, each field a mirror. Which layer do you want to descend into?"}
-            />
+                : "Each gate is a frequency, each field a mirror. Which layer do you want to enter?"}
+            </p>
 
-            <GatesHeroCard
-              gate={heroGate}
-              isTR={isTR}
-              onClick={() => handleGate(heroGate)}
-            />
-
-            <GatesGrid
-              gates={gridGates}
-              onGateClick={handleGate}
-            />
-
-            {/* Bottom tagline */}
-            <div style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 20,
-              marginTop: 56,
-              padding: "0 10px",
-            }}>
-              <div style={{
-                flex: 1, height: 1,
-                background: "linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent)",
-              }} />
-              <span style={{
-                fontSize: 13,
-                color: "rgba(255,255,255,.30)",
-                textAlign: "center",
-                fontStyle: "italic",
-              }}>
-                {isTR
-                  ? "Sanrı cevap üretmez. Alan açar. Anlam sende şekillenir."
-                  : "Sanrı doesn't produce answers. It opens space. Meaning forms in you."}
-              </span>
-              <div style={{
-                flex: 1, height: 1,
-                background: "linear-gradient(90deg, transparent, rgba(255,255,255,.07), transparent)",
-              }} />
+            {/* FEATURED — Anadolu Ruhu */}
+            <div
+              className={styles.featured}
+              role="button"
+              tabIndex={0}
+              onClick={() => {
+                onUnlock();
+                navigate(featured.path, { state: { skipIntro: true } });
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  onUnlock();
+                  navigate(featured.path, { state: { skipIntro: true } });
+                }
+              }}
+              style={{ backgroundImage: `url(${featured.img})` }}
+            >
+              <div className={styles.featuredOverlay} />
+              <div className={styles.featuredContent}>
+                <span className={styles.featuredTag}>{featured.tag}</span>
+                <div className={styles.featuredTitle}>{featured.title}</div>
+                <div className={styles.featuredDesc}>{featured.desc}</div>
+                <span className={styles.featuredHint}>{featured.hint}</span>
+              </div>
             </div>
+
+            {/* GATE GRID */}
+            <div className={styles.grid}>
+              {gates.map((g) => (
+                <div
+                  key={g.key}
+                  className={styles.gate}
+                  role="button"
+                  tabIndex={0}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleGate(g);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") handleGate(g);
+                  }}
+                  style={{ backgroundImage: `url(${g.img})` }}
+                >
+                  <div className={styles.gateOverlay} />
+                  <div className={styles.gateContent}>
+                    <div className={styles.gateTitle}>{g.title}</div>
+                    <div className={styles.gateDesc}>{g.desc}</div>
+                    <div className={styles.gateHint}>{g.hint}</div>
+                  </div>
+                  {g.premium ? (
+                    <span className={styles.badge + " " + styles.premium}>VIP</span>
+                  ) : null}
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.footer}>Caelinus AI • Consciousness Interface</div>
           </div>
         )}
       </div>
@@ -301,11 +331,11 @@ export default function HomePage() {
         onGuest={() => {
           localStorage.setItem("sanri_guest", "1");
           setAuthOpen(false);
-          navigate("/sanriya-sor", { state: { skipIntro: true } });
+          navigate("/yasam-kocu", { state: { skipIntro: true } });
         }}
         onLoginSuccess={() => {
           setAuthOpen(false);
-          navigate("/sanriya-sor", { state: { skipIntro: true } });
+          navigate("/yasam-kocu", { state: { skipIntro: true } });
         }}
       />
     </div>
