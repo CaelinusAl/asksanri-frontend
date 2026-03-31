@@ -6,6 +6,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 import { cities as citiesData } from "../data/cities";
 import { RadialGateRing, GateDetailPanel } from "../components/gates13";
+import { getElementImage, getCityImage } from "../utils/assetMap";
 
 // ── 13 BILINC KAPISI energy ──
 const GE = {
@@ -327,12 +328,20 @@ export default function UyananSehirlerPage() {
             {/* ── City Detail Panel ── */}
             <div className={styles.cityPanel} ref={cityDetailRef}>
               {cityLoading ? <div className={styles.muted}>...</div> : (<>
-                {/* Hero header */}
-                <div className={styles.cpHead}>
-                  <div className={styles.cpPlate}>{activePlate}</div>
-                  <div>
-                    <div className={styles.cpName}>{city?.name}</div>
-                    <div className={styles.cpEl}>{city?.symbol} · {city?.element}</div>
+                {/* Hero image band */}
+                <div className={styles.cpHero}>
+                  <img
+                    src={getCityImage(city?.name) || getElementImage(city?.element)}
+                    alt=""
+                    className={styles.cpHeroImg}
+                  />
+                  <div className={styles.cpHeroOverlay} />
+                  <div className={styles.cpHeroContent}>
+                    <div className={styles.cpPlate}>{activePlate}</div>
+                    <div>
+                      <div className={styles.cpName}>{city?.name}</div>
+                      <div className={styles.cpEl}>{city?.symbol} · {city?.element}</div>
+                    </div>
                   </div>
                 </div>
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { getGateImage } from "../../utils/assetMap";
 
 export default function GateDetailPanel({
   gate, energy, soul, isTR,
@@ -6,80 +7,90 @@ export default function GateDetailPanel({
 }) {
   if (!gate) return null;
   const ec = energy?.c || "180,150,100";
+  const heroImg = getGateImage(gate.key);
 
   return (
     <div className="g13-glass-panel" style={S.card}>
-      {/* Header */}
-      <div style={S.head}>
-        <div style={{
-          ...S.icon,
-          borderColor: `rgba(${ec},.22)`,
-          background: `radial-gradient(circle, rgba(${ec},.10), rgba(${ec},.02))`,
-        }}>
-          {energy?.s || "○"}
+      {heroImg && (
+        <div style={S.heroBand}>
+          <img src={heroImg} alt="" style={S.heroImg} />
+          <div style={S.heroOverlay} />
         </div>
-        <div>
-          <div style={S.name}>{gate.sehir}</div>
-          <div style={S.sub}>{gate.baslik} — {gate.tanrica}</div>
+      )}
+
+      <div style={{ ...S.body, paddingTop: heroImg ? 20 : 36 }}>
+        {/* Header */}
+        <div style={S.head}>
+          <div style={{
+            ...S.icon,
+            borderColor: `rgba(${ec},.22)`,
+            background: `radial-gradient(circle, rgba(${ec},.10), rgba(${ec},.02))`,
+          }}>
+            {energy?.s || "○"}
+          </div>
+          <div>
+            <div style={S.name}>{gate.sehir}</div>
+            <div style={S.sub}>{gate.baslik} — {gate.tanrica}</div>
+          </div>
         </div>
-      </div>
 
-      {/* Tags */}
-      <div style={S.tags}>
-        {[gate.faz, gate.element].filter(Boolean).map((t, i) => (
-          <span key={i} style={{
-            ...S.tag,
-            borderColor: `rgba(${ec},.15)`,
-            background: `rgba(${ec},.05)`,
-            color: `rgba(${ec},.85)`,
-          }}>{t}</span>
-        ))}
-      </div>
-
-      {/* Soul description */}
-      <div style={S.soul}>
-        <p style={S.soulP}>{isTR ? soul?.tr : soul?.en}</p>
-      </div>
-
-      {/* Trigger question */}
-      <div style={S.trigger}>
-        <div style={S.trigLabel}>{isTR ? "TETİK SORU" : "TRIGGER QUESTION"}</div>
-        <div style={{
-          ...S.trigText,
-          background: `linear-gradient(90deg, rgba(${ec},1), rgba(255,255,255,.7))`,
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}>
-          &ldquo;{isTR ? soul?.tqTR : soul?.tqEN}&rdquo;
+        {/* Tags */}
+        <div style={S.tags}>
+          {[gate.faz, gate.element].filter(Boolean).map((t, i) => (
+            <span key={i} style={{
+              ...S.tag,
+              borderColor: `rgba(${ec},.15)`,
+              background: `rgba(${ec},.05)`,
+              color: `rgba(${ec},.85)`,
+            }}>{t}</span>
+          ))}
         </div>
-      </div>
 
-      {/* Micro ritual */}
-      <div style={S.ritual}>
-        <button className="g13-detail-btn" style={S.ritBtn} onClick={onToggleRitual}>
-          <span>{isTR ? "Mikro Ritüel" : "Micro Ritual"}</span>
-          <span style={{ fontSize: 10 }}>{ritualOpen ? "▲" : "▼"}</span>
-        </button>
-        {ritualOpen && (
-          <div style={S.ritBody}>{isTR ? soul?.rTR : soul?.rEN}</div>
-        )}
-      </div>
+        {/* Soul description */}
+        <div style={S.soul}>
+          <p style={S.soulP}>{isTR ? soul?.tr : soul?.en}</p>
+        </div>
 
-      {/* CTA */}
-      <div style={S.ctaWrap}>
-        <button className="g13-cta" style={{
-          ...S.ctaBtn,
-          background: `linear-gradient(135deg, rgba(${ec},1), rgba(${ec},.75))`,
-          boxShadow: `0 0 20px rgba(${ec},.18), 0 4px 14px rgba(0,0,0,.25)`,
-        }} onClick={onEnter}>
-          {energy?.s || "✦"} {isTR ? "Bu Kapıdan Geç" : "Enter This Gate"}
-        </button>
-        <p style={S.ctaHint}>
-          {isTR
-            ? "SANRI bu kapının bilincinden konuşacak."
-            : "SANRI will speak from this gate."}
-        </p>
+        {/* Trigger question */}
+        <div style={S.trigger}>
+          <div style={S.trigLabel}>{isTR ? "TETİK SORU" : "TRIGGER QUESTION"}</div>
+          <div style={{
+            ...S.trigText,
+            background: `linear-gradient(90deg, rgba(${ec},1), rgba(255,255,255,.7))`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}>
+            &ldquo;{isTR ? soul?.tqTR : soul?.tqEN}&rdquo;
+          </div>
+        </div>
+
+        {/* Micro ritual */}
+        <div style={S.ritual}>
+          <button className="g13-detail-btn" style={S.ritBtn} onClick={onToggleRitual}>
+            <span>{isTR ? "Mikro Ritüel" : "Micro Ritual"}</span>
+            <span style={{ fontSize: 10 }}>{ritualOpen ? "▲" : "▼"}</span>
+          </button>
+          {ritualOpen && (
+            <div style={S.ritBody}>{isTR ? soul?.rTR : soul?.rEN}</div>
+          )}
+        </div>
+
+        {/* CTA */}
+        <div style={S.ctaWrap}>
+          <button className="g13-cta" style={{
+            ...S.ctaBtn,
+            background: `linear-gradient(135deg, rgba(${ec},1), rgba(${ec},.75))`,
+            boxShadow: `0 0 20px rgba(${ec},.18), 0 4px 14px rgba(0,0,0,.25)`,
+          }} onClick={onEnter}>
+            {energy?.s || "✦"} {isTR ? "Bu Kapıdan Geç" : "Enter This Gate"}
+          </button>
+          <p style={S.ctaHint}>
+            {isTR
+              ? "SANRI bu kapının bilincinden konuşacak."
+              : "SANRI will speak from this gate."}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -90,12 +101,28 @@ const S = {
     background: "rgba(6,5,14,.60)",
     border: "1px solid rgba(255,255,255,.06)",
     borderRadius: 20,
-    padding: "36px 32px",
     maxHeight: "72vh",
     overflowY: "auto",
     scrollbarWidth: "thin",
     scrollbarColor: "rgba(255,255,255,.06) transparent",
     boxShadow: "0 4px 30px rgba(0,0,0,.25)",
+  },
+
+  heroBand: {
+    position: "relative", width: "100%", height: 130,
+    overflow: "hidden", flexShrink: 0,
+  },
+  heroImg: {
+    position: "absolute", inset: 0, width: "100%", height: "100%",
+    objectFit: "cover", objectPosition: "center 40%",
+  },
+  heroOverlay: {
+    position: "absolute", inset: 0,
+    background: "linear-gradient(to top, rgba(6,5,14,.92) 0%, rgba(6,5,14,.35) 55%, rgba(6,5,14,.15) 100%)",
+  },
+
+  body: {
+    padding: "0 32px 32px",
   },
 
   head: {
