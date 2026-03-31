@@ -1,283 +1,419 @@
-// src/pages/FrekansAlaniPage.jsx
-import React, { useMemo, useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./FrekansAlaniPage.module.css";
-
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
+
+const CHAKRAS = [
+  {
+    key: "root", hz: 396, color: "#e53e3e", glow: "220,60,60",
+    nameTR: "Kök Çakra", nameEN: "Root Chakra",
+    areaTR: "Güvenlik · Köklülük · Hayatta Kalma",
+    areaEN: "Security · Grounding · Survival",
+    descTR: "Bedenin toprağa bağlandığı nokta. Güvenlik hissi burada başlar. Kök çakra dengesizse, sürekli bir tehdit algısı ve tutunma ihtiyacı doğar.",
+    descEN: "Where the body connects to the earth. The sense of safety begins here. When imbalanced, a constant sense of threat and need to cling arises.",
+    effectsTR: "Fiziksel güç, dayanıklılık, maddi güvenlik, beden farkındalığı",
+    effectsEN: "Physical strength, resilience, material security, body awareness",
+    blockTR: "Kronik korku, güvensizlik, bel/bacak ağrıları, maddi kaygı",
+    blockEN: "Chronic fear, insecurity, lower back pain, financial anxiety",
+    activeTR: "Toprakla temas, yürüyüş, kırmızı gıdalar, kökleme nefesi",
+    activeEN: "Earth contact, walking, red foods, grounding breathwork",
+    protocol: null,
+  },
+  {
+    key: "sacral", hz: 417, color: "#ed8936", glow: "237,137,54",
+    nameTR: "Sakral Çakra", nameEN: "Sacral Chakra",
+    areaTR: "Yaratıcılık · Duygu · Arzu",
+    areaEN: "Creativity · Emotion · Desire",
+    descTR: "Duyguların ve yaratıcılığın merkezi. Zevk almak, üretmek ve akışta olmak bu çakranın alanı. Bloke olduğunda duygusal donukluk başlar.",
+    descEN: "The center of emotions and creativity. Pleasure, creation, and flow belong here. When blocked, emotional numbness sets in.",
+    effectsTR: "Duygusal akış, yaratıcılık, cinsel enerji, esneklik",
+    effectsEN: "Emotional flow, creativity, sexual energy, flexibility",
+    blockTR: "Duygusal baskılama, yaratıcılık tıkanması, suçluluk",
+    blockEN: "Emotional suppression, creative block, guilt",
+    activeTR: "Su ile temas, dans, turuncu gıdalar, kalça açıcı hareketler",
+    activeEN: "Water contact, dance, orange foods, hip-opening movements",
+    protocol: null,
+  },
+  {
+    key: "solar", hz: 528, color: "#ecc94b", glow: "236,201,75",
+    nameTR: "Solar Pleksus", nameEN: "Solar Plexus",
+    areaTR: "İrade · Güç · Kimlik",
+    areaEN: "Will · Power · Identity",
+    descTR: "Kişisel gücün ve iradenin merkezi. Kim olduğunu bilmek ve harekete geçmek burada başlar. Dengesizliği kontrol ihtiyacı veya güçsüzlük hissi yaratır.",
+    descEN: "The center of personal power and will. Knowing who you are and taking action begins here. Imbalance creates a need for control or powerlessness.",
+    effectsTR: "Özgüven, kararlılık, metabolizma, iç motivasyon",
+    effectsEN: "Self-confidence, determination, metabolism, inner motivation",
+    blockTR: "Kontrol takıntısı, öfke, mide sorunları, özgüven eksikliği",
+    blockEN: "Control obsession, anger, stomach issues, lack of self-esteem",
+    activeTR: "Karın nefesi, sarı gıdalar, güneş teması, güç duruşları",
+    activeEN: "Abdominal breathing, yellow foods, sunlight, power poses",
+    protocol: "focus_369",
+  },
+  {
+    key: "heart", hz: 639, color: "#48bb78", glow: "72,187,120",
+    nameTR: "Kalp Çakra", nameEN: "Heart Chakra",
+    areaTR: "Sevgi · Bağlantı · Şefkat",
+    areaEN: "Love · Connection · Compassion",
+    descTR: "Alt ve üst çakralar arasındaki köprü. Sevgi, bağışlama ve bağlantı burada yaşar. Kalp açıldığında hem kendinle hem başkalarıyla barış gelir.",
+    descEN: "The bridge between lower and upper chakras. Love, forgiveness, and connection live here. When the heart opens, peace comes with self and others.",
+    effectsTR: "Koşulsuz sevgi, empati, duygusal iyileşme, bağışlama",
+    effectsEN: "Unconditional love, empathy, emotional healing, forgiveness",
+    blockTR: "Kalp ağrısı, yalnızlık, affetmeme, duygusal kapanma",
+    blockEN: "Heartache, loneliness, inability to forgive, emotional shutdown",
+    activeTR: "Göğüs nefesi, yeşil doğa, sevgi meditasyonu, kucaklama",
+    activeEN: "Chest breathing, green nature, loving-kindness meditation, embracing",
+    protocol: "breath_47",
+  },
+  {
+    key: "throat", hz: 741, color: "#4299e1", glow: "66,153,225",
+    nameTR: "Boğaz Çakra", nameEN: "Throat Chakra",
+    areaTR: "İfade · Doğruluk · İletişim",
+    areaEN: "Expression · Truth · Communication",
+    descTR: "Sesin ve gerçeğin çakrası. Söylenmemiş sözler burada birikir. Açıldığında gerçeğini korkusuzca ifade edebilirsin.",
+    descEN: "The chakra of voice and truth. Unspoken words accumulate here. When open, you can express your truth fearlessly.",
+    effectsTR: "Net iletişim, yaratıcı ifade, dürüstlük, aktif dinleme",
+    effectsEN: "Clear communication, creative expression, honesty, active listening",
+    blockTR: "Söyleyememe, boğaz sıkışması, yalan, iletişim korkusu",
+    blockEN: "Inability to speak, throat tightness, dishonesty, fear of communication",
+    activeTR: "Şarkı söyleme, mavi gıdalar, boyun germe, sesli nefes",
+    activeEN: "Singing, blue foods, neck stretching, vocal breathing",
+    protocol: "signal",
+  },
+  {
+    key: "third_eye", hz: 852, color: "#9f7aea", glow: "159,122,234",
+    nameTR: "Üçüncü Göz", nameEN: "Third Eye",
+    areaTR: "Sezgi · Görüş · Farkındalık",
+    areaEN: "Intuition · Vision · Awareness",
+    descTR: "İç görüşün ve sezginin kapısı. Fiziksel gözlerin ötesinde görmeyi sağlar. Aktif olduğunda kalıpların ve örüntülerin farkına varırsın.",
+    descEN: "The gateway of inner vision and intuition. Allows seeing beyond physical eyes. When active, you notice patterns and see clearly.",
+    effectsTR: "Güçlü sezgi, berrak düşünce, rüya farkındalığı, içgörü",
+    effectsEN: "Strong intuition, clear thought, dream awareness, insight",
+    blockTR: "Kafa karışıklığı, aşırı düşünme, sezgiyi reddetme, baş ağrısı",
+    blockEN: "Confusion, overthinking, intuition denial, headaches",
+    activeTR: "Meditasyon, karanlık sessizlik, mor gıdalar, göz egzersizi",
+    activeEN: "Meditation, dark silence, purple foods, eye exercises",
+    protocol: null,
+  },
+  {
+    key: "crown", hz: 963, color: "#e2e8f0", glow: "220,220,240",
+    nameTR: "Taç Çakra", nameEN: "Crown Chakra",
+    areaTR: "Birlik · Bilinç · Aşkınlık",
+    areaEN: "Unity · Consciousness · Transcendence",
+    descTR: "Saf bilincin kapısı. Bireysel benliğin evrensel bilince açıldığı nokta. Burası anlamın ötesinde, deneyimin kendisidir.",
+    descEN: "The gateway of pure consciousness. Where individual self opens to universal awareness. This is beyond meaning — it is experience itself.",
+    effectsTR: "Ruhsal bağlantı, iç huzur, birlik bilinci, aşkınlık",
+    effectsEN: "Spiritual connection, inner peace, unity consciousness, transcendence",
+    blockTR: "Anlamsızlık, kopukluk, spiritüel kriz, amaçsızlık",
+    blockEN: "Meaninglessness, disconnection, spiritual crisis, purposelessness",
+    activeTR: "Sessizlik, oruç, beyaz ışık meditasyonu, bilinçli farkındalık",
+    activeEN: "Silence, fasting, white light meditation, conscious awareness",
+    protocol: null,
+  },
+];
+
+const PROTOCOLS = {
+  breath_47: {
+    titleTR: "47 Nefes · Sakinleştir", titleEN: "47 Breath · Regulate",
+    stepsTR: [
+      "Gözlerini kapat. Omuzlarını indir.",
+      "4 saniye nefes al… burundan, derin.",
+      "2 saniye tut… sessizce.",
+      "6 saniye yavaşça ver… ağızdan.",
+      "Tekrarla. Kalp yumuşayana kadar.",
+      "Tamamlandı. Şimdi SANRI'ya sor: bu sessizlikte ne duydun?",
+    ],
+    stepsEN: [
+      "Close your eyes. Drop your shoulders.",
+      "Inhale 4 seconds… through the nose, deeply.",
+      "Hold 2 seconds… in silence.",
+      "Exhale 6 seconds… slowly, through the mouth.",
+      "Repeat. Until the heart softens.",
+      "Complete. Now ask SANRI: what did you hear in that silence?",
+    ],
+  },
+  focus_369: {
+    titleTR: "369 Odak · Açık Zihin", titleEN: "369 Focus · Clear Mind",
+    stepsTR: [
+      "Bir dakika. Sadece bir dakika.",
+      "Omuzlarını bilinçli olarak indir.",
+      "Gözlerini yumuşat — bakışını odağından çöz.",
+      "Zihnindeki tek soruyu bul. Onu net söyle.",
+      "Niyetin netleşti. Şimdi SANRI ile derinleştir.",
+    ],
+    stepsEN: [
+      "One minute. Just one minute.",
+      "Consciously drop your shoulders.",
+      "Soften your eyes — release focus.",
+      "Find the one question in your mind. Say it clearly.",
+      "Your intention is clear. Now deepen with SANRI.",
+    ],
+  },
+  signal: {
+    titleTR: "Sinyal · Yön Bul", titleEN: "Signal · Find Direction",
+    stepsTR: [
+      "Bugün sana bir soru: neye evet diyorsun?",
+      "Evet demek için önce hayırlarını gör.",
+      "Yönün hedef değil — hissettiğin çekim.",
+      "Küçük bir seçim yap. Şimdi. Büyüğü gelir.",
+      "Sinyalin sende. SANRI ile onu oku.",
+    ],
+    stepsEN: [
+      "A question for you today: what is your yes?",
+      "To say yes, first see your no's.",
+      "Direction is not a goal — it's a pull you feel.",
+      "Make one small choice. Now. The rest follows.",
+      "The signal is within you. Read it with SANRI.",
+    ],
+  },
+};
+
+const BREATH_PHASES = [
+  { labelTR: "Nefes Al", labelEN: "Inhale", dur: 4000 },
+  { labelTR: "Tut", labelEN: "Hold", dur: 2000 },
+  { labelTR: "Ver", labelEN: "Exhale", dur: 6000 },
+];
 
 export default function FrekansAlaniPage() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
-  const [running, setRunning] = useState(false);
-  const [step, setStep] = useState(0);
+  const [activeIdx, setActiveIdx] = useState(3);
+  const chakra = CHAKRAS[activeIdx];
 
-  const goBackToGates = () => {
-    unlockAudio();
-    navigate("/", { state: { skipIntro: true } });
+  // experience state
+  const [expMode, setExpMode] = useState(null); // null | "pulse" | "breath" | "protocol"
+  const [breathPhase, setBreathPhase] = useState(0);
+  const [protoStep, setProtoStep] = useState(0);
+  const breathRef = useRef(null);
+
+  const resetExp = useCallback(() => {
+    setExpMode(null);
+    setBreathPhase(0);
+    setProtoStep(0);
+    if (breathRef.current) clearInterval(breathRef.current);
+  }, []);
+
+  const selectChakra = (i) => {
+    setActiveIdx(i);
+    resetExp();
   };
 
-  const cards = useMemo(
-    () => [
-      {
-        key: "breath_47",
-        titleTR: "47 Nefes \u2022 Sakinle\u015ftir",
-        titleEN: "47 Breath \u2022 Regulate",
-        descTR: "3 tur: 4 al \u2022 2 tut \u2022 6 ver. Kalbi yumu\u015fat.",
-        descEN: "3 rounds: 4 in \u2022 2 hold \u2022 6 out. Soften the heart.",
-        stepsTR: [
-          "G\u00f6zlerini kapat. Omuzlar\u0131n\u0131 indir.",
-          "4 saniye nefes al\u2026 burundan, derin.",
-          "2 saniye tut\u2026 sessizce.",
-          "6 saniye yava\u015f\u00e7a ver\u2026 a\u011f\u0131zdan.",
-          "Tekrarla. Kalp yumu\u015fayana kadar.",
-          "Tamamland\u0131. \u015eimdi SANRI'ya sor: bu sessizlikte ne duydun?",
-        ],
-        stepsEN: [
-          "Close your eyes. Drop your shoulders.",
-          "Inhale 4 seconds\u2026 through the nose, deeply.",
-          "Hold 2 seconds\u2026 in silence.",
-          "Exhale 6 seconds\u2026 slowly, through the mouth.",
-          "Repeat. Until the heart softens.",
-          "Complete. Now ask SANRI: what did you hear in that silence?",
-        ],
-      },
-      {
-        key: "focus_369",
-        titleTR: "369 Odak \u2022 A\u00e7\u0131k Zihin",
-        titleEN: "369 Focus \u2022 Clear Mind",
-        descTR: "1 dakika: omuzlar\u0131 indir, g\u00f6zleri yumu\u015fat, niyeti netle\u015ftir.",
-        descEN: "1 minute: drop shoulders, soften eyes, clarify intention.",
-        stepsTR: [
-          "Bir dakika. Sadece bir dakika.",
-          "Omuzlar\u0131n\u0131 bilin\u00e7li olarak indir.",
-          "G\u00f6zlerini yumu\u015fat \u2014 bak\u0131\u015f\u0131n\u0131 oda\u011f\u0131ndan \u00e7\u00f6z.",
-          "Zihnindeki tek soruyu bul. Onu net s\u00f6yle.",
-          "Niyetin netle\u015fti. \u015eimdi SANRI ile derinle\u015ftir.",
-        ],
-        stepsEN: [
-          "One minute. Just one minute.",
-          "Consciously drop your shoulders.",
-          "Soften your eyes \u2014 release focus.",
-          "Find the one question in your mind. Say it clearly.",
-          "Your intention is clear. Now deepen with SANRI.",
-        ],
-      },
-      {
-        key: "signal",
-        titleTR: "Sinyal \u2022 Y\u00f6n Bul",
-        titleEN: "Signal \u2022 Find Direction",
-        descTR: "Bug\u00fcn tek k\u00fc\u00e7\u00fck bir se\u00e7im: 'neye evet?'",
-        descEN: "One small choice today: 'what is my yes?'",
-        stepsTR: [
-          "Bug\u00fcn sana bir soru: neye evet diyorsun?",
-          "Evet demek i\u00e7in \u00f6nce hay\u0131rlar\u0131n\u0131 g\u00f6r.",
-          "Y\u00f6n\u00fcn hedef de\u011fil \u2014 hissetti\u011fin \u00e7ekim.",
-          "K\u00fc\u00e7\u00fck bir se\u00e7im yap. \u015eimdi. B\u00fcy\u00fc\u011f\u00fc gelir.",
-          "Sinyalin sende. SANRI ile onu oku.",
-        ],
-        stepsEN: [
-          "A question for you today: what is your yes?",
-          "To say yes, first see your no's.",
-          "Direction is not a goal \u2014 it's a pull you feel.",
-          "Make one small choice. Now. The rest follows.",
-          "The signal is within you. Read it with SANRI.",
-        ],
-      },
-    ],
-    []
-  );
+  const startPulse = () => { resetExp(); setExpMode("pulse"); };
 
-  const [activeKey, setActiveKey] = useState(cards[0]?.key);
-
-  const active = useMemo(
-    () => cards.find((c) => c.key === activeKey) || cards[0],
-    [cards, activeKey]
-  );
-
-  const steps = isTR ? (active.stepsTR || []) : (active.stepsEN || []);
-  const isLastStep = step >= steps.length - 1;
-
-  const handleStart = () => {
-    unlockAudio();
-    setStep(0);
-    setRunning(true);
+  const startBreath = () => {
+    resetExp();
+    setExpMode("breath");
+    setBreathPhase(0);
+    let phase = 0;
+    const cycle = () => {
+      breathRef.current = setTimeout(() => {
+        phase = (phase + 1) % 3;
+        setBreathPhase(phase);
+        cycle();
+      }, BREATH_PHASES[phase].dur);
+    };
+    cycle();
   };
 
-  const handleNext = () => {
-    if (isLastStep) {
-      const prompt = encodeURIComponent(isTR ? active.descTR : active.descEN);
-      navigate(`/sanriya-sor?domain=frequency_field&mode=mirror&prefill=${prompt}`, {
-        state: { skipIntro: true },
-      });
-    } else {
-      setStep((s) => s + 1);
-    }
+  const startProtocol = () => {
+    if (!chakra.protocol) return;
+    resetExp();
+    setExpMode("protocol");
+    setProtoStep(0);
   };
 
-  const handleClose = () => {
-    setRunning(false);
-    setStep(0);
+  useEffect(() => () => { if (breathRef.current) clearTimeout(breathRef.current); }, []);
+
+  const proto = chakra.protocol ? PROTOCOLS[chakra.protocol] : null;
+  const protoSteps = proto ? (isTR ? proto.stepsTR : proto.stepsEN) : [];
+
+  const goHome = () => navigate("/", { state: { skipIntro: true } });
+  const goToSanri = () => {
+    const q = encodeURIComponent(isTR ? chakra.descTR : chakra.descEN);
+    navigate(`/sanriya-sor?domain=frequency_field&mode=mirror&prefill=${q}`, { state: { skipIntro: true } });
   };
 
   return (
-    <div className={styles.page} onPointerDown={unlockAudio}>
+    <div
+      className={styles.page}
+      style={{ "--ck": chakra.color, "--cg": chakra.glow }}
+      onPointerDown={unlockAudio}
+    >
       <StarTrail />
 
       {/* TOPBAR */}
       <div className={styles.topbar}>
-        <div className={styles.topbarLeft}>
-          <span className={styles.brand}>CAELINUS AI</span>
-          <span className={styles.topbarSubtitle}>
-            {isTR ? "Bilin\u00e7 ve Anlam Zekas\u0131" : "Consciousness & Meaning Intelligence"}
-          </span>
+        <div className={styles.topL}>
+          <span className={styles.brand}>SANRI</span>
+          <span className={styles.brandSub}>{isTR ? "Enerji Kalibrasyon Alanı" : "Energy Calibration Field"}</span>
         </div>
+        <div className={styles.topR}>
+          <button className={styles.topBtn} onClick={goHome}>{isTR ? "← Kapılar" : "← Gates"}</button>
+          <button className={styles.topBtn} onClick={() => setLanguage(isTR ? "en" : "tr")}>{isTR ? "EN" : "TR"}</button>
+        </div>
+      </div>
 
-        <div className={styles.topbarRight}>
-          <button type="button" className={styles.backBtn} onClick={goBackToGates}>
-            {isTR ? "\u2190 Kap\u0131lara D\u00f6n" : "\u2190 Back to Gates"}
-          </button>
-
+      {/* CHAKRA NAVIGATION */}
+      <div className={styles.chakraNav}>
+        {CHAKRAS.map((c, i) => (
           <button
-            type="button"
-            className={styles.langBtn}
-            onClick={() => setLanguage(isTR ? "en" : "tr")}
-            title={isTR ? "EN" : "TR"}
-            aria-label="Language toggle"
+            key={c.key}
+            className={`${styles.chakraNode} ${i === activeIdx ? styles.chakraOn : ""}`}
+            style={{ "--nc": c.color, "--ng": c.glow }}
+            onClick={() => selectChakra(i)}
           >
-            {isTR ? "EN" : "TR"}
+            <span className={styles.chakraDot} />
+            <span className={styles.chakraHz}>{c.hz} Hz</span>
+            <span className={styles.chakraName}>{isTR ? c.nameTR : c.nameEN}</span>
           </button>
+        ))}
+      </div>
+
+      {/* MAIN GRID */}
+      <div className={styles.mainGrid}>
+        {/* ── LEFT: Frequency Info Panel ── */}
+        <div className={styles.infoPanel}>
+          <div className={styles.infoHeader}>
+            <div className={styles.infoHz}>{chakra.hz} Hz</div>
+            <div className={styles.infoName}>{isTR ? chakra.nameTR : chakra.nameEN}</div>
+            <div className={styles.infoArea}>{isTR ? chakra.areaTR : chakra.areaEN}</div>
+          </div>
+
+          <div className={styles.infoDesc}>
+            {isTR ? chakra.descTR : chakra.descEN}
+          </div>
+
+          <div className={styles.infoGrid}>
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardLabel}>{isTR ? "ETKİ" : "EFFECT"}</div>
+              <div className={styles.infoCardText}>{isTR ? chakra.effectsTR : chakra.effectsEN}</div>
+            </div>
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardLabel}>{isTR ? "BLOKAJ BELİRTİSİ" : "BLOCKAGE SIGN"}</div>
+              <div className={styles.infoCardText}>{isTR ? chakra.blockTR : chakra.blockEN}</div>
+            </div>
+            <div className={styles.infoCard}>
+              <div className={styles.infoCardLabel}>{isTR ? "AKTİF ETME" : "ACTIVATION"}</div>
+              <div className={styles.infoCardText}>{isTR ? chakra.activeTR : chakra.activeEN}</div>
+            </div>
+          </div>
+
+          {proto && (
+            <div className={styles.linkedProto}>
+              <div className={styles.linkedLabel}>{isTR ? "BAĞLI PROTOKOL" : "LINKED PROTOCOL"}</div>
+              <div className={styles.linkedName}>{isTR ? proto.titleTR : proto.titleEN}</div>
+            </div>
+          )}
+        </div>
+
+        {/* ── RIGHT: Experience Panel ── */}
+        <div className={styles.expPanel}>
+          {/* Energy ring */}
+          <div className={styles.ringWrap}>
+            <div className={styles.ringOuter} />
+            <div className={styles.ringInner} />
+            {expMode === "breath" && (
+              <div className={styles.breathCircle} key={breathPhase} style={{
+                animationDuration: `${BREATH_PHASES[breathPhase].dur}ms`,
+                animationName: breathPhase === 0 ? styles.breathIn : breathPhase === 2 ? styles.breathOut : styles.breathHold,
+              }} />
+            )}
+            <div className={styles.ringCenter}>
+              {expMode === "breath" ? (
+                <span className={styles.ringLabel}>
+                  {isTR ? BREATH_PHASES[breathPhase].labelTR : BREATH_PHASES[breathPhase].labelEN}
+                </span>
+              ) : (
+                <span className={styles.ringHz}>{chakra.hz}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className={styles.controls}>
+            <button
+              className={`${styles.ctrlBtn} ${expMode === "pulse" ? styles.ctrlOn : ""}`}
+              onClick={startPulse}
+            >
+              <span className={styles.ctrlIcon}>◎</span>
+              {isTR ? "Frekans Başlat" : "Start Frequency"}
+            </button>
+            <button
+              className={`${styles.ctrlBtn} ${expMode === "breath" ? styles.ctrlOn : ""}`}
+              onClick={startBreath}
+            >
+              <span className={styles.ctrlIcon}>≋</span>
+              {isTR ? "Nefes Modu" : "Breath Mode"}
+            </button>
+            {proto && (
+              <button
+                className={`${styles.ctrlBtn} ${expMode === "protocol" ? styles.ctrlOn : ""}`}
+                onClick={startProtocol}
+              >
+                <span className={styles.ctrlIcon}>⚡</span>
+                {isTR ? proto.titleTR.split("·")[0].trim() : proto.titleEN.split("·")[0].trim()}
+              </button>
+            )}
+          </div>
+
+          {/* Protocol runner */}
+          {expMode === "protocol" && proto && (
+            <div className={styles.protoRunner}>
+              <div className={styles.protoStep}>
+                {isTR ? `Adım ${protoStep + 1} / ${protoSteps.length}` : `Step ${protoStep + 1} / ${protoSteps.length}`}
+              </div>
+              <div className={styles.protoBar}>
+                <div className={styles.protoFill} style={{ width: `${((protoStep + 1) / protoSteps.length) * 100}%` }} />
+              </div>
+              <div className={styles.protoText}>{protoSteps[protoStep]}</div>
+              <div className={styles.protoBtns}>
+                {protoStep < protoSteps.length - 1 ? (
+                  <button className={styles.protoPrimary} onClick={() => setProtoStep(s => s + 1)}>
+                    {isTR ? "Sonraki →" : "Next →"}
+                  </button>
+                ) : (
+                  <button className={styles.protoPrimary} onClick={goToSanri}>
+                    {isTR ? "SANRI ile Devam Et →" : "Continue with SANRI →"}
+                  </button>
+                )}
+                <button className={styles.protoGhost} onClick={resetExp}>
+                  {isTR ? "Kapat" : "Close"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Pulse mode visual */}
+          {expMode === "pulse" && (
+            <div className={styles.pulseInfo}>
+              <p>{isTR
+                ? `${chakra.hz} Hz frekansı aktif. Gözlerini kapat ve hisset.`
+                : `${chakra.hz} Hz frequency active. Close your eyes and feel.`}
+              </p>
+              <button className={styles.protoGhost} onClick={resetExp}>{isTR ? "Durdur" : "Stop"}</button>
+            </div>
+          )}
+
+          {/* Idle CTA */}
+          {!expMode && (
+            <div className={styles.idleCta}>
+              <p className={styles.idleText}>
+                {isTR
+                  ? "Bir mod seç ve deneyimi başlat."
+                  : "Choose a mode and start the experience."}
+              </p>
+              <button className={styles.sanriBtn} onClick={goToSanri}>
+                ✦ {isTR ? "SANRI'ya Sor" : "Ask SANRI"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* CONTENT */}
-      <div className={styles.shell}>
-        <div className={styles.card}>
-          <div className={styles.kicker}>CAELINUS AI \u2022 FREQUENCY FIELD</div>
-
-          <div className={styles.h1}>{isTR ? "Frekans Alan\u0131" : "Frequency Field"}</div>
-
-          <div className={styles.subtitle}>
-            {isTR
-              ? "Enerji katman\u0131. K\u00fc\u00e7\u00fck se\u00e7imler b\u00fcy\u00fck ak\u0131\u015fa d\u00f6n\u00fc\u015f\u00fcr."
-              : "Energy layer. Small choices become a larger flow."}
-          </div>
-
-          <div className={styles.grid}>
-            {/* LEFT */}
-            <div className={styles.left}>
-              <div className={styles.sectionTitle}>{isTR ? "Protokoller" : "Protocols"}</div>
-
-              <div className={styles.list}>
-                {cards.map((c) => {
-                  const isActive = c.key === activeKey;
-                  return (
-                    <button
-                      key={c.key}
-                      type="button"
-                      className={`${styles.item} ${isActive ? styles.itemActive : ""}`}
-                      onClick={() => { setActiveKey(c.key); setRunning(false); setStep(0); }}
-                    >
-                      <div className={styles.itemTitle}>{isTR ? c.titleTR : c.titleEN}</div>
-                      <div className={styles.itemDesc}>{isTR ? c.descTR : c.descEN}</div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* RIGHT */}
-            <div className={styles.right}>
-              <div className={styles.panel}>
-                <div className={styles.panelTitle}>{isTR ? "Se\u00e7ili Protokol" : "Selected Protocol"}</div>
-
-                <div className={styles.bigTitle}>{isTR ? active.titleTR : active.titleEN}</div>
-                <div className={styles.bigDesc}>{isTR ? active.descTR : active.descEN}</div>
-
-                {/* Protocol Runner */}
-                {running && (
-                  <div style={{
-                    marginTop: 20,
-                    padding: "20px 18px",
-                    borderRadius: 16,
-                    background: "rgba(160,120,255,0.08)",
-                    border: "1px solid rgba(160,120,255,0.22)",
-                  }}>
-                    <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", opacity: 0.6, marginBottom: 8 }}>
-                      {isTR ? `Ad\u0131m ${step + 1} / ${steps.length}` : `Step ${step + 1} / ${steps.length}`}
-                    </div>
-
-                    {/* Progress bar */}
-                    <div style={{ height: 3, borderRadius: 2, background: "rgba(255,255,255,0.08)", marginBottom: 16 }}>
-                      <div style={{
-                        height: "100%",
-                        borderRadius: 2,
-                        background: "linear-gradient(90deg, #b98cff, #7c5fff)",
-                        width: `${((step + 1) / steps.length) * 100}%`,
-                        transition: "width 0.4s ease",
-                      }} />
-                    </div>
-
-                    <div style={{ fontSize: 16, lineHeight: 1.7, fontWeight: 500 }}>
-                      {steps[step]}
-                    </div>
-
-                    <div style={{ display: "flex", gap: 10, marginTop: 18 }}>
-                      <button
-                        type="button"
-                        className={styles.primaryBtn}
-                        onClick={handleNext}
-                      >
-                        {isLastStep
-                          ? (isTR ? "SANRI ile Devam Et \u2192" : "Continue with SANRI \u2192")
-                          : (isTR ? "Sonraki \u2192" : "Next \u2192")}
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.ghostBtn}
-                        onClick={handleClose}
-                      >
-                        {isTR ? "Kapat" : "Close"}
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {!running && (
-                  <div className={styles.ctaRow}>
-                    <button
-                      type="button"
-                      className={styles.primaryBtn}
-                      onClick={handleStart}
-                    >
-                      {isTR ? "Ba\u015flat" : "Start"}
-                    </button>
-
-                    <button
-                      type="button"
-                      className={styles.ghostBtn}
-                      onClick={() => navigator.clipboard?.writeText(isTR ? active.descTR : active.descEN)}
-                    >
-                      {isTR ? "Metni Kopyala" : "Copy Text"}
-                    </button>
-                  </div>
-                )}
-
-                <div className={styles.footnote}>
-                  {isTR
-                    ? "Not: Frekans bir hedef de\u011fil; y\u00f6n. K\u00fc\u00e7\u00fck se\u00e7imler b\u00fcy\u00fck ak\u0131\u015fa d\u00f6n\u00fc\u015f\u00fcr."
-                    : "Note: Frequency is not a goal; it's direction. Small choices become a larger flow."}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.footerLine}>&copy; 2026 CaelinusAI \u2022 SANRI</div>
-      </div>
+      <div className={styles.foot}>© 2026 SANRI</div>
     </div>
   );
 }
