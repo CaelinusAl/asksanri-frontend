@@ -7,8 +7,9 @@ export const booksMetadata = [
       "İlahi hatırlayış ve bilinç uyanışı metni. Her bölüm bir 'Kapı' gibi açılır.",
     cover: "/assets/gates/kutuphane.jpg",
     color: "#c8a0ff",
-    isPremium: false,
-    freePreviewPages: 999,
+    isPremium: true,
+    price: 369,
+    freePreviewPages: 6,
     jsonFile: "/books/kitap_112.json",
     chapters: [
       "Kitabın Niyeti",
@@ -31,7 +32,8 @@ export const booksMetadata = [
     cover: "/assets/gates/bilinc.jpg",
     color: "#48BB78",
     isPremium: true,
-    freePreviewPages: 5,
+    price: 470,
+    freePreviewPages: 6,
     jsonFile: "/books/matrix_code.json",
     chapters: [
       "Ruhsal Uyanış: Benim Hikâyem",
@@ -59,8 +61,9 @@ export const booksMetadata = [
       "Âl-i İmrân Suresi — Işık, soy, rahim ve sırrın frekansla açılışı.",
     cover: "/assets/gates/frekans.jpg",
     color: "#ED8936",
-    isPremium: true,
-    freePreviewPages: 5,
+    isPremium: false,
+    price: 0,
+    freePreviewPages: 999,
     jsonFile: "/books/nurun_frekansi.json",
     chapters: [
       "Hayy'dan İmrân'a — Işık, Soy, Rahim",
@@ -93,6 +96,7 @@ export const booksMetadata = [
     cover: "/assets/gates/sanri.jpg",
     color: "#E53E3E",
     isPremium: false,
+    price: 0,
     freePreviewPages: 999,
     jsonFile: "/books/oku.json",
     chapters: [

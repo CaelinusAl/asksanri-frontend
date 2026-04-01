@@ -496,10 +496,175 @@
 
 /* ── Responsive ── */
 @media (max-width: 600px) {
-  .title { font-size: 24px; }
-  .content { font-size: 15px; }
-  .sanriWrap { padding: 20px; }
-  .commentText { padding-left: 0; margin-top: 8px; }
-  .deeperLinks { flex-direction: column; }
-  .deeperBtn { text-align: center; }
+
+  /* ─ Navigation ─ */
+  .topBar { padding: 16px 16px 0; }
+  .backLink {
+    font-size: 14px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    color: #a8a2c0;
+  }
+
+  /* ─ Cover ─ */
+  .coverWrap { padding: 0 12px; margin-top: 16px; }
+  .cover { border-radius: 14px; max-height: 240px; }
+  .coverFallback { height: 200px; border-radius: 14px; }
+
+  /* ─ Article container ─ */
+  .article { padding: 0 16px 60px; }
+
+  /* ─ Category badge ─ */
+  .catBadge {
+    font-size: 12px;
+    padding: 5px 14px;
+    margin-top: 20px;
+  }
+
+  /* ─ Title — large, clear, high contrast ─ */
+  .title {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.3;
+    color: #f4f0fc;
+    margin: 14px 0 8px;
+  }
+
+  /* ─ Subtitle — visible on dark ─ */
+  .subtitleText {
+    font-size: 16px;
+    color: #b8b2d0;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  /* ─ Meta row ─ */
+  .meta {
+    font-size: 13px;
+    color: #8a84a8;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+  }
+  .shareBtn {
+    font-size: 12px;
+    padding: 6px 16px;
+    min-height: 36px;
+  }
+
+  /* ─ Main content — readable dark, 16px min ─ */
+  .content {
+    font-size: 17px;
+    line-height: 1.9;
+    color: #ddd8ea;
+    margin-top: 24px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ─ Code Layer ─ */
+  .codeLayerWrap { padding: 20px 18px; margin-top: 28px; }
+  .codeLayerTitle { font-size: 13px; }
+  .codeLayerText {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #c8c0e0;
+  }
+
+  /* ─ Sanri Reflection ─ */
+  .sanriWrap { padding: 22px 18px; margin-top: 28px; }
+  .sanriLabel { font-size: 11px; }
+  .sanriAnalysis {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #c8c0e0;
+  }
+  .sanriStrong {
+    font-size: 18px;
+    color: #f0ecf8;
+    line-height: 1.45;
+    padding-left: 12px;
+  }
+  .sanriQuestion {
+    font-size: 16px;
+    color: #b8acd8;
+    line-height: 1.6;
+  }
+
+  /* ─ CTA areas ─ */
+  .autoCta { padding: 24px 18px; margin-top: 28px; }
+  .autoCtaText {
+    font-size: 16px;
+    line-height: 1.55;
+    color: #e8e4f0;
+  }
+  .microPayBtn {
+    font-size: 16px;
+    padding: 16px 28px;
+    min-height: 52px;
+  }
+  .autoCtaBtn {
+    font-size: 15px;
+    padding: 14px 28px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deeperCta { padding: 24px 18px; margin-top: 32px; }
+  .deeperText {
+    font-size: 16px;
+    color: #d4cee8;
+    line-height: 1.55;
+  }
+  .deeperLinks { flex-direction: column; gap: 10px; }
+  .deeperBtn {
+    text-align: center;
+    font-size: 14px;
+    padding: 14px 20px;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ─ Comments ─ */
+  .commentsTitle { font-size: 19px; margin-bottom: 16px; }
+  .commentCard { padding: 14px 0; }
+  .commentAvatar { width: 34px; height: 34px; font-size: 14px; }
+  .commentAuthor { font-size: 14px; color: #ddd8ea; }
+  .commentTime { font-size: 12px; color: #8a84a8; }
+  .commentText {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #beb8d4;
+    padding-left: 0;
+    margin-top: 8px;
+  }
+  .commentInput {
+    font-size: 15px;
+    padding: 16px;
+    min-height: 90px;
+  }
+  .nameInput { font-size: 14px; padding: 12px 14px; min-height: 44px; }
+  .submitBtn { font-size: 14px; padding: 12px 24px; min-height: 44px; }
+
+  /* ─ Bottom CTA ─ */
+  .sanriCta { padding: 28px 18px; margin-top: 36px; }
+  .sanriCtaText {
+    font-size: 16px;
+    color: #b8acd8;
+    line-height: 1.6;
+  }
+  .sanriCtaBtn {
+    font-size: 15px;
+    padding: 14px 28px;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* ─ Divider ─ */
+  .divider { margin: 32px 0; }
 }

@@ -265,9 +265,84 @@
   .featuredCard { grid-template-columns: 1fr; }
   .featuredImg { min-height: 200px; }
 }
+
 @media (max-width: 600px) {
-  .grid { grid-template-columns: 1fr; }
-  .h1 { font-size: 24px; }
-  .featuredTitle { font-size: 20px; }
-  .featuredBody { padding: 20px 16px; }
+  /* ─ Header ─ */
+  .header { padding: 36px 16px 0; }
+  .backBtn { font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; }
+  .h1 { font-size: 28px; letter-spacing: 1px; }
+  .subtitle {
+    font-size: 16px;
+    color: #a8a2c0;
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+
+  /* ─ Filters — readable chips, 44px tap target ─ */
+  .filters { gap: 8px; margin-top: 24px; padding: 0 12px; }
+  .filterBtn {
+    font-size: 14px;
+    padding: 10px 18px;
+    min-height: 44px;
+    border-radius: 22px;
+  }
+  .filterActive { font-weight: 700; }
+
+  /* ─ Featured ─ */
+  .featuredWrap { margin-top: 28px; padding: 0 12px; }
+  .featuredBody { padding: 22px 18px 24px; gap: 10px; }
+  .featuredTitle {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+  .featuredSub {
+    font-size: 15px;
+    color: #b8b2d0;
+    line-height: 1.6;
+  }
+  .featuredMeta {
+    font-size: 13px;
+    color: #8a84a8;
+  }
+  .featuredBadge { font-size: 12px; padding: 5px 14px; }
+  .featuredLabel { font-size: 11px; }
+
+  /* ─ Grid — single column ─ */
+  .gridWrap { margin-top: 28px; padding: 0 12px 80px; }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* ─ Card — spacious, readable ─ */
+  .card { border-radius: 16px; }
+  .cardImgWrap { aspect-ratio: 16 / 9; }
+  .cardCatBadge {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+  .cardBody { padding: 18px 20px 22px; }
+  .cardTitle {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.35;
+    color: #f0ecf8;
+    margin-bottom: 8px;
+  }
+  .cardExcerpt {
+    font-size: 15px;
+    color: #b0a8c8;
+    line-height: 1.6;
+    -webkit-line-clamp: 3;
+  }
+  .cardMeta {
+    font-size: 13px;
+    color: #8a84a8;
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+
+  /* ─ Empty state ─ */
+  .empty { font-size: 16px; color: #8a84a8; }
 }

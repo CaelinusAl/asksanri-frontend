@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./BookReader.module.css";
 import { booksMetadata, loadBookPages } from "../data/booksContent";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
-import { PremiumGate } from "../components/premium/PremiumGate";
 import { unlockAudio } from "../utils/sfx";
 
 /* ── Page Renderers by Type ── */
@@ -146,17 +146,151 @@ function RenderPage({ page, meta, pageNum }) {
   return <Comp page={page} meta={meta} pageNum={pageNum} />;
 }
 
+/* ── Book Paywall — Ritual Transition ── */
+
+function BookPaywall({ meta, isTR }) {
+  const navigate = useNavigate();
+  const { startCheckout, hasFreeUnlock, claimFreeUnlock, isContentUnlocked, refreshAccess } = usePremium();
+  const { isAuthenticated } = useAuth();
+  const [busy, setBusy] = useState(false);
+  const [freeSuccess, setFreeSuccess] = useState(false);
+
+  const price = meta.price || 0;
+  const priceLabel = price > 0 ? `₺${price}` : "";
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  const handleSingleUnlock = async () => {
+    if (!isAuthenticated) { navigate("/giris"); return; }
+    if (busy) return;
+    setBusy(true);
+    try {
+      await startCheckout("single_book_unlock", meta.id);
+    } catch {
+      setBusy(false);
+    }
+  };
+
+  const handleFreeUnlock = async () => {
+    if (!isAuthenticated) { navigate("/giris"); return; }
+    if (busy) return;
+    setBusy(true);
+    try {
+      await claimFreeUnlock(meta.id, "book");
+      setFreeSuccess(true);
+      await refreshAccess();
+      setTimeout(() => window.location.reload(), 1500);
+    } catch {
+      setBusy(false);
+    }
+  };
+
+  if (freeSuccess) {
+    return (
+      <motion.div
+        className={styles.paywallWrap}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
+        <div className={styles.paywallCard} style={{ paddingTop: 48, paddingBottom: 48 }}>
+          <motion.div
+            className={styles.paywallGlyph}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1, rotate: 360 }}
+            transition={{ duration: 0.6 }}
+          >✦</motion.div>
+          <h3 className={styles.paywallTitle}>
+            {isTR ? "Kapı açıldı." : "The door is open."}
+          </h3>
+          <p className={styles.paywallSub}>
+            {isTR ? "Okumaya devam edebilirsin." : "You can keep reading."}
+          </p>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      className={styles.paywallWrap}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
+      <div className={styles.paywallGlow} />
+      <div className={styles.paywallCard}>
+        <div className={styles.paywallGlyph}>✦</div>
+
+        <h3 className={styles.paywallTitle}>
+          {isTR ? "Bu noktaya kadar geldin." : "You've come this far."}
+        </h3>
+        <p className={styles.paywallSub}>
+          {isTR
+            ? "Buradan sonrası sadece okunmaz. Açılır."
+            : "What follows isn't just read. It's unlocked."}
+        </p>
+
+        <div className={styles.paywallDivider} />
+
+        <p className={styles.paywallHero}>
+          {isTR
+            ? "Bu katman açıldığında hikaye değişir."
+            : "When this layer opens, the story changes."}
+        </p>
+
+        <div className={styles.paywallActions}>
+          {hasFreeUnlock && (
+            <button
+              className={styles.paywallFree}
+              onClick={handleFreeUnlock}
+              disabled={busy}
+            >
+              {busy
+                ? (isTR ? "Açılıyor..." : "Opening...")
+                : (isTR ? "İlk Kitabını Ücretsiz Aç" : "Unlock Your First Book Free")}
+            </button>
+          )}
+
+          <button
+            className={styles.paywallPrimary}
+            onClick={handleSingleUnlock}
+            disabled={busy}
+          >
+            {busy
+              ? (isTR ? "Yönlendiriliyorsunuz..." : "Redirecting...")
+              : isTR
+                ? `Devam Et — ${priceLabel}`
+                : `Continue — ${priceLabel}`}
+          </button>
+          <Link to="/subscription" className={styles.paywallSecondary}>
+            {isTR ? "Tüm Kitaplara Aç" : "Unlock All Books"}
+          </Link>
+        </div>
+
+        <p className={styles.paywallTrust}>
+          {isTR
+            ? "Anında açılır. Kaldığın yerden devam edersin."
+            : "Instant access. Continue right where you left off."}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 /* ── Main Book Reader ── */
 
 export default function BookReader() {
   const { bookId } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
-  const { isPremium } = usePremium();
+  const { isPremium, isContentUnlocked } = usePremium();
   const isTR = language === "tr";
 
   const meta = booksMetadata.find((b) => b.id === bookId);
-  const isBookLocked = meta?.isPremium && !isPremium;
+  const isBookLocked = meta?.isPremium && !isPremium && !isContentUnlocked(bookId);
   const freeLimit = meta?.freePreviewPages || 5;
 
   const [pages, setPages] = useState([]);
@@ -274,7 +408,7 @@ export default function BookReader() {
           {/* BOOK */}
           <div className={styles.bookWrap}>
             <div className={styles.book}>
-              <div className={styles.spread}>
+              <div className={`${styles.spread} ${isAtPremiumWall ? styles.spreadBlurred : ""}`}>
                 <div className={styles.leftPage}>
                   <div className={`${styles.pageNum} ${styles.pageNumLeft}`}>
                     {leftIdx + 1}
@@ -342,17 +476,7 @@ export default function BookReader() {
           </div>
 
           {isAtPremiumWall && (
-            <div style={{ maxWidth: 700, margin: "24px auto", padding: "0 20px" }}>
-              <PremiumGate
-                locked={true}
-                title={isTR ? "Bu kitabın devamı premium" : "The rest of this book is premium"}
-                description={isTR
-                  ? "Tüm sayfaları okumak için Premium'a geç."
-                  : "Upgrade to Premium to read all pages."}
-              >
-                <div style={{ height: 120 }} />
-              </PremiumGate>
-            </div>
+            <BookPaywall meta={meta} isTR={isTR} />
           )}
         </>
       )}

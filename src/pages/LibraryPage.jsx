@@ -4,14 +4,13 @@ import styles from "./LibraryPage.module.css";
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
-import { LockBadge } from "../components/premium/PremiumGate";
 import { unlockAudio } from "../utils/sfx";
 import { booksMetadata } from "../data/booksContent";
 
 export default function LibraryPage() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
-  const { isPremium } = usePremium();
+  const { isPremium, isContentUnlocked } = usePremium();
   const isTR = language === "tr";
 
   const goBack = () => {
@@ -75,7 +74,16 @@ export default function LibraryPage() {
                 alt={book.title}
                 loading="lazy"
               />
-              {book.isPremium && !isPremium && <LockBadge />}
+              {book.isPremium && !isPremium && !isContentUnlocked(book.id) && (
+                <span className={styles.lockBadge}>
+                  {book.price > 0 ? `₺${book.price}` : "🔒"}
+                </span>
+              )}
+              {(!book.isPremium || book.price === 0) && (
+                <span className={styles.freeBadge}>
+                  {isTR ? "Ücretsiz" : "Free"}
+                </span>
+              )}
             </div>
             <div className={styles.bookInfo}>
               <div className={styles.bookTitle}>{book.title}</div>
@@ -83,7 +91,7 @@ export default function LibraryPage() {
               <div className={styles.bookDesc}>{book.description}</div>
               <div className={styles.bookMeta}>
                 <span className={styles.bookPages}>
-                  {book.pageCount} {isTR ? "sayfa" : "pages"}
+                  {book.chapters?.length || 0} {isTR ? "bölüm" : "chapters"}
                 </span>
                 <button
                   type="button"

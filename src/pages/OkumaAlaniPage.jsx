@@ -100,7 +100,7 @@ export default function OkumaAlaniPage() {
               })}
               <h2 className={styles.featuredTitle}>{featured.title}</h2>
               <p className={styles.featuredSub}>{featured.subtitle}</p>
-              <p className={styles.featuredSub} style={{ fontSize: 13, opacity: 0.8 }}>
+              <p className={styles.featuredSub} style={{ opacity: 0.85 }}>
                 {featured.excerpt}
               </p>
               <div className={styles.featuredMeta}>
