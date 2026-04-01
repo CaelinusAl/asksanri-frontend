@@ -102,16 +102,25 @@
     inset 0 0 40px rgba(255,255,255,0.05);
 
   text-align: center;
+  contain: layout style;
+}
+
+@media (max-width: 540px) {
+  .introText { min-height: 260px; }
 }
 
 .orb {
   width: 90px;
   height: 90px;
+  min-width: 90px;
+  min-height: 90px;
   margin: 0 auto 30px;
   border-radius: 50%;
   background: radial-gradient(circle at 30% 30%, #ffffff, #b98cff 70%);
   box-shadow: 0 0 50px rgba(190,140,255,0.8);
   animation: pulse 3s infinite ease-in-out;
+  will-change: transform;
+  contain: strict;
 }
 
 @keyframes pulse {
@@ -131,15 +140,16 @@
   font-size: 15px;
   line-height: 1.9;
   opacity: 0.9;
+  min-height: 220px;
 }
 
 .line {
-  animation: fadeIn 0.5s ease forwards;
+  will-change: opacity, transform;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+.ctaArea {
+  will-change: opacity, transform;
+  min-height: 80px;
 }
 
 .tapHint {
@@ -193,11 +203,13 @@
   overflow: hidden;
   cursor: pointer;
   min-height: 200px;
+  aspect-ratio: 16 / 7;
   background-size: cover;
   background-position: center;
   margin-bottom: 28px;
   border: 1px solid rgba(255,255,255,0.10);
   transition: transform 0.3s, box-shadow 0.3s;
+  contain: layout style;
 }
 
 .featured:hover {
@@ -274,10 +286,11 @@
   border: 1px solid rgba(200, 160, 255, 0.15);
   border-radius: 16px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: border-color 0.3s, background 0.3s;
   text-align: center;
   position: relative;
   overflow: hidden;
+  min-height: 120px;
 }
 .dailyQuestion::before {
   content: "";
@@ -341,6 +354,7 @@
   overflow: hidden;
   cursor: pointer;
   min-height: 220px;
+  aspect-ratio: 4 / 3;
   background-size: cover;
   background-position: center;
   border: 1px solid rgba(255,255,255,0.08);
@@ -348,6 +362,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  contain: layout style;
 }
 
 .gate:hover {

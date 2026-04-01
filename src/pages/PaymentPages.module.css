@@ -19,8 +19,8 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 0;
-  height: 0;
+  width: 160vmax;
+  height: 160vmax;
   border-radius: 50%;
   background: radial-gradient(
     circle,
@@ -28,14 +28,13 @@
     rgba(120, 247, 216, 0.06) 40%,
     transparent 70%
   );
-  transform: translate(-50%, -50%);
-  transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1),
-              height 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
+  will-change: transform;
 }
 .ritualGlowActive {
-  width: 160vmax;
-  height: 160vmax;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .ritualCenter {

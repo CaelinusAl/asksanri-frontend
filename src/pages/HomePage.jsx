@@ -266,32 +266,46 @@ export default function HomePage() {
               <div className={styles.introTitle}>CAELINUS AI</div>
 
               <div className={styles.introText}>
-                {introLines.slice(0, visibleLines).map((line, i) => (
-                  <div key={i} className={styles.line}>
+                {introLines.map((line, i) => (
+                  <div
+                    key={i}
+                    className={styles.line}
+                    style={{
+                      opacity: i < visibleLines ? 1 : 0,
+                      transform: i < visibleLines ? "translateY(0)" : "translateY(8px)",
+                      transition: "opacity .5s ease, transform .5s ease",
+                    }}
+                  >
                     {line || "\u00A0"}
                   </div>
                 ))}
               </div>
 
-              {visibleLines >= introLines.length && (
-                <>
-                  <div className={styles.tapHint}>
-                    {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
-                  </div>
+              <div
+                className={styles.ctaArea}
+                style={{
+                  opacity: visibleLines >= introLines.length ? 1 : 0,
+                  transform: visibleLines >= introLines.length ? "translateY(0)" : "translateY(12px)",
+                  transition: "opacity .5s ease, transform .5s ease",
+                  pointerEvents: visibleLines >= introLines.length ? "auto" : "none",
+                }}
+              >
+                <div className={styles.tapHint}>
+                  {isTR ? "Dokun → Kapılar açılır" : "Tap → Gates open"}
+                </div>
 
-                  <button
-                    type="button"
-                    className={styles.enterBtn}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onOpenGates();
-                    }}
-                  >
-                    {isTR ? "GİRİŞ" : "ENTER"}
-                  </button>
-                </>
-              )}
+                <button
+                  type="button"
+                  className={styles.enterBtn}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onOpenGates();
+                  }}
+                >
+                  {isTR ? "GİRİŞ" : "ENTER"}
+                </button>
+              </div>
             </div>
           </div>
         ) : (

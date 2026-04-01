@@ -317,6 +317,7 @@ const T = {
     flexDirection: "column",
     alignItems: "center",
     gap: 0,
+    minHeight: 280,
   },
   line: {
     fontSize: 15,
@@ -544,15 +545,23 @@ export default function GirisPage() {
                     : isTR ? "Alanını Oluştur" : "Create Your Space"}
                 </div>
 
-                {mode === "register" && (
-                  <div style={P.fieldGroup}>
-                    <label style={P.label}>{isTR ? "Adın" : "Your name"}</label>
-                    <input className="sg-input" style={P.input}
-                      value={name} onChange={(e) => setName(e.target.value)}
-                      placeholder={isTR ? "İsim..." : "Name..."} autoComplete="name"
-                    />
+                <div style={{
+                  display: "grid",
+                  gridTemplateRows: mode === "register" ? "1fr" : "0fr",
+                  transition: "grid-template-rows .3s ease",
+                  overflow: "hidden",
+                }}>
+                  <div style={{ minHeight: 0 }}>
+                    <div style={P.fieldGroup}>
+                      <label style={P.label}>{isTR ? "Adın" : "Your name"}</label>
+                      <input className="sg-input" style={P.input}
+                        value={name} onChange={(e) => setName(e.target.value)}
+                        placeholder={isTR ? "İsim..." : "Name..."} autoComplete="name"
+                        tabIndex={mode === "register" ? 0 : -1}
+                      />
+                    </div>
                   </div>
-                )}
+                </div>
 
                 <div style={P.fieldGroup}>
                   <label style={P.label}>{isTR ? "E-posta" : "Email"}</label>
@@ -578,7 +587,16 @@ export default function GirisPage() {
                   </div>
                 </div>
 
-                {err && <div style={P.error} role="alert">{err}</div>}
+                <div style={{
+                  display: "grid",
+                  gridTemplateRows: err ? "1fr" : "0fr",
+                  transition: "grid-template-rows .25s ease",
+                  overflow: "hidden",
+                }}>
+                  <div style={{ minHeight: 0 }}>
+                    <div style={P.error} role="alert">{err || "\u00A0"}</div>
+                  </div>
+                </div>
 
                 <button className="sg-btn" type="submit" style={P.btnPrimary} disabled={busy}>
                   {busy
