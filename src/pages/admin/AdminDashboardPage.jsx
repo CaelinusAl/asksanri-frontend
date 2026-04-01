@@ -384,17 +384,27 @@ function pickNumber(obj, ...keys) {
 
 function normalizeDashboard(raw) {
   if (!raw || typeof raw !== "object") return { ...MOCK_DASHBOARD };
+  const u = raw.users || {};
   return {
-    total_users: pickNumber(raw, "total_users", "totalUsers") ?? MOCK_DASHBOARD.total_users,
-    daily_active: pickNumber(raw, "daily_active", "dailyActive") ?? MOCK_DASHBOARD.daily_active,
-    new_signups: pickNumber(raw, "new_signups", "newSignups") ?? MOCK_DASHBOARD.new_signups,
+    total_users: pickNumber(u, "total") ?? pickNumber(raw, "total_users", "totalUsers") ?? MOCK_DASHBOARD.total_users,
+    daily_active: pickNumber(u, "active_24h") ?? pickNumber(raw, "daily_active", "dailyActive") ?? MOCK_DASHBOARD.daily_active,
+    new_signups: pickNumber(u, "new_7d", "new_24h") ?? pickNumber(raw, "new_signups", "newSignups") ?? MOCK_DASHBOARD.new_signups,
+    premium_users: pickNumber(u, "premium") ?? 0,
+    verified_users: pickNumber(u, "verified") ?? 0,
+    admin_count: pickNumber(u, "admin") ?? 0,
   };
 }
 
 function normalizeMembership(raw) {
   if (!raw || typeof raw !== "object") return { ...MOCK_MEMBERSHIP };
   return {
-    premium_count: pickNumber(raw, "premium_count", "premiumCount") ?? MOCK_MEMBERSHIP.premium_count,
+    premium_count: pickNumber(raw, "premium", "premium_count", "premiumCount") ?? MOCK_MEMBERSHIP.premium_count,
+    total_users: pickNumber(raw, "total_users") ?? 0,
+    free_users: pickNumber(raw, "free") ?? 0,
+    conversion_rate: pickNumber(raw, "conversion_rate") ?? 0,
+    vip_clicks: pickNumber(raw, "vip_clicks") ?? 0,
+    vip_unlocks: pickNumber(raw, "vip_unlocks") ?? 0,
+    purchases: pickNumber(raw, "purchases") ?? 0,
   };
 }
 
@@ -414,22 +424,35 @@ function extractActivities(raw) {
     raw.activities ||
     raw.activity_feed ||
     raw.recent_events ||
-    raw.events;
+    (raw.events && Array.isArray(raw.events) ? raw.events : null) ||
+    (raw.events && raw.events.recent ? raw.events.recent : null);
   if (!Array.isArray(arr) || arr.length === 0) return [];
   const mapped = arr
     .map((item) => {
       if (!item || typeof item !== "object") return null;
-      const type = String(item.type || item.event_type || "post").toLowerCase();
+      const type = String(item.type || item.event_type || item.action || "post").toLowerCase();
       const text =
-        item.text || item.message || item.description || item.title || item.summary || "";
-      const time =
+        item.text || item.message || item.description || item.title || item.summary ||
+        (item.action ? `${item.action}${item.domain ? ` (${item.domain})` : ""}${item.user_id ? ` — user #${item.user_id}` : ""}` : "");
+      const rawTime =
         item.time ||
         item.time_ago ||
         item.relative_time ||
         item.when ||
         (item.created_at ? String(item.created_at) : "");
+      let time = rawTime || "—";
+      if (rawTime && rawTime.includes("T")) {
+        try {
+          const d = new Date(rawTime);
+          const diff = Math.floor((Date.now() - d.getTime()) / 1000);
+          if (diff < 60) time = "az önce";
+          else if (diff < 3600) time = `${Math.floor(diff / 60)} dk önce`;
+          else if (diff < 86400) time = `${Math.floor(diff / 3600)} sa önce`;
+          else time = `${Math.floor(diff / 86400)} gün önce`;
+        } catch {}
+      }
       if (!text) return null;
-      return { type, text, time: time || "—" };
+      return { type, text, time };
     })
     .filter(Boolean);
   return mapped;

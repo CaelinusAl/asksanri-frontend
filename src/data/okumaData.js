@@ -911,8 +911,8 @@ kimse bakmadığında ne yaptığına bak.
     isPremium: false,
     previewContent: null,
     createdAt: "2026-04-01T20:00:00Z",
-    commentCount: 0,
-    viewCount: 0,
+    commentCount: 3,
+    viewCount: 187,
     isFeatured: true,
   },
 ];
