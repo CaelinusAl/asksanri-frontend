@@ -165,7 +165,7 @@ export default function HomePage() {
           : "Symbol reading, frequency decoding, system analysis — learn the codes",
         hint: isTR ? "Eğitime Başla →" : "Start Learning →",
         path: "/kod-egitmeni",
-        img: "/assets/gates/kod-egitmeni.jpg",
+        img: "/assets/gates/kod-egitimi.jpg",
       },
     ];
 
