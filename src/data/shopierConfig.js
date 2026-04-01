@@ -1,40 +1,40 @@
 /* ═══════════════════════════════════════════════════
-   SHOPIER PAYMENT CONFIGURATION
+   SHOPIER PAYMENT CONFIGURATION — Multi-tier
    ═══════════════════════════════════════════════════
-   Product links and access management for Shopier integration.
-   Update SHOPIER_PRODUCTS with your actual Shopier product URLs.
+   FREE      : Nurun Frekansı, OKU
+   MICRO 9.90: Okuma devamları
+   CORE  49  : Kod Eğitmeni
+   PREMIUM   : 112. Kitap (369₺), Matrix Code İkra (470₺)
 */
 
 const SITE_URL =
   (typeof window !== "undefined" && window.location.origin) ||
   "https://asksanri.com";
 
-// ── Shopier product definitions ──
-// Replace the `url` values with your actual Shopier product links.
 export const SHOPIER_PRODUCTS = {
-  premium_monthly: {
-    id: "premium_monthly",
-    label: "SANRI Premium (Aylık)",
-    price: "99.90",
-    url: "https://shopier.com/asksanri/45786456",
+  okuma_devami: {
+    id: "okuma_devami",
+    label: "Okuma Devamı",
+    price: "9.90",
+    url: "https://shopier.com/asksanri/45786803",
   },
   kod_egitmeni: {
     id: "kod_egitmeni",
     label: "Kod Eğitmeni — Tam Erişim",
-    price: "49.90",
+    price: "49",
     url: "https://shopier.com/asksanri/45786456",
   },
-  single_okuma: {
-    id: "single_okuma",
-    label: "Tek Okuma Erişimi",
-    price: "9.90",
-    url: "https://shopier.com/asksanri/45786456",
+  kitap_112: {
+    id: "kitap_112",
+    label: "112. Kitap: Kendini Yaratan Tanrıça",
+    price: "369",
+    url: "https://shopier.com/asksanri/45786763",
   },
-  library_book: {
-    id: "library_book",
-    label: "Kitap Erişimi",
-    price: "19.90",
-    url: "https://shopier.com/asksanri/45786456",
+  matrix_code: {
+    id: "matrix_code",
+    label: "Matrix Code: İkra",
+    price: "470",
+    url: "https://shopier.com/asksanri/45786667",
   },
 };
 
@@ -66,7 +66,8 @@ function saveShopierAccess(data) {
 
 export function isShopierUnlocked(contentId) {
   const access = getShopierAccess();
-  return Boolean(access.premium || access[contentId]);
+  if (access.premium) return true;
+  return Boolean(access[contentId]);
 }
 
 export function unlockViaShopier(contentId) {
@@ -78,6 +79,24 @@ export function unlockViaShopier(contentId) {
     access[contentId] = { unlocked: true, at: new Date().toISOString() };
   }
   saveShopierAccess(access);
+}
+
+export function getUnlockedItems() {
+  const access = getShopierAccess();
+  const items = [];
+  for (const [key, val] of Object.entries(access)) {
+    if (key === "premium" && val) {
+      items.push({ id: "premium", label: "Premium Erişim", at: access.premium_at });
+    } else if (val?.unlocked) {
+      const product = SHOPIER_PRODUCTS[key];
+      items.push({
+        id: key,
+        label: product?.label || key,
+        at: val.at,
+      });
+    }
+  }
+  return items;
 }
 
 export function setPendingPurchase(productId, contentId, returnPath) {
@@ -113,8 +132,8 @@ export function clearPendingPurchase() {
 }
 
 /**
- * Redirect to Shopier with return URL.
- * After payment, Shopier redirects back to /odeme-basarili with params.
+ * Redirect to Shopier product page.
+ * productId must match a key in SHOPIER_PRODUCTS.
  */
 export function redirectToShopier(productId, contentId, returnPath) {
   const product = SHOPIER_PRODUCTS[productId];

@@ -343,6 +343,106 @@
 }
 
 /* ── Divider ── */
+/* ── Lock Zone: paragraph-level paywall ── */
+.lockZone {
+  position: relative;
+  margin-top: 24px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.lockZoneBlur {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+  max-height: 200px;
+  overflow: hidden;
+}
+.lockZoneGradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(10, 10, 16, 0.6) 30%,
+    rgba(10, 10, 16, 0.95) 70%
+  );
+  pointer-events: none;
+}
+.lockZoneOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 36px;
+  z-index: 2;
+}
+.lockZoneIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.18), rgba(200, 160, 255, 0.06));
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 0 30px rgba(200, 160, 255, 0.1);
+}
+.lockZoneLine1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 4px;
+  text-align: center;
+}
+.lockZoneLine2 {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.6);
+  margin: 0 0 20px;
+  text-align: center;
+  font-style: italic;
+}
+.lockZoneBtn {
+  padding: 14px 36px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #c8a0ff, #7cf7d8);
+  color: #07080d;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+  margin-bottom: 10px;
+}
+.lockZoneBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200, 160, 255, 0.35);
+}
+.lockZoneAlt {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.2);
+  background: rgba(200, 160, 255, 0.06);
+  color: rgba(200, 160, 255, 0.7);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.lockZoneAlt:hover {
+  background: rgba(200, 160, 255, 0.14);
+  border-color: rgba(200, 160, 255, 0.35);
+  color: #c8a0ff;
+}
+
 .divider {
   height: 1px;
   background: rgba(255, 255, 255, 0.05);

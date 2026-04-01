@@ -15,7 +15,7 @@ export function PremiumGate({ locked, children, title, description, contentId, s
 
   const handleShopier = () => {
     redirectToShopier(
-      shopierProduct || "single_okuma",
+      shopierProduct || "okuma_devami",
       contentId || "premium",
       location.pathname
     );

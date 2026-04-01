@@ -215,53 +215,94 @@ export default function OkumaDetayPage() {
           </button>
         </div>
 
-        {/* ── Preview or Full Content ── */}
-        {isLocked && post.previewContent && (
-          <div className={styles.content}>{post.previewContent}</div>
-        )}
+        {/* ── Content with paragraph-level lock ── */}
+        {(() => {
+          const paragraphs = (post.fullContent || "").split(/\n\n+/);
+          const FREE_PARAGRAPHS = 2;
+          const showFull = !isLocked;
 
-        <PremiumGate
-          locked={isLocked}
-          contentId={post ? `okuma_${post.id}` : undefined}
-          shopierProduct="single_okuma"
-          title={isTR ? "Bu katman açıldığında hikaye değişir" : "When this layer opens, the story changes"}
-          description={isTR
-            ? "Tam içeriğe, kod çözümlemeye ve Sanrı yansımasına erişmek için satın al."
-            : "Purchase to access the full content, code decryption, and Sanri reflection."}
-        >
-          {!isLocked && <div className={styles.content}>{post.fullContent}</div>}
+          if (showFull) {
+            return (
+              <>
+                <div className={styles.content}>{post.fullContent}</div>
 
-          {post.codeLayer && (
-            <div className={styles.codeLayerWrap}>
-              <div className={styles.codeLayerHeader}>
-                <span className={styles.codeLayerIcon}>⟁</span>
-                <span className={styles.codeLayerTitle}>
-                  {isTR ? "Kod Çözümleme" : "Code Decryption"}
-                </span>
+                {post.codeLayer && (
+                  <div className={styles.codeLayerWrap}>
+                    <div className={styles.codeLayerHeader}>
+                      <span className={styles.codeLayerIcon}>⟁</span>
+                      <span className={styles.codeLayerTitle}>
+                        {isTR ? "Kod Çözümleme" : "Code Decryption"}
+                      </span>
+                    </div>
+                    <div className={styles.codeLayerText}>{post.codeLayer}</div>
+                  </div>
+                )}
+
+                {sr && (
+                  <motion.div
+                    className={styles.sanriWrap}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                  >
+                    <div className={styles.sanriHeader}>
+                      <span className={styles.sanriGlyph}>✦</span>
+                      <span className={styles.sanriLabel}>
+                        {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
+                      </span>
+                    </div>
+                    <p className={styles.sanriAnalysis}>{sr.analysis}</p>
+                    <p className={styles.sanriStrong}>{sr.strongLine}</p>
+                    <p className={styles.sanriQuestion}>{sr.question}</p>
+                  </motion.div>
+                )}
+              </>
+            );
+          }
+
+          const freePart = paragraphs.slice(0, FREE_PARAGRAPHS).join("\n\n");
+          const lockedPart = paragraphs.slice(FREE_PARAGRAPHS, FREE_PARAGRAPHS + 3).join("\n\n");
+
+          return (
+            <>
+              <div className={styles.content}>{freePart}</div>
+
+              <div className={styles.lockZone}>
+                <div className={styles.lockZoneBlur}>
+                  <div className={styles.content}>{lockedPart}</div>
+                </div>
+                <div className={styles.lockZoneGradient} />
+                <div className={styles.lockZoneOverlay}>
+                  <div className={styles.lockZoneIcon}>🔒</div>
+                  <p className={styles.lockZoneLine1}>
+                    {isTR ? "Buraya kadar gördün." : "You've seen this far."}
+                  </p>
+                  <p className={styles.lockZoneLine2}>
+                    {isTR
+                      ? "Ama asıl katman burada başlar."
+                      : "But the real layer begins here."}
+                  </p>
+                  <button
+                    className={styles.lockZoneBtn}
+                    onClick={() =>
+                      redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
+                    }
+                  >
+                    {isTR ? "Devamını Aç — 9.90₺" : "Unlock — ₺9.90"}
+                  </button>
+                  <button
+                    className={styles.lockZoneAlt}
+                    onClick={() =>
+                      redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
+                    }
+                  >
+                    {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
+                  </button>
+                </div>
               </div>
-              <div className={styles.codeLayerText}>{post.codeLayer}</div>
-            </div>
-          )}
-
-          {sr && (
-            <motion.div
-              className={styles.sanriWrap}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-            >
-              <div className={styles.sanriHeader}>
-                <span className={styles.sanriGlyph}>✦</span>
-                <span className={styles.sanriLabel}>
-                  {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
-                </span>
-              </div>
-              <p className={styles.sanriAnalysis}>{sr.analysis}</p>
-              <p className={styles.sanriStrong}>{sr.strongLine}</p>
-              <p className={styles.sanriQuestion}>{sr.question}</p>
-            </motion.div>
-          )}
-        </PremiumGate>
+            </>
+          );
+        })()}
 
         {/* ── Auto CTA (locked users) ── */}
         {isLocked && autoCta && (
@@ -275,7 +316,7 @@ export default function OkumaDetayPage() {
             <div className={styles.autoCtaActions}>
               <button
                 className={styles.microPayBtn}
-                onClick={() => redirectToShopier("single_okuma", `okuma_${post.id}`, location.pathname)}
+                onClick={() => redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)}
               >
                 {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
               </button>

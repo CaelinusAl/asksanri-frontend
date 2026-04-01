@@ -246,9 +246,11 @@ function BookPaywall({ meta, isTR }) {
         <div className={styles.paywallActions}>
           <button
             className={styles.paywallShopier}
-            onClick={() => redirectToShopier("library_book", `book_${meta.id}`, location.pathname)}
+            onClick={() => redirectToShopier(meta.id, `book_${meta.id}`, location.pathname)}
           >
-            {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
+            {isTR
+              ? `Bu Kitabı Aç — ${meta.price}₺`
+              : `Unlock This Book — ₺${meta.price}`}
           </button>
 
           {hasFreeUnlock && (
@@ -262,10 +264,6 @@ function BookPaywall({ meta, isTR }) {
                 : (isTR ? "İlk Kitabını Ücretsiz Aç" : "Unlock Your First Book Free")}
             </button>
           )}
-
-          <Link to="/subscription" className={styles.paywallSecondary}>
-            {isTR ? "Tüm Kitaplara Aç" : "Unlock All Books"}
-          </Link>
         </div>
 
         <p className={styles.paywallTrust}>

@@ -29,6 +29,7 @@ import { Progress } from "../components/ui/progress";
 import { Separator } from "../components/ui/separator";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium, FEATURES } from "../contexts/PremiumContext";
+import { getUnlockedItems } from "../data/shopierConfig";
 import { useAuth } from "../contexts/AuthContext";
 import { UpgradeModal, PremiumBadge } from "../components/premium/PremiumComponents";
 
@@ -276,6 +277,39 @@ const ProfilePage = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* ── Purchased Content ── */}
+        {(() => {
+          const items = getUnlockedItems();
+          if (!items.length) return null;
+          return (
+            <Card className="border-border/40 bg-card/50 backdrop-blur-sm">
+              <CardContent className="p-6">
+                <h2 className="font-serif text-xl text-foreground mb-4">
+                  {language === "en" ? "Purchased Content" : "Satın Alınan İçerikler"}
+                </h2>
+                <div className="space-y-3">
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between text-sm"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span style={{ color: "#7cf7d8", fontSize: 14 }}>✦</span>
+                        <span className="text-foreground">{item.label}</span>
+                      </div>
+                      {item.at && (
+                        <span className="text-muted-foreground text-xs">
+                          {new Date(item.at).toLocaleDateString("tr-TR")}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })()}
 
         {/* Upgrade Modal */}
         <UpgradeModal
