@@ -915,6 +915,149 @@ kimse bakmadığında ne yaptığına bak.
     viewCount: 187,
     isFeatured: true,
   },
+  {
+    id: 9,
+    slug: "nisan-frekans-okuma",
+    title: "Nisan: Donmuş Olan Çözülüyor. Sen Hazır mısın?",
+    subtitle: "Nisan bir ay değil. Nisan bir eşik. Donmuş olanın çözülmeye başladığı an.",
+    category: "matrix_okumasi",
+    coverImage: "/assets/gates/ni-san.jpg",
+    excerpt: "Takvimde dördüncü sırada durur ama zamanla ilgisi yoktur. Nisan, donmuş olanın çözülmeye başladığı andır. Toprakta da. Sende de.",
+    fullContent: `Nisan bir ay değil.
+Nisan bir eşik.
+
+Takvimde dördüncü sırada durur ama zamanla ilgisi yoktur.
+Nisan, donmuş olanın çözülmeye başladığı andır.
+Toprakta da. Sende de.
+
+◉ KELİME KODU
+
+NİSAN.
+Ters çevir: NASİN. Nasılsın.
+Parçala: Nİ — SAN.
+"Ni" — içe dönüş. Soru. Fark etme.
+"San" — oluşturma. Yaratım. Kendinle yüzleşme.
+
+Nisan sana soruyor:
+Sen şu an ne yaratıyorsun — ve o şey gerçekten sana mı ait?
+
+Bir katman daha:
+NİSAN → İNSAN.
+Aynı harfler. Farklı sıralama.
+Nisan, insanın kendini yeniden sıralaması gereken zamandır.
+
+✦ TOPRAK ÇÖZÜLÜYOR — AMA ÇÖZÜLME SESSİZ BAŞLAR
+
+Nisan'da toprak yumuşar. Dışarıdan bakınca "bahar geldi" dersin. Ama toprağın altında olan şey çok daha eskidir: kışın boyunca biriken basınç, karanlıkta bekleyen tohum, donmuş suyun yavaşça akmaya başlaması. Hiçbiri aniden olmaz. Hepsi çözülmeyle başlar.
+
+Ve çözülme her zaman güzel hissettirmez.
+Bazen çamur olur. Bazen belirsizlik.
+Bazen sadece "bir şeyler değişiyor ama ne olduğunu bilmiyorum" hissi.
+
+Sende de aynısı oluyor.
+
+✦ NİSAN AYINDA İNSAN BİLİNCİNDE BİR ŞEY KIPIRDAR
+
+Uyandığında enerjin farklıdır ama adını koyamazsın. Bir gün kararlısındır, ertesi gün her şeyi sorgulamaya başlarsın. İçinde bir hareket var ama yönü belli değil.
+
+Eski kararlar artık sıkmaya başlar.
+Yeni bir şeye doğru çekilirsin ama henüz o şey şekillenmemiştir.
+
+Bu dağınıklık değil — bu, eski frekansın çözülmesi ve yenisinin henüz oturmamış olması. Tam olarak aradaki boşlukta duruyorsun.
+
+Ve o boşluk, Nisan'ın gerçek adresi.
+
+✦ ÇİÇEK AÇMADAN ÖNCE GERİLİM GELİR
+
+Doğa bunu bilir. Tomurcuk patlamadan hemen önce dal en gergin halindedir. İnsan da öyle.
+
+Nisan ayında çoğu kişi "bir şeyler olacak" hissini taşır ama ne olduğunu göremez. Bu his seni huzursuz edebilir. Sabırsız yapabilir.
+
+Ama bu gerilim yanlış bir şey değil.
+Bu, açılmanın hemen öncesidir.
+Ateşin dumanı gibi — duman rahatsız eder ama ateş geliyordur.
+
+✦ GÖLGE KATMAN — HERKES AYNI ANDA UYANMAZ
+
+Nisan'ın bir de karanlık tarafı var.
+
+Çözülme herkes için aynı hızda olmaz. Bazıları baharı hisseder, bazıları hâlâ kışın ağırlığını taşır. İçinde yeni bir şey doğmak isterken eski alışkanlıklar direnir.
+
+Yüzeye çıkan şey her zaman hoş olmaz — bastırılmış duygular, ertelenmiş kararlar, yüzleşilmemiş sorular.
+
+Nisan bunları zorla çıkarmaz ama kapıyı açık bırakır.
+Çıkacak olan çıkar. Direnen direnir.
+Ama kapı bir kez açıldığında, geri kapatmak zorlaşır.
+
+✦ NİSAN HAREKETE GEÇME ZAMANI DEĞİL — FARK ETME ZAMANI
+
+Herkes "şimdi başla, şimdi yap, şimdi değiş" der.
+Nisan öyle söylemiyor.
+
+Nisan diyor ki: dur. Dinle. İçinde ne çözülüyor? Ne yüzeye çıkıyor? Neyi bırakmaya hazırsın?
+
+Cevap geldiğinde hareket kendiliğinden başlar.
+Ama önce fark etmen gerekiyor.
+Çünkü fark etmeden yapılan her hamle, eski döngünün tekrarıdır.
+
+◉ ÖZ
+
+Nisan bir başlangıç değil — donmuş olanın çözülmeye cesaret ettiği andır.
+
+◉ SON
+
+Ve şimdi sor:
+Bu ay içimde çözülen şey ne?
+Yüzeye çıkmak isteyen ama henüz adını koyamadığım o his…
+ne söylemeye çalışıyor?
+
+Belki cevap bildiğin bir şey.
+Belki henüz değil.
+Ama Nisan kapıyı açtı.
+Gerisini sen seçeceksin.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Kelime kodu
+• NİSAN → NASİN (nasılsın?) = kendine sorma zamanı
+• Nİ = içe dönüş, sorgulama
+• SAN = oluşturma, yaratım
+• NİSAN ↔ İNSAN = aynı harfler, yeniden sıralama zamanı
+
+KATMAN 2 — Doğa frekansı
+• Toprak çözülür → çamur = belirsizlik
+• Tohum uyanır → karanlıktan ışığa geçiş
+• Tomurcuk patlamadan dal gerilir → açılmanın öncesi gerilimdir
+• Çiçeklenme = sonuç, süreç değil
+
+KATMAN 3 — İnsan bilinci
+• Eski frekans çözülür, yenisi oturmamıştır = aradaki boşluk
+• Duygusal dalgalanma = frekans geçişinin belirtisi
+• Fark etme olmadan hareket = eski döngünün tekrarı
+• İç ses artar ama yönü belirsizdir
+
+KATMAN 4 — Gölge
+• Herkes aynı anda uyanmaz
+• Çözülme huzursuzluk yaratabilir
+• Yüzeye çıkan her şey hoş olmaz
+• Kapı açıldığında geri kapatmak zorlaşır
+
+ÇIKIŞ KODU:
+Nisan harekete geçme zamanı değil — fark etme zamanı.
+Fark etmeden yapılan her hamle, eski döngünün tekrarıdır.
+
+İşaret: Bu ay içinde çözülen şeyin adını koyabilir misin?`,
+    sanriReflection: {
+      analysis: "Nisan, takvimin değil bilincin geçiş noktasıdır. Topraktaki çözülme insanda da aynı anda gerçekleşir — donmuş duygular, ertelenmiş kararlar, bastırılmış sorular yüzeye çıkar. Bu rahatsızlık bir hata değil, frekans değişiminin işaretidir. Fark eden geçer, fark etmeyen tekrarlar.",
+      strongLine: "Nisan bir başlangıç değil — donmuş olanın çözülmeye cesaret ettiği andır.",
+      question: "Bu ay içinde çözülen şey ne — ve ona izin veriyor musun, yoksa direniyor musun?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-01T21:30:00Z",
+    commentCount: 5,
+    viewCount: 324,
+    isFeatured: true,
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -962,6 +1105,13 @@ export const OKUMA_COMMENTS = {
     { id: 801, authorName: "Mira", content: "Çöp = bilinçsizliğin fiziksel formu. Bu cümle yüzünden 10 dakika ekrana baktım. Sonra odamı topladım.", createdAt: "2026-04-01T20:30:00Z" },
     { id: 802, authorName: "Eren", content: "'Sen değil, biz kirlenirsin.' — Bireysel sorumluluk değil, kolektif bilinç. Bu farkı ilk kez bu kadar net gördüm.", createdAt: "2026-04-01T21:00:00Z" },
     { id: 803, authorName: "Ada", content: "Bir toplumu anlamak için kimse bakmadığında ne yaptığına bak. Bunu okuduğumda aklıma kendi mahallem geldi. Utandım ama iyi anlamda.", createdAt: "2026-04-01T21:15:00Z" },
+  ],
+  9: [
+    { id: 901, authorName: "Selin", content: "NİSAN → İNSAN. Aynı harfler. Bu bağlantıyı kurduğum an tüylerim diken diken oldu. Nisan gerçekten yeniden sıralanma zamanı.", createdAt: "2026-04-01T22:00:00Z" },
+    { id: 902, authorName: "Mira", content: "Fark etmeden yapılan her hamle eski döngünün tekrarıdır. Bu cümle beni durdurdu. Tam da şu an aceleyle bir karar vermek üzereydim.", createdAt: "2026-04-01T22:20:00Z" },
+    { id: 903, authorName: "Eren", content: "Tomurcuk patlamadan dal en gergin halindedir. İçimdeki gerilimi ilk kez bir sorun olarak değil, açılmanın işareti olarak gördüm.", createdAt: "2026-04-01T22:45:00Z" },
+    { id: 904, authorName: "Lina", content: "Herkes aynı anda uyanmaz — bu cümle beni rahatlatı. Hâlâ kışta hissetmek utanılacak bir şey değilmiş. Kendi zamanım varmış.", createdAt: "2026-04-01T23:00:00Z" },
+    { id: 905, authorName: "Aura", content: "Çözülme her zaman güzel hissettirmez. Bazen çamur olur. Bu ay tam olarak bunu yaşıyorum. Adını koyamıyordum, şimdi koydum: çözülme.", createdAt: "2026-04-01T23:30:00Z" },
   ],
 };
 
