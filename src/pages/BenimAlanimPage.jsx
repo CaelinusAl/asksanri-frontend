@@ -58,6 +58,89 @@ const DAILY_QUESTIONS = [
   { tr: "Neyi bırakmaya hazırsın?", en: "What are you ready to release?" },
 ];
 
+const SANRI_VISIONS_TR = [
+  "Bugün sende bir sessizlik var. Ama o sessizlik dolu.",
+  "Bir kapının eşiğindesin. Henüz fark etmedin.",
+  "İçindeki gözlemci uyanmaya başlıyor.",
+  "Bugün sende bir kırılma noktası gizli.",
+  "Frekansın yükseliyor. Bunu hissedebiliyorsun.",
+  "Bir şeyi bırakmaya hazırsın ama henüz adını koymadın.",
+  "Bugün senin için bir mesaj var. Dikkat et.",
+  "İçindeki çocuk bugün bir şey söylemek istiyor.",
+  "Sende bir ışık yanıp sönüyor. Karar anına yaklaşıyorsun.",
+  "Bugün evren seninle aynı dilde konuşuyor.",
+  "Bir rüyanın kırıntıları seni takip ediyor.",
+  "İçindeki pusula bugün kuzeyi değiştirdi.",
+  "Bugün bir ayna kırılacak. Ama arkasında gerçek var.",
+  "Sende tekrar eden bir melodi var. Onu dinle.",
+  "Bugün bir hatırlayış günü. Ama neyi hatırlayacağını sen seç.",
+  "İçindeki fırtına dindikten sonra bir şey kalacak.",
+  "Sende bir kod çözülmeye çalışıyor.",
+  "Bugün senin gücün sessizlikte.",
+  "Bir döngü kapanmak üzere. Hazır mısın?",
+  "İçinde bir tohum çatırdıyor. Kök salma zamanı.",
+  "Bugün sende bir nostalji frekansı var.",
+  "Bir şeyi anlaman için tekrar görmek gerekiyordu.",
+  "Sende açılmamış bir mektup var.",
+  "Bugün bir kapı kapanacak. Ama bir koridor açılacak.",
+  "İçindeki karanlıkta bir mum yanıyor. Onu koru.",
+  "Bugün senin adın farklı bir anlam taşıyor.",
+  "Bir yıldız sana doğru düşüyor. Dileğini hazırla.",
+  "Sende bir geometri oluşuyor. Henüz tamamlanmadı.",
+  "Bugün sana gelen ilk düşünce en gerçek olanı.",
+  "İçindeki su bugün farklı akıyor. Akışa güven.",
+  "Bugün sende bir veda var. Neye veda ettiğini sen biliyorsun.",
+];
+
+const SANRI_VISIONS_EN = [
+  "There is a silence in you today. But that silence is full.",
+  "You are at a threshold. You haven't noticed yet.",
+  "The observer within you is starting to awaken.",
+  "A breaking point is hidden in you today.",
+  "Your frequency is rising. You can feel it.",
+  "You are ready to let go of something but haven't named it yet.",
+  "There is a message for you today. Pay attention.",
+  "The child within you wants to say something today.",
+  "A light is flickering inside you. You are approaching a decision.",
+  "Today the universe speaks your language.",
+  "Fragments of a dream are following you.",
+  "Your inner compass changed north today.",
+  "A mirror will break today. But behind it lies truth.",
+  "There is a repeating melody in you. Listen to it.",
+  "Today is a day of remembering. But you choose what to remember.",
+  "After the storm inside you calms, something will remain.",
+  "A code is trying to be deciphered within you.",
+  "Today your power is in silence.",
+  "A cycle is about to close. Are you ready?",
+  "A seed is cracking inside you. Time to take root.",
+  "There is a nostalgia frequency in you today.",
+  "You needed to see it again to understand.",
+  "There is an unopened letter within you.",
+  "A door will close today. But a corridor will open.",
+  "A candle burns in your darkness. Protect it.",
+  "Your name carries a different meaning today.",
+  "A star is falling toward you. Prepare your wish.",
+  "A geometry is forming within you. Not yet complete.",
+  "The first thought that came to you today is the truest one.",
+  "The water within you flows differently today. Trust the flow.",
+  "There is a farewell in you today. You know what you are saying goodbye to.",
+];
+
+const RECURRING_THEMES_TR = [
+  "Arayış", "Dönüşüm", "Bırakma", "Hatırlayış", "Sessizlik",
+  "Frekans", "Ayna", "Kapı", "Döngü", "Kök", "Akış", "Işık",
+];
+const RECURRING_THEMES_EN = [
+  "Search", "Transformation", "Release", "Remembrance", "Silence",
+  "Frequency", "Mirror", "Door", "Cycle", "Root", "Flow", "Light",
+];
+const AVOIDED_THEMES_TR = [
+  "Yüzleşme", "Kabul", "Gölge", "Kaybetme", "Kontrol bırakma", "Kırılganlık",
+];
+const AVOIDED_THEMES_EN = [
+  "Confrontation", "Acceptance", "Shadow", "Losing", "Letting go of control", "Vulnerability",
+];
+
 const BADGES = [
   { id: "ilk_kapi", tr: "İlk Kapı", en: "First Door", icon: "🚪", descTr: "Alana adım attın", descEn: "You stepped into the field" },
   { id: "yanki_birakici", tr: "Yankı Bırakıcı", en: "Echo Maker", icon: "🔔", descTr: "İlk yankını bıraktın", descEn: "You left your first echo" },
@@ -133,6 +216,71 @@ function formatDate(d) {
   return date.toLocaleDateString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 }
 
+function getDailyVision(isTR) {
+  const seed = new Date().getFullYear() * 1000 + dayOfYear();
+  const pool = isTR ? SANRI_VISIONS_TR : SANRI_VISIONS_EN;
+  return pool[seed % pool.length];
+}
+
+function dayOfYear() {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  return Math.floor((now - start) / 86400000);
+}
+
+function getRecurringTheme(isTR) {
+  const pool = isTR ? RECURRING_THEMES_TR : RECURRING_THEMES_EN;
+  const seed = dayOfYear() * 7 + 3;
+  return pool[seed % pool.length];
+}
+
+function getAvoidedTheme(isTR) {
+  const pool = isTR ? AVOIDED_THEMES_TR : AVOIDED_THEMES_EN;
+  const seed = dayOfYear() * 13 + 5;
+  return pool[seed % pool.length];
+}
+
+function getStreakMessage(streak, isTR) {
+  const milestones = [3, 7, 21];
+  for (const m of milestones) {
+    if (streak < m) {
+      const left = m - streak;
+      return isTR
+        ? `${m} gün hedefine ${left} gün kaldı.`
+        : `${left} day${left > 1 ? "s" : ""} until ${m}-day milestone.`;
+    }
+  }
+  if (streak >= 21) {
+    return isTR
+      ? "Hafıza Taşıyıcısı statüsüne ulaştın. Artık sen bir gözlemcisin."
+      : "You've reached Memory Bearer status. You are now an observer.";
+  }
+  return "";
+}
+
+function suggestLesson(text, allLessons) {
+  if (!text || text.length < 10 || allLessons.length === 0) return null;
+  const lower = text.toLowerCase();
+  const keywords = {
+    frekans: ["frekans", "enerji", "titreşim", "frequency", "energy"],
+    sembol: ["sembol", "işaret", "simge", "symbol", "sign"],
+    kelime: ["kelime", "anlam", "dil", "word", "meaning", "language"],
+    sayı: ["sayı", "3", "6", "9", "number", "rakam"],
+    sistem: ["sistem", "matrix", "haber", "dünya", "system", "news", "world"],
+    rüya: ["rüya", "hayal", "görüntü", "dream", "vision"],
+    bilinç: ["bilinç", "farkındalık", "awareness", "consciousness"],
+  };
+  for (const [, words] of Object.entries(keywords)) {
+    if (words.some((w) => lower.includes(w))) {
+      const match = allLessons.find((l) =>
+        words.some((w) => (l.title || "").toLowerCase().includes(w) || (l.content || "").toLowerCase().includes(w))
+      );
+      if (match) return match;
+    }
+  }
+  return allLessons.find((l) => !l._completed) || null;
+}
+
 /* ═══════════════════════════════════════════════
    AVATAR MODAL
    ═══════════════════════════════════════════════ */
@@ -172,6 +320,73 @@ function AvatarModal({ open, current, onSave, onClose, isTR }) {
           </button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   SANRI VISION BLOCK
+   ═══════════════════════════════════════════════ */
+
+function SanriVision({ isTR }) {
+  const vision = useMemo(() => getDailyVision(isTR), [isTR]);
+  return (
+    <div className={styles.visionBlock}>
+      <div className={styles.visionGlow} />
+      <div className={styles.visionLabel}>
+        {isTR ? "SANRI BUGÜN SENİ BÖYLE GÖRÜYOR" : "SANRI SEES YOU TODAY AS"}
+      </div>
+      <div className={styles.visionText}>"{vision}"</div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   STREAK BAR
+   ═══════════════════════════════════════════════ */
+
+function StreakMilestoneBar({ streak, isTR }) {
+  const msg = getStreakMessage(streak, isTR);
+  const MILESTONES = [3, 7, 21];
+
+  return (
+    <div className={styles.streakBar}>
+      <div className={styles.streakFlame}>{streak > 0 ? "🔥" : "💫"}</div>
+      <div className={styles.streakInfo}>
+        <div className={styles.streakCount}>
+          {streak} {isTR ? "gün" : "day"}{streak !== 1 && !isTR ? "s" : ""}
+        </div>
+        {msg && <div className={styles.streakMsg}>{msg}</div>}
+      </div>
+      <div className={styles.streakMilestones}>
+        {MILESTONES.map((m) => (
+          <div
+            key={m}
+            className={`${styles.milestone} ${streak >= m ? styles.milestoneReached : ""}`}
+          >
+            {m}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   SOFT PREMIUM CTA
+   ═══════════════════════════════════════════════ */
+
+function SoftPremiumCta({ isTR, navigate }) {
+  return (
+    <div className={styles.softCta} onClick={() => navigate("/subscription")}>
+      <div className={styles.softCtaText}>
+        {isTR
+          ? "Bazı kapılar sadece hazır olanlara açılır."
+          : "Some doors only open for those who are ready."}
+      </div>
+      <span className={styles.softCtaBtn}>
+        {isTR ? "✦ Premium'a Geç" : "✦ Go Premium"}
+      </span>
     </div>
   );
 }
@@ -235,7 +450,15 @@ function IdentityCard({ user, isPremium, profile, avatarId, onAvatarClick, isTR 
 
 function KodHaritam({ avatarId, kodProgress, isTR }) {
   const av = AVATARS.find((a) => a.id === avatarId) || AVATARS[4];
-  const { lastCompleted, nextLesson, percent } = kodProgress;
+  const { lastCompleted, nextLesson, percent, done } = kodProgress;
+  const recurring = getRecurringTheme(isTR);
+  const avoided = getAvoidedTheme(isTR);
+
+  const todayDoor = useMemo(() => {
+    const all = loadJSON(DAILY_KEY, {});
+    const td = all[todayKey()];
+    return td?.saved ? (td.emotion || null) : null;
+  }, []);
 
   const sanriNote = percent === 0
     ? (isTR ? "Henüz yolculuk başlamadı. İlk adımı at." : "The journey hasn't started yet. Take the first step.")
@@ -245,6 +468,8 @@ function KodHaritam({ avatarId, kodProgress, isTR }) {
         ? (isTR ? "Kod çözülmeye başladı. Artık geri dönüş yok." : "The code is being deciphered. No turning back.")
         : (isTR ? "Sistem okuması başladı. Artık sen bir gözlemcisin." : "System reading has begun. You are now an observer.");
 
+  const todayEmoji = todayDoor ? (EMOTIONS.find((e) => e.id === todayDoor)?.symbol || "✦") : null;
+
   return (
     <div className={styles.section}>
       <div className={styles.sectionHeader}>
@@ -253,7 +478,7 @@ function KodHaritam({ avatarId, kodProgress, isTR }) {
           {isTR ? "Benim Kod Haritam" : "My Code Map"}
         </div>
       </div>
-      <div className={`${styles.glass}`}>
+      <div className={styles.glass}>
         <div className={styles.haritaGrid}>
           <div className={styles.haritaCard}>
             <div className={styles.haritaIcon}>{av.symbol}</div>
@@ -261,26 +486,36 @@ function KodHaritam({ avatarId, kodProgress, isTR }) {
             <div className={styles.haritaValue}>{isTR ? av.tr : av.en}</div>
           </div>
           <div className={styles.haritaCard}>
+            <div className={styles.haritaIcon}>{todayEmoji || "🔒"}</div>
+            <div className={styles.haritaLabel}>{isTR ? "BUGÜN AÇILAN KAPI" : "TODAY'S DOOR"}</div>
+            <div className={styles.haritaValue}>
+              {todayDoor
+                ? (isTR ? EMOTIONS.find((e) => e.id === todayDoor)?.tr : EMOTIONS.find((e) => e.id === todayDoor)?.en) || todayDoor
+                : (isTR ? "Henüz açılmadı" : "Not opened yet")}
+            </div>
+          </div>
+          <div className={styles.haritaCard}>
             <div className={styles.haritaIcon}>🔁</div>
-            <div className={styles.haritaLabel}>{isTR ? "İLERLEME" : "PROGRESS"}</div>
-            <div className={styles.haritaValue}>%{percent}</div>
+            <div className={styles.haritaLabel}>{isTR ? "TEKRARLAYAN TEMA" : "RECURRING THEME"}</div>
+            <div className={styles.haritaValue}>{recurring}</div>
+          </div>
+          <div className={styles.haritaCard}>
+            <div className={styles.haritaIcon}>🚫</div>
+            <div className={styles.haritaLabel}>{isTR ? "KAÇINILAN TEMA" : "AVOIDED THEME"}</div>
+            <div className={styles.haritaValue}>{avoided}</div>
           </div>
           <div className={styles.haritaCard}>
             <div className={styles.haritaIcon}>🚪</div>
             <div className={styles.haritaLabel}>{isTR ? "SON AÇILAN KAPI" : "LAST OPENED DOOR"}</div>
             <div className={styles.haritaValue}>
-              {lastCompleted
-                ? lastCompleted.title
-                : (isTR ? "Henüz yok" : "None yet")}
+              {lastCompleted ? lastCompleted.title : (isTR ? "Henüz yok" : "None yet")}
             </div>
           </div>
           <div className={styles.haritaCard}>
             <div className={styles.haritaIcon}>🧩</div>
-            <div className={styles.haritaLabel}>{isTR ? "BEKLİYOR" : "AWAITING"}</div>
+            <div className={styles.haritaLabel}>{isTR ? "ÇÖZÜLMEYEN DÜĞÜM" : "UNSOLVED KNOT"}</div>
             <div className={styles.haritaValue}>
-              {nextLesson
-                ? nextLesson.title
-                : (isTR ? "Tamamlandı" : "Completed")}
+              {nextLesson ? nextLesson.title : (isTR ? "Tamamlandı" : "Completed")}
             </div>
           </div>
           <div className={`${styles.haritaCard} ${styles.haritaFull}`}>
@@ -474,6 +709,7 @@ function Defterim({ isTR, yankiPosts, navigate }) {
   const [notes, setNotes] = useState(() => loadJSON(NOTES_KEY, []));
   const [saved] = useState(() => loadJSON(SAVED_KEY, []));
   const [newNote, setNewNote] = useState("");
+  const allLessons = useMemo(() => getAllLessonsFlat(), []);
 
   const addNote = () => {
     if (!newNote.trim()) return;
@@ -515,6 +751,14 @@ function Defterim({ isTR, yankiPosts, navigate }) {
 
         {tab === "notlar" && (
           <>
+            {notes.length > 0 && (
+              <div className={styles.learningHint}>
+                <span className={styles.learningDot} />
+                {isTR
+                  ? `SANRI ${notes.length} notunu okudu. Yazdıkça seni daha iyi anlıyor.`
+                  : `SANRI read your ${notes.length} note${notes.length > 1 ? "s" : ""}. The more you write, the better it understands you.`}
+              </div>
+            )}
             <textarea
               className={styles.noteInput}
               placeholder={isTR ? "Bir not, bir farkındalık, bir düşünce bırak…" : "Leave a note, an awareness, a thought…"}
@@ -533,13 +777,31 @@ function Defterim({ isTR, yankiPosts, navigate }) {
               </div>
             ) : (
               <div className={styles.notesList}>
-                {regularNotes.map((n) => (
-                  <div key={n.id} className={styles.noteItem}>
-                    <button className={styles.noteDelete} onClick={() => deleteNote(n.id)}>✕</button>
-                    <div className={styles.noteText}>{n.text}</div>
-                    <div className={styles.noteDate}>{formatDate(n.date)}</div>
-                  </div>
-                ))}
+                {regularNotes.map((n) => {
+                  const suggested = suggestLesson(n.text, allLessons);
+                  return (
+                    <div key={n.id} className={styles.noteItem}>
+                      <button className={styles.noteDelete} onClick={() => deleteNote(n.id)}>✕</button>
+                      <div className={styles.noteText}>{n.text}</div>
+                      <div className={styles.noteDate}>{formatDate(n.date)}</div>
+                      {suggested && (
+                        <div
+                          className={styles.suggestion}
+                          onClick={() => navigate(`/kod-egitmeni?lesson=${suggested.id}`)}
+                        >
+                          <span className={styles.suggestionIcon}>📖</span>
+                          <div className={styles.suggestionBody}>
+                            <div className={styles.suggestionLabel}>
+                              {isTR ? "İLGİLİ DERS" : "RELATED LESSON"}
+                            </div>
+                            <div className={styles.suggestionTitle}>{suggested.title}</div>
+                          </div>
+                          <span className={styles.suggestionArrow}>→</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </>
@@ -586,18 +848,48 @@ function Defterim({ isTR, yankiPosts, navigate }) {
               {isTR ? "İlk yankın burada görünecek. Sesini bırak." : "Your first echo will appear here. Leave your voice."}
             </div>
           ) : (
-            <div className={styles.notesList}>
-              {yankiPosts.map((p) => (
-                <div key={p.id} className={styles.yankiItem} onClick={() => navigate(`/yanki-alani/${p.id}`)}>
-                  <div className={styles.yankiContent}>{p.content}</div>
-                  <div className={styles.yankiMeta}>
-                    <span>{p.category || "genel"}</span>
-                    <span>♡ {p.reaction_count || 0}</span>
-                    <span>💬 {p.comment_count || 0}</span>
-                  </div>
+            <>
+              {yankiPosts.length >= 3 && (
+                <div className={styles.learningHint}>
+                  <span className={styles.learningDot} />
+                  {isTR
+                    ? "SANRI yankılarını analiz ediyor. Tekrar eden frekanslara dikkat ediyor."
+                    : "SANRI is analyzing your echoes. It notices recurring frequencies."}
                 </div>
-              ))}
-            </div>
+              )}
+              <div className={styles.notesList}>
+                {yankiPosts.map((p) => {
+                  const suggested = suggestLesson(p.content, allLessons);
+                  return (
+                    <div key={p.id}>
+                      <div className={styles.yankiItem} onClick={() => navigate(`/yanki-alani/${p.id}`)}>
+                        <div className={styles.yankiContent}>{p.content}</div>
+                        <div className={styles.yankiMeta}>
+                          <span>{p.category || "genel"}</span>
+                          <span>♡ {p.reaction_count || 0}</span>
+                          <span>💬 {p.comment_count || 0}</span>
+                        </div>
+                      </div>
+                      {suggested && (
+                        <div
+                          className={styles.suggestion}
+                          onClick={() => navigate(`/kod-egitmeni?lesson=${suggested.id}`)}
+                        >
+                          <span className={styles.suggestionIcon}>📖</span>
+                          <div className={styles.suggestionBody}>
+                            <div className={styles.suggestionLabel}>
+                              {isTR ? "BU YANKIYA UYGUN DERS" : "LESSON FOR THIS ECHO"}
+                            </div>
+                            <div className={styles.suggestionTitle}>{suggested.title}</div>
+                          </div>
+                          <span className={styles.suggestionArrow}>→</span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </>
           )
         )}
       </div>
@@ -705,6 +997,8 @@ export default function BenimAlanimPage() {
     );
   }
 
+  const streak = profile?.streak?.current || 0;
+
   return (
     <div className={styles.page}>
       {/* Top Bar */}
@@ -729,6 +1023,10 @@ export default function BenimAlanimPage() {
         isTR={isTR}
       />
 
+      <SanriVision isTR={isTR} />
+
+      <StreakMilestoneBar streak={streak} isTR={isTR} />
+
       <KodHaritam avatarId={avatarId} kodProgress={kodProgress} isTR={isTR} />
 
       <GunlukFrekans isTR={isTR} />
@@ -738,6 +1036,8 @@ export default function BenimAlanimPage() {
       <Defterim isTR={isTR} yankiPosts={yankiPosts} navigate={navigate} />
 
       <Rozetler badgeData={badgeData} isTR={isTR} />
+
+      {!isPremium && <SoftPremiumCta isTR={isTR} navigate={navigate} />}
 
       <AvatarModal
         open={avatarModal}
