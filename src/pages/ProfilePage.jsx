@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   User,
   Crown,
@@ -66,6 +66,7 @@ const ActivityItem = ({ activity, language }) => {
 };
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { language } = useLanguage();
 
   // Premium context (senin mevcut sistemin)
@@ -144,6 +145,17 @@ const ProfilePage = () => {
   return (
     <div className="min-h-screen pt-24 pb-16 bg-background">
       <div className="container mx-auto px-6 max-w-3xl">
+        {/* Back button */}
+        <button
+          onClick={() => navigate("/")}
+          style={{
+            background: "none", border: "none", color: "rgba(200,160,255,0.7)",
+            cursor: "pointer", fontSize: 13, fontWeight: 600, padding: "8px 0", marginBottom: 8,
+          }}
+        >
+          ← {language === "en" ? "Gates" : "Kapılar"}
+        </button>
+
         {/* Header */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>

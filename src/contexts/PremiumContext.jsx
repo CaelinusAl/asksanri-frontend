@@ -23,7 +23,7 @@ export function usePremium() {
 }
 
 export function PremiumProvider({ children }) {
-  const { isPremium: authPremium, isAuthenticated, refreshMe } = useAuth();
+  const { isPremium: authPremium, isAuthenticated, refreshMe, user } = useAuth();
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [requestedFeature, setRequestedFeature] = useState(FEATURES.SANRI_UNLIMITED);
 
@@ -38,9 +38,13 @@ export function PremiumProvider({ children }) {
     ? localStorage.getItem("sanri_mock_premium")
     : null;
 
-  const isPremium = devOverride !== null
-    ? devOverride === "true"
-    : Boolean(accessData?.is_premium ?? authPremium);
+  const isAdmin = user?.role === "admin";
+
+  const isPremium = isAdmin
+    ? true
+    : devOverride !== null
+      ? devOverride === "true"
+      : Boolean(accessData?.is_premium ?? authPremium);
 
   const currentPlan = accessData?.plan || (isPremium ? "premium" : "free");
   const hasFreeUnlock = Boolean(accessData?.has_free_unlock);

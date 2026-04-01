@@ -636,6 +636,9 @@ export default function KodEgitmeniPage() {
           <span className={styles.topSub}>Kod Eğitmeni</span>
         </div>
         <div className={styles.topRight}>
+          {view === "landing" && (
+            <button className={styles.backBtn} onClick={() => navigate("/")}>← Kapılar</button>
+          )}
           {view === "modules" && (
             <button className={styles.backBtn} onClick={goLanding}>← Ana Sayfa</button>
           )}
