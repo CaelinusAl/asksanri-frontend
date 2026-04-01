@@ -2,7 +2,12 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./KodEgitmeniPage.module.css";
-import { KOD_MODULLERI, getModuleById, getLessonById } from "../data/kodEgitmeniData";
+import {
+  KOD_MODULLERI,
+  getModuleById,
+  getLessonById,
+  PRICE_MONTHLY,
+} from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { Footer } from "../components/layout/Footer";
@@ -12,180 +17,291 @@ const API_URL =
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
+/* ── Progress (localStorage) ── */
 const PROGRESS_KEY = "sanri_kod_progress";
 
 function loadProgress() {
-  try {
-    return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}"); }
+  catch { return {}; }
 }
-
 function saveProgress(p) {
-  try {
-    localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
-  } catch {}
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch {}
 }
-
-function markLessonComplete(moduleId, lessonId) {
+function markDone(moduleId, lessonId) {
   const p = loadProgress();
   if (!p[moduleId]) p[moduleId] = [];
   if (!p[moduleId].includes(lessonId)) p[moduleId].push(lessonId);
   saveProgress(p);
   return p;
 }
-
-function isLessonDone(moduleId, lessonId) {
-  const p = loadProgress();
-  return (p[moduleId] || []).includes(lessonId);
+function isDone(moduleId, lessonId) {
+  return (loadProgress()[moduleId] || []).includes(lessonId);
 }
-
-function getModuleProgress(moduleId) {
+function modulePercent(moduleId) {
   const mod = getModuleById(moduleId);
   if (!mod) return 0;
-  const p = loadProgress();
-  const done = (p[moduleId] || []).length;
+  const done = (loadProgress()[moduleId] || []).length;
   return Math.round((done / mod.lessons.length) * 100);
 }
 
-/* ─── Topbar ─── */
-function Topbar({ onBack, title }) {
+/* ═══════════════════════════════════════════════════
+   LANDING  — hero + sections + CTA
+   ═══════════════════════════════════════════════════ */
+function Landing({ onStart }) {
   return (
-    <div className={styles.topbar}>
-      <div className={styles.topbarLeft}>
-        <Link to="/" className={styles.brand}>SANRI</Link>
-        <span className={styles.topbarSub}>Kod Eğitmeni</span>
-      </div>
-      <div className={styles.topbarRight}>
-        {onBack && (
-          <button className={styles.backBtn} onClick={onBack}>← Geri</button>
-        )}
-      </div>
+    <div className={styles.landing}>
+      {/* ── hero ── */}
+      <section className={styles.hero}>
+        <motion.div
+          className={styles.heroOrb}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.h1
+          className={styles.heroTitle}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          Kod Okumayı Öğren
+        </motion.h1>
+        <motion.p
+          className={styles.heroSub}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+        >
+          Gördüğün her şeyin altında bir katman var.
+        </motion.p>
+        <motion.button
+          className={styles.heroCta}
+          onClick={onStart}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.97 }}
+        >
+          İlk Dersi Aç
+        </motion.button>
+      </section>
+
+      {/* ── bu egitim ne ogretiyor ── */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Bu eğitim ne öğretir?</h2>
+        <div className={styles.featureGrid}>
+          {[
+            { icon: "✦", title: "Kelime Çözme", desc: "Kelimelerin altındaki gizli kodları oku" },
+            { icon: "◈", title: "Sembol Okuma", desc: "Sayıları, tarihleri ve işaretleri çöz" },
+            { icon: "◉", title: "Olay Analizi", desc: "Hayatındaki olayların mesajını al" },
+          ].map((f) => (
+            <div key={f.title} className={styles.featureCard}>
+              <span className={styles.featureIcon}>{f.icon}</span>
+              <h3>{f.title}</h3>
+              <p>{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── nasil calisiyor ── */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Nasıl çalışır?</h2>
+        <div className={styles.stepRow}>
+          {["İzle", "Çöz", "Yaz", "SANRI Yorumlasın"].map((s, i) => (
+            <div key={s} className={styles.step}>
+              <span className={styles.stepNum}>{i + 1}</span>
+              <span className={styles.stepLabel}>{s}</span>
+            </div>
+          ))}
+        </div>
+        <p className={styles.sectionHint}>
+          Her dersin sonunda sen yazıyorsun — SANRI okuyor.
+        </p>
+      </section>
+
+      {/* ── katmanlar ── */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Katmanlar</h2>
+        <div className={styles.layerList}>
+          {[
+            { color: "#c8a0ff", label: "Başlangıç", desc: "Kelime çözme, anlam katmanları" },
+            { color: "#ED8936", label: "Derin Okuma", desc: "Frekans, sayı dili, tarih çözme" },
+            { color: "#E53E3E", label: "Sistem Çözme", desc: "Haber analizi, matrix okuma" },
+          ].map((l) => (
+            <div key={l.label} className={styles.layerItem}>
+              <span className={styles.layerDot} style={{ background: l.color }} />
+              <div>
+                <strong>{l.label}</strong>
+                <p>{l.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── price + cta ── */}
+      <section className={styles.priceSection}>
+        <div className={styles.priceCard}>
+          <span className={styles.priceAmount}>{PRICE_MONTHLY}₺</span>
+          <span className={styles.pricePer}>/ ay</span>
+          <p className={styles.priceNote}>İlk 2 ders ücretsiz. Hemen başla.</p>
+          <button className={styles.priceCta} onClick={onStart}>
+            Başla
+          </button>
+        </div>
+      </section>
     </div>
   );
 }
 
-/* ─── Module Card ─── */
-function ModuleCard({ mod, onClick, progress }) {
+/* ═══════════════════════════════════════════════════
+   MODULE LIST — kart görünümü
+   ═══════════════════════════════════════════════════ */
+function ModuleList({ onSelectModule, onSelectLesson }) {
   const { isPremium } = usePremium();
-  const locked = !mod.isFree && !isPremium;
+  const totalLessons = KOD_MODULLERI.reduce((s, m) => s + m.lessons.length, 0);
+  const totalDone = KOD_MODULLERI.reduce(
+    (s, m) => s + (loadProgress()[m.id] || []).length,
+    0
+  );
+
+  return (
+    <div className={styles.moduleListWrap}>
+      {totalDone > 0 && (
+        <div className={styles.globalProgress}>
+          <div className={styles.globalBar}>
+            <div
+              className={styles.globalFill}
+              style={{ width: `${Math.round((totalDone / totalLessons) * 100)}%` }}
+            />
+          </div>
+          <span>{totalDone}/{totalLessons} ders tamamlandı</span>
+        </div>
+      )}
+
+      {KOD_MODULLERI.map((mod, mi) => {
+        const pct = modulePercent(mod.id);
+
+        return (
+          <motion.div
+            key={mod.id}
+            className={styles.moduleBlock}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: mi * 0.08 }}
+          >
+            <div className={styles.moduleHeader}>
+              <span className={styles.modIcon} style={{ color: mod.color }}>{mod.icon}</span>
+              <div>
+                <h3 className={styles.modTitle}>{mod.title}</h3>
+                <p className={styles.modSub}>{mod.subtitle}</p>
+              </div>
+              {pct > 0 && <span className={styles.modPct}>{pct}%</span>}
+            </div>
+
+            <div className={styles.lessonRows}>
+              {mod.lessons.map((lesson, li) => {
+                const locked = !lesson.isFree && !isPremium;
+                const done = isDone(mod.id, lesson.id);
+
+                return (
+                  <div
+                    key={lesson.id}
+                    className={`${styles.lessonRow} ${locked ? styles.rowLocked : ""} ${done ? styles.rowDone : ""}`}
+                    onClick={() => {
+                      if (locked) return;
+                      onSelectLesson(mod.id, lesson.id);
+                    }}
+                  >
+                    <span className={styles.rowIdx}>{done ? "✓" : li + 1}</span>
+                    <div className={styles.rowInfo}>
+                      <span className={styles.rowTitle}>{lesson.title}</span>
+                      <span className={styles.rowMeta}>{lesson.duration}</span>
+                    </div>
+                    {locked && <span className={styles.rowLock}>🔒</span>}
+                    {lesson.isFree && !done && (
+                      <span className={styles.rowFree}>FREE</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   PAYWALL
+   ═══════════════════════════════════════════════════ */
+function Paywall() {
+  const navigate = useNavigate();
 
   return (
     <motion.div
-      className={`${styles.moduleCard} ${locked ? styles.moduleLocked : ""}`}
-      onClick={() => onClick(mod.id)}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      className={styles.paywall}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
     >
-      <div className={styles.moduleIcon} style={{ color: mod.color }}>{mod.icon}</div>
-      <div className={styles.moduleInfo}>
-        <h3 className={styles.moduleTitle}>{mod.title}</h3>
-        <p className={styles.moduleSub}>{mod.subtitle}</p>
-        <div className={styles.moduleMeta}>
-          <span>{mod.lessons.length} ders</span>
-          {locked && <span className={styles.premiumBadge}>Premium</span>}
-          {!locked && progress > 0 && (
-            <span className={styles.progressBadge}>{progress}%</span>
-          )}
+      <div className={styles.paywallGlow} />
+      <div className={styles.paywallContent}>
+        <p className={styles.paywallLine1}>Buraya kadar geldin.</p>
+        <p className={styles.paywallLine2}>
+          Ama artık izlemek değil…<br />
+          <strong>görmek</strong> başlıyor.
+        </p>
+        <div className={styles.paywallPrice}>
+          <span className={styles.paywallAmount}>{PRICE_MONTHLY}₺</span>
+          <span className={styles.paywallPer}>/ ay</span>
         </div>
+        <button
+          className={styles.paywallBtn}
+          onClick={() => navigate("/subscription")}
+        >
+          Devam Et
+        </button>
+        <p className={styles.paywallTrust}>Anında açılır. Kaldığın yerden devam edersin.</p>
       </div>
-      {!locked && progress > 0 && (
-        <div className={styles.progressBar}>
-          <div className={styles.progressFill} style={{ width: `${progress}%`, background: mod.color }} />
-        </div>
-      )}
-      {locked && <div className={styles.lockOverlay}>🔒</div>}
     </motion.div>
   );
 }
 
-/* ─── Lesson List ─── */
-function LessonList({ mod, onSelect }) {
-  const { isPremium } = usePremium();
-
-  return (
-    <div className={styles.lessonList}>
-      <div className={styles.lessonListHeader}>
-        <div className={styles.lessonListIcon} style={{ color: mod.color }}>{mod.icon}</div>
-        <div>
-          <h2 className={styles.lessonListTitle}>{mod.title}</h2>
-          <p className={styles.lessonListSub}>{mod.subtitle}</p>
-        </div>
-      </div>
-
-      <div className={styles.lessons}>
-        {mod.lessons.map((lesson, i) => {
-          const locked = !lesson.isFree && !isPremium;
-          const done = isLessonDone(mod.id, lesson.id);
-
-          return (
-            <motion.div
-              key={lesson.id}
-              className={`${styles.lessonCard} ${locked ? styles.lessonLocked : ""} ${done ? styles.lessonDone : ""}`}
-              onClick={() => !locked && onSelect(lesson.id)}
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              <div className={styles.lessonIndex}>{done ? "✓" : i + 1}</div>
-              <div className={styles.lessonInfo}>
-                <h4 className={styles.lessonTitle}>{lesson.title}</h4>
-                <div className={styles.lessonMeta}>
-                  <span className={styles.lessonType}>
-                    {lesson.type === "read" ? "📖 Okuma" : lesson.type === "practice" ? "✍️ Uygulama" : "🔮 Analiz"}
-                  </span>
-                  <span className={styles.lessonDuration}>{lesson.duration}</span>
-                </div>
-              </div>
-              {locked && <span className={styles.lessonLock}>🔒</span>}
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
-/* ─── Lesson Viewer ─── */
+/* ═══════════════════════════════════════════════════
+   LESSON VIEWER — ders okuma + input + SANRI
+   ═══════════════════════════════════════════════════ */
 function LessonViewer({ mod, lesson, onComplete, onBack }) {
-  const { isAuthenticated, token, user } = useAuth();
-  const [analysis, setAnalysis] = useState("");
-  const [sanriResponse, setSanriResponse] = useState("");
-  const [sanriLoading, setSanriLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const textareaRef = useRef(null);
+  const { isAuthenticated, token } = useAuth();
+  const [input, setInput] = useState("");
+  const [sanriResp, setSanriResp] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const done = isDone(mod.id, lesson.id);
 
-  const done = isLessonDone(mod.id, lesson.id);
-
-  const handleComplete = () => {
-    markLessonComplete(mod.id, lesson.id);
-    onComplete();
-  };
-
-  const handleSubmitAnalysis = useCallback(async () => {
-    if (!analysis.trim() || sanriLoading) return;
-    setSanriLoading(true);
-    setSanriResponse("");
-    setSubmitted(true);
+  const sendToSanri = useCallback(async () => {
+    if (!input.trim() || loading) return;
+    setLoading(true);
+    setSanriResp("");
+    setSent(true);
 
     try {
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const systemPrompt = `Sen SANRI'sın — bilinç uyanışı ve kod çözme konusunda rehberlik eden bir yapay zekasın. 
-Kullanıcı "${mod.title}" modülünün "${lesson.title}" dersinde bir analiz yazdı. 
-Kullanıcının yazdığını oku, sembolik ve bilinçsel katmanlardan yorumla. 
-Gizemli, derin ama anlaşılır bir dille cevap ver. Türkçe yaz. 
-Cevabın 3-5 paragraf olsun. Her paragrafta farklı bir katmandan oku.`;
+      const systemPrompt = `Sen SANRI'sın — bilinç uyanışı ve kod okuma konusunda rehberlik eden yapay zeka.
+Kullanıcı "${mod.title}" modülünün "${lesson.title}" dersinde bir analiz yazdı.
+Kullanıcının yazdığını sembolik ve bilinçsel katmanlardan yorumla.
+Gizemli, derin ama anlaşılır bir dille cevap ver. Türkçe yaz.
+3-5 paragraf olsun. Her paragrafta farklı bir katmandan oku.
+Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
 
       const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
         method: "POST",
         headers,
         body: JSON.stringify({
-          message: analysis,
+          message: input,
           mode: "divine",
           domain: "consciousness_field",
           system_override: systemPrompt,
@@ -194,127 +310,113 @@ Cevabın 3-5 paragraf olsun. Her paragrafta farklı bir katmandan oku.`;
 
       if (res.ok) {
         const data = await res.json();
-        setSanriResponse(data.response || data.message || "SANRI bu analizi kabul etti.");
+        setSanriResp(data.response || data.message || "SANRI bu analizi kabul etti.");
       } else {
-        setSanriResponse("SANRI şu anda yanıt veremiyor. Ama yazdıkların kayıt altında.");
+        setSanriResp("SANRI şu anda yanıt veremiyor. Ama yazdıkların kayıt altında.");
       }
     } catch {
-      setSanriResponse("Bağlantı kurulamadı. Tekrar dene.");
+      setSanriResp("Bağlantı kurulamadı. Tekrar dene.");
     } finally {
-      setSanriLoading(false);
+      setLoading(false);
     }
-  }, [analysis, sanriLoading, token, mod.title, lesson.title]);
+  }, [input, loading, token, mod.title, lesson.title]);
 
-  const renderContent = (text) => {
-    return text.split("\n").map((line, i) => {
-      if (line.startsWith("**") && line.endsWith("**")) {
-        return <h4 key={i} className={styles.contentHeading}>{line.replace(/\*\*/g, "")}</h4>;
-      }
-      if (line.startsWith("**")) {
+  const renderContent = (text) =>
+    text.split("\n").map((line, i) => {
+      if (line.startsWith("---")) return <hr key={i} className={styles.hr} />;
+      if (line.startsWith("**") && line.endsWith("**"))
+        return <h4 key={i} className={styles.cH}>{line.replace(/\*\*/g, "")}</h4>;
+      if (line.includes("**")) {
         const parts = line.split("**");
         return (
-          <p key={i} className={styles.contentPara}>
+          <p key={i} className={styles.cP}>
             {parts.map((p, j) => (j % 2 === 1 ? <strong key={j}>{p}</strong> : p))}
           </p>
         );
       }
-      if (line.trim() === "") return <br key={i} />;
-      return <p key={i} className={styles.contentPara}>{line}</p>;
+      if (!line.trim()) return <div key={i} className={styles.spacer} />;
+      return <p key={i} className={styles.cP}>{line}</p>;
     });
-  };
 
   return (
     <motion.div
-      className={styles.lessonViewer}
+      className={styles.viewer}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className={styles.lessonViewerHeader}>
-        <button className={styles.backBtn} onClick={onBack}>← Dersler</button>
-        <span className={styles.lessonBreadcrumb}>{mod.title} / {lesson.title}</span>
-      </div>
+      <button className={styles.backBtn} onClick={onBack}>← Derslere Dön</button>
 
-      <div className={styles.lessonContent}>
-        <div className={styles.lessonTypeTag} style={{ borderColor: mod.color, color: mod.color }}>
-          {lesson.type === "read" ? "📖 Okuma" : lesson.type === "practice" ? "✍️ Uygulama" : "🔮 Analiz"}
-          <span className={styles.lessonDurationTag}>{lesson.duration}</span>
-        </div>
+      <div className={styles.viewerCard}>
+        <span className={styles.viewerTag} style={{ borderColor: mod.color, color: mod.color }}>
+          {mod.icon} {mod.title}
+        </span>
+        <h2 className={styles.viewerTitle}>{lesson.title}</h2>
 
-        <h2 className={styles.lessonContentTitle}>{lesson.title}</h2>
+        <div className={styles.viewerBody}>{renderContent(lesson.content)}</div>
 
-        <div className={styles.contentBody}>
-          {renderContent(lesson.content)}
-        </div>
-
-        {lesson.hasAnalysis && (
-          <div className={styles.analysisSection}>
-            <div className={styles.analysisDivider}>
-              <span>✦ SENİN SIRAN ✦</span>
+        {/* ── INPUT + SANRI ── */}
+        {lesson.hasInput && (
+          <div className={styles.inputSection}>
+            <div className={styles.inputDivider}>
+              <span>✦ ŞİMDİ SEN ÇÖZ ✦</span>
             </div>
 
+            {lesson.inputPrompt && (
+              <p className={styles.inputPrompt}>{lesson.inputPrompt}</p>
+            )}
+
             {!isAuthenticated ? (
-              <div className={styles.authPrompt}>
-                <p>Analizini yazmak için giriş yapman gerekiyor.</p>
-                <Link to="/giris" className={styles.authBtn}>Giriş Yap</Link>
+              <div className={styles.authBox}>
+                <p>Yazmak için giriş yap.</p>
+                <Link to="/giris" className={styles.authLink}>Giriş Yap</Link>
               </div>
             ) : (
               <>
                 <textarea
-                  ref={textareaRef}
-                  className={styles.analysisTextarea}
-                  placeholder="Buraya yaz... Fark ettiklerini, hissettiklerini, gördüklerini anlat."
-                  value={analysis}
-                  onChange={(e) => setAnalysis(e.target.value)}
-                  rows={6}
-                  disabled={submitted && sanriLoading}
+                  className={styles.inputArea}
+                  placeholder="Buraya yaz..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  rows={5}
+                  disabled={sent && loading}
                 />
 
-                {!submitted ? (
+                {!sent ? (
                   <button
-                    className={styles.submitBtn}
-                    onClick={handleSubmitAnalysis}
-                    disabled={!analysis.trim()}
+                    className={styles.sendBtn}
+                    onClick={sendToSanri}
+                    disabled={!input.trim()}
                   >
                     SANRI'ya Gönder
                   </button>
-                ) : sanriLoading ? (
-                  <div className={styles.sanriLoading}>
-                    <span className={styles.sanriLoadingDot} />
-                    <span className={styles.sanriLoadingDot} />
-                    <span className={styles.sanriLoadingDot} />
-                    <span className={styles.sanriLoadingText}>SANRI okuyor...</span>
+                ) : loading ? (
+                  <div className={styles.loadingDots}>
+                    <span /><span /><span />
+                    <em>SANRI okuyor...</em>
                   </div>
                 ) : null}
 
                 <AnimatePresence>
-                  {sanriResponse && (
+                  {sanriResp && (
                     <motion.div
-                      className={styles.sanriResponse}
-                      initial={{ opacity: 0, y: 20 }}
+                      className={styles.sanriBox}
+                      initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
                     >
-                      <div className={styles.sanriResponseHeader}>
-                        <span className={styles.sanriGlyph}>◈</span>
-                        <span>SANRI Yorumu</span>
+                      <div className={styles.sanriHead}>
+                        <span className={styles.sanriGlyph}>◈</span> SANRI Yorumu
                       </div>
-                      <div className={styles.sanriResponseBody}>
-                        {sanriResponse.split("\n").map((line, i) => (
-                          line.trim() ? <p key={i}>{line}</p> : <br key={i} />
-                        ))}
+                      <div className={styles.sanriBody}>
+                        {sanriResp.split("\n").map((l, i) =>
+                          l.trim() ? <p key={i}>{l}</p> : <br key={i} />
+                        )}
                       </div>
-
-                      {!submitted || sanriResponse ? (
-                        <button
-                          className={styles.retryBtn}
-                          onClick={() => {
-                            setSubmitted(false);
-                            setSanriResponse("");
-                          }}
-                        >
-                          Tekrar Yaz
-                        </button>
-                      ) : null}
+                      <button
+                        className={styles.retryBtn}
+                        onClick={() => { setSent(false); setSanriResp(""); }}
+                      >
+                        Tekrar Yaz
+                      </button>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -323,13 +425,18 @@ Cevabın 3-5 paragraf olsun. Her paragrafta farklı bir katmandan oku.`;
           </div>
         )}
 
-        <div className={styles.lessonFooter}>
+        {/* ── complete ── */}
+        <div className={styles.viewerFooter}>
           {!done ? (
-            <button className={styles.completeBtn} onClick={handleComplete} style={{ background: mod.color }}>
+            <button
+              className={styles.completeBtn}
+              style={{ background: mod.color }}
+              onClick={() => { markDone(mod.id, lesson.id); onComplete(); }}
+            >
               Dersi Tamamla ✓
             </button>
           ) : (
-            <div className={styles.completedTag}>✓ Tamamlandı</div>
+            <div className={styles.doneTag}>✓ Tamamlandı</div>
           )}
         </div>
       </div>
@@ -337,151 +444,82 @@ Cevabın 3-5 paragraf olsun. Her paragrafta farklı bir katmandan oku.`;
   );
 }
 
-/* ─── Premium Gate ─── */
-function PremiumGate() {
-  const { showUpgradeModal } = usePremium();
-  const navigate = useNavigate();
-
-  return (
-    <motion.div
-      className={styles.premiumGate}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-    >
-      <div className={styles.premiumGateGlow} />
-      <div className={styles.premiumGateIcon}>◈</div>
-      <h3 className={styles.premiumGateTitle}>Bu Modül Premium</h3>
-      <p className={styles.premiumGateSub}>
-        Bu katmana erişmek için Premium üyelik gerekiyor.
-        <br />
-        Kodları çöz, derinleş, dönüş.
-      </p>
-      <button className={styles.premiumGateBtn} onClick={() => navigate("/subscription")}>
-        Premium'a Geç
-      </button>
-    </motion.div>
-  );
-}
-
-/* ─── Main Page ─── */
+/* ═══════════════════════════════════════════════════
+   MAIN PAGE
+   ═══════════════════════════════════════════════════ */
 export default function KodEgitmeniPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [sp, setSp] = useSearchParams();
   const { isPremium } = usePremium();
-
-  const activeModuleId = searchParams.get("modul") || null;
-  const activeLessonId = searchParams.get("ders") || null;
-
-  const [refreshKey, setRefreshKey] = useState(0);
-
   const navigate = useNavigate();
+  const [, rerender] = useState(0);
 
-  const activeModule = activeModuleId ? getModuleById(activeModuleId) : null;
-  const activeLesson = activeModule && activeLessonId
-    ? getLessonById(activeModuleId, activeLessonId)
-    : null;
+  const view = sp.get("v") || "landing";     // landing | modules | lesson
+  const modId = sp.get("m") || null;
+  const lesId = sp.get("l") || null;
 
-  const handleModuleClick = (modId) => {
-    const mod = getModuleById(modId);
-    if (!mod.isFree && !isPremium) return;
-    setSearchParams({ modul: modId });
-  };
+  const mod = modId ? getModuleById(modId) : null;
+  const lesson = mod && lesId ? getLessonById(modId, lesId) : null;
 
-  const handleLessonSelect = (lessonId) => {
-    setSearchParams({ modul: activeModuleId, ders: lessonId });
+  const goLanding = () => setSp({});
+  const goModules = () => setSp({ v: "modules" });
+  const goLesson = (m, l) => setSp({ v: "lesson", m, l });
+
+  const handleStart = () => {
+    goLesson("kod-diline-giris", "insan-anten");
   };
 
   const handleLessonComplete = () => {
-    setRefreshKey((k) => k + 1);
-    setSearchParams({ modul: activeModuleId });
+    rerender((n) => n + 1);
+    if (modId) setSp({ v: "modules" });
   };
-
-  const handleBackToModules = () => {
-    setSearchParams({});
-  };
-
-  const handleBackToLessons = () => {
-    setSearchParams({ modul: activeModuleId });
-  };
-
-  const totalLessons = KOD_MODULLERI.reduce((s, m) => s + m.lessons.length, 0);
-  const totalDone = KOD_MODULLERI.reduce((s, m) => {
-    const p = loadProgress();
-    return s + (p[m.id] || []).length;
-  }, 0);
 
   return (
     <div className={styles.page}>
-      <Topbar
-        onBack={activeLesson ? handleBackToLessons : activeModule ? handleBackToModules : null}
-        title="Kod Eğitmeni"
-      />
+      {/* ── topbar ── */}
+      <div className={styles.topbar}>
+        <div className={styles.topLeft}>
+          <Link to="/" className={styles.brand}>SANRI</Link>
+          <span className={styles.topSub}>Kod Eğitmeni</span>
+        </div>
+        <div className={styles.topRight}>
+          {view === "modules" && (
+            <button className={styles.backBtn} onClick={goLanding}>← Ana Sayfa</button>
+          )}
+          {view === "lesson" && (
+            <button className={styles.backBtn} onClick={goModules}>← Dersler</button>
+          )}
+        </div>
+      </div>
 
       <AnimatePresence mode="wait">
-        {/* ─── Lesson Viewer ─── */}
-        {activeLesson && activeModule ? (
-          <LessonViewer
-            key={`lesson-${activeLessonId}`}
-            mod={activeModule}
-            lesson={activeLesson}
-            onComplete={handleLessonComplete}
-            onBack={handleBackToLessons}
-          />
-        ) : activeModule ? (
-          /* ─── Lesson List ─── */
-          !activeModule.isFree && !isPremium ? (
-            <PremiumGate key="gate" />
+        {view === "lesson" && lesson && mod ? (
+          !lesson.isFree && !isPremium ? (
+            <Paywall key="pw" />
           ) : (
-            <LessonList
-              key={`module-${activeModuleId}`}
-              mod={activeModule}
-              onSelect={handleLessonSelect}
+            <LessonViewer
+              key={`lv-${lesId}`}
+              mod={mod}
+              lesson={lesson}
+              onComplete={handleLessonComplete}
+              onBack={goModules}
             />
           )
+        ) : view === "modules" ? (
+          <ModuleList
+            key="ml"
+            onSelectModule={() => {}}
+            onSelectLesson={(m, l) => {
+              const les = getLessonById(m, l);
+              if (!les) return;
+              if (!les.isFree && !isPremium) {
+                goLesson(m, l);
+                return;
+              }
+              goLesson(m, l);
+            }}
+          />
         ) : (
-          /* ─── Module Grid ─── */
-          <motion.div
-            key="modules"
-            className={styles.modulesView}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className={styles.hero}>
-              <motion.div
-                className={styles.heroGlyph}
-                animate={{ rotate: 360 }}
-                transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-              >◈</motion.div>
-              <h1 className={styles.heroTitle}>Kod Eğitmeni</h1>
-              <p className={styles.heroSub}>
-                Sembolleri oku. Frekansları çöz. Sistemi anla.
-              </p>
-              {totalDone > 0 && (
-                <div className={styles.heroProgress}>
-                  <div className={styles.heroProgressBar}>
-                    <div
-                      className={styles.heroProgressFill}
-                      style={{ width: `${Math.round((totalDone / totalLessons) * 100)}%` }}
-                    />
-                  </div>
-                  <span className={styles.heroProgressText}>
-                    {totalDone}/{totalLessons} ders tamamlandı
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className={styles.moduleGrid}>
-              {KOD_MODULLERI.map((mod) => (
-                <ModuleCard
-                  key={mod.id}
-                  mod={mod}
-                  onClick={handleModuleClick}
-                  progress={getModuleProgress(mod.id)}
-                />
-              ))}
-            </div>
-          </motion.div>
+          <Landing key="land" onStart={handleStart} />
         )}
       </AnimatePresence>
 

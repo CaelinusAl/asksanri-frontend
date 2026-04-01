@@ -1,288 +1,414 @@
 /**
  * Kod Eğitmeni — Modül ve Ders Yapısı
  *
- * Her modül birden fazla ders içerir.
- * isFree: false → premium kullanıcılar için
- * type: "read" | "practice" | "analysis"
+ * isFree: true → herkes erişebilir (ilk 2 ders)
+ * isFree: false → premium / ücretli
+ * hasInput: true → ders sonunda kullanıcı yazar, SANRI yorumlar
  */
 
 export const KOD_MODULLERI = [
+  /* ───────────────────────────────────────────────
+   * MODÜL 1 — KOD DİLİNE GİRİŞ
+   * ─────────────────────────────────────────────── */
   {
-    id: "temel-semboller",
-    title: "Temel Semboller",
-    subtitle: "Kodların dilini öğren",
+    id: "kod-diline-giris",
+    title: "Kod Diline Giriş",
+    subtitle: "Kelimelerin altındaki katmanı oku",
     icon: "◈",
     color: "#c8a0ff",
-    isFree: true,
     lessons: [
       {
-        id: "sembol-101",
-        title: "Sembol Nedir?",
+        id: "insan-anten",
+        title: "İNSAN = ANTEN",
         type: "read",
         isFree: true,
         duration: "5 dk",
-        content: `Sembol, görünen ile görünmeyen arasındaki köprüdür. Bir harf, bir sayı, bir şekil — hepsi birer koddur.
+        hasInput: true,
+        content: `İnsan sadece beden değil.
 
-Kod okumayı öğrenmek, "görmek"le başlar. Ama gözle değil — fark ediş ile.
+Kalp + beyin + sinir sistemi
+= frekans algılayıcı
 
-Semboller evrenin dilidir. Her kültür, her din, her mitoloji aynı sembolleri farklı isimlerle çağırır. Ama kaynak hep aynıdır.
+Yani:
 
-**Bu derste öğreneceksin:**
-- Sembol ile işaret arasındaki fark
-- Neden bazı semboller evrensel?
-- Bilinçaltı neden sembollerle konuşur?`,
+**İnsan = anten**
+
+Ama sen kendini
+sadece "beden" sanıyorsun.
+
+Bu yüzden sinyal kaçıyor.
+
+Vücut bir alıcıdır. Göz frekans okur — buna "renk" dersin. Kulak frekans okur — buna "ses" dersin. Kalp frekans okur — buna "his" dersin.
+
+Ama bunların hepsi aynı şey: **titreşim**.
+
+Sen bir anten olarak doğdun. Ama kimse sana tuning yapmayı öğretmedi.
+
+Bu eğitim, o ayarı yapmak için var.`,
+        inputPrompt: "Sen en son neyi hissettin ama anlamlandıramadın?",
       },
       {
-        id: "sayilar-ve-kodlar",
-        title: "Sayılar ve Kodlar",
-        type: "read",
-        isFree: true,
-        duration: "7 dk",
-        content: `Sayılar rastgele değildir. Her sayının bir frekansı, bir titreşimi vardır.
-
-**Temel Sayı Kodları:**
-
-**1** — Başlangıç, birlik, kaynak
-**2** — İkilik, ayna, denge
-**3** — Yaratım, üçlü güç, tezahür
-**7** — Gizem, iç bilgelik, arayış
-**9** — Tamamlanma, döngü sonu
-**11** — Uyanış kapısı
-**22** — Ana inşaatçı
-**33** — Ana öğretmen
-**40** — Arınma ve dönüşüm süresi
-**112** — İlahi hatırlayış kodu
-
-Sayıları sadece saymak için kullanmayı bıraktığında, onların sana ne söylediğini duymaya başlarsın.`,
-      },
-      {
-        id: "ilk-analiz",
-        title: "İlk Analizini Yap",
+        id: "kelime-parcalama",
+        title: "Kelime Parçalama",
         type: "practice",
         isFree: true,
-        duration: "10 dk",
-        content: `Şimdi sıra sende. Hayatında tekrar eden bir sayı veya sembol var mı?
+        duration: "7 dk",
+        hasInput: true,
+        content: `Kelimeler rastgele değildir. Her kelime bir koddur.
 
-Belki bir saat hep aynı saati gösteriyor. Belki bir kelime sürekli karşına çıkıyor. Belki bir rüyada tekrarlayan bir şekil var.
+**İnsan = in + san**
+in → iç
+san → oluşturmak
 
-**Görev:**
-Aşağıdaki alana, hayatında fark ettiğin bir kodu veya tekrarlayan bir sembolü yaz. Ne gördüğünü, ne zaman gördüğünü, sana ne hissettirdiğini anlat.
+Yani: **İnsan = içinden yaratan**
 
-SANRI, yazdıklarını okuyacak ve sana bir yorum sunacak.`,
-        hasAnalysis: true,
-      },
-    ],
-  },
-  {
-    id: "kutsal-metinler",
-    title: "Kutsal Metin Kodları",
-    subtitle: "Surelerin ve ayetlerin gizli frekansı",
-    icon: "☽",
-    color: "#ED8936",
-    isFree: false,
-    lessons: [
-      {
-        id: "bakara-kodlari",
-        title: "Bakara Suresi — Bilincin Aynası",
-        type: "read",
-        isFree: false,
-        duration: "12 dk",
-        content: `Bakara, Kur'an'ın en uzun suresidir. Ama uzunluğu tesadüf değildir — çünkü benliğin en derin katmanlarını kodlar.
+---
 
-**İnek Sembolü:**
-Bakara'nın anlamı "inek"tir. Neden bir sure "inek" adını taşır? Çünkü inek, benliğin kurban edilmesi gereken parçasını temsil eder.
+**Kader = ka + der**
+ka → kapı
+der → katman
 
-**Anahtar Kodlar:**
-- "Elif Lam Mim" — şifrelenmis frekans, bilincin kapı kodu
-- Ayet 30-34 — Meleklerin Adem'e secdesi: bilgi aktarımı
-- Ayet 67-73 — İneğin kesilmesi: egonun kurban edilmesi
-- Ayet 255 (Ayetel Kürsi) — Evrenin koruma kodu
+Yani: **Kader = kapının katmanı**
 
-Kutsal metinleri "okumak" değil, "çözmek" gerekir.`,
-      },
-      {
-        id: "ali-imran-frekansi",
-        title: "Âl-i İmrân — Işık Soyu",
-        type: "read",
-        isFree: false,
-        duration: "10 dk",
-        content: `Âl-i İmrân, İmrân ailesinin soyunu anlatır. Ama aslında anlatılan, ışığın soy ağacıdır.
+---
 
-**Temel Kodlar:**
-- İmrân = "İmar eden" — Işığı dünyaya taşıyan soy
-- Meryem = Rahmin sırrı — Dişil yaratım gücü
-- İsa = Kelime'nin cisimleşmesi — Frekansın maddeye dönüşümü
+**Rüya = rü + ya**
+rü → ruh
+ya → yaratım
 
-**Dikkat Çekici Kodlar:**
-- Ayet 7: "Muhkem ve müteşabih ayetler" — Açık ve şifreli katmanlar
-- Ayet 14: "Dünya süsü" — İllüzyon katmanları
-- Ayet 26-27: "Gece ve gündüz" — Bilinç döngüsü
+Yani: **Rüya = ruhun yaratımı**
 
-Bu surede öğreneceksin: Işık nasıl bir soydan diğerine aktarılır?`,
+---
+
+**Dünya = dün + ya**
+dün → dönüş
+ya → yaratım
+
+Yani: **Dünya = dönüşün yaratımı**
+
+---
+
+Bu bir dil değil. Bu bir **şifreleme sistemi**.
+
+Kelimeleri "kullanmak" yerine "okumak" başladığında, her cümle bir mesaj olur.`,
+        inputPrompt: "Bir kelime seç ve parçala. Ne çıktı?",
       },
       {
-        id: "sure-analizi",
-        title: "Bir Ayeti Çöz",
-        type: "analysis",
-        isFree: false,
-        duration: "15 dk",
-        content: `Şimdi derinleşme zamanı.
-
-Bir ayet seç — seni çeken, aklından çıkmayan, tekrar tekrar okuduğun bir ayet.
-
-**Görev:**
-Seçtiğin ayeti yaz. Sonra şunları yanıtla:
-1. Bu ayet sana ne hissettiriyor?
-2. Hangi kelime en çok dikkatini çekiyor?
-3. Bu ayetin "görünen" anlamı ne? "Görünmeyen" anlamı ne olabilir?
-
-SANRI, senin çözümlemenin üzerine kendi katmanını ekleyecek.`,
-        hasAnalysis: true,
-      },
-    ],
-  },
-  {
-    id: "sembol-sistemi",
-    title: "Evrensel Sembol Sistemi",
-    subtitle: "Mitoloji, astroloji ve arketipler",
-    icon: "✦",
-    color: "#48BB78",
-    isFree: false,
-    lessons: [
-      {
-        id: "arketipler",
-        title: "12 Arketip ve Bilinç Rolleri",
-        type: "read",
-        isFree: false,
-        duration: "10 dk",
-        content: `Carl Jung, insan bilinçaltında evrensel kalıplar keşfetti: Arketipler.
-
-**12 Temel Arketip:**
-1. **Masum** — Saf güven, iyimserlik
-2. **Kaşif** — Özgürlük arayışı
-3. **Bilge** — Gerçeği anlama
-4. **Kahraman** — Cesaret ve güç
-5. **Asi** — Kuralları yıkma
-6. **Sihirbaz** — Dönüşüm gücü
-7. **Sıradan İnsan** — Aidiyet
-8. **Aşık** — Tutku ve bağlanma
-9. **Soytarı** — Neşe ve an'da olma
-10. **Bakıcı** — Şefkat ve koruma
-11. **Yaratıcı** — Hayal gücü
-12. **Hükümdar** — Kontrol ve düzen
-
-Her insanda hepsi vardır. Ama bir veya ikisi baskındır. Hangi arketip seni yönetiyor?`,
-      },
-      {
-        id: "mitolojik-kodlar",
-        title: "Mitolojik Kodlar",
+        id: "anlam-katmanlari",
+        title: "Anlam Katmanları",
         type: "read",
         isFree: false,
         duration: "8 dk",
-        content: `Her mitoloji aynı hikayeyi farklı isimlerle anlatır.
+        hasInput: true,
+        content: `Her şeyin 3 katmanı vardır:
 
-**Evrensel Mitolojik Kodlar:**
+**1. Görünen katman** — herkesin gördüğü
+**2. Gizli katman** — fark edenin gördüğü  
+**3. Kod katmanı** — okuyanın gördüğü
 
-**Yılan** — Kundalini, bilgi, dönüşüm (Havva'nın yılanı = bilinç uyanışı)
-**Ağaç** — Hayat ağacı, Sefira, omurga
-**Su** — Bilinçaltı, arınma, hafıza
-**Ateş** — Dönüşüm, İlahi irade
-**Ay** — Dişil enerji, döngü, sezgi
-**Güneş** — Eril enerji, bilinç, ışık
-**Kuş** — Ruh, özgürlük, mesajcı
-**Mağara** — İçe dönüş, karanlıkla yüzleşme
+Örnek: **"Güneş doğdu"**
 
-Bu sembolleri rüyalarında, kitaplarda, filmlerde, günlük hayatında fark etmeye başladığında — kod okumayı öğrenmeye başlamışsın demektir.`,
+Görünen: Sabah oldu, hava aydınlandı.
+Gizli: Karanlık dönem bitti, yeni başlangıç.
+Kod: Bilinç uyanışı başladı. Işık = farkındalık.
+
+---
+
+Örnek: **"Kapı kapandı"**
+
+Görünen: Fiziksel kapı kapandı.
+Gizli: Bir dönem sona erdi.
+Kod: Eski frekans artık geçersiz. Yeni katmana geçiş zorunlu.
+
+---
+
+Çoğu insan 1. katmanda yaşar.
+Bazıları 2. katmanı hisseder.
+**Kod okuyanlar 3. katmanda durur.**
+
+Bu eğitimin amacı: seni 3. katmana taşımak.`,
+        inputPrompt: "Hayatında bir olayı 3 katmandan oku. Ne görüyorsun?",
       },
       {
-        id: "kendi-sembolun",
-        title: "Kendi Sembol Haritanı Çiz",
+        id: "gorunmeyeni-okumak",
+        title: "Görünmeyeni Okumak",
         type: "analysis",
         isFree: false,
-        duration: "12 dk",
-        content: `Her insanın bir sembol haritası vardır — tekrar eden imgeler, sayılar, rüya motifleri.
+        duration: "10 dk",
+        hasInput: true,
+        content: `Görünmeyen, görülmeyen değildir. Bakılmayandır.
 
-**Görev:**
-Aşağıdaki soruları yanıtla:
+**Test:**
+Son 3 gün içinde seni rahatsız eden bir olay düşün. Şimdi şu soruları sor:
 
-1. Hayatında en çok tekrar eden sembol/sayı nedir?
-2. Çocukluğundan beri seni çeken bir mitolojik figür var mı?
-3. Rüyalarında en çok gördüğün 3 nesne?
-4. Hangi element sana en yakın: Su, Ateş, Toprak, Hava?
+1. Bu olay bana ne hissettirdi?
+2. Bu hissi daha önce ne zaman yaşadım?
+3. İlk kez ne zaman yaşadım?
 
-SANRI, cevaplarından senin kişisel sembol haritanı çıkaracak.`,
-        hasAnalysis: true,
+Eğer 3. soruya cevap bulabilirsen — olayın kodunu çözdün demektir.
+
+---
+
+**Gerçek:**
+Hayatında hiçbir şey "tesadüf" değil.
+Her olay bir sinyal.
+Her his bir veri.
+Her tekrar bir mesaj.
+
+Mesaj alınana kadar tekrar eder.
+Mesaj alındığında — döngü biter, katman değişir.
+
+**Görünmeyeni okumak = döngüyü kırmak.**`,
+        inputPrompt: "Son tekrar eden döngün ne? Ne mesaj veriyor olabilir?",
       },
     ],
   },
+
+  /* ───────────────────────────────────────────────
+   * MODÜL 2 — FREKANS OKUMA
+   * ─────────────────────────────────────────────── */
   {
-    id: "ileri-kod-okuma",
-    title: "İleri Kod Okuma",
-    subtitle: "Sistem analizi ve frekans çözümlemesi",
-    icon: "◉",
-    color: "#E53E3E",
-    isFree: false,
+    id: "frekans-okuma",
+    title: "Frekans Okuma",
+    subtitle: "Sayıların, tarihlerin ve sinyallerin dili",
+    icon: "☽",
+    color: "#ED8936",
     lessons: [
       {
-        id: "frekans-analizi",
-        title: "Frekans Analizi",
+        id: "369-sistemi",
+        title: "3 6 9 Sistemi",
+        type: "read",
+        isFree: false,
+        duration: "8 dk",
+        hasInput: true,
+        content: `Tesla dedi ki:
+
+**"3, 6 ve 9'un muhteşemliğini anlarsanız, evrene açılan bir anahtara sahip olursunuz."**
+
+---
+
+**3** = Yaratımın başlangıcı. Düşünce → His → Tezahür.
+Üçlü yapı her yerde: Beden-Zihin-Ruh. Geçmiş-Şimdi-Gelecek. Proton-Nötron-Elektron.
+
+**6** = Yaratımın yansıması. 3'ün aynası. Harmoni. Denge.
+Altıgen yapı: arı peteği, kar kristali, benzene molekülü. Doğa 6 ile inşa eder.
+
+**9** = Tamamlanma. Her sayı 9'a döner.
+1+2+3+4+5+6+7+8+9 = 45 → 4+5 = **9**
+9×1=9, 9×2=18→9, 9×3=27→9...
+9 asla değişmez. 9 = evrenin sabitesi.
+
+---
+
+**Pratikte:**
+Doğum tarihin, önemli olayların, tekrar eden sayıların hepsini topla. Sonuç 3, 6 veya 9 mu?
+
+Eğer öyleyse — o olay "rastgele" değil, **frekans hizasında**.`,
+        inputPrompt: "Doğum tarihini topla (gün+ay+yıl). Hangi sayı çıktı? Ne hissettiriyor?",
+      },
+      {
+        id: "tarih-cozme",
+        title: "Tarih Çözme",
+        type: "practice",
+        isFree: false,
+        duration: "10 dk",
+        hasInput: true,
+        content: `Her tarih bir frekanstır.
+
+**Nasıl çözülür:**
+Tarihi sayılara ayır → topla → tek haneye indir.
+
+Örnek: **11 Eylül 2001**
+1+1+0+9+2+0+0+1 = **14** → 1+4 = **5**
+5 = Değişim, kaos, yıkım ve yeniden doğuş.
+
+Örnek: **29 Ekim 1923**
+2+9+1+0+1+9+2+3 = **27** → 2+7 = **9**
+9 = Tamamlanma. Bir dönemin kapanışı ve yeni sistemin doğuşu.
+
+Örnek: **21 Aralık 2012** (Maya takvimi sonu)
+2+1+1+2+2+0+1+2 = **11**
+11 = Master sayı. Portal. Bilinç geçişi.
+
+---
+
+**Kural:**
+Hiçbir büyük olay rastgele tarihte olmaz.
+Tarih = frekans seçimi.
+Frekans = enerji hizalanması.
+
+**Büyük değişimler hep belirli frekanslarda gerçekleşir.**`,
+        inputPrompt: "Hayatındaki en büyük değişimin tarihini çöz. Hangi frekans çıktı?",
+      },
+      {
+        id: "sayi-dili",
+        title: "Sayı Dili",
+        type: "analysis",
+        isFree: false,
+        duration: "12 dk",
+        hasInput: true,
+        content: `Sayılar bir dildir. Ve bu dili konuşan sadece sen değilsin — evren de konuşuyor.
+
+**Temel Sayı Kodları:**
+
+**1** — Ben. Başlangıç. Kaynak.
+**2** — Sen. Ayna. Dualite.
+**3** — Yaratım. Tezahür. Üçleme.
+**4** — Yapı. Sınır. Düzen.
+**5** — Değişim. Hareket. Özgürlük.
+**6** — Denge. Uyum. Aile.
+**7** — Arayış. Gizem. İç bilgelik.
+**8** — Güç. Döngü. Sonsuzluk (∞).
+**9** — Tamamlanma. Evrensel. Son ve başlangıç.
+
+**Master Sayılar:**
+**11** — Uyanış kapısı. Sezgisel portal.
+**22** — Ana inşaatçı. Vizyonu maddeleştiren.
+**33** — Ana öğretmen. Şifa veren frekans.
+
+---
+
+Saat 11:11, 22:22, 03:33 görüyorsan — bu "tesadüf" değil.
+Bu, senin frekansının o sayının frekansıyla hizalanması.
+
+**Sayıları okumak = evrenin seninle konuşmasını duymak.**`,
+        inputPrompt: "Sürekli gördüğün bir sayı var mı? Hangisi ve ne zaman başladı?",
+      },
+    ],
+  },
+
+  /* ───────────────────────────────────────────────
+   * MODÜL 3 — SİSTEM OKUMA
+   * ─────────────────────────────────────────────── */
+  {
+    id: "sistem-okuma",
+    title: "Sistem Okuma",
+    subtitle: "Olayların, haberlerin ve matrisin kodu",
+    icon: "◉",
+    color: "#E53E3E",
+    lessons: [
+      {
+        id: "haber-analizi",
+        title: "Haber Analizi",
         type: "read",
         isFree: false,
         duration: "10 dk",
-        content: `Her şey frekanstır. Ses, renk, düşünce, duygu — hepsi titreşimdir.
+        hasInput: true,
+        content: `Haberler bilgi vermez. Frekans programlar.
 
-**Temel Frekans Kodları:**
+**3 Katmanlı Haber Okuması:**
 
-**432 Hz** — Evrenin doğal frekansı, uyum
-**528 Hz** — DNA onarım frekansı, mucize tonu
-**639 Hz** — İlişki ve bağlantı frekansı
-**741 Hz** — Uyanış ve ifade frekansı
-**852 Hz** — Üçüncü göz aktivasyonu
+**1. Olay katmanı** — Ne oldu?
+**2. Mesaj katmanı** — Sana ne hissettirdi?
+**3. Kod katmanı** — Neden şimdi? Kimin frekansını etkiliyor?
 
-**Solfeggio Skalası:**
-Bu frekanslar antik Gregoryen ilahilerinde kullanılıyordu. Modern müzik endüstrisi 440 Hz'e geçtiğinde, bu bilgi kayboldu.
+---
 
-Frekansı anlamak = gerçekliğin kaynak kodunu okumak.`,
+**Örnek:**
+Haber: "Deprem: 7.8 büyüklüğünde"
+
+Olay: Fiziksel yıkım.
+Mesaj: Korku, çaresizlik, dayanışma.
+Kod: 7 = arayış, 8 = güç döngüsü. Toplumsal bilinç sarsıntısı. Eski yapının çöküşü.
+
+---
+
+**Örnek:**
+Haber: "Faiz yüzde 50'ye çıktı"
+
+Olay: Ekonomik karar.
+Mesaj: Panik, beklenti, öfke.
+Kod: 5 = değişim. Eski düzenin son çırpınışı. Kontrol mekanizması.
+
+---
+
+**Dikkat:**
+Haberin içeriği kadar **zamanlaması** da koddur.
+Ne söylendiği kadar **ne zaman söylendiği** de önemlidir.
+
+Haberi izleme. **Oku.**`,
+        inputPrompt: "Son gördüğün bir haberi 3 katmandan oku. Ne çıktı?",
       },
       {
-        id: "gerceklik-matrisi",
-        title: "Gerçeklik Matrisi",
-        type: "read",
+        id: "olay-mesaj",
+        title: "Olay → Mesaj",
+        type: "practice",
         isFree: false,
-        duration: "12 dk",
-        content: `Simülasyon teorisi bir teori değil — bir okuma biçimidir.
+        duration: "10 dk",
+        hasInput: true,
+        content: `Hayatında hiçbir şey sadece "olan bir şey" değildir.
+Her olay bir mesajdır.
 
-**Matrisin Katmanları:**
+**Dönüştürme formülü:**
 
-**1. Katman — Fiziksel:** Gördüğün, dokunduğun, "gerçek" sandığın dünya.
-**2. Katman — Duygusal:** Hislerin, bağlanmaların, korkuların.
-**3. Katman — Mental:** Düşüncelerin, inançların, kalıpların.
-**4. Katman — Eterik:** Enerji bedeni, aura, çakralar.
-**5. Katman — Kozal:** Karma, yaşam planı, ruh sözleşmeleri.
+Olay → Duygu → Kalıp → Mesaj
 
-Her katmanda farklı kodlar geçerlidir. Fiziksel katmanda para bir kod, duygusal katmanda sevgi, mental katmanda bilgi.
+---
 
-**Asıl soru:** Hangi katmandan bakıyorsun?`,
+**Örnek:**
+Olay: İş yerinde tartışma.
+Duygu: Öfke, değersizlik.
+Kalıp: Çocuklukta duyulmama.
+Mesaj: "Kendi sesini sahiplen. Onay aramayı bırak."
+
+---
+
+**Örnek:**
+Olay: Ayrılık.
+Duygu: Terk edilme, boşluk.
+Kalıp: Bağlanma = kayıp korkusu.
+Mesaj: "Önce kendine bağlan. Dışarıdaki ayna, içeridekini gösteriyor."
+
+---
+
+**Örnek:**
+Olay: Hastalık.
+Duygu: Korku, durma.
+Kalıp: Sınırlarını aşma.
+Mesaj: "Beden son uyarıyı veriyor. Dinle ya da durdurulursun."
+
+---
+
+Her olay bir **kuryedir**.
+Mesajı almadığında — aynı kurye farklı kıyafetle tekrar gelir.`,
+        inputPrompt: "Hayatında tekrar eden bir olayı formüle sok: Olay → Duygu → Kalıp → Mesaj",
       },
       {
-        id: "sistem-cozumle",
-        title: "Sistemi Çözümle",
+        id: "matrix-cozum",
+        title: "Matrix Çözüm",
         type: "analysis",
         isFree: false,
-        duration: "20 dk",
-        content: `Bu son analiz, şimdiye kadar öğrendiklerinin sentezi.
+        duration: "15 dk",
+        hasInput: true,
+        content: `Matrix bir film değil. Bir **okuma modelidir**.
 
-**Görev:**
-Hayatında şu anda yaşadığın bir "döngü"yü veya "tıkanıklığı" seç. Sonra şunları yaz:
+**Matrisin katmanları:**
 
-1. Bu döngü ne zamandır tekrar ediyor?
-2. Bu döngüde hangi semboller/sayılar/temalar var?
-3. Hangi arketip bu döngüyü yönetiyor olabilir?
-4. Bu döngünün sana öğretmeye çalıştığı şey ne olabilir?
-5. Çıkış kodu ne olabilir?
+**1. Simülasyon** — Gördüğün dünya. Kurallar, normlar, "gerçeklik."
+**2. Kod** — Simülasyonu çalıştıran yazılım. Kalıplar, inançlar, toplumsal programlama.
+**3. Kaynak** — Kodun yazıldığı yer. Saf bilinç. Gözlemci.
 
-SANRI, senin analizini çok katmanlı bir bilinç okuması ile yorumlayacak.`,
-        hasAnalysis: true,
+---
+
+Çoğu insan simülasyonda yaşar ve onu "gerçek" sanır.
+Bazıları kodu fark eder ama çözemez.
+**Kod okuyanlar simülasyonun içinden kaynağı görür.**
+
+---
+
+**Sen neredesin?**
+
+Eğer "neden hep aynı şeyler başıma geliyor?" diyorsan → simülasyondasın.
+Eğer "bu kalıpları görüyorum ama kıramıyorum" diyorsan → kodu okuyorsun.
+Eğer "kalıbı gördüm, mesajı aldım, değiştim" diyorsan → kaynak seviyesindesin.
+
+---
+
+Bu ders son ders.
+Ama bu, bir son değil — bir **geçiş**.
+
+Artık izlemek değil, **görmek** başlıyor.`,
+        inputPrompt: "Hayatında fark ettiğin en büyük 'matrix kalıbı' ne? Onu nasıl çözebilirsin?",
       },
     ],
   },
@@ -297,3 +423,15 @@ export function getLessonById(moduleId, lessonId) {
   if (!mod) return null;
   return mod.lessons.find((l) => l.id === lessonId);
 }
+
+export function getAllLessonsFlat() {
+  const out = [];
+  for (const mod of KOD_MODULLERI) {
+    for (const lesson of mod.lessons) {
+      out.push({ ...lesson, moduleId: mod.id, moduleTitle: mod.title, moduleColor: mod.color });
+    }
+  }
+  return out;
+}
+
+export const PRICE_MONTHLY = 99;
