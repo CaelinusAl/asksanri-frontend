@@ -3,7 +3,7 @@
 const API_BASE = (
   import.meta.env.VITE_BACKEND_URL ||
   import.meta.env.VITE_API_URL ||
-  ""
+  "https://sanri-api-production-4a7b.up.railway.app"
 ).replace(/\/$/, "");
 
 function getAuthHeaders() {

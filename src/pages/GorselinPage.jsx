@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
 // Premium check (demo mode)
 const IS_PREMIUM = import.meta.env.VITE_DEMO_PREMIUM === 'true';

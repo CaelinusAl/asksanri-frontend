@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 export default function AdminMembersPage() {
-  const API = import.meta.env.VITE_BACKEND_URL;
+  const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
   const [key, setKey] = useState(localStorage.getItem("admin_key") || "");
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);

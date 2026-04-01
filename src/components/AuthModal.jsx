@@ -31,7 +31,7 @@ export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
     onClose?.();
   }, [onClose, reset]);
 
-  const api = import.meta.env.VITE_BACKEND_URL;
+  const api = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
   const canSubmit = useMemo(() => {
     if (tab === "guest") return true;

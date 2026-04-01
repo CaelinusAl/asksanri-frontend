@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
 export const useUpgradeFlow = () => {
   const [trigger, setTrigger] = useState(null);

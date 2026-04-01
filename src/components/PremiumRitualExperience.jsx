@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "./ui/button";
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
 // SANRI Dream TTS Hook (ElevenLabs)
 const useSanriVoice = () => {

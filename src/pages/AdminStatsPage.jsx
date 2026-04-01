@@ -4,7 +4,7 @@ export default function AdminStatsPage() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/admin/overview`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app"}/admin/overview`)
       .then(res => res.json())
       .then(data => setStats(data));
   }, []);

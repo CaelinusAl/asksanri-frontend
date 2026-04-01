@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_BACKEND_URL || "";
+const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 const getToken = () => localStorage.getItem("sanri_token");
 
 async function adminFetch(path, opts = {}) {

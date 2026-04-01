@@ -7,7 +7,7 @@ export default function AskSanriPage({ mode = "ayna_sade" }) {
   ]);
   const [loading, setLoading] = useState(false);
 
-  const API_URL = import.meta.env.VITE_BACKEND_URL;
+  const API_URL = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
   const send = async () => {
     const userText = question.trim();

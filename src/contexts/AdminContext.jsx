@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 
 const AdminContext = createContext(null);
-const API = import.meta.env.VITE_BACKEND_URL || "";
+const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 const TOKEN_KEY = "sanri_token";
 
 export function AdminProvider({ children }) {

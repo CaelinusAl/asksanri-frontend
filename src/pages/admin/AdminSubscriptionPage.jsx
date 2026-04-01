@@ -21,7 +21,7 @@ import { Separator } from '../../components/ui/separator';
 import { toast } from 'sonner';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_BACKEND_URL;
+const API_URL = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
 // Plan styles
 const PLAN_STYLES = {

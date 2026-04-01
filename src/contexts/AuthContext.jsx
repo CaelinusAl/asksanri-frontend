@@ -21,7 +21,7 @@ function authHeaders(token) {
 }
 
 export function AuthProvider({ children }) {
-  const API = import.meta.env.VITE_BACKEND_URL;
+  const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(getStoredToken);

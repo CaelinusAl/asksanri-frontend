@@ -15,7 +15,7 @@ function StatBox({ label, value }) {
 }
 
 export default function AdminPanelPage() {
-  const API = import.meta.env.VITE_BACKEND_URL;
+  const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
   const navigate = useNavigate();
   const { search } = useLocation();
 

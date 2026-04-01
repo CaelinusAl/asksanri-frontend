@@ -99,7 +99,7 @@ const LAYER_META = [
 ];
 
 export default function UyananSehirlerPage() {
-  const API = import.meta.env.VITE_BACKEND_URL;
+  const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
