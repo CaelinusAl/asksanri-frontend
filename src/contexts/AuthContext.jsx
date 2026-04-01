@@ -114,13 +114,16 @@ export function AuthProvider({ children }) {
   );
 
   const registerEmail = useCallback(
-    async ({ email, password }) => {
+    async ({ email, password, name }) => {
       if (!API) throw new Error("VITE_BACKEND_URL missing");
+
+      const body = { email, password };
+      if (name) body.name = name;
 
       const res = await fetch(`${API}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(body),
       });
 
       const data = await res.json().catch(() => ({}));

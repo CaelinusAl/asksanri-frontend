@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { getPostTypeById, timeAgo } from "../data/yankiData";
@@ -31,6 +31,7 @@ function normalizePost(p) {
 export default function YankiProfilPage() {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const { language } = useLanguage();
   const isTR = language === "tr";
 
@@ -50,7 +51,7 @@ export default function YankiProfilPage() {
 
   const loadData = useCallback(async () => {
     if (!isMe) { setLoading(false); return; }
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname } }); return; }
     setLoading(true);
     setError(null);
     try {
@@ -61,7 +62,7 @@ export default function YankiProfilPage() {
       if (profileData) setProfile(profileData);
       setPosts((postsData.posts || []).map(normalizePost));
     } catch (err) {
-      if (err.status === 401) { navigate("/giris"); return; }
+      if (err.status === 401) { navigate("/giris", { state: { from: location.pathname } }); return; }
       setError(isTR ? "Yüklenemedi." : "Failed to load.");
     }
     setLoading(false);

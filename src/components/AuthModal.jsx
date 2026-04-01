@@ -2,9 +2,11 @@ import React, { useCallback, useMemo, useState } from "react";
 import styles from "./AuthModal.module.css";
 import MatrixRain from "./MatrixRain";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
   const { language } = useLanguage();
+  const { loginEmail, registerEmail } = useAuth();
   const isTR = language === "tr";
 
   const [tab, setTab] = useState("login"); // login | register | guest
@@ -31,8 +33,6 @@ export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
     onClose?.();
   }, [onClose, reset]);
 
-  const api = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
-
   const canSubmit = useMemo(() => {
     if (tab === "guest") return true;
     return Boolean(String(email).trim() && String(password).trim());
@@ -43,44 +43,23 @@ export default function AuthModal({ open, onClose, onGuest, onLoginSuccess }) {
     if (!canSubmit) return;
 
     if (tab === "guest") {
-      // ✅ misafir: matrix yağmuru + yönlendirme
       setRain(true);
-      return;
-    }
-
-    if (!api) {
-      setErr(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
       return;
     }
 
     setBusy(true);
     try {
-      const url =
-        tab === "login"
-          ? `${api}/auth/login`
-          : `${api}/auth/register`;
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(data?.detail || data?.error || (tab === "login" ? "Login failed" : "Register failed"));
+      if (tab === "login") {
+        await loginEmail({ email, password });
+      } else {
+        await registerEmail({ email, password });
       }
-
-      if (data?.token) {
-        try { localStorage.setItem("sanri_token", data.token); } catch {}
-      }
-
       setRain(true);
     } catch (e) {
       setErr(String(e?.message || e));
       setBusy(false);
     }
-  }, [api, tab, email, password, isTR, canSubmit]);
+  }, [tab, email, password, canSubmit, loginEmail, registerEmail]);
 
   if (!open) return null;
 

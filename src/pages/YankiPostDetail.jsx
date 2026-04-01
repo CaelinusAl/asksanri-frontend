@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -68,6 +68,7 @@ function parseStructuredReflection(text) {
 export default function YankiPostDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { language } = useLanguage();
   const { user } = useAuth();
@@ -158,7 +159,7 @@ export default function YankiPostDetail() {
   }, [post]);
 
   const handleReact = async (type) => {
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname } }); return; }
     const wasActive = myReactions.has(type);
     const delta = wasActive ? -1 : 1;
     const col = type === "kalbime_dokundu" ? "reaction_heart"
@@ -186,7 +187,7 @@ export default function YankiPostDetail() {
         if (wasActive) next.add(type); else next.delete(type);
         return next;
       });
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname } });
     }
   };
 
@@ -203,13 +204,13 @@ export default function YankiPostDetail() {
 
   const handleSanri = async () => {
     if (!post || sanriLoading || sanriReflection) return;
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname } }); return; }
     setSanriLoading(true);
     try {
       const data = await askSanriReflection(post.id, post.content);
       setSanriReflection(data.response);
     } catch (err) {
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname } });
       else setSanriReflection(isTR ? "Yansıma alınamadı." : "Reflection unavailable.");
     }
     setSanriLoading(false);
@@ -218,7 +219,7 @@ export default function YankiPostDetail() {
   const submitComment = async () => {
     const text = newComment.trim();
     if (!text || !post || commentSubmitting) return;
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname } }); return; }
     setCommentSubmitting(true);
     const mentions = extractMentions(text);
     try {
@@ -234,7 +235,7 @@ export default function YankiPostDetail() {
       setReplyTo(null);
       setPost((p) => p ? { ...p, comment_count: (p.comment_count || 0) + 1 } : p);
     } catch (err) {
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname } });
     }
     setCommentSubmitting(false);
   };
@@ -307,14 +308,14 @@ export default function YankiPostDetail() {
 
   const handleReport = async () => {
     if (!reportReason || reportSending) return;
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname } }); return; }
     setReportSending(true);
     try {
       await reportPost(post.id, reportReason);
       setReportDone(true);
       setTimeout(() => { setShowReport(false); setReportDone(false); setReportReason(""); }, 2000);
     } catch (err) {
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname } });
     }
     setReportSending(false);
   };

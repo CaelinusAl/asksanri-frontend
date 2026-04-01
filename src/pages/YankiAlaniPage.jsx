@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
@@ -117,6 +117,7 @@ function groupByDay(posts, isTR) {
 
 export default function YankiAlaniPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [params] = useSearchParams();
   const { language } = useLanguage();
   const { user } = useAuth();
@@ -243,7 +244,7 @@ export default function YankiAlaniPage() {
 
   const handleReact = async (e, postId, type) => {
     e.stopPropagation();
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname + location.search } }); return; }
     const wasActive = myReactions[postId]?.has(type);
     const delta = wasActive ? -1 : 1;
     const col = type === "kalbime_dokundu" ? "reaction_heart"
@@ -279,7 +280,7 @@ export default function YankiAlaniPage() {
         next[postId] = set;
         return next;
       });
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname + location.search } });
     }
   };
 
@@ -339,14 +340,14 @@ export default function YankiAlaniPage() {
   const handleSanri = async (e, post) => {
     e.stopPropagation();
     if (reflections[post.id] || reflLoading[post.id]) return;
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname + location.search } }); return; }
 
     setReflLoading((prev) => ({ ...prev, [post.id]: true }));
     try {
       const data = await askSanriReflection(post.id, post.content);
       setReflections((prev) => ({ ...prev, [post.id]: data.response }));
     } catch (err) {
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname + location.search } });
       else setReflections((prev) => ({ ...prev, [post.id]: isTR ? "Yansıma alınamadı." : "Reflection unavailable." }));
     }
     setReflLoading((prev) => ({ ...prev, [post.id]: false }));
@@ -360,7 +361,7 @@ export default function YankiAlaniPage() {
 
   const openReport = (e, postId) => {
     e.stopPropagation();
-    if (!isLoggedIn()) { navigate("/giris"); return; }
+    if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname + location.search } }); return; }
     setReportTarget(postId);
     setReportReason("");
     setReportDone(false);
@@ -374,7 +375,7 @@ export default function YankiAlaniPage() {
       setReportDone(true);
       setTimeout(() => { setReportTarget(null); setReportDone(false); setReportReason(""); }, 2000);
     } catch (err) {
-      if (err.status === 401) navigate("/giris");
+      if (err.status === 401) navigate("/giris", { state: { from: location.pathname + location.search } });
     }
     setReportSending(false);
   };
@@ -383,14 +384,22 @@ export default function YankiAlaniPage() {
   const [quickReply, setQuickReply] = useState({});
   const handleQuickReply = async (postId) => {
     const text = (quickReply[postId] || "").trim();
-    if (!text || !isLoggedIn()) return;
+    if (!text) return;
+    if (!isLoggedIn()) {
+      navigate("/giris", { state: { from: location.pathname + location.search } });
+      return;
+    }
     try {
       await addComment(postId, text);
       setQuickReply((prev) => ({ ...prev, [postId]: "" }));
       setPosts((prev) =>
         prev.map((p) => p.id === postId ? { ...p, comment_count: (p.comment_count || 0) + 1 } : p)
       );
-    } catch { /* ignore */ }
+    } catch (err) {
+      if (err.status === 401) {
+        navigate("/giris", { state: { from: location.pathname + location.search } });
+      }
+    }
   };
 
   return (

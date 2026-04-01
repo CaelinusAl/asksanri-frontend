@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { POST_TYPES } from "../data/yankiData";
@@ -27,6 +27,7 @@ const TYPE_PLACEHOLDERS = {
 
 export default function YankiYeniPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { language } = useLanguage();
   const isTR = language === "tr";
 
@@ -62,7 +63,7 @@ export default function YankiYeniPage() {
     if (!canSubmit) return;
 
     if (!isLoggedIn()) {
-      navigate("/giris");
+      navigate("/giris", { state: { from: location.pathname } });
       return;
     }
 
@@ -96,7 +97,7 @@ export default function YankiYeniPage() {
       console.error("[YankiYeni] post error:", err, "status:", err?.status, "body:", err?.body);
       setSubmitting(false);
       if (err.status === 401) {
-        navigate("/giris");
+        navigate("/giris", { state: { from: location.pathname } });
         return;
       }
       const detail = err.body?.detail || err.message || "";

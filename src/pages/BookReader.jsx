@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./BookReader.module.css";
 import { booksMetadata, loadBookPages } from "../data/booksContent";
@@ -150,6 +150,7 @@ function RenderPage({ page, meta, pageNum }) {
 
 function BookPaywall({ meta, isTR }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { startCheckout, hasFreeUnlock, claimFreeUnlock, isContentUnlocked, refreshAccess } = usePremium();
   const { isAuthenticated } = useAuth();
   const [busy, setBusy] = useState(false);
@@ -164,7 +165,7 @@ function BookPaywall({ meta, isTR }) {
   }, []);
 
   const handleSingleUnlock = async () => {
-    if (!isAuthenticated) { navigate("/giris"); return; }
+    if (!isAuthenticated) { navigate("/giris", { state: { from: location.pathname } }); return; }
     if (busy) return;
     setBusy(true);
     try {
@@ -175,7 +176,7 @@ function BookPaywall({ meta, isTR }) {
   };
 
   const handleFreeUnlock = async () => {
-    if (!isAuthenticated) { navigate("/giris"); return; }
+    if (!isAuthenticated) { navigate("/giris", { state: { from: location.pathname } }); return; }
     if (busy) return;
     setBusy(true);
     try {

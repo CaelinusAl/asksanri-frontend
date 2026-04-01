@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
-
-const API =
-  import.meta.env.VITE_API_URL ||
-  import.meta.env.VITE_BACKEND_URL ||
-  "https://api.asksanri.com";
+import { useAuth } from "../contexts/AuthContext";
 
 /* ═══════════════════════════════════════════════
    KEYFRAMES
@@ -358,8 +354,12 @@ const T = {
    ═══════════════════════════════════════════════ */
 export default function GirisPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { language, setLanguage } = useLanguage();
+  const { loginEmail, registerEmail, isAuthenticated } = useAuth();
   const isTR = language === "tr";
+
+  const returnTo = location.state?.from || "/";
 
   const [phase, setPhase] = useState("intro"); // intro | auth
   const [mode, setMode] = useState("welcome"); // welcome | login | register
@@ -373,6 +373,12 @@ export default function GirisPage() {
   const [transitioning, setTransitioning] = useState(false);
   const [authMounted, setAuthMounted] = useState(false);
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(returnTo, { replace: true });
+    }
+  }, [isAuthenticated, navigate, returnTo]);
+
   const openAuth = useCallback(() => {
     setTransitioning(true);
     setTimeout(() => {
@@ -383,7 +389,7 @@ export default function GirisPage() {
 
   const doEnter = () => {
     setEntering(true);
-    setTimeout(() => navigate("/"), 900);
+    setTimeout(() => navigate(returnTo, { replace: true }), 900);
   };
 
   const submit = async (e) => {
@@ -403,18 +409,10 @@ export default function GirisPage() {
     }
     setBusy(true);
     try {
-      const url = mode === "login" ? `${API}/auth/login` : `${API}/auth/register`;
-      const body = mode === "login" ? { email, password } : { email, password, name };
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.detail || (isTR ? "Bir hata oluştu." : "An error occurred."));
-      if (data.token) {
-        localStorage.setItem("sanri_token", data.token);
-        if (data.user) localStorage.setItem("sanri_user", JSON.stringify(data.user));
+      if (mode === "login") {
+        await loginEmail({ email, password });
+      } else {
+        await registerEmail({ email, password, name });
       }
       doEnter();
     } catch (e) {
