@@ -351,7 +351,7 @@ function Paywall({ lessonId, onSingleUnlock }) {
         {/* ── Shopier CTA ── */}
         <div className={styles.dualCta}>
           <button className={styles.shopierBtn} onClick={handleShopier}>
-            Satın Al ve Aç
+            Satın Al ve Kapıyı Aç
           </button>
 
           <div className={styles.ctaDividerRow}>

@@ -99,7 +99,7 @@ export default function OdemeBasariliPage() {
                 letterSpacing: "0.04em",
               }}
             >
-              Devam edebilirsin.
+              Artık görüyorsun.
             </p>
           </motion.div>
         )}
@@ -124,7 +124,7 @@ export default function OdemeBasariliPage() {
                 letterSpacing: "0.03em",
               }}
             >
-              Kapı açıldı. Devam edebilirsin.
+              Kapı açıldı. Artık görüyorsun.
             </h2>
             <p
               style={{
@@ -149,7 +149,7 @@ export default function OdemeBasariliPage() {
                 transition: "all 0.25s",
               }}
             >
-              İçeriğe Dön
+              Devam Et
             </button>
           </motion.div>
         )}

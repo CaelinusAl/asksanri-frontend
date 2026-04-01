@@ -16,25 +16,25 @@ export const SHOPIER_PRODUCTS = {
     id: "premium_monthly",
     label: "SANRI Premium (Aylık)",
     price: "99.90",
-    url: "https://www.shopier.com/ShowProductNew/storename/premium-aylik",
+    url: "https://shopier.com/asksanri/45786456",
   },
   kod_egitmeni: {
     id: "kod_egitmeni",
     label: "Kod Eğitmeni — Tam Erişim",
     price: "49.90",
-    url: "https://www.shopier.com/ShowProductNew/storename/kod-egitmeni",
+    url: "https://shopier.com/asksanri/45786456",
   },
   single_okuma: {
     id: "single_okuma",
     label: "Tek Okuma Erişimi",
     price: "9.90",
-    url: "https://www.shopier.com/ShowProductNew/storename/tek-okuma",
+    url: "https://shopier.com/asksanri/45786456",
   },
   library_book: {
     id: "library_book",
     label: "Kitap Erişimi",
     price: "19.90",
-    url: "https://www.shopier.com/ShowProductNew/storename/kitap",
+    url: "https://shopier.com/asksanri/45786456",
   },
 };
 

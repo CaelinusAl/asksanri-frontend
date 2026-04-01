@@ -248,7 +248,7 @@ function BookPaywall({ meta, isTR }) {
             className={styles.paywallShopier}
             onClick={() => redirectToShopier("library_book", `book_${meta.id}`, location.pathname)}
           >
-            {isTR ? "Satın Al ve Aç" : "Purchase & Unlock"}
+            {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
           </button>
 
           {hasFreeUnlock && (

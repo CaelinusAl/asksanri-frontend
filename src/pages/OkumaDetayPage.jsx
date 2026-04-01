@@ -277,7 +277,7 @@ export default function OkumaDetayPage() {
                 className={styles.microPayBtn}
                 onClick={() => redirectToShopier("single_okuma", `okuma_${post.id}`, location.pathname)}
               >
-                {isTR ? "Satın Al ve Aç — ₺9.90" : "Purchase & Unlock — ₺9.90"}
+                {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
               </button>
               <Link
                 to="/subscription"

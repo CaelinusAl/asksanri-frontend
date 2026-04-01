@@ -38,7 +38,7 @@ export function PremiumGate({ locked, children, title, description, contentId, s
             : "Purchase to read the full content.")}
         </div>
         <button className={styles.shopierBtn} onClick={handleShopier}>
-          {isTR ? "Satın Al ve Aç" : "Purchase & Unlock"}
+          {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
         </button>
         <button className={styles.altBtn} onClick={() => showUpgradeModal()}>
           {isTR ? "Tüm İçeriklere Eriş" : "Get Full Access"}
