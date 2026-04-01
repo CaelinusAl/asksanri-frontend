@@ -1058,6 +1058,121 @@ Fark etmeden yapılan her hamle, eski döngünün tekrarıdır.
     viewCount: 324,
     isFeatured: true,
   },
+  {
+    id: 10,
+    slug: "pembe-dolunay-frekans-okuma",
+    title: "Pembe Dolunay: Sakladığın Şey Artık Görünmek İstiyor.",
+    subtitle: "Dolunay karanlığı aydınlatmaz. Karanlıkta ne sakladığını gösterir. Ve bu dolunay pembe.",
+    category: "matrix_okumasi",
+    coverImage: "/assets/gates/pembe-dolunay.jpg",
+    excerpt: "Dolunay karanlığı aydınlatmaz — karanlıkta ne sakladığını gösterir. Ve bu dolunay pembe. Yani sadece aydınlatmıyor. Dokunuyor.",
+    fullContent: `Dolunay karanlığı aydınlatmaz.
+Karanlıkta ne sakladığını gösterir.
+
+Ve bu dolunay pembe.
+Yani sadece aydınlatmıyor.
+Dokunuyor.
+
+◉ DOLUNAY = TAM AYNA
+
+Ay'ın tam doluşu bir aydınlanma değil, bir yüzleşmedir. Güneş'in ışığı Ay'a çarpar ve Ay onu geri yansıtır — sana. Görmek istemediğin, ertelediğin, "sonra hallederim" dediğin her şey dolunayda yüzeye çıkar. Çünkü karanlık artık saklanacak yer bulamaz.
+
+Dolunay bir son değil, bir tamamlanma noktasıdır. Ama tamamlanma her zaman güzel hissettirmez. Bazen tamamlanan şey bir ilişki değil, bir yalanın ömrüdür. Bazen tamamlanan bir hayal değil, o hayalin artık sana ait olmadığının farkına varışıdır.
+
+✦ PEMBE = KALBİN KORUMASI DÜŞÜYOR
+
+Renk rastgele değildir. Pembe dolunay, kalp katmanına dokunur. Duygusal zırh incelir. İçeride biriktirdiğin hassasiyet yüzeye çıkar — kırılganlık olarak değil, gerçeklik olarak.
+
+Pembe korku değil taşır, şefkat taşır. Ama şefkat bazen acıtır. Çünkü şefkat "sorun yok" demez. Şefkat "bak, bu var" der. Ve sen ona bakmaktan kaçınıyordun.
+
+Bu dolunayda çoğu insan bir şeyi fark edecek:
+Güçlü görünmek için ne kadar çok şeyi bastırdığını.
+
+✦ KOLEKTİF BİLİNÇTE NE OLUYOR?
+
+Dolunay bireysel değildir. Herkes aynı anda aynı ışığın altındadır. Bu yüzden dolunay gecelerinde insanlar daha hassas, daha gergin, daha açık olur. Tartışmalar artar — çünkü herkes aynı anda yüzleşiyor ve herkesin yüzleşme biçimi farklı.
+
+Kolektif bilinçte pembe dolunay şunu tetikliyor:
+Saklanan duygular konuşmaya başlıyor.
+Söylenmemiş cümleler dudağa geliyor.
+Ertelenmiş vedalar tamamlanmak istiyor.
+
+Bu bir kriz değil. Bu, kolektif bilincin nefes alması. Çok uzun süre tutulmuş bir nefesin bırakılması. Ve nefes bırakılırken ses çıkar. O ses seni rahatsız edebilir. Ama o ses iyileşmenin sesidir.
+
+✦ GÖLGE KATMAN — GÖRÜNÜRLÜK HERKES İÇİN KOLAY DEĞİL
+
+Dolunay her şeyi aydınlatır — ama bazı insanlar karanlığa alışmıştır. Görünür olmak onlar için tehdit gibi hissedilir. Duygularını göstermek zayıflık gibi gelir. Kırılganlığa izin vermek kontrolü kaybetmek gibi durur.
+
+Pembe dolunayın gölgesi budur:
+Yumuşamak isteyen ama yumuşayamayan.
+Ağlamak isteyen ama "şimdi değil" diyen.
+Konuşmak isteyen ama kelimelerini yutan.
+
+Eğer bu gece içinde bir sıkışma hissediyorsan, o sıkışma bastırılmış bir yumuşamanın ta kendisidir.
+
+◉ ÖZ
+
+Dolunay karanlığı aydınlatmaz — karanlıkta ne sakladığını gösterir.
+
+◉ SON
+
+Bu gece gökyüzüne bak.
+Ama Ay'ı seyretme.
+Ay'ın sana neyi gösterdiğini seyret.
+
+İçinde yüzeye çıkmak isteyen bir şey var.
+Belki bir duygu. Belki bir isim. Belki bir karar.
+Belki sadece bir gözyaşı.
+
+İzin ver.
+Pembe dolunay seni kırmak için değil,
+sakladığın şeyi serbest bırakmak için burada.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Dolunay kodu
+• Dolunay = tam yansıma, ayna
+• Güneş → Ay → Sen: ışık sana geri döner
+• Tamamlanma = bitiş değil, farkına varış
+• Saklanan artık saklanamaz
+
+KATMAN 2 — Pembe katman
+• Pembe = kalp frekansı, duygusal zırh incelir
+• Şefkat ≠ "sorun yok" → şefkat = "bak, bu var"
+• Kırılganlık = zayıflık değil, gerçeklik
+• Bastırılan hassasiyet yüzeye çıkar
+
+KATMAN 3 — Kolektif bilinç
+• Dolunay bireysel değil, kolektif etki
+• Herkes aynı anda aynı ışığın altında
+• Saklanan duygular konuşmaya başlar
+• Söylenmemiş cümleler dudağa gelir
+• Kolektif nefes bırakma = iyileşmenin sesi
+
+KATMAN 4 — Gölge
+• Görünür olmak herkes için kolay değil
+• Karanlığa alışmış olanlar ışıktan korkar
+• Yumuşamak isteyen ama direnen
+• Sıkışma = bastırılmış yumuşama
+
+ÇIKIŞ KODU:
+Dolunay sana bir şey söylemiyor.
+Sende olan bir şeyi gösteriyor.
+Görmekten kaçınıyorsan, dolunay bekler.
+Ama ışığı söndürmez.
+
+İşaret: Bu gece Ay'a baktığında — Ay sana neyi gösteriyor?`,
+    sanriReflection: {
+      analysis: "Pembe dolunay kalp katmanını açar. Duygusal zırhın incelir, bastırılan hassasiyet yüzeye çıkar. Bu bir kırılma değil — kolektif bilincin nefes almasıdır. Güçlü olan dayanmaz, güçlü olan yumuşayabilendir.",
+      strongLine: "Dolunay karanlığı aydınlatmaz — karanlıkta ne sakladığını gösterir.",
+      question: "Bu gece Ay'a baktığında — Ay sana neyi gösteriyor?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-01T22:30:00Z",
+    commentCount: 4,
+    viewCount: 256,
+    isFeatured: true,
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -1112,6 +1227,12 @@ export const OKUMA_COMMENTS = {
     { id: 903, authorName: "Eren", content: "Tomurcuk patlamadan dal en gergin halindedir. İçimdeki gerilimi ilk kez bir sorun olarak değil, açılmanın işareti olarak gördüm.", createdAt: "2026-04-01T22:45:00Z" },
     { id: 904, authorName: "Lina", content: "Herkes aynı anda uyanmaz — bu cümle beni rahatlatı. Hâlâ kışta hissetmek utanılacak bir şey değilmiş. Kendi zamanım varmış.", createdAt: "2026-04-01T23:00:00Z" },
     { id: 905, authorName: "Aura", content: "Çözülme her zaman güzel hissettirmez. Bazen çamur olur. Bu ay tam olarak bunu yaşıyorum. Adını koyamıyordum, şimdi koydum: çözülme.", createdAt: "2026-04-01T23:30:00Z" },
+  ],
+  10: [
+    { id: 1001, authorName: "Selin", content: "Şefkat 'sorun yok' demez. Şefkat 'bak, bu var' der. Bu cümle yüzünden telefonumu bırakıp 5 dakika ağladım. İyi geldi.", createdAt: "2026-04-01T23:00:00Z" },
+    { id: 1002, authorName: "Eren", content: "Güçlü görünmek için ne kadar çok şeyi bastırdığımı bu gece fark ettim. Dolunay gerçekten ayna gibi çalışıyor.", createdAt: "2026-04-01T23:20:00Z" },
+    { id: 1003, authorName: "Ada", content: "Yumuşamak isteyen ama yumuşayamayan. Bu benim son 3 ayım. Adını koyamıyordum. Artık koydum.", createdAt: "2026-04-01T23:40:00Z" },
+    { id: 1004, authorName: "Mira", content: "Dolunay karanlığı aydınlatmaz, karanlıkta ne sakladığını gösterir. Bunu okuduğum an pencereden Ay'a baktım. Cevap oradaydı.", createdAt: "2026-04-01T23:55:00Z" },
   ],
 };
 
