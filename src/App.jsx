@@ -38,6 +38,7 @@ import AdminGrowthPage from "./pages/admin/AdminGrowthPage";
 import AdminBillingPage from "./pages/admin/AdminBillingPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentCancelPage from "./pages/PaymentCancelPage";
+import IyzicoCallbackPage from "./pages/IyzicoCallbackPage";
 import GirisPage from "./pages/GirisPage";
 import ProfilePage from "./pages/ProfilePage";
 import SubscriptionPage from "./pages/SubscriptionPage";
@@ -78,6 +79,7 @@ export default function App() {
 
       <Route path="/payment/success" element={<PaymentSuccessPage />} />
       <Route path="/payment/cancel" element={<PaymentCancelPage />} />
+      <Route path="/payment/iyzico-callback" element={<IyzicoCallbackPage />} />
 
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/:bookId" element={<BookReader />} />

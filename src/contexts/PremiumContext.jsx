@@ -2,7 +2,7 @@
  import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
  import { useAuth } from "./AuthContext";
  import { getAllPricingOptions } from "../data/microPayment";
- import { fetchMyAccess, createCheckoutSession, useFreeUnlock as apiFreeUnlock } from "../data/billingApi";
+ import { fetchMyAccess, createIyzicoCheckout, createCheckoutSession, useFreeUnlock as apiFreeUnlock } from "../data/billingApi";
 
 export const FEATURES = {
   SANRI_UNLIMITED: "sanri_unlimited",
@@ -106,7 +106,7 @@ export function PremiumProvider({ children }) {
   }, []);
 
   const startCheckout = useCallback(async (productKey, contentId) => {
-    const data = await createCheckoutSession({ productKey, contentId });
+    const data = await createIyzicoCheckout({ productKey, contentId });
     if (data.checkout_url) {
       window.location.href = data.checkout_url;
     }

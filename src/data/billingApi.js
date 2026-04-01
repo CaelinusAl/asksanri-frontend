@@ -30,7 +30,28 @@ async function apiFetch(path, opts = {}) {
 }
 
 /**
- * POST /billing/checkout-session
+ * POST /billing/iyzico/init — iyzico Checkout Form
+ * Returns { checkout_url, token, status }
+ */
+export async function createIyzicoCheckout({ productKey, contentId }) {
+  return apiFetch("/billing/iyzico/init", {
+    method: "POST",
+    body: JSON.stringify({
+      product_key: productKey,
+      content_id: contentId || null,
+    }),
+  });
+}
+
+/**
+ * GET /billing/iyzico/status — check iyzico payment by token
+ */
+export async function checkIyzicoStatus(token) {
+  return apiFetch(`/billing/iyzico/status?token=${encodeURIComponent(token)}`);
+}
+
+/**
+ * POST /billing/checkout-session (Stripe — kept for backward compat)
  * Returns { checkout_url, session_id }
  */
 export async function createCheckoutSession({ productKey, contentId }) {
@@ -92,6 +113,16 @@ export async function useFreeUnlock({ contentId, contentType = "okuma" }) {
 export async function fetchAdminBillingSummary() {
   const adminKey = import.meta.env.VITE_ADMIN_KEY || "";
   return apiFetch("/billing/admin/summary", {
+    headers: { "X-Admin-Secret": adminKey },
+  });
+}
+
+/**
+ * Admin: GET /billing/iyzico/admin/payments
+ */
+export async function fetchAdminIyzicoPayments() {
+  const adminKey = import.meta.env.VITE_ADMIN_KEY || "";
+  return apiFetch("/billing/iyzico/admin/payments", {
     headers: { "X-Admin-Secret": adminKey },
   });
 }

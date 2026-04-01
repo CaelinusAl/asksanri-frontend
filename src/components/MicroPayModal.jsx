@@ -249,8 +249,8 @@ export default function MicroPayModal() {
                   <span>🔒</span>
                   <span>
                     {isTR
-                      ? "Ödeme Stripe üzerinden güvenli şekilde işlenir. Kart bilgileri sunucularımızda saklanmaz."
-                      : "Payment is securely processed via Stripe. Card info is never stored on our servers."}
+                      ? "Ödeme iyzico güvencesiyle işlenir. Kart bilgileri sunucularımızda saklanmaz."
+                      : "Payment is securely processed via iyzico. Card info is never stored on our servers."}
                   </span>
                 </div>
 
@@ -260,7 +260,7 @@ export default function MicroPayModal() {
                   onClick={handlePurchase}
                 >
                   {processing
-                    ? (isTR ? "Stripe'a yönlendiriliyorsunuz..." : "Redirecting to Stripe...")
+                    ? (isTR ? "Ödeme sayfasına yönlendiriliyorsunuz..." : "Redirecting to payment...")
                     : selected
                       ? `${isTR ? "Satın Al" : "Purchase"} — ${selected.currency}${selected.price.toFixed(2)}`
                       : (isTR ? "Seçim yapın" : "Select an option")}
