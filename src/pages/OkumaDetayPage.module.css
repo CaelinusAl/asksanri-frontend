@@ -205,6 +205,77 @@
 }
 
 /* ── Deeper CTA ── */
+/* ── Auto CTA (locked) ── */
+.autoCta {
+  margin-top: 32px;
+  padding: 28px 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.08), rgba(120, 60, 200, 0.05));
+  border: 1px solid rgba(200, 160, 255, 0.18);
+  text-align: center;
+  box-shadow: 0 0 24px rgba(200, 160, 255, 0.06);
+}
+
+.autoCtaText {
+  font-size: 17px;
+  font-weight: 600;
+  color: #e8e4f0;
+  margin: 0 0 18px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+.autoCtaActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.microPayBtn {
+  padding: 14px 36px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #c8a0ff, #7cf7d8);
+  border: none;
+  color: #07080d;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  width: 100%;
+  max-width: 340px;
+}
+.microPayBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(200, 160, 255, 0.3);
+}
+.autoCtaBtn {
+  display: inline-block;
+  padding: 12px 36px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.25), rgba(120, 60, 200, 0.2));
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  color: #e8e4f0;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+
+.autoCtaBtn:hover {
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.35), rgba(120, 60, 200, 0.28));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(200, 160, 255, 0.15);
+}
+
+/* ── Auto CTA hint (unlocked) ── */
+.autoCtaHint {
+  font-size: 14px;
+  font-style: italic;
+  color: #c8a0ff;
+  margin: 0 0 12px;
+  opacity: 0.85;
+}
+
 .deeperCta {
   margin-top: 40px;
   padding: 32px 28px;

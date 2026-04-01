@@ -1,6 +1,8 @@
 
- import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
+ import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
  import { useAuth } from "./AuthContext";
+ import { getAllPricingOptions } from "../data/microPayment";
+ import { fetchMyAccess, createCheckoutSession, useFreeUnlock as apiFreeUnlock } from "../data/billingApi";
 
 export const FEATURES = {
   SANRI_UNLIMITED: "sanri_unlimited",
@@ -21,15 +23,41 @@ export function usePremium() {
 }
 
 export function PremiumProvider({ children }) {
-  const { isPremium: authPremium } = useAuth();
+  const { isPremium: authPremium, isAuthenticated, refreshMe } = useAuth();
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [requestedFeature, setRequestedFeature] = useState(FEATURES.SANRI_UNLIMITED);
+
+  const [microPayOpen, setMicroPayOpen] = useState(false);
+  const [microPayContentId, setMicroPayContentId] = useState(null);
+  const [microPayContentType, setMicroPayContentType] = useState("single_okuma");
+
+  const [accessData, setAccessData] = useState(null);
+  const [accessLoading, setAccessLoading] = useState(false);
 
   const devOverride = typeof window !== "undefined"
     ? localStorage.getItem("sanri_mock_premium")
     : null;
-  const isPremium = devOverride !== null ? devOverride === "true" : Boolean(authPremium);
-  const currentPlan = isPremium ? "premium" : "free";
+
+  const isPremium = devOverride !== null
+    ? devOverride === "true"
+    : Boolean(accessData?.is_premium ?? authPremium);
+
+  const currentPlan = accessData?.plan || (isPremium ? "premium" : "free");
+  const hasFreeUnlock = Boolean(accessData?.has_free_unlock);
+
+  const refreshAccess = useCallback(async () => {
+    if (!isAuthenticated) return;
+    setAccessLoading(true);
+    try {
+      const data = await fetchMyAccess();
+      setAccessData(data);
+    } catch { /* silent */ }
+    setAccessLoading(false);
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    refreshAccess();
+  }, [refreshAccess]);
 
   const showUpgradeModal = useCallback((featureKey = FEATURES.SANRI_UNLIMITED) => {
     setRequestedFeature(featureKey);
@@ -48,12 +76,10 @@ export function PremiumProvider({ children }) {
     return "premium";
   }, []);
 
-  // Limit sistemi: şimdilik sınırsız gibi
   const checkDailyLimit = useCallback(() => {
     return { allowed: true, remaining: null, limit: null };
   }, []);
 
-  // UI metni
   const upgradePrompt = useCallback((_featureKey) => {
     return {
       title: "Premium gerekli",
@@ -62,28 +88,84 @@ export function PremiumProvider({ children }) {
     };
   }, []);
 
+  const isContentUnlocked = useCallback((contentId) => {
+    if (isPremium) return true;
+    const ids = accessData?.unlocked_content_ids || [];
+    return ids.includes(String(contentId));
+  }, [isPremium, accessData]);
+
+  const showMicroPayModal = useCallback((contentId, contentType = "single_okuma") => {
+    setMicroPayContentId(contentId);
+    setMicroPayContentType(contentType);
+    setMicroPayOpen(true);
+  }, []);
+
+  const hideMicroPayModal = useCallback(() => {
+    setMicroPayOpen(false);
+    setMicroPayContentId(null);
+  }, []);
+
+  const startCheckout = useCallback(async (productKey, contentId) => {
+    const data = await createCheckoutSession({ productKey, contentId });
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+    }
+    return data;
+  }, []);
+
+  const claimFreeUnlock = useCallback(async (contentId, contentType = "okuma") => {
+    const result = await apiFreeUnlock({ contentId, contentType });
+    await refreshAccess();
+    await refreshMe();
+    setMicroPayOpen(false);
+    setMicroPayContentId(null);
+    return result;
+  }, [refreshAccess, refreshMe]);
+
+  const onPaymentSuccess = useCallback(async () => {
+    await refreshMe();
+    await refreshAccess();
+    setMicroPayOpen(false);
+    setMicroPayContentId(null);
+  }, [refreshMe, refreshAccess]);
+
   const value = useMemo(
     () => ({
       isPremium,
       currentPlan,
+      accessData,
+      accessLoading,
+      hasFreeUnlock,
 
-      // gating
       hasFeature,
       getRequiredPlan,
       checkDailyLimit,
 
-      // upgrade modal
       isUpgradeModalOpen,
       requestedFeature,
       showUpgradeModal,
       hideUpgradeModal,
 
-      // copy
       upgradePrompt,
+
+      isContentUnlocked,
+      microPayOpen,
+      microPayContentId,
+      microPayContentType,
+      showMicroPayModal,
+      hideMicroPayModal,
+      startCheckout,
+      claimFreeUnlock,
+      onPaymentSuccess,
+      refreshAccess,
+      pricingOptions: getAllPricingOptions(),
     }),
     [
       isPremium,
       currentPlan,
+      accessData,
+      accessLoading,
+      hasFreeUnlock,
       hasFeature,
       getRequiredPlan,
       checkDailyLimit,
@@ -92,6 +174,16 @@ export function PremiumProvider({ children }) {
       showUpgradeModal,
       hideUpgradeModal,
       upgradePrompt,
+      isContentUnlocked,
+      microPayOpen,
+      microPayContentId,
+      microPayContentType,
+      showMicroPayModal,
+      hideMicroPayModal,
+      startCheckout,
+      claimFreeUnlock,
+      onPaymentSuccess,
+      refreshAccess,
     ]
   );
 

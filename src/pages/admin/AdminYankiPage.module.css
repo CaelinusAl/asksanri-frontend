@@ -1,0 +1,83 @@
+.statsRow {
+  margin-bottom: 28px;
+}
+
+.approveBtn {
+  background: rgba(80, 200, 120, 0.12);
+  color: #50c878;
+  border: 1px solid rgba(80, 200, 120, 0.2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.approveBtn:hover {
+  background: rgba(80, 200, 120, 0.2);
+}
+
+.rejectBtn {
+  background: rgba(255, 80, 80, 0.12);
+  color: #ff5050;
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.rejectBtn:hover {
+  background: rgba(255, 80, 80, 0.2);
+}
+
+.contentPreview {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: #b8b0d0;
+}
+
+.actionCell {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.statusNote {
+  font-size: 12px;
+  color: #6a6480;
+}
+
+.mockBanner {
+  font-size: 12px;
+  color: #ffc832;
+  background: rgba(255, 200, 50, 0.08);
+  border: 1px solid rgba(255, 200, 50, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}
+
+.loadingBox {
+  text-align: center;
+  color: #8a84a8;
+  padding: 48px 20px;
+  font-size: 14px;
+}
+
+.errorBanner {
+  font-size: 13px;
+  color: #ff8080;
+  background: rgba(255, 80, 80, 0.08);
+  border: 1px solid rgba(255, 80, 80, 0.2);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+}

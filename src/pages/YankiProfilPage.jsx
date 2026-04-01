@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { getPostTypeById, timeAgo } from "../data/yankiData";
-import { fetchMyProfile, fetchMyPosts, updateMyProfile, isLoggedIn } from "../data/yankiApi";
+import { fetchMyProfile, fetchMyPosts, updateMyProfile, fetchUserPublicProfile, isLoggedIn } from "../data/yankiApi";
 import styles from "./YankiProfilPage.module.css";
 
 const PROFILE_TABS = [
@@ -94,20 +94,70 @@ export default function YankiProfilPage() {
     setSaving(false);
   };
 
+  const [otherProfile, setOtherProfile] = useState(null);
+  const [otherLoading, setOtherLoading] = useState(false);
+
+  useEffect(() => {
+    if (isMe) return;
+    setOtherLoading(true);
+    fetchUserPublicProfile(userId)
+      .then((data) => setOtherProfile(data))
+      .catch(() => {
+        setOtherProfile({
+          display_name: `Kullanıcı #${userId}`,
+          bio: null,
+          stats: { published_count: 0, total_reactions_received: 0, comment_count: 0 },
+        });
+      })
+      .finally(() => setOtherLoading(false));
+  }, [isMe, userId]);
+
   if (!isMe) {
+    const op = otherProfile;
     return (
       <div className={styles.page}>
         <header className={styles.topBar}>
-          <button className={styles.backBtn} onClick={() => navigate("/yanki-alani")}>
-            ← {isTR ? "Akış" : "Feed"}
+          <button className={styles.backBtn} onClick={() => navigate(-1)}>
+            ← {isTR ? "Geri" : "Back"}
           </button>
         </header>
-        <div className={styles.otherProfile}>
-          <div className={styles.avatarLarge}>?</div>
-          <p className={styles.otherText}>
-            {isTR ? "Profil detayları yakında..." : "Profile details coming soon..."}
-          </p>
-        </div>
+        {otherLoading ? (
+          <div className={styles.loaderWrap}><span className={styles.pulse} /></div>
+        ) : op ? (
+          <motion.section
+            className={styles.profileHero}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className={styles.avatarLarge}>
+              {op.display_name ? op.display_name[0].toUpperCase() : "?"}
+            </div>
+            <h1 className={styles.profileName}>{op.display_name || (isTR ? "Bilinmeyen" : "Unknown")}</h1>
+            {op.bio && <p className={styles.bioLine}>{op.bio}</p>}
+            <div className={styles.statsRow}>
+              <div className={styles.statItem}>
+                <span className={styles.statNum}>{op.stats?.published_count ?? 0}</span>
+                <span className={styles.statLabel}>{isTR ? "Paylaşım" : "Posts"}</span>
+              </div>
+              <div className={styles.statDivider} />
+              <div className={styles.statItem}>
+                <span className={styles.statNum}>{op.stats?.total_reactions_received ?? 0}</span>
+                <span className={styles.statLabel}>{isTR ? "Yankı" : "Echoes"}</span>
+              </div>
+              <div className={styles.statDivider} />
+              <div className={styles.statItem}>
+                <span className={styles.statNum}>{op.stats?.comment_count ?? 0}</span>
+                <span className={styles.statLabel}>{isTR ? "Yorum" : "Comments"}</span>
+              </div>
+            </div>
+          </motion.section>
+        ) : (
+          <div className={styles.otherProfile}>
+            <div className={styles.avatarLarge}>?</div>
+            <p className={styles.otherText}>{isTR ? "Profil bulunamadı." : "Profile not found."}</p>
+          </div>
+        )}
       </div>
     );
   }

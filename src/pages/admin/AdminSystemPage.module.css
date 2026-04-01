@@ -1,0 +1,158 @@
+.statusGrid {
+  margin-bottom: 8px;
+}
+
+.statusCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.statusDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.statusDotGreen {
+  background: #50c878;
+  box-shadow: 0 0 8px rgba(80, 200, 120, 0.4);
+}
+
+.statusDotRed {
+  background: #ff5050;
+  box-shadow: 0 0 8px rgba(255, 80, 80, 0.4);
+}
+
+.statusDotYellow {
+  background: #ffc832;
+}
+
+.statusDotNeutral {
+  background: #5a5470;
+  box-shadow: none;
+}
+
+.statusLabel {
+  font-size: 12px;
+  color: #6a6480;
+}
+
+.statusValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #e8e4f0;
+}
+
+.envTable {
+  width: 100%;
+}
+
+.envRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.envName {
+  font-size: 13px;
+  color: #d4d0e0;
+  font-family: ui-monospace, monospace;
+  flex: 1;
+  min-width: 0;
+}
+
+.envMask {
+  font-size: 12px;
+  color: #5a5470;
+  flex-shrink: 0;
+}
+
+.logCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.logRow {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-size: 12px;
+  align-items: center;
+}
+
+.logTime {
+  color: #5a5470;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.logLevel {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.logError {
+  background: rgba(255, 80, 80, 0.12);
+  color: #ff5050;
+}
+
+.logWarn {
+  background: rgba(255, 200, 50, 0.12);
+  color: #ffc832;
+}
+
+.logInfo {
+  background: rgba(255, 255, 255, 0.06);
+  color: #8a84a8;
+}
+
+.logMessage {
+  color: #b8b0d0;
+  min-width: 0;
+  flex: 1;
+}
+
+.infoSection {
+  margin-top: 32px;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.infoLabel {
+  font-size: 13px;
+  color: #6a6480;
+}
+
+.infoValue {
+  font-size: 13px;
+  color: #d4d0e0;
+  font-weight: 500;
+}
+
+.envRowRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}

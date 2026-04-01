@@ -1,20 +1,22 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { PremiumGate } from "../components/premium/PremiumGate";
 import { getPostBySlug, getCommentsByPostId, getCategoryById, timeAgoOkuma } from "../data/okumaData";
+import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import styles from "./OkumaDetayPage.module.css";
 
 export default function OkumaDetayPage() {
   const { slug } = useParams();
   const { language } = useLanguage();
-  const { isPremium } = usePremium();
+  const { isPremium, isContentUnlocked, showMicroPayModal } = usePremium();
   const isTR = language === "tr";
 
   const post = useMemo(() => getPostBySlug(slug), [slug]);
-  const isLocked = post?.isPremium && !isPremium;
+  const singleUnlocked = post ? isContentUnlocked(post.id) : false;
+  const isLocked = post?.isPremium && !isPremium && !singleUnlocked;
 
   const [comments, setComments] = useState(() =>
     post ? getCommentsByPostId(post.id) : []
@@ -23,6 +25,11 @@ export default function OkumaDetayPage() {
   const [authorName, setAuthorName] = useState("");
   const [coverError, setCoverError] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const autoCta = useMemo(() => pickCtaForUser(), []);
+  const handleCtaClick = useCallback(() => {
+    if (autoCta) recordCtaClick(autoCta.id);
+  }, [autoCta]);
 
   useEffect(() => {
     if (!post) return;
@@ -190,9 +197,39 @@ export default function OkumaDetayPage() {
           )}
         </PremiumGate>
 
-        {/* ── Deeper CTA ── */}
+        {/* ── Auto CTA (locked users) ── */}
+        {isLocked && autoCta && (
+          <motion.div
+            className={styles.autoCta}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+          >
+            <p className={styles.autoCtaText}>{autoCta.text}</p>
+            <div className={styles.autoCtaActions}>
+              <button
+                className={styles.microPayBtn}
+                onClick={() => showMicroPayModal(post.id, "single_okuma")}
+              >
+                {isTR ? "Sadece Bu Okumayı Aç — ₺9.90" : "Unlock This Reading — ₺9.90"}
+              </button>
+              <Link
+                to="/subscription"
+                className={styles.autoCtaBtn}
+                onClick={handleCtaClick}
+              >
+                {isTR ? "Tüm İçerikler İçin Premium" : "Full Premium Access"}
+              </Link>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ── Deeper CTA (unlocked users) ── */}
         {!isLocked && (
           <div className={styles.deeperCta}>
+            {autoCta && (
+              <p className={styles.autoCtaHint}>{autoCta.text}</p>
+            )}
             <p className={styles.deeperText}>
               {isTR
                 ? "Bu okuma sende ne açtı? Devam et."

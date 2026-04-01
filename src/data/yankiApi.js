@@ -89,11 +89,23 @@ export async function fetchComments(postId, { limit = 50, offset = 0 } = {}) {
   return apiFetch(`/yanki/posts/${postId}/comments?limit=${limit}&offset=${offset}`);
 }
 
-export async function addComment(postId, content) {
+export async function addComment(postId, content, { parentId, mentions } = {}) {
   return apiFetch(`/yanki/posts/${postId}/comments`, {
     method: "POST",
-    body: JSON.stringify({ content }),
+    body: JSON.stringify({
+      content,
+      parent_id: parentId || null,
+      mentions: mentions || [],
+    }),
   });
+}
+
+export async function fetchKindredSpirits(postId) {
+  return apiFetch(`/yanki/posts/${postId}/kindred`);
+}
+
+export async function fetchUserPublicProfile(userId) {
+  return apiFetch(`/yanki/users/${userId}/profile`);
 }
 
 // ─── Reports ────────────────────────────────────────────────────

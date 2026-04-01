@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════════
+   RITUAL SUCCESS PAGE — immersive fullscreen experience
+   ═══════════════════════════════════════════════════════════ */
+
+.ritualPage {
+  position: fixed;
+  inset: 0;
+  background: #040508;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Radial glow behind everything */
+.ritualGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(200, 160, 255, 0.12) 0%,
+    rgba(120, 247, 216, 0.06) 40%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%);
+  transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1),
+              height 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.ritualGlowActive {
+  width: 160vmax;
+  height: 160vmax;
+}
+
+.ritualCenter {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+}
+
+/* PHASE: VOID */
+.voidPulse {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(200, 160, 255, 0.04);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  animation: voidBreathe 2s ease-in-out infinite;
+}
+.voidGlyph {
+  font-size: 32px;
+  color: rgba(200, 160, 255, 0.5);
+  animation: voidSpin 3s linear infinite;
+}
+.voidText {
+  margin-top: 20px;
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.35);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@keyframes voidBreathe {
+  0%, 100% { transform: scale(0.95); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+@keyframes voidSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* PHASE: GLOW ORB */
+.glowOrb {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(200, 160, 255, 0.6) 30%,
+    rgba(120, 247, 216, 0.3) 60%,
+    transparent 80%
+  );
+  box-shadow:
+    0 0 60px rgba(200, 160, 255, 0.5),
+    0 0 120px rgba(200, 160, 255, 0.25),
+    0 0 200px rgba(120, 247, 216, 0.15);
+  animation: orbPulse 1.2s ease-in-out;
+}
+
+@keyframes orbPulse {
+  0% { transform: scale(0.2); opacity: 0; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* PHASE: KAPI AÇILDI */
+.ritualTitle {
+  font-size: clamp(32px, 7vw, 56px);
+  font-weight: 300;
+  color: #e8e4f4;
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-shadow:
+    0 0 40px rgba(200, 160, 255, 0.4),
+    0 0 80px rgba(200, 160, 255, 0.15);
+}
+
+/* PHASE: AİTSİN */
+.ritualLine {
+  font-size: clamp(16px, 3.5vw, 22px);
+  font-weight: 400;
+  color: rgba(200, 160, 255, 0.7);
+  letter-spacing: 0.06em;
+  margin: 0;
+  font-style: italic;
+}
+
+/* PHASE: TRANSITION */
+.transitionGlyph {
+  font-size: 28px;
+  color: rgba(120, 247, 216, 0.6);
+  margin-bottom: 16px;
+  animation: transGlow 1.5s ease-in-out infinite alternate;
+}
+.transitionText {
+  font-size: 15px;
+  color: rgba(232, 228, 244, 0.6);
+  margin: 0 0 24px;
+  letter-spacing: 0.05em;
+}
+.transitionBar {
+  width: 200px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.transitionFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c8a0ff, #7cf7d8);
+  border-radius: 3px;
+  animation: transitionFill 2s ease-in-out forwards;
+}
+
+@keyframes transGlow {
+  from { text-shadow: 0 0 10px rgba(120, 247, 216, 0.2); }
+  to { text-shadow: 0 0 30px rgba(120, 247, 216, 0.5); }
+}
+@keyframes transitionFill {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   CANCEL PAGE — reuses some base styles
+   ═══════════════════════════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: #07080d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.card {
+  max-width: 440px;
+  width: 100%;
+  background: linear-gradient(160deg, #0f1018, #12131e);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  border-radius: 24px;
+  padding: 48px 32px;
+  text-align: center;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+}
+
+.iconWrap { margin-bottom: 24px; }
+
+.cancelIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 100, 100, 0.08);
+  border: 2px solid rgba(255, 100, 100, 0.25);
+  color: #ff8a8a;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #e8e4f4;
+  margin: 0 0 10px;
+}
+.subtitle {
+  font-size: 15px;
+  color: #8a84a8;
+  line-height: 1.6;
+  margin: 0 0 28px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.primaryBtn {
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #c8a0ff, #7cf7d8);
+  color: #07080d;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.primaryBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 25px rgba(200, 160, 255, 0.3);
+}
+.secondaryBtn {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #8a84a8;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.secondaryBtn:hover {
+  color: #c8a0ff;
+  border-color: rgba(200, 160, 255, 0.2);
+}
+
+.sessionRef {
+  margin-top: 20px;
+  font-size: 11px;
+  color: #3a3555;
+  font-family: monospace;
+}

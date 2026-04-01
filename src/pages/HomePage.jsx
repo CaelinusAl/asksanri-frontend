@@ -166,7 +166,7 @@ export default function HomePage() {
         title: "Admin Panel",
         desc: isTR ? "Kontrol merkezi" : "Control center",
         hint: isTR ? "Paneli Aç →" : "Open Panel →",
-        path: `/admin/panel?key=${encodeURIComponent(adminKey)}`,
+        path: "/admin",
         img: "/assets/gates/admin.jpg",
       });
     }

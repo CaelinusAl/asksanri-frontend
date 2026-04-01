@@ -1,125 +1,103 @@
-// src/contexts/AdminContext.jsx
 import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 
 const AdminContext = createContext(null);
-
-const LS_KEY = "sanri_admin_session_v1";
-
-function safeNow() {
-  return Math.floor(Date.now() / 1000);
-}
-
-function sha256Hex(str) {
-  // Browser SHA-256 (WebCrypto)
-  const enc = new TextEncoder().encode(str);
-  return crypto.subtle.digest("SHA-256", enc).then((buf) => {
-    const arr = Array.from(new Uint8Array(buf));
-    return arr.map((b) => b.toString(16).padStart(2, "0")).join("");
-  });
-}
+const API = import.meta.env.VITE_BACKEND_URL || "";
+const TOKEN_KEY = "sanri_token";
 
 export function AdminProvider({ children }) {
-  const ADMIN_KEY = import.meta.env.VITE_ADMIN_KEY || "";
-
   const [isAdmin, setIsAdmin] = useState(false);
-  const [adminEmail, setAdminEmail] = useState("");
+  const [adminUser, setAdminUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // session = { email, exp, sig }
-  const readSession = useCallback(() => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (!raw) return null;
-      const s = JSON.parse(raw);
-      if (!s?.email || !s?.exp || !s?.sig) return null;
-      if (safeNow() > Number(s.exp)) return null;
-      return s;
-    } catch {
-      return null;
-    }
-  }, []);
+  const getToken = useCallback(() => localStorage.getItem(TOKEN_KEY), []);
 
-  const clear = useCallback(() => {
-    localStorage.removeItem(LS_KEY);
-    setIsAdmin(false);
-    setAdminEmail("");
-  }, []);
-
-  const validateSession = useCallback(async () => {
+  const validateAdmin = useCallback(async () => {
     setLoading(true);
-
-    if (!ADMIN_KEY) {
-      // env yoksa admin KAPALI
-      clear();
+    const token = getToken();
+    if (!token) {
+      setIsAdmin(false);
+      setAdminUser(null);
       setLoading(false);
       return;
     }
-
-    const s = readSession();
-    if (!s) {
-      clear();
-      setLoading(false);
-      return;
+    try {
+      const res = await fetch(`${API}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("unauthorized");
+      const data = await res.json();
+      if (data.role === "admin") {
+        setIsAdmin(true);
+        setAdminUser(data);
+      } else {
+        setIsAdmin(false);
+        setAdminUser(null);
+      }
+    } catch {
+      setIsAdmin(false);
+      setAdminUser(null);
     }
-
-    // Signature check (client-side lock)
-    // sig = sha256(email|exp|ADMIN_KEY)
-    const expected = await sha256Hex(`${s.email}|${s.exp}|${ADMIN_KEY}`);
-    if (expected !== s.sig) {
-      clear();
-      setLoading(false);
-      return;
-    }
-
-    setIsAdmin(true);
-    setAdminEmail(String(s.email));
     setLoading(false);
-  }, [ADMIN_KEY, clear, readSession]);
+  }, [getToken]);
 
   useEffect(() => {
-    // validate on load
-    validateSession();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    validateAdmin();
+  }, [validateAdmin]);
+
+  const login = useCallback(async ({ email, password }) => {
+    const res = await fetch(`${API}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || "Login failed");
+    }
+    const data = await res.json();
+    if (!data.access_token) throw new Error("No token received");
+    localStorage.setItem(TOKEN_KEY, data.access_token);
+
+    const meRes = await fetch(`${API}/auth/me`, {
+      headers: { Authorization: `Bearer ${data.access_token}` },
+    });
+    if (!meRes.ok) throw new Error("Failed to verify user");
+    const me = await meRes.json();
+    if (me.role !== "admin") {
+      localStorage.removeItem(TOKEN_KEY);
+      throw new Error("Bu hesap admin yetkisine sahip değil.");
+    }
+    setIsAdmin(true);
+    setAdminUser(me);
+    return me;
   }, []);
 
-  const login = useCallback(
-    async ({ email, key, rememberHours = 12 }) => {
-      if (!ADMIN_KEY) throw new Error("VITE_ADMIN_KEY missing (Vercel env).");
-
-      const cleanEmail = String(email || "").trim().toLowerCase();
-      const cleanKey = String(key || "").trim();
-
-      if (!cleanEmail) throw new Error("Email required.");
-      if (!cleanKey) throw new Error("Key required.");
-
-      if (cleanKey !== ADMIN_KEY) {
-        throw new Error("Invalid admin key.");
-      }
-
-      const exp = safeNow() + Math.max(1, Number(rememberHours)) * 60 * 60;
-      const sig = await sha256Hex(`${cleanEmail}|${exp}|${ADMIN_KEY}`);
-      localStorage.setItem(LS_KEY, JSON.stringify({ email: cleanEmail, exp, sig }));
-
-      setIsAdmin(true);
-      setAdminEmail(cleanEmail);
-    },
-    [ADMIN_KEY]
-  );
-
   const logout = useCallback(() => {
-    clear();
-  }, [clear]);
+    localStorage.removeItem(TOKEN_KEY);
+    setIsAdmin(false);
+    setAdminUser(null);
+  }, []);
+
+  const adminFetch = useCallback(async (path, options = {}) => {
+    const token = getToken();
+    const headers = { ...options.headers };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (options.body && typeof options.body === "object" && !(options.body instanceof FormData)) {
+      headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify(options.body);
+    }
+    const res = await fetch(`${API}${path}`, { ...options, headers });
+    if (res.status === 401 || res.status === 403) {
+      setIsAdmin(false);
+      setAdminUser(null);
+      throw new Error("Unauthorized");
+    }
+    return res;
+  }, [getToken]);
 
   const value = useMemo(
-    () => ({
-      loading,
-      isAdmin,
-      adminEmail,
-      login,
-      logout,
-      refresh: validateSession,
-    }),
-    [loading, isAdmin, adminEmail, login, logout, validateSession]
+    () => ({ loading, isAdmin, adminUser, login, logout, adminFetch, refresh: validateAdmin }),
+    [loading, isAdmin, adminUser, login, logout, adminFetch, validateAdmin]
   );
 
   return <AdminContext.Provider value={value}>{children}</AdminContext.Provider>;

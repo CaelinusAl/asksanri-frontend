@@ -1,0 +1,144 @@
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.titleBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.headerTitle {
+  margin: 0;
+}
+
+.unreadBadge {
+  background: rgba(200, 160, 255, 0.2);
+  color: #c8a0ff;
+  padding: 2px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.markAllBtn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d4d0e0;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.markAllBtn:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(200, 160, 255, 0.25);
+}
+
+.markAllBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.notifCard {
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  border-left: 3px solid transparent;
+}
+
+.notifCard:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.notifUnread {
+  border-left: 3px solid #c8a0ff;
+  background: rgba(200, 160, 255, 0.03);
+}
+
+.notifIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.notifIconPurchase {
+  background: rgba(255, 200, 50, 0.12);
+  color: #e8c255;
+}
+
+.notifIconModeration {
+  background: rgba(255, 154, 108, 0.12);
+  color: #ff9a6c;
+}
+
+.notifIconComment {
+  background: rgba(106, 175, 255, 0.12);
+  color: #6aafff;
+}
+
+.notifIconSystem {
+  background: rgba(255, 255, 255, 0.06);
+  color: #8a84a8;
+}
+
+.notifBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.notifTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8e4f0;
+}
+
+.notifText {
+  font-size: 13px;
+  color: #8a84a8;
+  margin-top: 4px;
+}
+
+.notifTime {
+  font-size: 11px;
+  color: #5a5470;
+  margin-top: 6px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 20px;
+  color: #5a5470;
+}
+
+.listWrap {
+  margin-top: 20px;
+}

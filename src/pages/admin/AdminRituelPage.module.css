@@ -1,0 +1,108 @@
+.featuredBtn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255, 200, 50, 0.15), rgba(255, 200, 50, 0.08));
+  border: 1px solid rgba(255, 200, 50, 0.2);
+  color: #ffc832;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.featuredBtn:hover {
+  background: rgba(255, 200, 50, 0.2);
+  transform: translateY(-1px);
+}
+
+.ritualMeta {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+  font-size: 12px;
+  color: #6a6480;
+}
+
+.diffBadge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.diffBadgeEasy {
+  background: rgba(80, 200, 120, 0.15);
+  color: #50c878;
+  border-color: rgba(80, 200, 120, 0.35);
+}
+
+.diffBadgeMedium {
+  background: rgba(255, 200, 50, 0.15);
+  color: #ffc832;
+  border-color: rgba(255, 200, 50, 0.35);
+}
+
+.diffBadgeDeep {
+  background: rgba(160, 100, 220, 0.18);
+  color: #b794f0;
+  border-color: rgba(160, 100, 220, 0.4);
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toggleLabel {
+  font-size: 13px;
+  color: #d4d0e0;
+}
+
+.drawerInfo {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.drawerInfoTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 6px;
+}
+
+.drawerInfoSubtitle {
+  font-size: 13px;
+  color: #8a84a8;
+  margin: 0 0 12px;
+}
+
+.drawerDesc {
+  font-size: 13px;
+  color: #a098b8;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.saveBtn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.2), rgba(200, 160, 255, 0.1));
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  color: #c8a0ff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.saveBtn:hover {
+  background: rgba(200, 160, 255, 0.25);
+  transform: translateY(-1px);
+}

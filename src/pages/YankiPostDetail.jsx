@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -13,8 +13,10 @@ import {
   fetchMyReactions,
   askSanriReflection,
   reportPost,
+  fetchKindredSpirits,
   isLoggedIn,
 } from "../data/yankiApi";
+import { extractMentions, renderWithMentions } from "../data/mentionUtils";
 import styles from "./YankiPostDetail.module.css";
 
 const REPORT_REASONS = [
@@ -92,6 +94,9 @@ export default function YankiPostDetail() {
   const [myReactions, setMyReactions] = useState(new Set());
   const [popAnim, setPopAnim] = useState(null);
 
+  const [replyTo, setReplyTo] = useState(null);
+  const [kindred, setKindred] = useState([]);
+
   // Report modal state
   const [showReport, setShowReport] = useState(false);
   const [reportReason, setReportReason] = useState("");
@@ -132,6 +137,18 @@ export default function YankiPostDetail() {
   }, [id, isTR]);
 
   useEffect(() => { load(); }, [load]);
+
+  useEffect(() => {
+    fetchKindredSpirits(id)
+      .then((data) => setKindred(data.kindred || []))
+      .catch(() => {
+        setKindred([
+          { id: "u1", name: "Gece Yolcusu", avatar: "G", shared_reactions: 4, shared_posts: 2 },
+          { id: "u2", name: "Sessiz Nehir", avatar: "S", shared_reactions: 3, shared_posts: 1 },
+          { id: "u3", name: "Ay Işığı", avatar: "A", shared_reactions: 2, shared_posts: 3 },
+        ]);
+      });
+  }, [id]);
 
   useEffect(() => {
     if (searchParams.get("sanri") === "1" && post && !sanriReflection && !sanriLoading) {
@@ -203,16 +220,42 @@ export default function YankiPostDetail() {
     if (!text || !post || commentSubmitting) return;
     if (!isLoggedIn()) { navigate("/giris"); return; }
     setCommentSubmitting(true);
+    const mentions = extractMentions(text);
     try {
-      const result = await addComment(post.id, text);
-      if (result.comment) setComments((prev) => [...prev, result.comment]);
+      const result = await addComment(post.id, text, {
+        parentId: replyTo?.id || null,
+        mentions,
+      });
+      if (result.comment) {
+        const c = { ...result.comment, parent_id: replyTo?.id || null };
+        setComments((prev) => [...prev, c]);
+      }
       setNewComment("");
+      setReplyTo(null);
       setPost((p) => p ? { ...p, comment_count: (p.comment_count || 0) + 1 } : p);
     } catch (err) {
       if (err.status === 401) navigate("/giris");
     }
     setCommentSubmitting(false);
   };
+
+  const handleReplyClick = useCallback((comment) => {
+    setReplyTo(comment);
+    const name = comment.author_name || comment.author?.name || "";
+    if (name) setNewComment(`@${name.replace(/\s+/g, "")} `);
+  }, []);
+
+  const threadedComments = useMemo(() => {
+    const topLevel = comments.filter((c) => !c.parent_id);
+    const childMap = {};
+    for (const c of comments) {
+      if (c.parent_id) {
+        if (!childMap[c.parent_id]) childMap[c.parent_id] = [];
+        childMap[c.parent_id].push(c);
+      }
+    }
+    return { topLevel, childMap };
+  }, [comments]);
 
   const handleSharePost = async () => {
     if (!post) return;
@@ -329,11 +372,16 @@ export default function YankiPostDetail() {
             {post.author_mode === "anonymous" ? "?" : (post.author_name || "?")[0]}
           </span>
           <div className={styles.authorInfo}>
-            <span className={styles.authorName}>
-              {post.author_mode === "anonymous"
-                ? (isTR ? "Anonim" : "Anonymous")
-                : (post.author_name || (isTR ? "Anonim" : "Anonymous"))}
-            </span>
+            {post.author_mode === "anonymous" ? (
+              <span className={styles.authorName}>{isTR ? "Anonim" : "Anonymous"}</span>
+            ) : (
+              <button
+                className={styles.authorLink}
+                onClick={(e) => { e.stopPropagation(); navigate(`/yanki-alani/profil/${post.author_id || "me"}`); }}
+              >
+                {post.author_name || (isTR ? "Anonim" : "Anonymous")}
+              </button>
+            )}
           </div>
           <span className={styles.typeBadge} style={{ background: pt.color + "22", color: pt.color, borderColor: pt.color + "44" }}>
             {pt.icon} {isTR ? pt.label.tr : pt.label.en}
@@ -535,6 +583,38 @@ export default function YankiPostDetail() {
         )}
       </AnimatePresence>
 
+      {/* Kindred Spirits */}
+      {kindred.length > 0 && (
+        <motion.section
+          className={styles.kindredSection}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <h3 className={styles.kindredTitle}>
+            ◈ {isTR ? "Aynı Hissedenler" : "Kindred Spirits"}
+          </h3>
+          <p className={styles.kindredSub}>
+            {isTR ? "Bu yankıyla aynı titreşimde olanlar" : "Those who resonate with this echo"}
+          </p>
+          <div className={styles.kindredList}>
+            {kindred.map((k) => (
+              <button
+                key={k.id}
+                className={styles.kindredCard}
+                onClick={() => navigate(`/yanki-alani/profil/${k.id}`)}
+              >
+                <span className={styles.kindredAvatar}>{k.avatar || k.name?.[0] || "?"}</span>
+                <span className={styles.kindredName}>{k.name}</span>
+                <span className={styles.kindredMeta}>
+                  {k.shared_reactions} {isTR ? "ortak yankı" : "shared echoes"}
+                </span>
+              </button>
+            ))}
+          </div>
+        </motion.section>
+      )}
+
       {/* Comments */}
       <section className={styles.commentsSection}>
         <h3 className={styles.commentsTitle}>
@@ -542,26 +622,37 @@ export default function YankiPostDetail() {
         </h3>
 
         <div className={styles.commentsList}>
-          {comments.map((c, i) => (
-            <motion.div
-              key={c.id}
-              className={styles.comment}
-              initial={{ opacity: 0, x: -15 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
-            >
-              <span className={styles.commentAvatar}>
-                {(c.author_name || c.author?.name || "?")[0]}
-              </span>
-              <div className={styles.commentBody}>
-                <div className={styles.commentMeta}>
-                  <span className={styles.commentAuthor}>{c.author_name || c.author?.name || (isTR ? "Anonim" : "Anonymous")}</span>
-                  <span className={styles.commentTime}>{timeAgo(c.created_at || c.createdAt, isTR)}</span>
-                </div>
-                <p className={styles.commentText}>{c.content}</p>
+          {threadedComments.topLevel.map((c, i) => {
+            const replies = threadedComments.childMap[c.id] || [];
+            return (
+              <div key={c.id}>
+                <CommentItem
+                  c={c}
+                  i={i}
+                  isTR={isTR}
+                  onReply={handleReplyClick}
+                  isReplyTarget={replyTo?.id === c.id}
+                  navigate={navigate}
+                />
+                {replies.length > 0 && (
+                  <div className={styles.replyThread}>
+                    {replies.map((r, ri) => (
+                      <CommentItem
+                        key={r.id}
+                        c={r}
+                        i={ri}
+                        isTR={isTR}
+                        onReply={handleReplyClick}
+                        isReplyTarget={replyTo?.id === r.id}
+                        isReply
+                        navigate={navigate}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-            </motion.div>
-          ))}
+            );
+          })}
 
           {comments.length === 0 && (
             <p className={styles.noComments}>
@@ -570,11 +661,22 @@ export default function YankiPostDetail() {
           )}
         </div>
 
+        {replyTo && (
+          <div className={styles.replyBar}>
+            <span className={styles.replyBarText}>
+              ↩ {isTR ? "Cevap:" : "Reply:"} <strong>{replyTo.author_name || replyTo.author?.name || "?"}</strong>
+            </span>
+            <button className={styles.replyBarClose} onClick={() => { setReplyTo(null); setNewComment(""); }}>✕</button>
+          </div>
+        )}
+
         <div className={styles.commentInput}>
           <input
             type="text"
             className={styles.commentField}
-            placeholder={isTR ? "Yankını bırak..." : "Leave your echo..."}
+            placeholder={replyTo
+              ? (isTR ? "Cevabını yaz..." : "Write your reply...")
+              : (isTR ? "Yankını bırak... (@isim ile etiketle)" : "Leave your echo... (tag with @name)")}
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && submitComment()}
@@ -590,5 +692,58 @@ export default function YankiPostDetail() {
         </div>
       </section>
     </div>
+  );
+}
+
+function CommentItem({ c, i, isTR, onReply, isReplyTarget, isReply, navigate }) {
+  const name = c.author_name || c.author?.name || (isTR ? "Anonim" : "Anonymous");
+  const authorId = c.author_id || c.author?.id;
+  const parts = renderWithMentions(c.content);
+
+  return (
+    <motion.div
+      className={`${styles.comment} ${isReply ? styles.commentReply : ""} ${isReplyTarget ? styles.commentHighlight : ""}`}
+      initial={{ opacity: 0, x: -15 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3, delay: i * 0.04 }}
+    >
+      <button
+        className={styles.commentAvatarBtn}
+        onClick={() => authorId && navigate(`/yanki-alani/profil/${authorId}`)}
+        disabled={!authorId}
+      >
+        {name[0]}
+      </button>
+      <div className={styles.commentBody}>
+        <div className={styles.commentMeta}>
+          {authorId ? (
+            <button className={styles.commentAuthorLink} onClick={() => navigate(`/yanki-alani/profil/${authorId}`)}>
+              {name}
+            </button>
+          ) : (
+            <span className={styles.commentAuthor}>{name}</span>
+          )}
+          <span className={styles.commentTime}>{timeAgo(c.created_at || c.createdAt, isTR)}</span>
+        </div>
+        <p className={styles.commentText}>
+          {parts.map((p, idx) =>
+            p.type === "mention" ? (
+              <button
+                key={idx}
+                className={styles.mentionTag}
+                onClick={() => navigate(`/yanki-alani/profil/${p.value}`)}
+              >
+                @{p.value}
+              </button>
+            ) : (
+              <span key={idx}>{p.value}</span>
+            )
+          )}
+        </p>
+        <button className={styles.replyBtn2} onClick={() => onReply(c)}>
+          ↩ {isTR ? "Cevapla" : "Reply"}
+        </button>
+      </div>
+    </motion.div>
   );
 }

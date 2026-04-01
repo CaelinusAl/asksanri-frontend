@@ -79,6 +79,7 @@ function normalizePost(p) {
     id: p.id,
     author_mode: p.author_mode || p.authorMode || "anonymous",
     author_name: p.author_name || null,
+    author_id: p.author_id || p.authorId || null,
     title: p.title || null,
     content: p.content || p.content_sanitized || "",
     category: p.category || p.type || "genel",
@@ -687,11 +688,20 @@ export default function YankiAlaniPage() {
                         {post.author_mode === "anonymous" ? "?" : (post.author_name || "?")[0]}
                       </span>
                       <div className={styles.authorInfo}>
-                        <span className={styles.authorName}>
-                          {post.author_mode === "anonymous"
-                            ? isTR ? "Anonim" : "Anonymous"
-                            : (post.author_name || (isTR ? "Anonim" : "Anonymous"))}
-                        </span>
+                        {post.author_mode !== "anonymous" && post.author_id ? (
+                          <button
+                            className={styles.authorLink}
+                            onClick={(e) => { e.stopPropagation(); navigate(`/yanki-alani/profil/${post.author_id}`); }}
+                          >
+                            {post.author_name || (isTR ? "Anonim" : "Anonymous")}
+                          </button>
+                        ) : (
+                          <span className={styles.authorName}>
+                            {post.author_mode === "anonymous"
+                              ? isTR ? "Anonim" : "Anonymous"
+                              : (post.author_name || (isTR ? "Anonim" : "Anonymous"))}
+                          </span>
+                        )}
                         <span className={styles.timeAgo}>
                           {post.is_seed ? (post.seed_tag === "Rehber Paylaşım" ? "✦" : "~") : timeAgo(post.created_at, isTR)}
                         </span>

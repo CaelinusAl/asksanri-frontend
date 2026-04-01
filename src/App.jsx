@@ -15,15 +15,44 @@ import YankiAlaniPage from "./pages/YankiAlaniPage";
 import YankiPostDetail from "./pages/YankiPostDetail";
 import YankiYeniPage from "./pages/YankiYeniPage";
 import YankiProfilPage from "./pages/YankiProfilPage";
-import YankiAdminPage from "./pages/admin/YankiAdminPage";
 import YankiShareLanding from "./pages/YankiShareLanding";
 import OkumaAlaniPage from "./pages/OkumaAlaniPage";
 import OkumaDetayPage from "./pages/OkumaDetayPage";
+
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import AdminGuard from "./components/admin/AdminGuard";
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminUsersPage from "./pages/admin/AdminUsersPage";
+import AdminOkumaPage from "./pages/admin/AdminOkumaPage";
+import AdminLibraryPage from "./pages/admin/AdminLibraryPage";
+import AdminYankiPage from "./pages/admin/AdminYankiPage";
+import AdminRituelPage from "./pages/admin/AdminRituelPage";
+import AdminPremiumPage from "./pages/admin/AdminPremiumPage";
+import AdminRevenuePage from "./pages/admin/AdminRevenuePage";
+import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
+import AdminSystemPage from "./pages/admin/AdminSystemPage";
+import AdminContentEnginePage from "./pages/admin/AdminContentEnginePage";
+import AdminCalendarPage from "./pages/admin/AdminCalendarPage";
+import AdminGrowthPage from "./pages/admin/AdminGrowthPage";
+import AdminBillingPage from "./pages/admin/AdminBillingPage";
+import PaymentSuccessPage from "./pages/PaymentSuccessPage";
+import PaymentCancelPage from "./pages/PaymentCancelPage";
+import GirisPage from "./pages/GirisPage";
+import ProfilePage from "./pages/ProfilePage";
+import SubscriptionPage from "./pages/SubscriptionPage";
+import GizlilikPage from "./pages/GizlilikPage";
+import AuthCallback from "./components/AuthCallback";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/giris" element={<GirisPage />} />
+      <Route path="/profil" element={<ProfilePage />} />
+      <Route path="/subscription" element={<SubscriptionPage />} />
+      <Route path="/gizlilik" element={<GizlilikPage />} />
+      <Route path="/auth/callback" element={<AuthCallback />} />
 
       <Route path="/sanri" element={<SanriyaSorPage />} />
       <Route path="/sanriya-sor" element={<SanriyaSorPage />} />
@@ -41,15 +70,36 @@ export default function App() {
       <Route path="/yanki-alani" element={<YankiAlaniPage />} />
       <Route path="/yanki-alani/yeni" element={<YankiYeniPage />} />
       <Route path="/yanki-alani/profil/:userId" element={<YankiProfilPage />} />
-      <Route path="/yanki-alani/admin" element={<YankiAdminPage />} />
       <Route path="/yanki-alani/:id" element={<YankiPostDetail />} />
 
       <Route path="/okuma-alani" element={<OkumaAlaniPage />} />
       <Route path="/okuma-alani/:slug" element={<OkumaDetayPage />} />
       <Route path="/1999" element={<Navigate to="/okuma-alani/1999-kapanmayan-frekans" replace />} />
 
+      <Route path="/payment/success" element={<PaymentSuccessPage />} />
+      <Route path="/payment/cancel" element={<PaymentCancelPage />} />
+
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/:bookId" element={<BookReader />} />
+
+      {/* Admin Control Center */}
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin" element={<AdminGuard><AdminLayout /></AdminGuard>}>
+        <Route index element={<AdminDashboardPage />} />
+        <Route path="users" element={<AdminUsersPage />} />
+        <Route path="okuma" element={<AdminOkumaPage />} />
+        <Route path="library" element={<AdminLibraryPage />} />
+        <Route path="yanki" element={<AdminYankiPage />} />
+        <Route path="rituel" element={<AdminRituelPage />} />
+        <Route path="engine" element={<AdminContentEnginePage />} />
+        <Route path="calendar" element={<AdminCalendarPage />} />
+        <Route path="growth" element={<AdminGrowthPage />} />
+        <Route path="premium" element={<AdminPremiumPage />} />
+        <Route path="revenue" element={<AdminRevenuePage />} />
+        <Route path="billing" element={<AdminBillingPage />} />
+        <Route path="notifications" element={<AdminNotificationsPage />} />
+        <Route path="system" element={<AdminSystemPage />} />
+      </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

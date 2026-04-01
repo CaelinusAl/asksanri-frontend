@@ -1,0 +1,53 @@
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.createBtn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.2), rgba(200, 160, 255, 0.1));
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  color: #c8a0ff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.createBtn:hover {
+  background: rgba(200, 160, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.slugPreview {
+  font-size: 11px;
+  color: #5a5470;
+  margin-top: 4px;
+}
+
+.toggleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.toggleLabel {
+  font-size: 13px;
+  color: #d4d0e0;
+}
+
+@media (max-width: 520px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

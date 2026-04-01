@@ -428,6 +428,18 @@
   font-weight: 600;
   color: #d0cbe6;
 }
+.authorLink {
+  background: none;
+  border: none;
+  color: #d0cbe6;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.2s;
+}
+.authorLink:hover { color: #c8a0ff; text-decoration: underline; }
 .timeAgo {
   font-size: 11.5px;
   color: #5a5475;

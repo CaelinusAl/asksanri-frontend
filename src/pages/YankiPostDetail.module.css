@@ -696,6 +696,190 @@
 }
 .commentSubmit:disabled { opacity: 0.35; cursor: default; }
 
+/* ── Clickable author link ── */
+.authorLink {
+  background: none;
+  border: none;
+  color: #d0cbe6;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+.authorLink:hover { color: #c8a0ff; text-decoration: underline; }
+
+/* ── Kindred Spirits ── */
+.kindredSection {
+  max-width: 640px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+}
+.kindredTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #c8a0ff;
+  margin: 0 0 4px;
+}
+.kindredSub {
+  font-size: 12.5px;
+  color: #6a6490;
+  margin: 0 0 14px;
+  font-style: italic;
+}
+.kindredList {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.kindredList::-webkit-scrollbar { display: none; }
+.kindredCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(200, 160, 255, 0.05);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  border-radius: 16px;
+  padding: 14px 18px;
+  min-width: 110px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.kindredCard:hover {
+  border-color: rgba(200, 160, 255, 0.35);
+  background: rgba(200, 160, 255, 0.1);
+  transform: translateY(-2px);
+}
+.kindredAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(200, 160, 255, 0.15);
+  color: #c8a0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+.kindredName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d0cbe6;
+  white-space: nowrap;
+}
+.kindredMeta {
+  font-size: 11px;
+  color: #7a74a0;
+  white-space: nowrap;
+}
+
+/* ── Threaded replies ── */
+.replyThread {
+  margin-left: 28px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(200, 160, 255, 0.12);
+}
+.commentReply {
+  background: rgba(200, 160, 255, 0.03);
+  border-color: rgba(200, 160, 255, 0.06);
+}
+.commentHighlight {
+  border-color: rgba(200, 160, 255, 0.3) !important;
+  background: rgba(200, 160, 255, 0.06) !important;
+}
+
+/* ── Clickable comment avatar ── */
+.commentAvatarBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(200, 160, 255, 0.12);
+  color: #c8a0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.commentAvatarBtn:hover { background: rgba(200, 160, 255, 0.25); }
+.commentAvatarBtn:disabled { cursor: default; }
+
+/* ── Clickable comment author ── */
+.commentAuthorLink {
+  background: none;
+  border: none;
+  color: #c0bbd6;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+}
+.commentAuthorLink:hover { color: #c8a0ff; text-decoration: underline; }
+
+/* ── Mention tag ── */
+.mentionTag {
+  background: rgba(200, 160, 255, 0.12);
+  color: #c8a0ff;
+  border: none;
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mentionTag:hover { background: rgba(200, 160, 255, 0.25); }
+
+/* ── Reply button on comment ── */
+.replyBtn2 {
+  background: none;
+  border: none;
+  color: #6a6490;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 0 0;
+  transition: color 0.2s;
+}
+.replyBtn2:hover { color: #c8a0ff; }
+
+/* ── Reply indicator bar ── */
+.replyBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(200, 160, 255, 0.06);
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  border-radius: 12px;
+  margin-bottom: 8px;
+}
+.replyBarText {
+  font-size: 13px;
+  color: #a89cc8;
+  flex: 1;
+}
+.replyBarText strong { color: #c8a0ff; }
+.replyBarClose {
+  background: none;
+  border: none;
+  color: #6a6490;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.replyBarClose:hover { color: #ff8a8a; background: rgba(255, 100, 100, 0.1); }
+
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .postCard { padding: 0 14px; }
@@ -703,4 +887,7 @@
   .postTitle { font-size: 19px; }
   .postContent { font-size: 15px; }
   .reflectionCard { margin-left: 14px; margin-right: 14px; }
+  .kindredSection { padding: 0 14px; }
+  .replyThread { margin-left: 16px; padding-left: 10px; }
+  .kindredCard { min-width: 95px; padding: 10px 14px; }
 }
