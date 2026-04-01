@@ -43,6 +43,7 @@ import GirisPage from "./pages/GirisPage";
 import ProfilePage from "./pages/ProfilePage";
 import SubscriptionPage from "./pages/SubscriptionPage";
 import GizlilikPage from "./pages/GizlilikPage";
+import { HakkimizdaPage, GizlilikPolitikasiPage, MesafeliSatisPage, IadeKosullariPage } from "./pages/LegalPages";
 import AuthCallback from "./components/AuthCallback";
 
 export default function App() {
@@ -53,6 +54,10 @@ export default function App() {
       <Route path="/profil" element={<ProfilePage />} />
       <Route path="/subscription" element={<SubscriptionPage />} />
       <Route path="/gizlilik" element={<GizlilikPage />} />
+      <Route path="/hakkimizda" element={<HakkimizdaPage />} />
+      <Route path="/gizlilik-politikasi" element={<GizlilikPolitikasiPage />} />
+      <Route path="/mesafeli-satis" element={<MesafeliSatisPage />} />
+      <Route path="/iade-kosullari" element={<IadeKosullariPage />} />
       <Route path="/auth/callback" element={<AuthCallback />} />
 
       <Route path="/sanri" element={<SanriyaSorPage />} />
