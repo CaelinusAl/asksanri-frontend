@@ -1,13 +1,18 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { PremiumGate } from "../components/premium/PremiumGate";
-import { getPostBySlug, getCommentsByPostId, getCategoryById, timeAgoOkuma } from "../data/okumaData";
+import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
 import styles from "./OkumaDetayPage.module.css";
+
+const API =
+  (import.meta?.env?.VITE_BACKEND_URL &&
+    String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+  "https://sanri-api-production-4a7b.up.railway.app";
 
 export default function OkumaDetayPage() {
   const { slug } = useParams();
@@ -21,13 +26,15 @@ export default function OkumaDetayPage() {
   const shopierOk = post ? isShopierUnlocked(`okuma_${post.id}`) : false;
   const isLocked = post?.isPremium && !isPremium && !singleUnlocked && !shopierOk;
 
-  const [comments, setComments] = useState(() =>
-    post ? getCommentsByPostId(post.id) : []
-  );
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [coverError, setCoverError] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
+  const [liked, setLiked] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const loadedRef = useRef(false);
 
   const autoCta = useMemo(() => pickCtaForUser(), []);
   const handleCtaClick = useCallback(() => {
@@ -47,6 +54,24 @@ export default function OkumaDetayPage() {
     setMeta("og:url", `${window.location.origin}/okuma-alani/${post.slug}`);
     if (post.coverImage) setMeta("og:image", `${window.location.origin}${post.coverImage}`);
     return () => { document.title = "SANRI"; };
+  }, [post]);
+
+  useEffect(() => {
+    if (!post || loadedRef.current) return;
+    loadedRef.current = true;
+
+    fetch(`${API}/okuma/comments/${post.slug}`)
+      .then((r) => r.json())
+      .then((data) => { if (data.comments) setComments(data.comments); })
+      .catch(() => {});
+
+    fetch(`${API}/okuma/likes/${post.slug}`)
+      .then((r) => r.json())
+      .then((data) => {
+        setLikesCount(data.count || 0);
+        setLiked(Boolean(data.liked));
+      })
+      .catch(() => {});
   }, [post]);
 
   if (!post) {
@@ -72,20 +97,51 @@ export default function OkumaDetayPage() {
   const cat = getCategoryById(post.category);
   const sr = post.sanriReflection;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const text = newComment.trim();
     const name = authorName.trim() || (isTR ? "Anonim" : "Anonymous");
-    if (!text) return;
+    if (!text || submitting) return;
+    setSubmitting(true);
 
-    const comment = {
-      id: Date.now(),
-      authorName: name,
-      content: text,
-      createdAt: new Date().toISOString(),
-    };
-    setComments((prev) => [...prev, comment]);
-    setNewComment("");
+    try {
+      const token = localStorage.getItem("sanri_token");
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      await fetch(`${API}/okuma/comments`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          post_slug: post.slug,
+          author_name: name,
+          content: text,
+        }),
+      });
+
+      setComments((prev) => [
+        ...prev,
+        { id: Date.now(), authorName: name, content: text, createdAt: new Date().toISOString() },
+      ]);
+      setNewComment("");
+    } catch {}
+    setSubmitting(false);
+  };
+
+  const handleLike = async () => {
+    try {
+      const token = localStorage.getItem("sanri_token");
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+
+      const res = await fetch(`${API}/okuma/like/${post.slug}`, {
+        method: "POST",
+        headers,
+      });
+      const data = await res.json();
+      setLikesCount(data.count || 0);
+      setLiked(data.liked);
+    } catch {}
   };
 
   return (
@@ -133,8 +189,13 @@ export default function OkumaDetayPage() {
         <p className={styles.subtitleText}>{post.subtitle}</p>
 
         <div className={styles.meta}>
+          <button
+            className={`${styles.likeBtn} ${liked ? styles.likeBtnActive : ""}`}
+            onClick={handleLike}
+          >
+            {liked ? "❤️" : "🤍"} {likesCount}
+          </button>
           <span>💬 {comments.length}</span>
-          <span>👁 {post.viewCount}</span>
           <span>{timeAgoOkuma(post.createdAt)}</span>
           <button
             className={styles.shareBtn}
@@ -295,9 +356,9 @@ export default function OkumaDetayPage() {
               <button
                 type="submit"
                 className={styles.submitBtn}
-                disabled={!newComment.trim()}
+                disabled={!newComment.trim() || submitting}
               >
-                {isTR ? "Gönder" : "Send"}
+                {submitting ? (isTR ? "Gönderiliyor..." : "Sending...") : (isTR ? "Gönder" : "Send")}
               </button>
             </div>
           </form>

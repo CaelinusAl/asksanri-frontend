@@ -187,6 +187,35 @@
 }
 
 /* ── Share Button ── */
+.likeBtn {
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  background: rgba(200, 160, 255, 0.04);
+  color: rgba(200, 160, 255, 0.6);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.likeBtn:hover {
+  background: rgba(200, 160, 255, 0.12);
+  border-color: rgba(200, 160, 255, 0.3);
+  transform: scale(1.05);
+}
+.likeBtnActive {
+  border-color: rgba(255, 100, 120, 0.3);
+  background: rgba(255, 100, 120, 0.08);
+  color: #ff6b7a;
+}
+.likeBtnActive:hover {
+  background: rgba(255, 100, 120, 0.15);
+  border-color: rgba(255, 100, 120, 0.4);
+}
+
 .shareBtn {
   margin-left: auto;
   padding: 4px 14px;
