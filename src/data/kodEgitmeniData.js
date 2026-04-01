@@ -295,6 +295,132 @@ Bu, senin frekansının o sayının frekansıyla hizalanması.
 **Sayıları okumak = evrenin seninle konuşmasını duymak.**`,
         inputPrompt: "Sürekli gördüğün bir sayı var mı? Hangisi ve ne zaman başladı?",
       },
+      {
+        id: "7-kodu",
+        title: "7 Kodu — Tekrar Eden Sayının Hafızası",
+        type: "read",
+        isFree: false,
+        duration: "14 dk",
+        hasInput: true,
+        content: `Bazı sayılar sadece sayılmaz.
+Tekrar eder.
+Ve tekrar eden şey, sistemin hafızasına aittir.
+
+7 böyle bir sayıdır.
+Onu matematik icat etmedi. Matematik onu keşfetti.
+Çünkü 7, insanın bilincine matematikten önce yazılmıştı.
+
+---
+
+## 7 Bir Sayı mı, Yoksa Eşik mi?
+
+Saymayı öğrendiğin anda 7 tanıdık gelir. Neden?
+
+Çünkü insan zihni ortalama 7 birim bilgiyi aynı anda tutabilir. Psikolog George Miller bunu "sihirli sayı 7" olarak tanımladı. Telefon numaraları, müzik dizileri, hikâye yapıları — hepsi 7 civarında bölünür. Bu bir tercih değil. Bu, algının doğal eşiğidir.
+
+7'nin ötesinde zihin "gruplama" yapmaya başlar. Yani 7, bireysel algının bittiği ve sistemik düşüncenin başladığı noktadır.
+
+Bu yüzden 7 bir sayı gibi değil, bir kapı gibi hissedilir.
+
+---
+
+## Doğada ve Düzende 7
+
+Doğa 7'yi tekrar eder. Ama bunu bir kural gibi değil, bir ritim gibi yapar:
+
+Görünür ışık spektrumu 7 renge ayrılır. Kırmızıdan more — gözün algılayabildiği frekans aralığı tam olarak 7 katmandır.
+
+Müzikte 7 nota vardır — do, re, mi, fa, sol, la, si. 8. nota yeniden do'dur ama bir oktav yukarıda. Yani 7, döngünün tamamlanıp yeni katmana geçtiği eşiktir.
+
+Haftanın 7 günü vardır. Bu düzenleme binlerce yıl öncesine, Babil'e kadar gider. 7 gözle görünen gök cismine (Güneş, Ay ve 5 gezegen) karşılık gelir. İnsanlık zamanı bölerken 7'yi seçmedi — gökyüzü 7'yi gösterdi.
+
+Kristal yapılarda 7 temel sistem vardır. Atomlar bile düzenlenirken 7'li simetriler oluşturur.
+
+> **KOD ÇÖZÜMÜ:**
+> Doğa 7'yi dayatmaz.
+> Ama bir döngü tamamlanacaksa, 7 o döngünün eşiğinde belirir.
+
+---
+
+## Bedende ve Algıda 7
+
+Beden de 7 ile çalışır:
+
+İnsan bedeninin hücreleri yaklaşık her 7 yılda tamamen yenilenir. 7 yaşında çocukluktan düşünceye geçiş başlar. 14'te (7×2) ergenlik. 21'de (7×3) yetişkinlik eşiği. 28'de (7×4) ilk büyük hayat krizi. 35'te (7×3+14) yön değiştirme ihtiyacı.
+
+Bu sayılar kesin sınırlar değil. Ama fark et: hayatın büyük kırılma noktaları 7'li aralıklarla gelme eğilimindedir.
+
+Beyin 7 birim bilgiyi kısa süreli bellekte tutar. Bunun ötesinde gruplama, soyutlama, "bir üst katmana çıkma" başlar. Yani 7, bireysel algının tavanı gibi çalışır.
+
+Enerji sistemi geleneğinde bedende 7 ana merkez tanımlanır — kök, sakral, solar pleksus, kalp, boğaz, üçüncü göz, taç. Bu bir inanç meselesi olarak değil, bedenin frekans katmanları olarak okunabilir.
+
+> **KOD ÇÖZÜMÜ:**
+> Beden 7'de bir eşiğe gelir.
+> O eşikte ya tekrar edersin, ya geçersin.
+> Geçiş bilinçli olursa dönüşüm, bilinçsiz olursa kriz olur.
+
+---
+
+## Kültürde ve Anlatıda 7
+
+7, insanlığın kolektif hafızasına defalarca yazılmıştır:
+
+7 kat gök. 7 kat yer. 7 uyurlar. 7 deniz. 7 kapı.
+
+Bunlar farklı kültürlerde, birbirinden bağımsız şekilde tekrar eder. Sümer'de, Mısır'da, Hinduizm'de, İslam'da, Hristiyanlık'ta, Budizm'de, Şamanizm'de.
+
+Neden?
+
+Bir sayı binlerce yıl boyunca, birbirini tanımayan toplumlar tarafından aynı bağlamda kullanılıyorsa — bu bir tesadüf değil, bir iz. Kolektif hafızanın izi.
+
+7 kıta. 7 dünya harikası. Kuran'da 7 ayet (Fatiha). Dante'nin Cehennemi'nde 7 katman. Şekspir'in "dünyanın 7 çağı." Roma'nın 7 tepesi.
+
+Kültürler 7'yi icat etmedi. 7'yi hatırladı.
+
+> **KOD ÇÖZÜMÜ:**
+> Farklı coğrafyalarda aynı sayının tekrarı
+> bir uzlaşma değil, kolektif hafızanın aynı koda ulaşmasıdır.
+> 7 öğretilmez. 7 hatırlanır.
+
+---
+
+## 7 Neden Eşik Gibi Hissedilir?
+
+7 tamamlama değildir. 7, tamamlanmadan hemen önceki gerilimdir.
+
+8 sonsuzluğu (∞) temsil eder.
+7, sonsuzluğun bir adım öncesidir.
+Bu yüzden 7'de bir "neredeyse" hissi vardır. Bir şeyin bitmek üzere olduğu ama henüz bitmediği an.
+
+Bu gerilim insanı rahatsız eder — ama aynı zamanda çeker. 7, merak uyandırır. 7, "bir şey eksik" hissi verir. Ve bu his, aramanın başladığı yerdir.
+
+Belki de 7 bu yüzden kutsal sayılmıştır. Tamamlama vaat eder ama tamamlamaz. Seni eşiğe getirir. Geçmek sana kalmıştır.
+
+> **KOD ÇÖZÜMÜ:**
+> 7 = tamamlanma değil,
+> tamamlanmadan önceki eşiğin titreşimi.
+> 7'de duran bekler. 7'yi geçen dönüşür.
+
+---
+
+## Sayı mı, Hafıza mı?
+
+Bazı sayılar matematikten önce hafızadır.
+
+7 hesaplanmaz — hissedilir.
+7 öğretilmez — hatırlanır.
+7 bir son değil — bir eşiktir.
+
+Ve eşikler sadece sayılarda değil, hayatında da tekrar eder.
+Her 7. gün bir dinlenme.
+Her 7. yıl bir kırılma.
+Her 7. kapı bir geçiş.
+
+Soru şu:
+Sen şu an kaçıncı 7'nin içindesin?
+Ve o eşikte ne yapıyorsun — bekliyor musun, geçiyor musun?`,
+        inputPrompt: "Senin hayatında en çok hangi sayı tekrar ediyor? 7 sende bitiş mi hissettiriyor, geçiş mi? Hayatında hangi döngü 7'li ritimlerle çalışıyor olabilir?",
+      },
     ],
   },
 
