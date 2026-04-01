@@ -784,6 +784,137 @@ döngüyü kapatmak = bilinçle tamamlamak
     viewCount: 1284,
     isFeatured: true,
   },
+  {
+    id: 8,
+    slug: "japonya-bilinc-mimarisi",
+    title: "Bir Millet Gittiği Yeri Nasıl Bırakırsa, Bilincini Öyle Taşır",
+    subtitle: "Japon taraftarlar maçtan sonra tribünü temizledi. Ama bu bir temizlik hikâyesi değil — bir bilinç manifestosu.",
+    category: "sehir_ulke_kodu",
+    coverImage: "/assets/gates/japonya.jpg",
+    excerpt: "Japonya İngiltere'yi 1-0 yendi. Tribünler boşaldı. Ama Japon taraftarlar kalktı ve oturduğu bölgeyi temizledi. Başkasının stadyumunu. Başkasının ülkesinde. Kimse istemeden. Kimse görmeden.",
+    fullContent: `Japonya, İngiltere'yi 1-0 yendi.
+Maç bitti. Tribünler boşaldı.
+Ama Japon taraftarlar kalktı ve oturduğu bölgeyi temizledi.
+Başkasının stadyumunu. Başkasının ülkesinde.
+Kimse istemeden. Kimse görmeden.
+
+◉ DERİN KATMAN
+
+Bu bir "disiplin" değil.
+Disiplin dışarıdan dayatılır.
+Bu, içeriden gelen bir mimari.
+
+✦ ALAN BİLİNCİ
+Japonca'da ba (場) kavramı sadece "yer" demek değildir.
+Bir alanın enerjisi, ruhu, hafızası vardır.
+Japon insanı bir mekâna girdiğinde o mekânla ilişki kurar.
+Çıkarken de o ilişkiyi temiz bırakır.
+Çünkü alan, emanettir.
+
+✦ EMANET ANLAYIŞI
+Bu stadyum onların değil.
+Tam da bu yüzden temizliyorlar.
+Japon bilincinde ödünç alınan şey, alındığından daha iyi bırakılır.
+Bu bir kural değil, bir refleks.
+"Bana ait olmayan şeye dokunduğumda, dokunuşumun izi saygı olmalı."
+
+✦ İZ BIRAKMAMA KÜLTÜRÜ
+Shinto geleneğinde saflık — kegare ve harae kavramları — sadece fiziksel temizlik değildir.
+Bir yerde bulunmak, oranın enerjisine dokunmaktır.
+Ayrılırken o enerjiyi kirletmeden bırakmak, ruhsal bir sorumluluktur.
+Çöp sadece çöp değildir.
+Çöp, bilinçsizliğin fiziksel formudur.
+
+✦ GÖRÜNMEYEN EMEĞE SAYGI
+O stadyumu her gece temizleyen insanlar var.
+Japon taraftar bunu bilir.
+Ve o insanların işini kolaylaştırmayı sessizce seçer.
+Çünkü Japon kültüründe görünmeyen emek, görünen başarıdan daha kutsaldır.
+Kimse alkışlamaz. Kimse fotoğraf çekmez.
+İşte tam da bu yüzden bu davranış bu kadar güçlüdür.
+
+✦ UTANMA KÜLTÜRÜ vs ONUR KÜLTÜRÜ
+Batıda "doğru şeyi yap çünkü onurludur" denir.
+Japonya'da mekanizma farklıdır:
+"Eğer arkamda iz bırakırsam, sadece kendimi değil, ait olduğum bütünü kirletirim."
+Bu bireysel onur değil, kolektif utançtan kaçınmadır.
+Haji (恥) kavramı — bireyin topluluğa karşı taşıdığı görünmez sorumluluktur.
+Sen değil, biz kirlenirsin.
+
+✦ İÇ DÜZENİN DIŞ DÜZENE YANSIMASI
+Japon evlerinin girişinde ayakkabı çıkarılır.
+Okullarda öğrenciler kendi sınıflarını temizler.
+Çay seremonisinde her hareket bir arınmadır.
+Bu davranışlar birbirinden bağımsız kurallar değil —
+tek bir bilincin farklı yüzeylere vuran yansımalarıdır:
+İçin temizse, dokunduğun her yer temiz kalır.
+
+◉ SEMBOLİK OKUMA
+
+Bu sahne bir temizlik değil. Bir manifestodur.
+
+İnsan gittiği yerde ne bırakır?
+Çöpünü mü? Enerjisini mi? Saygısını mı? Kayıtsızlığını mı?
+
+Temizlik burada fiziksel bir eylem değil, bilinçsel bir tavırdır.
+"Ben buradaydım ve burası benden zarar görmedi" demektir.
+Bu cümleyi kurabilmek için bir insanın önce kendi iç düzenini kurmuş olması gerekir.
+
+Bir toplumun medeniyet seviyesi, kazandığı savaşlardan değil, ardında bıraktığı izden okunur.
+Japon taraftarlar o gece maçı kazandı.
+Ama asıl kazandıkları şey tribünde değildi.
+Tribünden çıktıktan sonra geride kalan sessizlikteydi.
+
+Shinto'da her nesnenin bir ruhu vardır — kami.
+Bir koltuk, bir zemin, bir bardak.
+Onlara dokunurken saygıyla dokunursun çünkü onlar da senin gibi vardır.
+Bu animizm değil.
+Bu, varlığa duyulan derin eşitlik bilincidir.
+
+Ve belki de en güçlü katman şudur:
+Bu taraftarlar bunu başkası görsün diye yapmadı.
+Kamera yokken de yaparlardı.
+Çünkü bu performans değil.
+Bu, kim olduklarının sessiz ifadesidir.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Alan bilinci
+• ba (場) = alan, mekân, enerji taşıyıcısı
+• Giren kişi alanla ilişki kurar, çıkarken temiz bırakır
+• Alan emanettir — sahiplik değil, sorumluluktur
+
+KATMAN 2 — Shinto saflık kodu
+• kegare = kirlilik (fiziksel + enerjetik)
+• harae = arınma ritüeli
+• Temizlik = ruhsal sorumluluk, fiziksel eylem değil
+
+KATMAN 3 — Kolektif bilinç yapısı
+• haji (恥) = utanç — bireyin topluluğa karşı görünmez sorumluluğu
+• Bireysel onur değil, kolektif kirlenmeyi önleme refleksi
+• "Sen değil, biz kirlenirsin"
+
+KATMAN 4 — İz bilinci
+• İnsan gittiği yerde ne bırakır?
+• Çöp = bilinçsizliğin fiziksel formu
+• Temizlik = "Ben buradaydım ve burası benden zarar görmedi" manifestosu
+
+ÇIKIŞ KODU:
+Bir toplumu anlamak için ne söylediğine değil
+kimse bakmadığında ne yaptığına bak.
+
+İşaret: Bugün bir mekândan ayrılırken arkana bak. Ne bıraktın?`,
+    sanriReflection: {
+      analysis: "Bu bir temizlik haberi değil — kolektif bilincin en saf dışavurumu. Japon kültürü bireyi değil, alanı merkeze alır. İnsan gittiği yere ait olduğunu iz bırakmayarak kanıtlar. Sessizlik, en güçlü manifestodur.",
+      strongLine: "Bir toplumu anlamak için ne söylediğine değil, kimse bakmadığında ne yaptığına bak.",
+      question: "Sen gittiğin yerlerde ne bırakıyorsun — ve o iz gerçekten seni mi anlatıyor?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-01T20:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -826,6 +957,11 @@ export const OKUMA_COMMENTS = {
     { id: 706, authorName: "Lina", content: "Bu sadece deprem yazısı değil. Bu, tamamlanmamış yas hakkında. Kapatmak = unutmak değil, bilinçle tamamlamak. Bu cümleyi yıllardır bekliyordum.", createdAt: "2026-03-31T14:10:00Z" },
     { id: 707, authorName: "Aura", content: "Vefa = hatırlayarak hissetmektir. Bu tanım devlet törenlerinde söylenen hiçbir şeyden daha güçlü. Gerçek anma bu.", createdAt: "2026-03-31T15:30:00Z" },
     { id: 708, authorName: "Arda", content: "Aileme sordum. 'O gece ne oldu?' diye. Babam uzun süre sessiz kaldı, sonra 'ilk kez yalnız olduğumu anladım' dedi. 26 yıl sonra ilk kez konuştuk. Bu yazı yüzünden.", createdAt: "2026-03-31T16:45:00Z" },
+  ],
+  8: [
+    { id: 801, authorName: "Mira", content: "Çöp = bilinçsizliğin fiziksel formu. Bu cümle yüzünden 10 dakika ekrana baktım. Sonra odamı topladım.", createdAt: "2026-04-01T20:30:00Z" },
+    { id: 802, authorName: "Eren", content: "'Sen değil, biz kirlenirsin.' — Bireysel sorumluluk değil, kolektif bilinç. Bu farkı ilk kez bu kadar net gördüm.", createdAt: "2026-04-01T21:00:00Z" },
+    { id: 803, authorName: "Ada", content: "Bir toplumu anlamak için kimse bakmadığında ne yaptığına bak. Bunu okuduğumda aklıma kendi mahallem geldi. Utandım ama iyi anlamda.", createdAt: "2026-04-01T21:15:00Z" },
   ],
 };
 
