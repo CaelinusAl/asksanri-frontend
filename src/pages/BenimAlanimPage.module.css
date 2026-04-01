@@ -1,0 +1,761 @@
+/* ═══════════════════════════════════════════════
+   BENİM ALANIM — Personal Dashboard
+   Dark premium glassmorphism
+   ═══════════════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: #07080d;
+  background-image:
+    radial-gradient(ellipse 700px 400px at 30% 10%, rgba(140,80,240,.07), transparent 70%),
+    radial-gradient(ellipse 500px 350px at 75% 80%, rgba(80,140,240,.04), transparent 65%);
+  color: rgba(255,255,255,.92);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding-bottom: 80px;
+}
+
+/* ── Top Bar ── */
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: rgba(7,8,13,.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.backBtn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.5);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all .2s;
+}
+.backBtn:hover { color: #c8a0ff; }
+.topTitle {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.75);
+}
+.topRight {
+  display: flex;
+  gap: 8px;
+}
+.settingsBtn {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.5);
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .2s;
+}
+.settingsBtn:hover { border-color: rgba(200,160,255,.2); color: #c8a0ff; }
+
+/* ── Identity Card ── */
+.identityCard {
+  margin: 20px 16px 0;
+  padding: 28px 24px 24px;
+  border-radius: 24px;
+  border: 1px solid rgba(180,140,255,.10);
+  background: rgba(255,255,255,.025);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 4px 40px rgba(0,0,0,.3),
+    0 0 60px rgba(140,80,240,.06),
+    inset 0 1px 0 rgba(255,255,255,.03);
+  position: relative;
+  overflow: hidden;
+}
+.identityGlow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(160,100,255,.12) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+.identityTop {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.avatarWrap {
+  position: relative;
+  cursor: pointer;
+}
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid rgba(200,160,255,.25);
+  background: rgba(160,100,255,.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  box-shadow: 0 0 20px rgba(160,100,255,.15);
+  transition: all .3s;
+}
+.avatar:hover {
+  border-color: rgba(200,160,255,.45);
+  box-shadow: 0 0 30px rgba(160,100,255,.25);
+}
+.avatarEdit {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #c8a0ff;
+  border: 2px solid #0a0b12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #0a0b12;
+  font-weight: 800;
+}
+.identityInfo {
+  flex: 1;
+  min-width: 0;
+}
+.userName {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: .01em;
+  margin: 0;
+  color: rgba(255,255,255,.92);
+}
+.userBio {
+  font-size: 13px;
+  color: rgba(255,255,255,.4);
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+.premiumBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.premiumActive {
+  background: linear-gradient(135deg, rgba(255,215,0,.15), rgba(200,160,255,.10));
+  border: 1px solid rgba(255,215,0,.25);
+  color: #ffd700;
+}
+.premiumFree {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.4);
+}
+
+/* Stats row */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+.statItem {
+  text-align: center;
+  padding: 12px 4px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.04);
+}
+.statValue {
+  font-size: 20px;
+  font-weight: 800;
+  color: #c8a0ff;
+  line-height: 1;
+}
+.statLabel {
+  font-size: 10px;
+  color: rgba(255,255,255,.35);
+  margin-top: 6px;
+  letter-spacing: .04em;
+}
+
+/* ── Section shared ── */
+.section {
+  margin: 24px 16px 0;
+}
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sectionIcon {
+  font-size: 18px;
+}
+.sectionAction {
+  background: none;
+  border: none;
+  color: #c8a0ff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: all .2s;
+}
+.sectionAction:hover { background: rgba(200,160,255,.08); }
+
+/* ── Glass Card ── */
+.glass {
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.025);
+  backdrop-filter: blur(16px);
+  padding: 20px;
+  box-shadow: 0 2px 20px rgba(0,0,0,.2);
+}
+
+/* ── Kod Haritam ── */
+.haritaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.haritaCard {
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.02);
+  transition: all .25s;
+}
+.haritaCard:hover {
+  border-color: rgba(200,160,255,.12);
+  background: rgba(255,255,255,.035);
+}
+.haritaFull {
+  grid-column: 1 / -1;
+}
+.haritaLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+  margin-bottom: 6px;
+}
+.haritaValue {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,.85);
+  line-height: 1.4;
+}
+.haritaIcon {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+/* ── Günlük Frekans ── */
+.emotionGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.emotionBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.02);
+  cursor: pointer;
+  transition: all .2s;
+  min-width: 60px;
+  color: rgba(255,255,255,.6);
+  font-size: 10px;
+}
+.emotionBtn:hover {
+  border-color: rgba(200,160,255,.15);
+  background: rgba(200,160,255,.06);
+}
+.emotionActive {
+  border-color: rgba(200,160,255,.30) !important;
+  background: rgba(200,160,255,.10) !important;
+  color: #c8a0ff !important;
+  box-shadow: 0 0 16px rgba(200,160,255,.12);
+}
+.emotionSymbol {
+  font-size: 24px;
+}
+.dailyInput {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.25);
+  color: rgba(255,255,255,.9);
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color .2s;
+  margin-bottom: 12px;
+}
+.dailyInput:focus {
+  border-color: rgba(200,160,255,.25);
+  box-shadow: 0 0 0 3px rgba(200,160,255,.06);
+}
+.dailyInput::placeholder {
+  color: rgba(255,255,255,.2);
+}
+.dailyQuestion {
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255,255,255,.45);
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border-left: 2px solid rgba(200,160,255,.25);
+  line-height: 1.5;
+}
+.dailySaveBtn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid rgba(200,160,255,.20);
+  background: linear-gradient(135deg, rgba(200,160,255,.10), rgba(140,100,240,.06));
+  color: #c8a0ff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: .02em;
+}
+.dailySaveBtn:hover {
+  background: linear-gradient(135deg, rgba(200,160,255,.16), rgba(140,100,240,.10));
+  box-shadow: 0 0 20px rgba(200,160,255,.10);
+}
+.dailySaveBtn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+.sanriReflection {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(200,160,255,.04);
+  border: 1px solid rgba(200,160,255,.10);
+  font-size: 14px;
+  color: rgba(255,255,255,.7);
+  line-height: 1.6;
+  font-style: italic;
+}
+.sanriReflectionLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .10em;
+  color: #c8a0ff;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-style: normal;
+}
+
+/* ── Öğrendiklerim ── */
+.progressBar {
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.06);
+  overflow: hidden;
+  margin: 12px 0;
+}
+.progressFill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #c8a0ff, #7cf7d8);
+  transition: width .5s ease;
+}
+.lessonMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.lessonPercent {
+  font-size: 28px;
+  font-weight: 800;
+  color: #c8a0ff;
+}
+.lessonLabel {
+  font-size: 13px;
+  color: rgba(255,255,255,.45);
+}
+.activeModule {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.02);
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.activeModuleName {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,.8);
+}
+.continueBtn {
+  padding: 8px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(124,247,216,.20);
+  background: rgba(124,247,216,.08);
+  color: #7cf7d8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.continueBtn:hover {
+  background: rgba(124,247,216,.14);
+  box-shadow: 0 0 16px rgba(124,247,216,.10);
+}
+
+/* ── Defterim ── */
+.tabBar {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.04);
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+.tab {
+  flex: 1;
+  padding: 10px 8px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: rgba(255,255,255,.4);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  text-align: center;
+}
+.tabActive {
+  background: rgba(200,160,255,.10);
+  color: #c8a0ff;
+}
+.noteInput {
+  width: 100%;
+  min-height: 100px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.25);
+  color: rgba(255,255,255,.9);
+  font-size: 14px;
+  outline: none;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color .2s;
+  margin-bottom: 10px;
+}
+.noteInput:focus {
+  border-color: rgba(200,160,255,.25);
+}
+.noteInput::placeholder {
+  color: rgba(255,255,255,.18);
+}
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.noteItem {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.04);
+  background: rgba(255,255,255,.015);
+  transition: all .2s;
+}
+.noteItem:hover {
+  border-color: rgba(255,255,255,.08);
+}
+.noteText {
+  font-size: 14px;
+  color: rgba(255,255,255,.75);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.noteDate {
+  font-size: 11px;
+  color: rgba(255,255,255,.25);
+  margin-top: 8px;
+}
+.noteDelete {
+  background: none;
+  border: none;
+  color: rgba(255,100,100,.4);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 2px 6px;
+  float: right;
+  transition: color .2s;
+}
+.noteDelete:hover { color: rgba(255,100,100,.7); }
+.yankiItem {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.04);
+  background: rgba(255,255,255,.015);
+  cursor: pointer;
+  transition: all .2s;
+}
+.yankiItem:hover { border-color: rgba(200,160,255,.12); }
+.yankiContent {
+  font-size: 14px;
+  color: rgba(255,255,255,.7);
+  line-height: 1.5;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.yankiMeta {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 11px;
+  color: rgba(255,255,255,.25);
+}
+
+/* ── Rozetler ── */
+.badgeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 18px 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.05);
+  background: rgba(255,255,255,.02);
+  transition: all .3s;
+}
+.badgeEarned {
+  border-color: rgba(255,215,0,.15);
+  background: rgba(255,215,0,.03);
+}
+.badgeEarned:hover {
+  border-color: rgba(255,215,0,.25);
+  box-shadow: 0 0 20px rgba(255,215,0,.08);
+}
+.badgeLocked {
+  opacity: .35;
+  filter: grayscale(.6);
+}
+.badgeIcon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.badgeName {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,.75);
+  letter-spacing: .02em;
+}
+.badgeDesc {
+  font-size: 10px;
+  color: rgba(255,255,255,.3);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.badgeGold .badgeName {
+  color: #ffd700;
+}
+
+/* ── Empty State ── */
+.empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: rgba(255,255,255,.3);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ── Avatar Modal ── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modalCard {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 24px;
+  border: 1px solid rgba(200,160,255,.12);
+  background: rgba(14,16,26,.95);
+  backdrop-filter: blur(24px);
+  padding: 28px 24px;
+  box-shadow: 0 8px 60px rgba(0,0,0,.5), 0 0 40px rgba(160,100,255,.08);
+}
+.modalTitle {
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6px;
+}
+.modalSub {
+  font-size: 13px;
+  color: rgba(255,255,255,.4);
+  text-align: center;
+  margin-bottom: 20px;
+}
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.avatarOption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 8px;
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,.06);
+  background: rgba(255,255,255,.02);
+  cursor: pointer;
+  transition: all .2s;
+}
+.avatarOption:hover {
+  border-color: rgba(200,160,255,.2);
+  background: rgba(200,160,255,.06);
+}
+.avatarOptionActive {
+  border-color: #c8a0ff !important;
+  background: rgba(200,160,255,.12) !important;
+  box-shadow: 0 0 16px rgba(200,160,255,.15);
+}
+.avatarOptionSymbol {
+  font-size: 28px;
+}
+.avatarOptionName {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,255,255,.4);
+  letter-spacing: .04em;
+}
+.modalActions {
+  display: flex;
+  gap: 10px;
+}
+.modalSave {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1px solid rgba(200,160,255,.25);
+  background: linear-gradient(135deg, rgba(200,160,255,.14), rgba(140,100,240,.08));
+  color: #c8a0ff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.modalSave:hover { box-shadow: 0 0 20px rgba(200,160,255,.12); }
+.modalCancel {
+  padding: 13px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: transparent;
+  color: rgba(255,255,255,.4);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.modalCancel:hover { color: rgba(255,255,255,.6); }
+
+/* ── Mini save btn row ── */
+.saveRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.miniBtn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(200,160,255,.18);
+  background: rgba(200,160,255,.06);
+  color: #c8a0ff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+}
+.miniBtn:hover { background: rgba(200,160,255,.12); }
+.miniBtn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+  .haritaGrid { grid-template-columns: 1fr; }
+  .badgeGrid { grid-template-columns: repeat(2, 1fr); }
+  .avatarGrid { grid-template-columns: repeat(3, 1fr); }
+  .identityCard { margin: 12px 10px 0; padding: 22px 18px 20px; }
+  .section { margin: 20px 10px 0; }
+  .avatar { width: 60px; height: 60px; font-size: 28px; }
+  .userName { font-size: 18px; }
+  .statValue { font-size: 18px; }
+  .tabBar { gap: 2px; }
+  .tab { font-size: 11px; padding: 8px 6px; }
+}

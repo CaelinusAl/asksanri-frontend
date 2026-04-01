@@ -167,6 +167,16 @@ export default function HomePage() {
         path: "/kod-egitmeni",
         img: "/assets/gates/kod-egitimi.jpg",
       },
+      {
+        key: "benim-alanim",
+        title: isTR ? "Benim Alanım" : "My Space",
+        desc: isTR
+          ? "Kişisel evin — rozetlerin, notların, kod haritanın ve frekansın"
+          : "Your personal home — badges, notes, code map, and frequency",
+        hint: isTR ? "Alanına Gir →" : "Enter Your Space →",
+        path: "/benim-alanim",
+        img: "/assets/gates/benim-alanim.jpg",
+      },
     ];
 
     const adminKey = import.meta.env.VITE_ADMIN_KEY;
