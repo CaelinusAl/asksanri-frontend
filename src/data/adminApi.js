@@ -46,5 +46,8 @@ export const fetchYankiAdminStats = () => adminFetch("/yanki/admin/stats");
 export const fetchAuditLog = () => adminFetch("/admin/security/audit-log");
 export const fetchSecuritySummary = () => adminFetch("/admin/security/summary");
 
+// ── Page Views / Visitors ──
+export const fetchVisitorStats = () => adminFetch("/analytics/stats");
+
 // ── System ──
 export const fetchHealth = () => fetch(`${API}/health`).then((r) => r.json());

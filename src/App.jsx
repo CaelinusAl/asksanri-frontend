@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import usePageView from "./hooks/usePageView";
 
 import HomePage from "./pages/HomePage";
 import SanriyaSorPage from "./pages/SanriyaSorPage";
@@ -49,6 +50,7 @@ import BenimAlanimPage from "./pages/BenimAlanimPage";
 import AuthCallback from "./components/AuthCallback";
 
 export default function App() {
+  usePageView();
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />

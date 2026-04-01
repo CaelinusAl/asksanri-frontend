@@ -4,7 +4,7 @@ import StatCard from "../../components/admin/StatCard";
 import styles from "./AdminDashboardPage.module.css";
 import adminStyles from "../../components/admin/AdminStyles.module.css";
 import { useAdmin } from "../../contexts/AdminContext";
-import { fetchDashboard, fetchMembership, fetchModerationStats } from "../../data/adminApi";
+import { fetchDashboard, fetchMembership, fetchModerationStats, fetchVisitorStats } from "../../data/adminApi";
 import {
   getCtaEngineState,
   setCtaEngineState,
@@ -545,6 +545,8 @@ export default function AdminDashboardPage() {
     });
   }, [navigate]);
 
+  const [visitors, setVisitors] = useState(null);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -552,8 +554,11 @@ export default function AdminDashboardPage() {
       const dashResult = await fetchDashboard().catch(() => null);
       const memResult = await fetchMembership().catch(() => null);
       const modResult = await fetchModerationStats().catch(() => null);
+      const visitorResult = await fetchVisitorStats().catch(() => null);
 
       if (cancelled) return;
+
+      if (visitorResult != null) setVisitors(visitorResult);
 
       if (dashResult != null) {
         setDashboard(normalizeDashboard(dashResult));
@@ -615,6 +620,65 @@ export default function AdminDashboardPage() {
           />
         </div>
       </section>
+
+      {visitors && (
+        <section style={{ marginBottom: 28 }}>
+          <h2 className={adminStyles.sectionTitle}>Site Trafiği (Gerçek Zamanlı)</h2>
+          <div className={adminStyles.grid5}>
+            <StatCard
+              label="Bugün Görüntülenme"
+              value={visitors.views?.today ?? 0}
+              icon="👁"
+              accent="#7cf7d8"
+            />
+            <StatCard
+              label="Bugün Tekil Ziyaretçi"
+              value={visitors.unique_visitors?.today ?? 0}
+              icon="◎"
+              accent="#50c878"
+            />
+            <StatCard
+              label="Haftalık Ziyaretçi"
+              value={visitors.unique_visitors?.week ?? 0}
+              icon="◈"
+              accent="#6cc8ff"
+            />
+            <StatCard
+              label="Aylık Ziyaretçi"
+              value={visitors.unique_visitors?.month ?? 0}
+              icon="◇"
+              accent="#c8a0ff"
+            />
+            <StatCard
+              label="Toplam Sayfa Görüntülenme"
+              value={visitors.views?.total ?? 0}
+              icon="∞"
+            />
+          </div>
+          {visitors.top_pages?.length > 0 && (
+            <div style={{
+              marginTop: 16, padding: "16px 20px",
+              background: "rgba(200,160,255,0.04)",
+              border: "1px solid rgba(200,160,255,0.10)",
+              borderRadius: 14,
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#c8a0ff", marginBottom: 10, letterSpacing: ".06em" }}>
+                EN ÇOK ZİYARET EDİLEN SAYFALAR (7 GÜN)
+              </div>
+              {visitors.top_pages.slice(0, 8).map((p, i) => (
+                <div key={i} style={{
+                  display: "flex", justifyContent: "space-between", alignItems: "center",
+                  padding: "7px 0", borderBottom: i < 7 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                  fontSize: 13, color: "rgba(255,255,255,0.7)",
+                }}>
+                  <span style={{ fontFamily: "monospace", opacity: 0.9 }}>{p.path}</span>
+                  <span style={{ fontWeight: 600, color: "#c8a0ff" }}>{p.views}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
 
       <h2 className={adminStyles.sectionTitle}>En Çok</h2>
       <div className={adminStyles.grid3}>
