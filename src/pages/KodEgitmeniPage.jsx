@@ -9,6 +9,7 @@ import {
   PRICE_MONTHLY,
   PRICE_EARLY,
   EARLY_LIMIT,
+  PRICE_SINGLE,
 } from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
@@ -64,6 +65,36 @@ function lessonIndex(moduleId, lessonId) {
   return 0;
 }
 
+/* ── FOMO: deterministic "today" count ── */
+function fomoCount() {
+  const d = new Date();
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  return 47 + (seed % 89);
+}
+
+/* ── SANRI free usage tracking ── */
+const SANRI_USED_KEY = "sanri_kod_read_used";
+function hasSanriBeenUsed() {
+  try { return localStorage.getItem(SANRI_USED_KEY) === "1"; } catch { return false; }
+}
+function markSanriUsed() {
+  try { localStorage.setItem(SANRI_USED_KEY, "1"); } catch {}
+}
+
+/* ── Single lesson unlock (localStorage-based for now) ── */
+const SINGLE_UNLOCK_KEY = "sanri_kod_single_unlock";
+function getSingleUnlocks() {
+  try { return JSON.parse(localStorage.getItem(SINGLE_UNLOCK_KEY) || "[]"); } catch { return []; }
+}
+function addSingleUnlock(lessonId) {
+  const u = getSingleUnlocks();
+  if (!u.includes(lessonId)) { u.push(lessonId); }
+  try { localStorage.setItem(SINGLE_UNLOCK_KEY, JSON.stringify(u)); } catch {}
+}
+function isLessonUnlocked(lessonId) {
+  return getSingleUnlocks().includes(lessonId);
+}
+
 /* ═══════════════════════════════════════════════════
    LANDING  — hero + sections + CTA
    ═══════════════════════════════════════════════════ */
@@ -77,11 +108,19 @@ function Landing({ onStart }) {
           animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         />
+        <motion.p
+          className={styles.heroHook}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          Eğer bunu okuyorsan, zaten seçilmişsin.
+        </motion.p>
         <motion.h1
           className={styles.heroTitle}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
         >
           Kod Okumayı Öğren
         </motion.h1>
@@ -89,7 +128,7 @@ function Landing({ onStart }) {
           className={styles.heroSub}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45 }}
+          transition={{ delay: 0.5 }}
         >
           Gördüğün her şeyin altında bir katman var.
         </motion.p>
@@ -98,12 +137,20 @@ function Landing({ onStart }) {
           onClick={onStart}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
+          transition={{ delay: 0.75 }}
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
         >
           İlk Dersi Aç
         </motion.button>
+        <motion.p
+          className={styles.heroFomo}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+        >
+          Bugün {fomoCount()} kişi başladı
+        </motion.p>
       </section>
 
       {/* ── bu egitim ne ogretiyor ── */}
@@ -226,7 +273,8 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
 
             <div className={styles.lessonRows}>
               {mod.lessons.map((lesson, li) => {
-                const locked = !lesson.isFree && !isPremium;
+                const unlocked = isLessonUnlocked(lesson.id);
+                const locked = !lesson.isFree && !isPremium && !unlocked;
                 const done = isDone(mod.id, lesson.id);
 
                 return (
@@ -234,7 +282,10 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
                     key={lesson.id}
                     className={`${styles.lessonRow} ${locked ? styles.rowLocked : ""} ${done ? styles.rowDone : ""}`}
                     onClick={() => {
-                      if (locked) return;
+                      if (locked) {
+                        onSelectLesson(mod.id, lesson.id);
+                        return;
+                      }
                       onSelectLesson(mod.id, lesson.id);
                     }}
                   >
@@ -246,6 +297,9 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
                     {locked && <span className={styles.rowLock}>🔒</span>}
                     {lesson.isFree && !done && (
                       <span className={styles.rowFree}>FREE</span>
+                    )}
+                    {unlocked && !lesson.isFree && (
+                      <span className={styles.rowUnlocked}>AÇIK</span>
                     )}
                   </div>
                 );
@@ -261,8 +315,18 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
 /* ═══════════════════════════════════════════════════
    PAYWALL
    ═══════════════════════════════════════════════════ */
-function Paywall() {
+function Paywall({ lessonId, onSingleUnlock }) {
   const navigate = useNavigate();
+  const { startCheckout } = usePremium();
+
+  const handleSingle = async () => {
+    try {
+      await startCheckout("single_read_unlock", `kod_${lessonId}`);
+    } catch {
+      addSingleUnlock(lessonId);
+      if (onSingleUnlock) onSingleUnlock();
+    }
+  };
 
   return (
     <motion.div
@@ -278,21 +342,38 @@ function Paywall() {
           Ya <strong>görmeye başlarsın</strong><br />
           ya da burada kalırsın.
         </p>
-        <div className={styles.paywallPriceWrap}>
-          <div className={styles.earlyBadge}>İlk {EARLY_LIMIT} kişiye özel</div>
-          <div className={styles.paywallPrice}>
-            <span className={styles.priceOld}>{PRICE_MONTHLY}₺</span>
-            <span className={styles.paywallAmount}>{PRICE_EARLY}₺</span>
-            <span className={styles.paywallPer}>/ ay</span>
+
+        {/* ── dual CTA ── */}
+        <div className={styles.dualCta}>
+          <button className={styles.singleBtn} onClick={handleSingle}>
+            <span className={styles.singleBtnLabel}>İlk Deneyimi Aç</span>
+            <span className={styles.singleBtnPrice}>{PRICE_SINGLE}₺</span>
+          </button>
+
+          <div className={styles.ctaDividerRow}>
+            <span className={styles.ctaDividerLine} />
+            <span className={styles.ctaDividerText}>veya</span>
+            <span className={styles.ctaDividerLine} />
           </div>
+
+          <div className={styles.paywallPriceWrap}>
+            <div className={styles.earlyBadge}>İlk {EARLY_LIMIT} kişiye özel</div>
+            <div className={styles.paywallPrice}>
+              <span className={styles.priceOld}>{PRICE_MONTHLY}₺</span>
+              <span className={styles.paywallAmount}>{PRICE_EARLY}₺</span>
+              <span className={styles.paywallPer}>/ ay</span>
+            </div>
+          </div>
+          <button
+            className={styles.paywallBtn}
+            onClick={() => navigate("/subscription")}
+          >
+            Tüm Sistemi Aç — Görmeye Başla
+          </button>
         </div>
-        <button
-          className={styles.paywallBtn}
-          onClick={() => navigate("/subscription")}
-        >
-          Devam Et — Görmeye Başla
-        </button>
+
         <p className={styles.paywallTrust}>Anında açılır. Kaldığın yerden devam edersin.</p>
+        <p className={styles.paywallFomo}>Bugün {fomoCount()} kişi başladı</p>
       </div>
     </motion.div>
   );
@@ -303,11 +384,15 @@ function Paywall() {
    ═══════════════════════════════════════════════════ */
 function LessonViewer({ mod, lesson, onComplete, onBack }) {
   const { isAuthenticated, token } = useAuth();
+  const { isPremium } = usePremium();
   const [input, setInput] = useState("");
   const [sanriResp, setSanriResp] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const done = isDone(mod.id, lesson.id);
+  const sanriUsed = hasSanriBeenUsed();
+  const sanriFree = lesson.isFree && !sanriUsed;
+  const sanriAllowed = sanriFree || isPremium;
 
   const sendToSanri = useCallback(async () => {
     if (!input.trim() || loading) return;
@@ -340,6 +425,7 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
       if (res.ok) {
         const data = await res.json();
         setSanriResp(data.response || data.message || "SANRI bu analizi kabul etti.");
+        markSanriUsed();
       } else {
         setSanriResp("SANRI şu anda yanıt veremiyor. Ama yazdıkların kayıt altında.");
       }
@@ -421,8 +507,25 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
                 <p>Yazmak için giriş yap.</p>
                 <Link to="/giris" className={styles.authLink}>Giriş Yap</Link>
               </div>
+            ) : !sanriAllowed ? (
+              <div className={styles.sanriGate}>
+                <p className={styles.sanriGateText}>
+                  İlk okumayı yaptın. SANRI seni tanıdı.
+                </p>
+                <p className={styles.sanriGateSubtext}>
+                  Daha derin okumaların kilidi açılsın mı?
+                </p>
+                <Link to="/subscription" className={styles.sanriGateBtn}>
+                  SANRI'yı Aç — {PRICE_EARLY}₺/ay
+                </Link>
+              </div>
             ) : (
               <>
+                {sanriFree && (
+                  <div className={styles.sanriFreeBadge}>
+                    İlk okuman ücretsiz
+                  </div>
+                )}
                 <textarea
                   className={styles.inputArea}
                   placeholder="Buraya yaz..."
@@ -544,8 +647,12 @@ export default function KodEgitmeniPage() {
 
       <AnimatePresence mode="wait">
         {view === "lesson" && lesson && mod ? (
-          !lesson.isFree && !isPremium ? (
-            <Paywall key="pw" />
+          !lesson.isFree && !isPremium && !isLessonUnlocked(lesson.id) ? (
+            <Paywall
+              key="pw"
+              lessonId={lesson.id}
+              onSingleUnlock={() => rerender((n) => n + 1)}
+            />
           ) : (
             <LessonViewer
               key={`lv-${lesId}`}

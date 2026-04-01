@@ -458,3 +458,4 @@ export function getAllLessonsFlat() {
 export const PRICE_MONTHLY = 99;
 export const PRICE_EARLY = 49;
 export const EARLY_LIMIT = 100;
+export const PRICE_SINGLE = 9.90;
