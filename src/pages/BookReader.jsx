@@ -7,6 +7,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { unlockAudio } from "../utils/sfx";
+import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
 
 /* ── Page Renderers by Type ── */
 
@@ -243,6 +244,13 @@ function BookPaywall({ meta, isTR }) {
         </p>
 
         <div className={styles.paywallActions}>
+          <button
+            className={styles.paywallShopier}
+            onClick={() => redirectToShopier("library_book", `book_${meta.id}`, location.pathname)}
+          >
+            {isTR ? "Satın Al ve Aç" : "Purchase & Unlock"}
+          </button>
+
           {hasFreeUnlock && (
             <button
               className={styles.paywallFree}
@@ -255,17 +263,6 @@ function BookPaywall({ meta, isTR }) {
             </button>
           )}
 
-          <button
-            className={styles.paywallPrimary}
-            onClick={handleSingleUnlock}
-            disabled={busy}
-          >
-            {busy
-              ? (isTR ? "Yönlendiriliyorsunuz..." : "Redirecting...")
-              : isTR
-                ? `Devam Et — ${priceLabel}`
-                : `Continue — ${priceLabel}`}
-          </button>
           <Link to="/subscription" className={styles.paywallSecondary}>
             {isTR ? "Tüm Kitaplara Aç" : "Unlock All Books"}
           </Link>
@@ -291,7 +288,7 @@ export default function BookReader() {
   const isTR = language === "tr";
 
   const meta = booksMetadata.find((b) => b.id === bookId);
-  const isBookLocked = meta?.isPremium && !isPremium && !isContentUnlocked(bookId);
+  const isBookLocked = meta?.isPremium && !isPremium && !isContentUnlocked(bookId) && !isShopierUnlocked(`book_${bookId}`);
   const freeLimit = meta?.freePreviewPages || 5;
 
   const [pages, setPages] = useState([]);

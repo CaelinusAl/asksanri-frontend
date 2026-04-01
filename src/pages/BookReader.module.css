@@ -610,6 +610,25 @@
   transform: none;
 }
 
+.paywallShopier {
+  width: 100%;
+  max-width: 320px;
+  padding: 16px 32px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #c8a0ff 0%, #7cf7d8 100%);
+  color: #07080d;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+.paywallShopier:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200, 160, 255, 0.3);
+}
+
 .paywallPrimary {
   width: 100%;
   max-width: 320px;

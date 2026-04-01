@@ -1,11 +1,12 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { PremiumGate } from "../components/premium/PremiumGate";
 import { getPostBySlug, getCommentsByPostId, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
+import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
 import styles from "./OkumaDetayPage.module.css";
 
 export default function OkumaDetayPage() {
@@ -14,9 +15,11 @@ export default function OkumaDetayPage() {
   const { isPremium, isContentUnlocked, showMicroPayModal } = usePremium();
   const isTR = language === "tr";
 
+  const location = useLocation();
   const post = useMemo(() => getPostBySlug(slug), [slug]);
   const singleUnlocked = post ? isContentUnlocked(post.id) : false;
-  const isLocked = post?.isPremium && !isPremium && !singleUnlocked;
+  const shopierOk = post ? isShopierUnlocked(`okuma_${post.id}`) : false;
+  const isLocked = post?.isPremium && !isPremium && !singleUnlocked && !shopierOk;
 
   const [comments, setComments] = useState(() =>
     post ? getCommentsByPostId(post.id) : []
@@ -158,10 +161,12 @@ export default function OkumaDetayPage() {
 
         <PremiumGate
           locked={isLocked}
-          title={isTR ? "Bu okuma premium" : "This reading is premium"}
+          contentId={post ? `okuma_${post.id}` : undefined}
+          shopierProduct="single_okuma"
+          title={isTR ? "Bu katman açıldığında hikaye değişir" : "When this layer opens, the story changes"}
           description={isTR
-            ? "Tam içeriğe, kod çözümlemeye ve Sanrı yansımasına erişmek için Premium'a geç."
-            : "Upgrade to Premium to access the full content, code decryption, and Sanri reflection."}
+            ? "Tam içeriğe, kod çözümlemeye ve Sanrı yansımasına erişmek için satın al."
+            : "Purchase to access the full content, code decryption, and Sanri reflection."}
         >
           {!isLocked && <div className={styles.content}>{post.fullContent}</div>}
 
@@ -209,9 +214,9 @@ export default function OkumaDetayPage() {
             <div className={styles.autoCtaActions}>
               <button
                 className={styles.microPayBtn}
-                onClick={() => showMicroPayModal(post.id, "single_okuma")}
+                onClick={() => redirectToShopier("single_okuma", `okuma_${post.id}`, location.pathname)}
               >
-                {isTR ? "Sadece Bu Okumayı Aç — ₺9.90" : "Unlock This Reading — ₺9.90"}
+                {isTR ? "Satın Al ve Aç — ₺9.90" : "Purchase & Unlock — ₺9.90"}
               </button>
               <Link
                 to="/subscription"

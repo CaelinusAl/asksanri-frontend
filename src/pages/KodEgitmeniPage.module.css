@@ -617,6 +617,26 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+.shopierBtn {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #c8a0ff, #7cf7d8);
+  color: #07080d;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
+.shopierBtn:hover {
+  box-shadow: 0 0 30px rgba(200, 160, 255, 0.35);
+  transform: translateY(-1px);
+}
+
 .paywallBtn {
   display: block;
   width: 100%;

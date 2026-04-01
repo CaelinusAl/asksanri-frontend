@@ -6,6 +6,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { unlockAudio } from "../utils/sfx";
 import { booksMetadata } from "../data/booksContent";
+import { isShopierUnlocked } from "../data/shopierConfig";
 
 export default function LibraryPage() {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ export default function LibraryPage() {
                 alt={book.title}
                 loading="lazy"
               />
-              {book.isPremium && !isPremium && !isContentUnlocked(book.id) && (
+              {book.isPremium && !isPremium && !isContentUnlocked(book.id) && !isShopierUnlocked(`book_${book.id}`) && (
                 <span className={styles.lockBadge}>
                   {book.price > 0 ? `₺${book.price}` : "🔒"}
                 </span>

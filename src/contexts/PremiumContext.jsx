@@ -3,6 +3,7 @@
  import { useAuth } from "./AuthContext";
  import { getAllPricingOptions } from "../data/microPayment";
  import { fetchMyAccess, createIyzicoCheckout, createCheckoutSession, useFreeUnlock as apiFreeUnlock } from "../data/billingApi";
+ import { hasAnyShopierPremium, isShopierUnlocked } from "../data/shopierConfig";
 
 export const FEATURES = {
   SANRI_UNLIMITED: "sanri_unlimited",
@@ -44,7 +45,7 @@ export function PremiumProvider({ children }) {
     ? true
     : devOverride !== null
       ? devOverride === "true"
-      : Boolean(accessData?.is_premium ?? authPremium);
+      : Boolean(accessData?.is_premium ?? authPremium ?? hasAnyShopierPremium());
 
   const currentPlan = accessData?.plan || (isPremium ? "premium" : "free");
   const hasFreeUnlock = Boolean(accessData?.has_free_unlock);
@@ -95,7 +96,8 @@ export function PremiumProvider({ children }) {
   const isContentUnlocked = useCallback((contentId) => {
     if (isPremium) return true;
     const ids = accessData?.unlocked_content_ids || [];
-    return ids.includes(String(contentId));
+    if (ids.includes(String(contentId))) return true;
+    return isShopierUnlocked(String(contentId));
   }, [isPremium, accessData]);
 
   const showMicroPayModal = useCallback((contentId, contentType = "single_okuma") => {

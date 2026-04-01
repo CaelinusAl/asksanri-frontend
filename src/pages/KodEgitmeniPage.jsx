@@ -13,6 +13,7 @@ import {
 } from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
+import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
 
 
 const API_URL =
@@ -319,6 +320,10 @@ function Paywall({ lessonId, onSingleUnlock }) {
   const navigate = useNavigate();
   const { startCheckout } = usePremium();
 
+  const handleShopier = () => {
+    redirectToShopier("kod_egitmeni", `kod_${lessonId}`, "/kod-egitmeni");
+  };
+
   const handleSingle = async () => {
     try {
       await startCheckout("single_read_unlock", `kod_${lessonId}`);
@@ -336,18 +341,17 @@ function Paywall({ lessonId, onSingleUnlock }) {
     >
       <div className={styles.paywallGlow} />
       <div className={styles.paywallContent}>
-        <p className={styles.paywallLine1}>Buraya kadar geldin.</p>
-        <p className={styles.paywallLine2}>Ama artık bilgi yok.</p>
+        <p className={styles.paywallLine1}>Bu katman açıldığında hikaye değişir.</p>
+        <p className={styles.paywallLine2}>Buraya kadar geldin — ama asıl şimdi başlıyor.</p>
         <p className={styles.paywallLine3}>
           Ya <strong>görmeye başlarsın</strong><br />
           ya da burada kalırsın.
         </p>
 
-        {/* ── dual CTA ── */}
+        {/* ── Shopier CTA ── */}
         <div className={styles.dualCta}>
-          <button className={styles.singleBtn} onClick={handleSingle}>
-            <span className={styles.singleBtnLabel}>İlk Deneyimi Aç</span>
-            <span className={styles.singleBtnPrice}>{PRICE_SINGLE}₺</span>
+          <button className={styles.shopierBtn} onClick={handleShopier}>
+            Satın Al ve Aç
           </button>
 
           <div className={styles.ctaDividerRow}>
@@ -650,7 +654,7 @@ export default function KodEgitmeniPage() {
 
       <AnimatePresence mode="wait">
         {view === "lesson" && lesson && mod ? (
-          !lesson.isFree && !isPremium && !isLessonUnlocked(lesson.id) ? (
+          !lesson.isFree && !isPremium && !isLessonUnlocked(lesson.id) && !isShopierUnlocked(`kod_${lesson.id}`) ? (
             <Paywall
               key="pw"
               lessonId={lesson.id}
