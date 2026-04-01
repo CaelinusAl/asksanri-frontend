@@ -36,6 +36,18 @@ export const SHOPIER_PRODUCTS = {
     price: "470",
     url: "https://shopier.com/asksanri/45786667",
   },
+  iliski_acilimi: {
+    id: "iliski_acilimi",
+    label: "İlişki Açılımı",
+    price: "369",
+    url: "https://shopier.com/asksanri/45786763",
+  },
+  para_akisi: {
+    id: "para_akisi",
+    label: "Para Akışı Açılımı",
+    price: "369",
+    url: "https://shopier.com/asksanri/45786763",
+  },
 };
 
 // ── Access key management ──

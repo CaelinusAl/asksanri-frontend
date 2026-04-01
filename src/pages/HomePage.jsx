@@ -168,6 +168,16 @@ export default function HomePage() {
         img: "/assets/gates/kod-egitimi.jpg",
       },
       {
+        key: "rol-okuma",
+        title: isTR ? "Matrix Rol Okuma" : "Matrix Role Reading",
+        desc: isTR
+          ? "Adın ve doğum tarihin bir kod taşır — Sanrı bunu okur"
+          : "Your name and birth date carry a code — Sanri reads it",
+        hint: isTR ? "Rolünü Öğren →" : "Discover Your Role →",
+        path: "/rol-okuma",
+        img: "/assets/gates/bilinc.jpg",
+      },
+      {
         key: "benim-alanim",
         title: isTR ? "Benim Alanım" : "My Space",
         desc: isTR

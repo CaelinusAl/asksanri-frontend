@@ -48,6 +48,7 @@ import GizlilikPage from "./pages/GizlilikPage";
 import { HakkimizdaPage, GizlilikPolitikasiPage, MesafeliSatisPage, IadeKosullariPage } from "./pages/LegalPages";
 import KodEgitmeniPage from "./pages/KodEgitmeniPage";
 import BenimAlanimPage from "./pages/BenimAlanimPage";
+import RolOkumaPage from "./pages/RolOkumaPage";
 import AuthCallback from "./components/AuthCallback";
 
 export default function App() {
@@ -88,6 +89,7 @@ export default function App() {
       <Route path="/1999" element={<Navigate to="/okuma-alani/1999-kapanmayan-frekans" replace />} />
 
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
+      <Route path="/rol-okuma" element={<RolOkumaPage />} />
       <Route path="/benim-alanim" element={<BenimAlanimPage />} />
 
       <Route path="/payment/success" element={<PaymentSuccessPage />} />
