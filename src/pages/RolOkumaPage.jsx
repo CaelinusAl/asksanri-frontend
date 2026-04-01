@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { redirectToShopier } from "../data/shopierConfig";
+import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
 import styles from "./RolOkumaPage.module.css";
 
 const API =
@@ -9,11 +9,7 @@ const API =
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
-const PHASES = {
-  FORM: "form",
-  LOADING: "loading",
-  RESULT: "result",
-};
+const PHASES = { FORM: "form", LOADING: "loading", RESULT: "result" };
 
 const LOADING_LINES = [
   "Sanrı seni okuyor...",
@@ -22,6 +18,8 @@ const LOADING_LINES = [
   "Katmanlar açılıyor...",
   "Rolün belirleniyor...",
 ];
+
+const FREE_SECTION_COUNT = 2;
 
 export default function RolOkumaPage() {
   const navigate = useNavigate();
@@ -33,6 +31,8 @@ export default function RolOkumaPage() {
   const [error, setError] = useState("");
   const [loadingLine, setLoadingLine] = useState(0);
   const intervalRef = useRef(null);
+
+  const unlocked = isShopierUnlocked("role_unlock");
 
   const startLoading = useCallback(() => {
     setLoadingLine(0);
@@ -84,7 +84,6 @@ export default function RolOkumaPage() {
       <div className={styles.bgOrb} />
       <div className={styles.bgOrb2} />
 
-      {/* ── topbar ── */}
       <div className={styles.topbar}>
         <button className={styles.backBtn} onClick={() => navigate("/")}>
           ← Kapılar
@@ -93,6 +92,7 @@ export default function RolOkumaPage() {
       </div>
 
       <AnimatePresence mode="wait">
+        {/* ═══ FORM ═══ */}
         {phase === PHASES.FORM && (
           <motion.div
             key="form"
@@ -153,12 +153,13 @@ export default function RolOkumaPage() {
                 className={styles.submitBtn}
                 disabled={!name.trim() || !birthDate}
               >
-                Rolümü Oku
+                Rolünü Gör
               </button>
             </form>
           </motion.div>
         )}
 
+        {/* ═══ LOADING ═══ */}
         {phase === PHASES.LOADING && (
           <motion.div
             key="loading"
@@ -186,6 +187,7 @@ export default function RolOkumaPage() {
           </motion.div>
         )}
 
+        {/* ═══ RESULT ═══ */}
         {phase === PHASES.RESULT && result && (
           <motion.div
             key="result"
@@ -202,8 +204,9 @@ export default function RolOkumaPage() {
               )}
             </div>
 
+            {/* ── Free sections ── */}
             <div className={styles.sections}>
-              {result.sections.map((sec, i) => (
+              {result.sections.slice(0, FREE_SECTION_COUNT).map((sec, i) => (
                 <motion.div
                   key={sec.title}
                   className={styles.section}
@@ -218,37 +221,114 @@ export default function RolOkumaPage() {
               ))}
             </div>
 
-            {/* ── teaser ── */}
-            {result.data.teaser && (
-              <div className={styles.teaserCard}>
-                <p className={styles.teaserText}>{result.data.teaser}</p>
-              </div>
+            {/* ── Locked sections OR full sections ── */}
+            {unlocked ? (
+              <>
+                <div className={styles.sections}>
+                  {result.sections.slice(FREE_SECTION_COUNT).map((sec, i) => (
+                    <motion.div
+                      key={sec.title}
+                      className={styles.section}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 * (i + FREE_SECTION_COUNT), duration: 0.4 }}
+                    >
+                      <div className={styles.sectionIcon}>{sec.icon}</div>
+                      <h3 className={styles.sectionTitle}>{sec.title}</h3>
+                      <p className={styles.sectionText}>{sec.text}</p>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {result.data.teaser && (
+                  <div className={styles.teaserCard}>
+                    <p className={styles.teaserText}>{result.data.teaser}</p>
+                  </div>
+                )}
+
+                {/* ── Upsell CTA ── */}
+                <div className={styles.ctaSection}>
+                  <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
+                  <div className={styles.ctaBtns}>
+                    <button
+                      className={styles.ctaPrimary}
+                      onClick={() =>
+                        redirectToShopier("iliski_acilimi", "iliski_acilimi", "/rol-okuma")
+                      }
+                    >
+                      İlişki Açılımını Gör — 369₺
+                    </button>
+                    <button
+                      className={styles.ctaPrimary}
+                      onClick={() =>
+                        redirectToShopier("para_akisi", "para_akisi", "/rol-okuma")
+                      }
+                    >
+                      Para Akışını Gör — 369₺
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              /* ── Locked: blur preview + purchase CTA ── */
+              <>
+                <div className={styles.lockZone}>
+                  <div className={styles.lockZoneBlur}>
+                    <div className={styles.sections}>
+                      {result.sections.slice(FREE_SECTION_COUNT, FREE_SECTION_COUNT + 2).map((sec) => (
+                        <div key={sec.title} className={styles.section}>
+                          <div className={styles.sectionIcon}>{sec.icon}</div>
+                          <h3 className={styles.sectionTitle}>{sec.title}</h3>
+                          <p className={styles.sectionText}>{sec.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className={styles.lockZoneGradient} />
+                  <div className={styles.lockZoneOverlay}>
+                    <div className={styles.lockZoneIcon}>🔒</div>
+                    <p className={styles.lockZoneLine1}>
+                      Buraya kadar gördün.
+                    </p>
+                    <p className={styles.lockZoneLine2}>
+                      Ama asıl katman burada başlar.
+                    </p>
+                    <button
+                      className={styles.lockZoneBtn}
+                      onClick={() =>
+                        redirectToShopier("rol_okuma", "role_unlock", "/rol-okuma")
+                      }
+                    >
+                      Rol Okumayı Aç — 369₺
+                    </button>
+                  </div>
+                </div>
+
+                {/* ── Upsell CTA (teaser) ── */}
+                <div className={styles.ctaSection}>
+                  <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
+                  <div className={styles.ctaBtns}>
+                    <button
+                      className={styles.ctaPrimary}
+                      onClick={() =>
+                        redirectToShopier("iliski_acilimi", "iliski_acilimi", "/rol-okuma")
+                      }
+                    >
+                      İlişki Açılımını Gör — 369₺
+                    </button>
+                    <button
+                      className={styles.ctaPrimary}
+                      onClick={() =>
+                        redirectToShopier("para_akisi", "para_akisi", "/rol-okuma")
+                      }
+                    >
+                      Para Akışını Gör — 369₺
+                    </button>
+                  </div>
+                </div>
+              </>
             )}
 
-            {/* ── CTA ── */}
-            <div className={styles.ctaSection}>
-              <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
-              <div className={styles.ctaBtns}>
-                <button
-                  className={styles.ctaPrimary}
-                  onClick={() =>
-                    redirectToShopier("iliski_acilimi", "iliski_acilimi", "/rol-okuma")
-                  }
-                >
-                  İlişki Açılımını Gör — 369₺
-                </button>
-                <button
-                  className={styles.ctaPrimary}
-                  onClick={() =>
-                    redirectToShopier("para_akisi", "para_akisi", "/rol-okuma")
-                  }
-                >
-                  Para Akışını Gör — 369₺
-                </button>
-              </div>
-            </div>
-
-            {/* ── again ── */}
             <button
               className={styles.againBtn}
               onClick={() => {

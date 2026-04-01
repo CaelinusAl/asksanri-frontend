@@ -36,6 +36,12 @@ export const SHOPIER_PRODUCTS = {
     price: "470",
     url: "https://shopier.com/asksanri/45786667",
   },
+  rol_okuma: {
+    id: "rol_okuma",
+    label: "Matrix Rol Okuma — Tam Analiz",
+    price: "369",
+    url: "https://shopier.com/asksanri/45787285",
+  },
   iliski_acilimi: {
     id: "iliski_acilimi",
     label: "İlişki Açılımı",

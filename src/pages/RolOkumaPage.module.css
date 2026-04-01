@@ -283,6 +283,89 @@
   margin: 0;
 }
 
+/* ── Lock Zone ── */
+.lockZone {
+  position: relative;
+  margin-bottom: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.lockZoneBlur {
+  filter: blur(7px);
+  pointer-events: none;
+  user-select: none;
+  max-height: 280px;
+  overflow: hidden;
+}
+.lockZoneGradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(7, 8, 13, 0.5) 25%,
+    rgba(7, 8, 13, 0.92) 65%
+  );
+  pointer-events: none;
+}
+.lockZoneOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 40px;
+  z-index: 2;
+}
+.lockZoneIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.18), rgba(200, 160, 255, 0.06));
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 18px;
+  box-shadow: 0 0 40px rgba(200, 160, 255, 0.12);
+}
+.lockZoneLine1 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 6px;
+  text-align: center;
+}
+.lockZoneLine2 {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.55);
+  margin: 0 0 24px;
+  text-align: center;
+  font-style: italic;
+}
+.lockZoneBtn {
+  padding: 16px 40px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #c8a0ff, #7cf7d8);
+  color: #07080d;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+}
+.lockZoneBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(200, 160, 255, 0.35);
+}
+
 /* ── Teaser Card ── */
 .teaserCard {
   padding: 28px 24px;
