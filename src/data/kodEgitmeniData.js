@@ -24,28 +24,49 @@ export const KOD_MODULLERI = [
         isFree: true,
         duration: "5 dk",
         hasInput: true,
-        content: `İnsan sadece beden değil.
+        content: `Sen düşündüğünü sanıyorsun.
 
-Kalp + beyin + sinir sistemi
-= frekans algılayıcı
+Ama çoğu şey sana ait değil.
 
-Yani:
+O korku — sana ait değil.
+O kaygı — sana ait değil.
+O "ben yetmiyorum" hissi — sana ait değil.
 
-**İnsan = anten**
+Peki kime ait?
 
-Ama sen kendini
-sadece "beden" sanıyorsun.
+---
 
-Bu yüzden sinyal kaçıyor.
+**İnsan = Anten**
 
-Vücut bir alıcıdır. Göz frekans okur — buna "renk" dersin. Kulak frekans okur — buna "ses" dersin. Kalp frekans okur — buna "his" dersin.
+Sen üretmiyorsun.
+Sen **alıyorsun.**
+
+Kalp + beyin + sinir sistemi = frekans algılayıcı.
+
+Göz frekans okur — buna "renk" dersin.
+Kulak frekans okur — buna "ses" dersin.
+Kalp frekans okur — buna "his" dersin.
 
 Ama bunların hepsi aynı şey: **titreşim**.
 
-Sen bir anten olarak doğdun. Ama kimse sana tuning yapmayı öğretmedi.
+---
 
-Bu eğitim, o ayarı yapmak için var.`,
-        inputPrompt: "Sen en son neyi hissettin ama anlamlandıramadın?",
+Sen bir anten olarak doğdun.
+Ama kimse sana **tuning yapmayı** öğretmedi.
+
+Bu yüzden:
+— Başkasının korkusunu kendi korkun sanıyorsun.
+— Toplumun programını kendi düşüncen sanıyorsun.
+— Medyanın frekansını kendi enerjin sanıyorsun.
+
+**Soru şu:**
+Sen mi düşünüyorsun, yoksa sana mı düşündürülüyor?
+
+---
+
+Bu eğitim, anten ayarını yapmak için var.
+İlk adım: **neyin sana ait olduğunu ayırt etmek.**`,
+        inputPrompt: "Sen en son neyi hissettin ama anlamlandıramadın? O his gerçekten sana mı aitti?",
       },
       {
         id: "kelime-parcalama",
@@ -435,3 +456,5 @@ export function getAllLessonsFlat() {
 }
 
 export const PRICE_MONTHLY = 99;
+export const PRICE_EARLY = 49;
+export const EARLY_LIMIT = 100;

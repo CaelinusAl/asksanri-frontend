@@ -247,7 +247,7 @@
   text-align: center;
 }
 .priceCard {
-  max-width: 360px;
+  max-width: 380px;
   margin: 0 auto;
   padding: 40px 32px;
   background: rgba(200, 160, 255, 0.04);
@@ -268,6 +268,35 @@
   border-radius: 50%;
   pointer-events: none;
 }
+.earlyBadge {
+  display: inline-block;
+  padding: 5px 14px;
+  background: linear-gradient(135deg, rgba(237, 137, 54, 0.2), rgba(237, 137, 54, 0.08));
+  border: 1px solid rgba(237, 137, 54, 0.4);
+  border-radius: 20px;
+  color: #ED8936;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+  animation: earlyPulse 2s ease-in-out infinite;
+}
+@keyframes earlyPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(237, 137, 54, 0); }
+  50%      { box-shadow: 0 0 16px 2px rgba(237, 137, 54, 0.15); }
+}
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+}
+.priceOld {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.3);
+  text-decoration: line-through;
+}
 .priceAmount {
   font-size: 2.8rem;
   font-weight: 800;
@@ -277,7 +306,7 @@
 .pricePer {
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.4);
-  margin-left: 4px;
+  margin-left: 2px;
 }
 .priceNote {
   font-size: 0.85rem;
@@ -480,16 +509,28 @@
   margin: 0 0 16px;
 }
 .paywallLine2 {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 8px;
+  line-height: 1.7;
+}
+.paywallLine3 {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.65);
   margin: 0 0 28px;
   line-height: 1.7;
 }
-.paywallLine2 strong {
+.paywallLine3 strong {
   color: #c8a0ff;
 }
-.paywallPrice {
+.paywallPriceWrap {
   margin-bottom: 24px;
+}
+.paywallPrice {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
 }
 .paywallAmount {
   font-size: 2.4rem;
@@ -591,6 +632,20 @@
   font-weight: 600;
   letter-spacing: 0.12em;
   color: #c8a0ff;
+}
+.inputHook {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  text-align: center;
+}
+.inputHookSub {
+  font-size: 0.95rem;
+  color: #c8a0ff;
+  margin: 0 0 20px;
+  text-align: center;
+  font-weight: 500;
 }
 .inputPrompt {
   font-size: 1rem;
@@ -731,6 +786,34 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
+/* ── lesson progress ── */
+.lessonProgress {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.lessonProgressBar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.lessonProgressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c8a0ff, #a07aff);
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.lessonProgressText {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* ── viewer footer ── */
 .viewerFooter {
   margin-top: 36px;
@@ -786,8 +869,9 @@
   .step { padding: 6px 12px; }
   .stepLabel { font-size: 0.78rem; }
 
-  .priceCard { padding: 32px 24px; }
+  .priceCard { padding: 32px 20px; }
   .priceAmount { font-size: 2.2rem; }
+  .priceOld { font-size: 1.1rem; }
 
   .moduleListWrap { padding: 20px 16px 80px; }
   .moduleHeader { padding: 16px 16px; }

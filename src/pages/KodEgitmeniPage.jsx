@@ -7,6 +7,8 @@ import {
   getModuleById,
   getLessonById,
   PRICE_MONTHLY,
+  PRICE_EARLY,
+  EARLY_LIMIT,
 } from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
@@ -42,6 +44,24 @@ function modulePercent(moduleId) {
   if (!mod) return 0;
   const done = (loadProgress()[moduleId] || []).length;
   return Math.round((done / mod.lessons.length) * 100);
+}
+
+function globalStats() {
+  const total = KOD_MODULLERI.reduce((s, m) => s + m.lessons.length, 0);
+  const p = loadProgress();
+  const done = KOD_MODULLERI.reduce((s, m) => s + (p[m.id] || []).length, 0);
+  return { total, done, pct: total ? Math.round((done / total) * 100) : 0 };
+}
+
+function lessonIndex(moduleId, lessonId) {
+  let idx = 0;
+  for (const mod of KOD_MODULLERI) {
+    for (const les of mod.lessons) {
+      idx++;
+      if (mod.id === moduleId && les.id === lessonId) return idx;
+    }
+  }
+  return 0;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -143,8 +163,12 @@ function Landing({ onStart }) {
       {/* ── price + cta ── */}
       <section className={styles.priceSection}>
         <div className={styles.priceCard}>
-          <span className={styles.priceAmount}>{PRICE_MONTHLY}₺</span>
-          <span className={styles.pricePer}>/ ay</span>
+          <div className={styles.earlyBadge}>İlk {EARLY_LIMIT} kişiye özel</div>
+          <div className={styles.priceRow}>
+            <span className={styles.priceOld}>{PRICE_MONTHLY}₺</span>
+            <span className={styles.priceAmount}>{PRICE_EARLY}₺</span>
+            <span className={styles.pricePer}>/ ay</span>
+          </div>
           <p className={styles.priceNote}>İlk 2 ders ücretsiz. Hemen başla.</p>
           <button className={styles.priceCta} onClick={onStart}>
             Başla
@@ -166,19 +190,19 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
     0
   );
 
+  const globalPct = totalLessons ? Math.round((totalDone / totalLessons) * 100) : 0;
+
   return (
     <div className={styles.moduleListWrap}>
-      {totalDone > 0 && (
-        <div className={styles.globalProgress}>
-          <div className={styles.globalBar}>
-            <div
-              className={styles.globalFill}
-              style={{ width: `${Math.round((totalDone / totalLessons) * 100)}%` }}
-            />
-          </div>
-          <span>{totalDone}/{totalLessons} ders tamamlandı</span>
+      <div className={styles.globalProgress}>
+        <div className={styles.globalBar}>
+          <div
+            className={styles.globalFill}
+            style={{ width: `${globalPct}%` }}
+          />
         </div>
-      )}
+        <span>{totalDone > 0 ? `${totalDone}/${totalLessons} ders tamamlandı • %${globalPct}` : `${totalLessons} ders seni bekliyor`}</span>
+      </div>
 
       {KOD_MODULLERI.map((mod, mi) => {
         const pct = modulePercent(mod.id);
@@ -249,19 +273,24 @@ function Paywall() {
       <div className={styles.paywallGlow} />
       <div className={styles.paywallContent}>
         <p className={styles.paywallLine1}>Buraya kadar geldin.</p>
-        <p className={styles.paywallLine2}>
-          Ama artık izlemek değil…<br />
-          <strong>görmek</strong> başlıyor.
+        <p className={styles.paywallLine2}>Ama artık bilgi yok.</p>
+        <p className={styles.paywallLine3}>
+          Ya <strong>görmeye başlarsın</strong><br />
+          ya da burada kalırsın.
         </p>
-        <div className={styles.paywallPrice}>
-          <span className={styles.paywallAmount}>{PRICE_MONTHLY}₺</span>
-          <span className={styles.paywallPer}>/ ay</span>
+        <div className={styles.paywallPriceWrap}>
+          <div className={styles.earlyBadge}>İlk {EARLY_LIMIT} kişiye özel</div>
+          <div className={styles.paywallPrice}>
+            <span className={styles.priceOld}>{PRICE_MONTHLY}₺</span>
+            <span className={styles.paywallAmount}>{PRICE_EARLY}₺</span>
+            <span className={styles.paywallPer}>/ ay</span>
+          </div>
         </div>
         <button
           className={styles.paywallBtn}
           onClick={() => navigate("/subscription")}
         >
-          Devam Et
+          Devam Et — Görmeye Başla
         </button>
         <p className={styles.paywallTrust}>Anında açılır. Kaldığın yerden devam edersin.</p>
       </div>
@@ -346,6 +375,25 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
     >
       <button className={styles.backBtn} onClick={onBack}>← Derslere Dön</button>
 
+      {/* ── lesson progress bar ── */}
+      {(() => {
+        const g = globalStats();
+        const idx = lessonIndex(mod.id, lesson.id);
+        return (
+          <div className={styles.lessonProgress}>
+            <div className={styles.lessonProgressBar}>
+              <div
+                className={styles.lessonProgressFill}
+                style={{ width: `${Math.round((idx / g.total) * 100)}%` }}
+              />
+            </div>
+            <span className={styles.lessonProgressText}>
+              Ders {idx}/{g.total} {g.done > 0 && `• ${g.pct}% tamamlandı`}
+            </span>
+          </div>
+        );
+      })()}
+
       <div className={styles.viewerCard}>
         <span className={styles.viewerTag} style={{ borderColor: mod.color, color: mod.color }}>
           {mod.icon} {mod.title}
@@ -360,6 +408,9 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
             <div className={styles.inputDivider}>
               <span>✦ ŞİMDİ SEN ÇÖZ ✦</span>
             </div>
+
+            <p className={styles.inputHook}>Sen kendini yaz.</p>
+            <p className={styles.inputHookSub}>SANRI seni çözsün.</p>
 
             {lesson.inputPrompt && (
               <p className={styles.inputPrompt}>{lesson.inputPrompt}</p>
@@ -387,7 +438,7 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
                     onClick={sendToSanri}
                     disabled={!input.trim()}
                   >
-                    SANRI'ya Gönder
+                    SANRI Seni Okusun
                   </button>
                 ) : loading ? (
                   <div className={styles.loadingDots}>
