@@ -93,12 +93,14 @@ export default function YankiYeniPage() {
       setSubmitting(false);
       setSuccess(true);
     } catch (err) {
+      console.error("[YankiYeni] post error:", err, "status:", err?.status, "body:", err?.body);
       setSubmitting(false);
       if (err.status === 401) {
         navigate("/giris");
         return;
       }
-      setError(err.body?.detail || (isTR ? "Gönderilemedi. Tekrar dene." : "Failed to send. Try again."));
+      const detail = err.body?.detail || err.message || "";
+      setError(detail || (isTR ? "Gönderilemedi. Tekrar dene." : "Failed to send. Try again."));
     }
   };
 

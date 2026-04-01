@@ -17,10 +17,18 @@ function getAuthHeaders() {
 
 async function apiFetch(path, opts = {}) {
   const url = `${API_BASE}${path}`;
-  const res = await fetch(url, {
-    headers: { ...getAuthHeaders(), ...opts.headers },
-    ...opts,
-  });
+  let res;
+  try {
+    res = await fetch(url, {
+      headers: { ...getAuthHeaders(), ...opts.headers },
+      ...opts,
+    });
+  } catch (networkErr) {
+    const err = new Error(`Network error: ${networkErr.message} (url: ${url})`);
+    err.status = 0;
+    err.body = { detail: err.message };
+    throw err;
+  }
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
     const err = new Error(body.detail || `API ${res.status}`);
