@@ -1,350 +1,391 @@
-// src/pages/RituelAlaniPage.jsx — Ritüel Kubbesi (sihirli ritüel alanı)
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import styles from "./RituelAlaniPage.module.css";
-
-import StarTrail from "../components/StarTrail";
-import PremiumGateModal from "../components/PremiumGateModal";
-
-import { ritualFlows } from "../data/ritualFlows";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
+import {
+  rituals,
+  RITUAL_CATEGORIES,
+  getTodayRitual,
+  getFeaturedRituals,
+  getRecentRitualIds,
+  getRitualById,
+  getRitualsByCategory,
+  getFreeRituals,
+  getPremiumRituals,
+  suggestRitualsByIntention,
+  getChakrasForRitual,
+} from "../data/ritualData";
+import { chakraData } from "../data/chakraData";
 
-const FLOW_SYMBOLS = {
-  vitrin_rituel: "\u2726",
-  "60_saniye": "\u25CB",
-  default: "\u25C7",
+const DIFFICULTY_COLORS = {
+  easy: "#48BB78",
+  medium: "#ED8936",
+  deep: "#E53E3E",
 };
 
-const PHASES = {
-  tr: ["\u00c7a\u011fr\u0131", "Niyet", "Ak\u0131\u015f", "M\u00fch\u00fcr", "Derinlik", "Yol"],
-  en: ["Call", "Intention", "Flow", "Seal", "Depth", "Path"],
+const DIFFICULTY_LABELS = {
+  easy: { tr: "Kolay", en: "Easy" },
+  medium: { tr: "Orta", en: "Medium" },
+  deep: { tr: "Derin", en: "Deep" },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.45, ease: "easeOut" },
+  }),
 };
 
 export default function RituelAlaniPage() {
   const navigate = useNavigate();
-  const API_URL = import.meta.env.VITE_BACKEND_URL;
-
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
 
-  const [fatal, setFatal] = useState("");
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [intentionText, setIntentionText] = useState("");
 
-  useEffect(() => {
-    const onErr = (msg, src, line, col, err) => {
-      setFatal(String(err?.stack || err || msg));
-      return false;
-    };
-    const onRej = (e) => setFatal(String(e?.reason?.stack || e?.reason || e));
-    window.onerror = onErr;
-    window.onunhandledrejection = onRej;
-    return () => {
-      window.onerror = null;
-      window.onunhandledrejection = null;
-    };
-  }, []);
+  const todayRitual = useMemo(() => getTodayRitual(), []);
+  const recentIds = useMemo(() => getRecentRitualIds(), []);
+  const recentRituals = useMemo(
+    () => recentIds.map((id) => getRitualById(id)).filter(Boolean),
+    [recentIds]
+  );
 
-  const flows = useMemo(() => (Array.isArray(ritualFlows) ? ritualFlows : []), []);
-  const [activeKey, setActiveKey] = useState(() => flows?.[0]?.key || "vitrin_rituel");
-  const [stepIndex, setStepIndex] = useState(0);
+  const intentionSuggestions = useMemo(
+    () => suggestRitualsByIntention(intentionText),
+    [intentionText]
+  );
 
-  const [gateOpen, setGateOpen] = useState(false);
+  const filteredRituals = useMemo(() => {
+    if (intentionSuggestions.length > 0) return intentionSuggestions;
+    if (!activeCategory) return rituals;
+    return getRitualsByCategory(activeCategory);
+  }, [activeCategory, intentionSuggestions]);
 
-  const activeFlow = useMemo(() => {
-    const found = flows.find((f) => f?.key === activeKey);
-    return found || flows?.[0] || null;
-  }, [flows, activeKey]);
-
-  const steps = useMemo(() => {
-    const s = activeFlow?.steps?.[isTR ? "tr" : "en"];
-    return Array.isArray(s) ? s : [];
-  }, [activeFlow, isTR]);
-
-  const currentStep = steps[stepIndex] || null;
-
-  const progressPct = useMemo(() => {
-    if (!steps.length) return 0;
-    return Math.round(((stepIndex + 1) / steps.length) * 100);
-  }, [stepIndex, steps.length]);
-
-  const phaseName = useMemo(() => {
-    const arr = isTR ? PHASES.tr : PHASES.en;
-    return arr[Math.min(stepIndex, arr.length - 1)] || arr[0];
-  }, [stepIndex, isTR]);
-
-  const flowSymbol = FLOW_SYMBOLS[activeFlow?.key] || FLOW_SYMBOLS.default;
-
-  const rawAudio = activeFlow?.audio?.[isTR ? "tr" : "en"] || "";
-  const currentAudio = useMemo(() => {
-    if (rawAudio) return rawAudio;
-    if (activeFlow?.key === "vitrin_rituel") {
-      return isTR ? "/audio/rituals/vitrin_rituel_tr.mp3" : "/audio/rituals/vitrin_rituel_en.mp3";
-    }
-    return "";
-  }, [rawAudio, activeFlow?.key, isTR]);
-
-  const goBackToGates = useCallback(() => {
+  const goBack = useCallback(() => {
     unlockAudio();
     navigate("/", { state: { skipIntro: true } });
   }, [navigate]);
 
-  const openFlow = useCallback((flow) => {
-    unlockAudio();
-    setFatal("");
-    if (!flow?.key) return;
-
-    if (flow.premium) {
-      setGateOpen(true);
-      return;
-    }
-
-    setActiveKey(flow.key);
-    setStepIndex(0);
-  }, []);
-
-  const nextStep = useCallback(() => {
-    if (stepIndex < steps.length - 1) setStepIndex((i) => i + 1);
-  }, [stepIndex, steps.length]);
-
-  const prevStep = useCallback(() => {
-    if (stepIndex > 0) setStepIndex((i) => i - 1);
-  }, [stepIndex]);
-
-  const goToSanri = useCallback(() => {
-    const title = isTR ? activeFlow?.title?.tr : activeFlow?.title?.en;
-    const q = encodeURIComponent(String(title || ""));
-    navigate(`/sanriya-sor?prefill=${q}&domain=ritual_space&mode=mirror`, { state: { skipIntro: true } });
-  }, [navigate, activeFlow, isTR]);
-
-  const audioRef = useRef(null);
-  useEffect(() => {
-    if (!audioRef.current) return;
-    try {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-    } catch {}
-  }, [currentAudio]);
-
-  const handleRegister = useCallback(
-    async ({ email, password }) => {
-      if (!API_URL) return alert(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
-      const res = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) return alert(String(data?.detail || data?.error || "Register failed"));
-      setGateOpen(false);
-      alert(isTR ? "Kay\u0131t ba\u015far\u0131l\u0131. \u015eimdi giri\u015f yap." : "Registration successful. Now log in.");
+  const openRitual = useCallback(
+    (id) => {
+      unlockAudio();
+      navigate("/rituel-alani/" + id);
     },
-    [API_URL, isTR]
+    [navigate]
   );
 
-  const handleLogin = useCallback(
-    async ({ email, password }) => {
-      if (!API_URL) return alert(isTR ? "VITE_BACKEND_URL eksik." : "Missing VITE_BACKEND_URL.");
-      const res = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) return alert(String(data?.detail || data?.error || "Login failed"));
-      setGateOpen(false);
-      alert(isTR ? "Giri\u015f ba\u015far\u0131l\u0131." : "Login successful.");
-    },
-    [API_URL, isTR]
+  const catLabel = useCallback(
+    (cat) => (isTR ? cat.label.tr : cat.label.en),
+    [isTR]
   );
-
-  const heroEyebrow = isTR ? "Frekans \u2022 Nefes \u2022 M\u00fch\u00fcr" : "Frequency \u2022 Breath \u2022 Seal";
-  const heroTitle = isTR ? "Rit\u00fcel Kubbesi" : "The Ritual Dome";
-  const heroSub = isTR
-    ? "Burada bilgi de\u011fil, alan a\u00e7\u0131l\u0131r. Ad\u0131mlar seni y\u00f6nlendirmez; i\u00e7indeki ritme d\u00f6nd\u00fcr\u00fcr."
-    : "Knowledge is not produced here\u2014space opens. Steps don\u2019t instruct; they return you to your rhythm.";
-
-  const pageSubtitle = isTR ? "Rit\u00fcel Alan\u0131" : "Ritual Space";
 
   return (
     <div
       className={styles.page}
       onPointerDown={unlockAudio}
       onTouchStart={unlockAudio}
-      onMouseDown={unlockAudio}
     >
-      {fatal ? (
-        <div className={styles.fatal}>
-          <b>{isTR ? "Rit\u00fcel Alan\u0131 Hatas\u0131" : "Ritual Space Error"}</b>
-          {"\n\n"}
-          {fatal}
-        </div>
-      ) : null}
-
-      <StarTrail />
-
-      <div className={styles.topbar}>
+      {/* ─── Top bar ─── */}
+      <header className={styles.topbar}>
         <div className={styles.topbarLeft}>
-          <span className={styles.brand}>SANRI</span>
-          <span className={styles.topbarSubtitle}>{pageSubtitle}</span>
+          <span className={styles.brand}>CAELINUS AI</span>
+          <span className={styles.topbarSub}>
+            {isTR ? "Ritüel Alanı" : "Ritual Space"}
+          </span>
         </div>
-
         <div className={styles.topbarRight}>
-          <button type="button" className={styles.langBtn} onClick={() => setLanguage(isTR ? "en" : "tr")}>
+          <button
+            type="button"
+            className={styles.langBtn}
+            onClick={() => setLanguage(isTR ? "en" : "tr")}
+          >
             {isTR ? "EN" : "TR"}
           </button>
-
-          <button type="button" className={styles.backBtn} onClick={goBackToGates}>
-            {isTR ? "\u2190 Kap\u0131lara D\u00f6n" : "\u2190 Back to Gates"}
+          <button type="button" className={styles.backBtn} onClick={goBack}>
+            {isTR ? "← Kapılara Dön" : "← Back to Gates"}
           </button>
         </div>
-      </div>
-
-      <header className={styles.ritualHero} aria-hidden="false">
-        <div className={styles.heroGlow} />
-        <p className={styles.heroEyebrow}>{heroEyebrow}</p>
-        <h1 className={styles.heroTitle}>{heroTitle}</h1>
-        <p className={styles.heroSub}>{heroSub}</p>
       </header>
 
-      <div className={styles.layout}>
-        <aside className={styles.ritualList}>
-          <div className={styles.panelTitle}>{isTR ? "KAPILAR" : "GATES"}</div>
+      {/* ─── Hero ─── */}
+      <section className={styles.hero}>
+        <motion.h1
+          className={styles.heroTitle}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          {isTR ? "Ritüel Alanı" : "Ritual Space"}
+        </motion.h1>
+        <motion.p
+          className={styles.heroSub}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.25, duration: 0.5 }}
+        >
+          {isTR
+            ? "Nefes, niyet ve farkındalıkla kendi ritüelini oluştur. Her adım seni içine döndürür."
+            : "Create your own ritual with breath, intention and awareness. Every step turns you inward."}
+        </motion.p>
 
-          <div className={styles.listInner}>
-            {flows.map((r) => {
-              const isActive = r?.key === activeKey;
-              const title = isTR ? r?.title?.tr : r?.title?.en;
-              const desc = isTR ? r?.desc?.tr : r?.desc?.en;
-              const sym = FLOW_SYMBOLS[r.key] || FLOW_SYMBOLS.default;
+        <motion.div
+          className={styles.intentionWrap}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.45 }}
+        >
+          <input
+            type="text"
+            className={styles.intentionInput}
+            placeholder={isTR ? "Niyetin ne?" : "What is your intention?"}
+            value={intentionText}
+            onChange={(e) => setIntentionText(e.target.value)}
+          />
+        </motion.div>
+      </section>
 
-              return (
-                <div
-                  key={r.key}
-                  role="button"
-                  tabIndex={0}
-                  className={`${styles.ritualItem} ${isActive ? styles.active : ""}`}
-                  onClick={() => openFlow(r)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") openFlow(r);
+      {/* ─── Today's Ritual ─── */}
+      {todayRitual && (
+        <section className={styles.todaySection}>
+          <h2 className={styles.sectionTitle}>
+            {isTR ? "Bugünün Ritüeli" : "Today's Ritual"}
+          </h2>
+
+          <motion.div
+            className={styles.todayCard}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className={styles.todayContent}>
+              <span className={styles.todayCategory}>
+                {todayRitual.category[0] &&
+                  (isTR
+                    ? RITUAL_CATEGORIES.find(
+                        (c) => c.id === todayRitual.category[0]
+                      )?.label.tr
+                    : RITUAL_CATEGORIES.find(
+                        (c) => c.id === todayRitual.category[0]
+                      )?.label.en)}
+              </span>
+              <h3 className={styles.todayTitle}>
+                {isTR ? todayRitual.title.tr : todayRitual.title.en}
+              </h3>
+              <p className={styles.todaySubtitle}>
+                {isTR ? todayRitual.subtitle.tr : todayRitual.subtitle.en}
+              </p>
+              <p className={styles.todayDesc}>
+                {isTR
+                  ? todayRitual.description.tr
+                  : todayRitual.description.en}
+              </p>
+              <div className={styles.todayMeta}>
+                <span className={styles.durationBadge}>
+                  {todayRitual.durationMin} {isTR ? "dk" : "min"}
+                </span>
+                <span
+                  className={styles.difficultyPill}
+                  style={{
+                    background:
+                      DIFFICULTY_COLORS[todayRitual.difficulty] + "22",
+                    color: DIFFICULTY_COLORS[todayRitual.difficulty],
                   }}
                 >
-                  <span className={styles.itemSymbol} aria-hidden>
-                    {sym}
-                  </span>
-                  <div className={styles.itemTitle}>{title || r.key}</div>
-                  <div className={styles.itemDesc}>{desc || ""}</div>
+                  {isTR
+                    ? DIFFICULTY_LABELS[todayRitual.difficulty]?.tr
+                    : DIFFICULTY_LABELS[todayRitual.difficulty]?.en}
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              className={styles.todayBtn}
+              onClick={() => openRitual(todayRitual.id)}
+            >
+              {isTR ? "Başla" : "Start"}
+            </button>
+          </motion.div>
+        </section>
+      )}
 
-                  <div className={styles.badges}>
-                    {r?.premium ? (
-                      <span className={styles.premiumBadge}>PREMIUM</span>
-                    ) : (
-                      <span className={styles.freeBadge}>{isTR ? "\u00dcCRETS\u0130Z" : "FREE"}</span>
-                    )}
-                  </div>
+      {/* ─── Category chips ─── */}
+      <section className={styles.categorySection}>
+        <div className={styles.categoryScroll}>
+          <button
+            type="button"
+            className={`${styles.categoryChip} ${
+              activeCategory === null ? styles.chipActive : ""
+            }`}
+            onClick={() => setActiveCategory(null)}
+          >
+            {isTR ? "Tümü" : "All"}
+          </button>
+          {RITUAL_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`${styles.categoryChip} ${
+                activeCategory === cat.id ? styles.chipActive : ""
+              }`}
+              onClick={() => setActiveCategory(cat.id)}
+            >
+              <span className={styles.chipIcon}>{cat.icon}</span>
+              {catLabel(cat)}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── Ritual grid ─── */}
+      <section className={styles.gridSection}>
+        {intentionSuggestions.length > 0 && (
+          <p className={styles.suggestionHint}>
+            {isTR
+              ? `"${intentionText}" için önerilen ritüeller:`
+              : `Suggested rituals for "${intentionText}":`}
+          </p>
+        )}
+
+        <div className={styles.grid}>
+          {filteredRituals.map((r, i) => {
+            const title = isTR ? r.title.tr : r.title.en;
+            const subtitle = isTR ? r.subtitle.tr : r.subtitle.en;
+            const catObj = RITUAL_CATEGORIES.find(
+              (c) => c.id === r.category[0]
+            );
+            const catName = catObj
+              ? isTR
+                ? catObj.label.tr
+                : catObj.label.en
+              : "";
+
+            const linkedChakras = getChakrasForRitual(r);
+
+            return (
+              <motion.div
+                key={r.id}
+                className={styles.card}
+                custom={i}
+                variants={cardVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.15 }}
+                onClick={() => openRitual(r.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") openRitual(r.id);
+                }}
+              >
+                <div className={styles.cardTop}>
+                  <span className={styles.cardCategory}>{catName}</span>
+                  {r.isPremium && (
+                    <span className={styles.lockIcon} title="Premium">
+                      🔒
+                    </span>
+                  )}
                 </div>
+
+                <h3 className={styles.cardTitle}>{title}</h3>
+                <p className={styles.cardSubtitle}>{subtitle}</p>
+
+                {linkedChakras.length > 0 && (
+                  <div className={styles.linkChips}>
+                    {linkedChakras.map((ch) => (
+                      <span
+                        key={ch.id}
+                        className={styles.linkChip}
+                        style={{ borderColor: ch.color + "44", color: ch.color }}
+                      >
+                        ⚡ {ch.name.split(" ")[0]}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className={styles.cardMeta}>
+                  <span className={styles.durationBadge}>
+                    {r.durationMin} {isTR ? "dk" : "min"}
+                  </span>
+                  <span
+                    className={styles.difficultyPill}
+                    style={{
+                      background: DIFFICULTY_COLORS[r.difficulty] + "22",
+                      color: DIFFICULTY_COLORS[r.difficulty],
+                    }}
+                  >
+                    {isTR
+                      ? DIFFICULTY_LABELS[r.difficulty]?.tr
+                      : DIFFICULTY_LABELS[r.difficulty]?.en}
+                  </span>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {filteredRituals.length === 0 && (
+          <p className={styles.emptyMsg}>
+            {isTR
+              ? "Bu kategoride ritüel bulunamadı."
+              : "No rituals found in this category."}
+          </p>
+        )}
+      </section>
+
+      {/* ─── Recent rituals ─── */}
+      <section className={styles.recentSection}>
+        <h2 className={styles.sectionTitle}>
+          {isTR ? "Son Yaptıkların" : "Your Recent Rituals"}
+        </h2>
+
+        {recentRituals.length > 0 ? (
+          <div className={styles.recentGrid}>
+            {recentRituals.map((r, i) => {
+              const title = isTR ? r.title.tr : r.title.en;
+              const subtitle = isTR ? r.subtitle.tr : r.subtitle.en;
+              return (
+                <motion.div
+                  key={r.id}
+                  className={styles.recentCard}
+                  custom={i}
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.15 }}
+                  onClick={() => openRitual(r.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") openRitual(r.id);
+                  }}
+                >
+                  <h4 className={styles.recentTitle}>{title}</h4>
+                  <p className={styles.recentSub}>{subtitle}</p>
+                  <span className={styles.durationBadge}>
+                    {r.durationMin} {isTR ? "dk" : "min"}
+                  </span>
+                </motion.div>
               );
             })}
           </div>
-
-          <div className={styles.note}>
+        ) : (
+          <p className={styles.emptyMsg}>
             {isTR
-              ? "Premium kap\u0131lar i\u00e7in anahtar gerekir. Vitrin rit\u00fceli herkese a\u00e7\u0131k bir nefestir."
-              : "Premium gates need a key. The showcase ritual is one breath open to all."}
-          </div>
-        </aside>
+              ? "Henüz bir ritüel yapmadın. Yukarıdan birini seç ve başla."
+              : "You haven't done any rituals yet. Pick one above and begin."}
+          </p>
+        )}
+      </section>
 
-        <main className={styles.selectedCard}>
-          <div className={styles.panelTitle}>{isTR ? "SE\u00c7\u0130L\u0130 ALAN" : "ACTIVE FIELD"}</div>
-
-          <div className={styles.selectedTitle}>
-            {activeFlow ? (isTR ? activeFlow?.title?.tr : activeFlow?.title?.en) : isTR ? "Rit\u00fcel" : "Ritual"}
-          </div>
-
-          <div className={styles.selectedDesc}>
-            {activeFlow ? (isTR ? activeFlow?.desc?.tr : activeFlow?.desc?.en) : ""}
-          </div>
-
-          <section className={styles.orbSection} aria-label={isTR ? "Rit\u00fcel ad\u0131m\u0131" : "Ritual step"}>
-            <div
-              className={styles.progressRingWrap}
-              style={{ "--progress": progressPct }}
-            >
-              <div className={styles.progressRing} />
-              <div className={styles.progressRingInner}>
-                <span className={styles.stepSigil}>{flowSymbol}</span>
-              </div>
-            </div>
-
-            <div className={styles.phaseLabel}>{phaseName}</div>
-
-            {currentStep?.t ? <div className={styles.stepTag}>{currentStep.t}</div> : null}
-
-            <div className={styles.stepVerse}>
-              {currentStep?.b || (isTR ? "Bu rit\u00fcel yak\u0131nda." : "Coming soon.")}
-            </div>
-          </section>
-
-          <div className={styles.audioSanctum}>
-            <div className={styles.audioTitle}>{isTR ? "SES TUNELI" : "SOUND TUNNEL"}</div>
-
-            {currentAudio ? (
-              <audio ref={audioRef} src={currentAudio} controls className={styles.audio} preload="metadata" />
-            ) : (
-              <div className={styles.audioMissing}>{isTR ? "Ses dosyas\u0131 bulunamad\u0131." : "Audio file not found."}</div>
-            )}
-
-            <div className={styles.audioHint}>
-              {isTR
-                ? "\u0130lk dinlemede ekrana bir kez dokun."
-                : "Tap the screen once before first play."}
-            </div>
-          </div>
-
-          <div className={styles.stepsBox}>
-            <div className={styles.stepActions}>
-              <button type="button" className={styles.btnGhost} onClick={prevStep} disabled={stepIndex <= 0}>
-                {isTR ? "\u2190 \u00d6nceki nefes" : "\u2190 Previous"}
-              </button>
-
-              <button
-                type="button"
-                className={styles.btnPrimary}
-                onClick={nextStep}
-                disabled={!steps.length || stepIndex >= steps.length - 1}
-              >
-                {isTR ? "Sonraki nefes \u2192" : "Next \u2192"}
-              </button>
-
-              <div className={styles.grow} />
-
-              <button type="button" className={styles.btnSanri} onClick={goToSanri}>
-                {isTR ? "SANRI ile derinle\u015f \u2192" : "Go deeper with SANRI \u2192"}
-              </button>
-            </div>
-          </div>
-
-          <div className={styles.footnote}>
-            {isTR
-              ? "\u201cBilgi\u201d \u00fcretmez; protokol uygular. A\u00e7\u0131l\u0131\u015f sende olur. \u00a9 2026 CaelinusAI \u2022 SANRI"
-              : "It does not produce \u201cknowledge\u201d\u2014it applies protocol. The opening is within you. \u00a9 2026 CaelinusAI \u2022 SANRI"}
-          </div>
-        </main>
-      </div>
-
-      <PremiumGateModal
-        open={gateOpen}
-        onClose={() => setGateOpen(false)}
-        title={isTR ? "Premium kap\u0131" : "Premium gate"}
-        subtitle={
-          isTR
-            ? "Bu rit\u00fcel derin frekans ta\u015f\u0131r.\nGiri\u015f yap veya kay\u0131t ol."
-            : "This ritual carries a deep frequency.\nLog in or register."
-        }
-        onRegister={handleRegister}
-        onLogin={handleLogin}
-      />
+      <footer className={styles.footer}>
+        <span>© 2026 CaelinusAI · SANRI</span>
+      </footer>
     </div>
   );
 }

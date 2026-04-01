@@ -1,0 +1,496 @@
+.container {
+  position: fixed;
+  inset: 0;
+  background: #07080d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+  font-family: inherit;
+}
+
+.notFound {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.notFound p {
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+/* ── IDLE ── */
+
+.idleScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+}
+
+.idleIcon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.idleTitle {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0;
+}
+
+.idleSubtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.idlePrompt {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 20px 0 8px;
+}
+
+.startBtn {
+  padding: 14px 48px;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 8px;
+}
+
+.startBtn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+}
+
+.startBtn:active {
+  transform: scale(0.97);
+}
+
+.exitLink {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 12px;
+  padding: 6px 12px;
+  transition: color 0.3s ease;
+}
+
+.exitLink:hover {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ── RUNNING ── */
+
+.runningScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.runningContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  flex: 1;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ringWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ringSvg {
+  display: block;
+}
+
+.ringTimer {
+  position: absolute;
+  font-size: 22px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepArea {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+}
+
+.breathCircle {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.stepText {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.8;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  padding: 0 16px;
+}
+
+.stepTextDimmed {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.8;
+  margin: 0;
+  padding: 0 16px;
+}
+
+.stepCounter {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 0.08em;
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── CONTROLS (running) ── */
+
+.controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px 24px;
+  padding-bottom: max(32px, env(safe-area-inset-bottom, 24px));
+}
+
+.controlBtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.controlBtn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  transform: scale(1.06);
+}
+
+.controlBtnSmall {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.controlBtnSmall:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── PAUSED ── */
+
+.pausedScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.pausedContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  opacity: 0.5;
+}
+
+.pausedButtons {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 24px;
+  padding-bottom: max(32px, env(safe-area-inset-bottom, 24px));
+}
+
+/* ── COMPLETE ── */
+
+.completeScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+}
+
+.celebrationIcon {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.moodSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.moodQuestion {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+.moodRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.moodBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 12px;
+  min-width: 72px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.moodBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: scale(1.04);
+}
+
+.moodBtnActive {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.moodEmoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.moodLabel {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+  white-space: nowrap;
+}
+
+.reflectionSection {
+  max-width: 360px;
+  text-align: center;
+}
+
+.reflectionText {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+  font-style: italic;
+  margin: 0;
+}
+
+.completeActions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ── SHARED BUTTONS ── */
+
+.btnPrimary {
+  padding: 13px 40px;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-width: 180px;
+}
+
+.btnPrimary:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
+}
+
+.btnPrimary:active {
+  transform: scale(0.97);
+}
+
+.btnSecondary {
+  padding: 12px 36px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  min-width: 180px;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.btnSanri {
+  padding: 13px 40px;
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  border-radius: 50px;
+  background: rgba(200, 160, 255, 0.08);
+  font-size: 14px;
+  font-weight: 600;
+  color: #c8a0ff;
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  min-width: 180px;
+  letter-spacing: 0.04em;
+}
+
+.btnSanri:hover {
+  background: rgba(200, 160, 255, 0.16);
+  border-color: rgba(200, 160, 255, 0.4);
+  transform: scale(1.03);
+}
+
+.btnGhost {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 50px;
+  background: transparent;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btnGhost:hover {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── RESPONSIVE ── */
+
+@media (max-width: 480px) {
+  .idleTitle {
+    font-size: 22px;
+  }
+
+  .stepText,
+  .stepTextDimmed {
+    font-size: 18px;
+    max-width: 320px;
+  }
+
+  .moodBtn {
+    min-width: 60px;
+    padding: 10px 8px;
+  }
+
+  .moodEmoji {
+    font-size: 24px;
+  }
+
+  .moodLabel {
+    font-size: 10px;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    min-width: 160px;
+    padding: 12px 32px;
+  }
+
+  .celebrationIcon {
+    font-size: 26px;
+  }
+
+  .reflectionText {
+    font-size: 16px;
+  }
+
+  .controls {
+    padding: 24px 16px;
+  }
+}

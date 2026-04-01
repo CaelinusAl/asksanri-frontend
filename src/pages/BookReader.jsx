@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./BookReader.module.css";
 import { booksMetadata, loadBookPages } from "../data/booksContent";
 import { useLanguage } from "../contexts/LanguageContext";
+import { usePremium } from "../contexts/PremiumContext";
+import { PremiumGate } from "../components/premium/PremiumGate";
 import { unlockAudio } from "../utils/sfx";
 
 /* ── Page Renderers by Type ── */
@@ -150,9 +152,12 @@ export default function BookReader() {
   const { bookId } = useParams();
   const navigate = useNavigate();
   const { language } = useLanguage();
+  const { isPremium } = usePremium();
   const isTR = language === "tr";
 
   const meta = booksMetadata.find((b) => b.id === bookId);
+  const isBookLocked = meta?.isPremium && !isPremium;
+  const freeLimit = meta?.freePreviewPages || 5;
 
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -182,14 +187,21 @@ export default function BookReader() {
       .filter((p) => p.type === "chapter" || p.type === "cover");
   }, [pages]);
 
+  const maxFreeSpread = isBookLocked ? Math.ceil(freeLimit / 2) : totalSpreads;
+  const isAtPremiumWall = isBookLocked && spread >= maxFreeSpread - 1;
+
   const goNext = useCallback(() => {
     if (flipping || spread >= totalSpreads - 1) return;
+    if (isBookLocked && spread + 1 >= maxFreeSpread) {
+      setSpread(maxFreeSpread - 1);
+      return;
+    }
     setFlipping("next");
     setTimeout(() => {
       setSpread((s) => s + 1);
       setFlipping(null);
     }, 450);
-  }, [flipping, spread, totalSpreads]);
+  }, [flipping, spread, totalSpreads, isBookLocked, maxFreeSpread]);
 
   const goPrev = useCallback(() => {
     if (flipping || spread <= 0) return;
@@ -317,17 +329,31 @@ export default function BookReader() {
               ← {isTR ? "Önceki" : "Prev"}
             </button>
             <span className={styles.navPageNum}>
-              {spread + 1} / {totalSpreads}
+              {leftIdx + 1}–{Math.min(rightIdx + 1, pages.length)} / {pages.length} {isTR ? "sayfa" : "pages"}
             </span>
             <button
               type="button"
               className={styles.navBtn}
               onClick={goNext}
-              disabled={spread >= totalSpreads - 1 || !!flipping}
+              disabled={spread >= totalSpreads - 1 || !!flipping || isAtPremiumWall}
             >
               {isTR ? "Sonraki" : "Next"} →
             </button>
           </div>
+
+          {isAtPremiumWall && (
+            <div style={{ maxWidth: 700, margin: "24px auto", padding: "0 20px" }}>
+              <PremiumGate
+                locked={true}
+                title={isTR ? "Bu kitabın devamı premium" : "The rest of this book is premium"}
+                description={isTR
+                  ? "Tüm sayfaları okumak için Premium'a geç."
+                  : "Upgrade to Premium to read all pages."}
+              >
+                <div style={{ height: 120 }} />
+              </PremiumGate>
+            </div>
+          )}
         </>
       )}
 

@@ -1,168 +1,296 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import StarTrail from "../components/StarTrail";
+import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../contexts/LanguageContext";
+import { POST_TYPES } from "../data/yankiData";
+import { createPost, fetchMyPosts, fetchMyProfile, isLoggedIn } from "../data/yankiApi";
+import styles from "./YankiYeniPage.module.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "https://api.asksanri.com";
-
-const CATEGORIES = [
-  { key: "genel", label: "Genel" },
-  { key: "duygu", label: "Duygu" },
-  { key: "ruya", label: "Rüya" },
-  { key: "soru", label: "Soru" },
-  { key: "farkindlik", label: "Farkındalık" },
-  { key: "donusum", label: "Dönüşüm" },
+const ROTATING_PLACEHOLDERS = [
+  { tr: "Bugün içinde ne yankılandı?", en: "What echoed inside you today?" },
+  { tr: "Kalbinden geçen ama söylemediğin ne var?", en: "What's in your heart but left unsaid?" },
+  { tr: "Bir rüya, bir işaret, bir farkındalık bırak…", en: "Leave a dream, a sign, an awareness…" },
+  { tr: "Şu an içinden geçen en gerçek cümle ne?", en: "What's the truest sentence passing through you?" },
+  { tr: "Bugün sende ne açıldı?", en: "What opened in you today?" },
 ];
+
+const TYPE_PLACEHOLDERS = {
+  duygu: { tr: "İçinden geçeni yaz...", en: "Write what you feel..." },
+  farkindalik: { tr: "Bugün neyi fark ettin?", en: "What did you notice today?" },
+  ruya: { tr: "Rüyanı anlat...", en: "Describe your dream..." },
+  isaret: { tr: "Gördüğün işareti paylaş...", en: "Share the sign you saw..." },
+  soru: { tr: "Topluluğa bir soru sor...", en: "Ask the community..." },
+  gunluk: { tr: "Kısa bir akış bırak...", en: "Leave a short flow..." },
+  sesli: { tr: "Sesli yankın hakkında yaz...", en: "Write about your voice note..." },
+  gorsel: { tr: "Görselin hakkında yaz...", en: "Write about your visual..." },
+};
 
 export default function YankiYeniPage() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const isTR = language === "tr";
+
+  const [selectedType, setSelectedType] = useState("duygu");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState("genel");
-  const [anonymous, setAnonymous] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [anonymous, setAnonymous] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [isFirstPost, setIsFirstPost] = useState(false);
+  const [newPostId, setNewPostId] = useState(null);
+  const [streakCount, setStreakCount] = useState(0);
+  const [error, setError] = useState(null);
 
-  const canSubmit = content.trim().length >= 10 && !loading;
+  const [rotIdx, setRotIdx] = useState(() => Math.floor(Math.random() * ROTATING_PLACEHOLDERS.length));
+  const [isFocused, setIsFocused] = useState(false);
 
-  const onSubmit = async () => {
+  useEffect(() => {
+    if (isFocused || content.length > 0) return;
+    const timer = setInterval(() => {
+      setRotIdx((prev) => (prev + 1) % ROTATING_PLACEHOLDERS.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [isFocused, content.length]);
+
+  const placeholder = content.length === 0 && !isFocused
+    ? ROTATING_PLACEHOLDERS[rotIdx]
+    : (TYPE_PLACEHOLDERS[selectedType] || TYPE_PLACEHOLDERS.duygu);
+
+  const canSubmit = content.trim().length >= 10 && !submitting;
+
+  const handleSubmit = async () => {
     if (!canSubmit) return;
-    setLoading(true);
+
+    if (!isLoggedIn()) {
+      navigate("/giris");
+      return;
+    }
+
+    setSubmitting(true);
+    setError(null);
+
     try {
-      const token = localStorage.getItem("sanri_token");
-      const res = await fetch(`${API_BASE}/yanki/posts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify({ title: title.trim() || null, content: content.trim(), category, anonymous }),
+      const res = await createPost({
+        content: content.trim(),
+        title: title.trim() || null,
+        category: selectedType,
+        anonymous,
       });
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data?.detail || "Bir hata oluştu.");
+      setNewPostId(res.post_id);
+
+      let first = false;
+      try {
+        const my = await fetchMyPosts({ limit: 2 });
+        first = (my.total || 0) <= 1;
+      } catch { /* ignore */ }
+      setIsFirstPost(first);
+
+      try {
+        const prof = await fetchMyProfile();
+        setStreakCount(prof?.streak?.current || 0);
+      } catch { /* ignore */ }
+
+      setSubmitting(false);
+      setSuccess(true);
+    } catch (err) {
+      setSubmitting(false);
+      if (err.status === 401) {
+        navigate("/giris");
         return;
       }
-      setSubmitted(true);
-    } catch (e) {
-      alert("Bağlantı hatası.");
-    } finally {
-      setLoading(false);
+      setError(err.body?.detail || (isTR ? "Gönderilemedi. Tekrar dene." : "Failed to send. Try again."));
     }
   };
 
-  if (submitted) {
-    return (
-      <div style={pageStyle}>
-        <StarTrail />
-        <div style={containerStyle}>
-          <div style={successCardStyle}>
-            <div style={{ fontSize: 48, marginBottom: 16 }}>✦</div>
-            <h2 style={{ fontSize: 26, fontWeight: 900, marginBottom: 10, color: "#7cf7d8" }}>
-              Yankın Alındı
-            </h2>
-            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
-              İçeriğin incelendikten sonra yayınlanacak. Bilinç yankılanır.
-            </p>
-            <div style={{ display: "flex", gap: 12 }}>
-              <button onClick={() => navigate("/yanki-alani")} style={btnStyle}>
-                Yankı Alanına Dön
+  return (
+    <div className={styles.page}>
+      <header className={styles.topBar}>
+        <button className={styles.backBtn} onClick={() => navigate("/yanki-alani")}>
+          ← {isTR ? "Akış" : "Feed"}
+        </button>
+        <h2 className={styles.pageTitle}>{isTR ? "Yeni Yankı" : "New Echo"}</h2>
+        <div style={{ width: 60 }} />
+      </header>
+
+      <AnimatePresence mode="wait">
+        {success ? (
+          <motion.div
+            key="success"
+            className={styles.successWrap}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className={styles.successGlow} />
+            <span className={styles.successIcon}>✦</span>
+
+            {isFirstPost ? (
+              <>
+                <p className={styles.successTitle}>
+                  {isTR ? "İlk yankını bıraktın" : "You left your first echo"}
+                </p>
+                <p className={styles.successSub}>
+                  {isTR ? "Bu alan artık seni de taşıyor." : "This space now carries you too."}
+                </p>
+              </>
+            ) : (
+              <p className={styles.successTitle}>
+                {isTR ? "Yankın bırakıldı." : "Your echo has been left."}
+              </p>
+            )}
+
+            {streakCount > 0 && (
+              <div className={styles.streakMsg}>
+                <span className={styles.streakMsgFire}>🔥</span>
+                <span className={styles.streakMsgText}>
+                  {isTR
+                    ? `${streakCount} gün aktif — streak devam ediyor`
+                    : `${streakCount} day streak — keep going`}
+                </span>
+                {[3, 7, 21].includes(streakCount) && (
+                  <span className={styles.streakMsgMilestone}>
+                    {streakCount === 3
+                      ? (isTR ? "✦ İlk adım" : "✦ First step")
+                      : streakCount === 7
+                        ? (isTR ? "◈ Haftalık güç" : "◈ Weekly power")
+                        : (isTR ? "☀ 21 gün — alışkanlık oluştu" : "☀ 21 days — habit formed")}
+                  </span>
+                )}
+              </div>
+            )}
+
+            <div className={styles.postActions}>
+              <button
+                className={styles.postActionBtn}
+                onClick={() => navigate(`/yanki-alani/${newPostId}`)}
+              >
+                <span className={styles.postActionIcon}>💬</span>
+                <span>{isTR ? "Yorumları gör" : "See comments"}</span>
               </button>
-              <button onClick={() => { setSubmitted(false); setTitle(""); setContent(""); }} style={{ ...btnStyle, background: "rgba(255,255,255,0.06)", borderColor: "rgba(255,255,255,0.10)", color: "rgba(255,255,255,0.6)" }}>
-                Yeni Yankı
+              <button
+                className={`${styles.postActionBtn} ${styles.postActionSanri}`}
+                onClick={() => navigate(`/yanki-alani/${newPostId}?sanri=1`)}
+              >
+                <span className={styles.postActionIcon}>✦</span>
+                <span>{isTR ? "Sanrı'ya taşı" : "Send to Sanri"}</span>
+              </button>
+              <button
+                className={styles.postActionBtn}
+                onClick={() => {
+                  setSuccess(false);
+                  setContent("");
+                  setTitle("");
+                  setNewPostId(null);
+                  setIsFirstPost(false);
+                }}
+              >
+                <span className={styles.postActionIcon}>+</span>
+                <span>{isTR ? "Yeni yankı bırak" : "New echo"}</span>
               </button>
             </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+          </motion.div>
+        ) : (
+          <motion.div
+            key="form"
+            className={styles.formWrap}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.4 }}
+          >
+            {/* Type selector */}
+            <label className={styles.sectionLabel}>{isTR ? "Yankı Türü" : "Echo Type"}</label>
+            <div className={styles.typeGrid}>
+              {POST_TYPES.map((t) => (
+                <button
+                  key={t.id}
+                  className={`${styles.typePill} ${selectedType === t.id ? styles.typePillActive : ""}`}
+                  style={
+                    selectedType === t.id
+                      ? { borderColor: t.color, color: t.color, background: t.color + "14" }
+                      : {}
+                  }
+                  onClick={() => setSelectedType(t.id)}
+                >
+                  <span className={styles.pillIcon}>{t.icon}</span>
+                  {isTR ? t.label.tr : t.label.en}
+                </button>
+              ))}
+            </div>
 
-  return (
-    <div style={pageStyle}>
-      <StarTrail />
+            {/* Title */}
+            <label className={styles.sectionLabel}>
+              {isTR ? "Başlık" : "Title"}{" "}
+              <span className={styles.optional}>({isTR ? "opsiyonel" : "optional"})</span>
+            </label>
+            <input
+              type="text"
+              className={styles.titleInput}
+              placeholder={isTR ? "Kısa bir başlık..." : "Short title..."}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={80}
+            />
 
-      <div style={topbarStyle}>
-        <button onClick={() => navigate("/yanki-alani")} style={backBtnStyle}>
-          ← Yankı Alanı
-        </button>
-      </div>
+            {/* Content */}
+            <label className={styles.sectionLabel}>{isTR ? "İçerik" : "Content"}</label>
+            <textarea
+              className={styles.contentArea}
+              placeholder={isTR ? placeholder.tr : placeholder.en}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
+              rows={6}
+              maxLength={2000}
+            />
+            <div className={styles.charRow}>
+              <span className={styles.charCount}>{content.length}/2000</span>
+              {content.trim().length > 0 && content.trim().length < 10 && (
+                <span className={styles.charWarn}>{isTR ? "En az 10 karakter" : "Min 10 chars"}</span>
+              )}
+            </div>
 
-      <div style={containerStyle}>
-        <h1 style={h1Style}>Yeni Yankı</h1>
-        <p style={subStyle}>İçini dök. Yargı yok. Sadece yankı var.</p>
-
-        <div style={formCardStyle}>
-          <input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Başlık (isteğe bağlı)"
-            maxLength={300}
-            style={inputStyle}
-          />
-
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Burada ne hissediyorsan onu bırak… (en az 10 karakter)"
-            rows={8}
-            maxLength={5000}
-            style={{ ...inputStyle, resize: "vertical", minHeight: 160, lineHeight: 1.7 }}
-          />
-
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", textAlign: "right", marginTop: -8, marginBottom: 12 }}>
-            {content.length}/5000
-          </div>
-
-          <div style={labelStyle}>Kategori</div>
-          <div style={catRowStyle}>
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.key}
-                onClick={() => setCategory(c.key)}
-                style={category === c.key ? activeCatBtnStyle : catBtnStyle}
-              >
-                {c.label}
+            {/* Media placeholders */}
+            <div className={styles.mediaRow}>
+              <button className={styles.mediaBtn} disabled>
+                🖼 {isTR ? "Görsel Ekle" : "Add Image"}
               </button>
-            ))}
-          </div>
+              <button className={styles.mediaBtn} disabled>
+                🎙 {isTR ? "Ses Kaydet" : "Record Audio"}
+              </button>
+            </div>
 
-          <div style={toggleRowStyle}>
-            <button
-              onClick={() => setAnonymous(!anonymous)}
-              style={{ ...toggleBtnStyle, background: anonymous ? "rgba(124,247,216,0.12)" : "rgba(255,255,255,0.04)", borderColor: anonymous ? "rgba(124,247,216,0.25)" : "rgba(255,255,255,0.08)" }}
-            >
-              <span style={{ color: anonymous ? "#7cf7d8" : "rgba(255,255,255,0.5)", fontWeight: 800 }}>
-                {anonymous ? "◉ Anonim" : "○ İsmimle"}
+            {/* Anonymous toggle */}
+            <label className={styles.anonToggle}>
+              <input
+                type="checkbox"
+                checked={anonymous}
+                onChange={(e) => setAnonymous(e.target.checked)}
+                className={styles.anonCheck}
+              />
+              <span className={styles.anonLabel}>
+                {isTR ? "Anonim olarak paylaş" : "Share anonymously"}
               </span>
-            </button>
-            <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)" }}>
-              {anonymous ? "Kimliğin gizli kalacak" : "İsmin görünecek"}
-            </span>
-          </div>
+            </label>
 
-          <button onClick={onSubmit} disabled={!canSubmit} style={{ ...submitBtnStyle, opacity: canSubmit ? 1 : 0.45 }}>
-            {loading ? "Gönderiliyor..." : "Yankıyı Bırak"}
-          </button>
-        </div>
-      </div>
+            {/* Error */}
+            {error && <p className={styles.errorText}>{error}</p>}
+
+            {/* Submit */}
+            <button
+              className={styles.submitBtn}
+              disabled={!canSubmit}
+              onClick={handleSubmit}
+            >
+              {submitting
+                ? (isTR ? "Gönderiliyor..." : "Sending...")
+                : (isTR ? "Yankıyı Bırak" : "Leave Echo")}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
-
-const pageStyle = { minHeight: "100vh", position: "relative", color: "white", fontFamily: "'Inter', system-ui, sans-serif", background: "linear-gradient(180deg, #060710 0%, #0a0c18 50%, #05060c 100%)" };
-const topbarStyle = { position: "sticky", top: 0, zIndex: 999, display: "flex", alignItems: "center", gap: 16, padding: "14px 24px", background: "rgba(8,8,16,0.75)", backdropFilter: "blur(20px)", borderBottom: "1px solid rgba(255,255,255,0.06)" };
-const backBtnStyle = { background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.10)", color: "#7cf7d8", padding: "8px 16px", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontSize: 13 };
-const containerStyle = { maxWidth: 640, margin: "0 auto", padding: "40px 20px" };
-const h1Style = { fontSize: 34, fontWeight: 900, background: "linear-gradient(135deg, #fff 30%, #b388ff 70%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginBottom: 8 };
-const subStyle = { color: "rgba(255,255,255,0.5)", fontSize: 15, marginBottom: 28 };
-const formCardStyle = { background: "rgba(16,14,30,0.7)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 24, padding: "28px 24px", backdropFilter: "blur(12px)" };
-const inputStyle = { width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 14, padding: "14px 16px", color: "white", fontSize: 14, fontFamily: "inherit", marginBottom: 14, outline: "none", boxSizing: "border-box" };
-const labelStyle = { fontSize: 12, fontWeight: 800, color: "rgba(255,255,255,0.45)", letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 };
-const catRowStyle = { display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 20 };
-const catBtnStyle = { background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.5)", padding: "7px 16px", borderRadius: 10, cursor: "pointer", fontWeight: 700, fontSize: 12 };
-const activeCatBtnStyle = { ...catBtnStyle, background: "rgba(169,112,255,0.12)", borderColor: "rgba(169,112,255,0.25)", color: "#cbbcff" };
-const toggleRowStyle = { display: "flex", alignItems: "center", gap: 12, marginBottom: 22 };
-const toggleBtnStyle = { border: "1px solid", padding: "10px 20px", borderRadius: 12, cursor: "pointer", fontSize: 14, transition: "all 0.2s" };
-const submitBtnStyle = { width: "100%", background: "linear-gradient(135deg, rgba(169,112,255,0.25), rgba(124,247,216,0.12))", border: "1px solid rgba(169,112,255,0.3)", color: "#cbbcff", padding: "16px", borderRadius: 16, cursor: "pointer", fontWeight: 900, fontSize: 16, letterSpacing: 0.5, transition: "all 0.3s" };
-const successCardStyle = { textAlign: "center", background: "rgba(16,14,30,0.7)", border: "1px solid rgba(124,247,216,0.15)", borderRadius: 28, padding: "50px 30px", marginTop: 60, backdropFilter: "blur(12px)" };
-const btnStyle = { background: "linear-gradient(135deg, rgba(169,112,255,0.25), rgba(124,247,216,0.12))", border: "1px solid rgba(169,112,255,0.3)", color: "#cbbcff", padding: "12px 24px", borderRadius: 14, cursor: "pointer", fontWeight: 800, fontSize: 14 };

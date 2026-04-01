@@ -1,0 +1,434 @@
+/* ── Okuma Detay — Post Detail Page ── */
+
+.page {
+  min-height: 100vh;
+  background: linear-gradient(170deg, #0a0a10 0%, #12101e 40%, #0d0b16 100%);
+  color: #e8e4f0;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ── Back nav ── */
+.topBar {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 20px 20px 0;
+}
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #8a84a8;
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.backLink:hover { color: #c8a0ff; }
+
+/* ── Cover ── */
+.coverWrap {
+  max-width: 820px;
+  margin: 24px auto 0;
+  padding: 0 20px;
+}
+.cover {
+  width: 100%;
+  border-radius: 16px;
+  max-height: 420px;
+  object-fit: cover;
+}
+.coverFallback {
+  width: 100%;
+  height: 280px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.12), rgba(255, 154, 108, 0.08));
+  font-size: 64px;
+  color: rgba(200, 160, 255, 0.3);
+}
+
+/* ── Article ── */
+.article {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+.catBadge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 28px;
+}
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 16px 0 8px;
+}
+.subtitleText {
+  font-size: 16px;
+  color: #a09ab8;
+  font-style: italic;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #6a6480;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── Content ── */
+.content {
+  margin-top: 28px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #d4d0e0;
+  white-space: pre-line;
+}
+
+/* ── Code Layer ── */
+.codeLayerWrap {
+  margin-top: 36px;
+  padding: 24px;
+  border-radius: 14px;
+  background: rgba(200, 160, 255, 0.04);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+}
+.codeLayerHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.codeLayerIcon {
+  font-size: 18px;
+  color: #c8a0ff;
+}
+.codeLayerTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #c8a0ff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.codeLayerText {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #b8b0d0;
+  white-space: pre-line;
+}
+
+/* ── Sanrı Reflection ── */
+.sanriWrap {
+  margin-top: 36px;
+  padding: 28px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(120, 60, 200, 0.08), rgba(200, 100, 255, 0.04));
+  border: 1px solid rgba(200, 160, 255, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+.sanriWrap::before {
+  content: "";
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 160, 255, 0.12), transparent);
+  pointer-events: none;
+}
+.sanriHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.sanriGlyph {
+  font-size: 20px;
+  color: #c8a0ff;
+}
+.sanriLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #c8a0ff;
+  text-transform: uppercase;
+}
+.sanriAnalysis {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #b8b0d0;
+  margin-bottom: 14px;
+}
+.sanriStrong {
+  font-size: 17px;
+  font-weight: 700;
+  color: #e8e4f0;
+  line-height: 1.4;
+  margin-bottom: 14px;
+  padding-left: 14px;
+  border-left: 3px solid rgba(200, 160, 255, 0.4);
+}
+.sanriQuestion {
+  font-size: 15px;
+  font-style: italic;
+  color: #a898c8;
+  line-height: 1.5;
+}
+
+/* ── Share Button ── */
+.shareBtn {
+  margin-left: auto;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(200, 160, 255, 0.2);
+  background: rgba(200, 160, 255, 0.06);
+  color: #c8a0ff;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.shareBtn:hover {
+  background: rgba(200, 160, 255, 0.15);
+  border-color: rgba(200, 160, 255, 0.4);
+}
+
+/* ── Deeper CTA ── */
+.deeperCta {
+  margin-top: 40px;
+  padding: 32px 28px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(120, 60, 200, 0.06), rgba(200, 100, 255, 0.03));
+  border: 1px solid rgba(200, 160, 255, 0.1);
+  text-align: center;
+}
+.deeperText {
+  font-size: 17px;
+  color: #c8c0e0;
+  margin: 0 0 20px;
+  font-weight: 500;
+}
+.deeperLinks {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.deeperBtn {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.2);
+  background: rgba(200, 160, 255, 0.08);
+  color: #c8a0ff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+.deeperBtn:hover {
+  background: rgba(200, 160, 255, 0.18);
+  border-color: rgba(200, 160, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.05);
+  margin: 40px 0;
+}
+
+/* ── Comments ── */
+.commentsSection {
+  margin-top: 40px;
+}
+.commentsTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 20px;
+}
+.commentCard {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+.commentCard:last-child { border-bottom: none; }
+.commentHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.commentAvatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.2), rgba(255, 154, 108, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c8a0ff;
+}
+.commentAuthor {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d4d0e0;
+}
+.commentTime {
+  font-size: 11px;
+  color: #6a6480;
+}
+.commentText {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #a8a0c0;
+  padding-left: 40px;
+}
+
+/* ── Comment Form ── */
+.commentForm {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.commentInput {
+  width: 100%;
+  min-height: 80px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e8e4f0;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.commentInput:focus {
+  border-color: rgba(200, 160, 255, 0.35);
+}
+.commentInput::placeholder { color: #5a5470; }
+.commentFormRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.nameInput {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #e8e4f0;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.nameInput:focus { border-color: rgba(200, 160, 255, 0.35); }
+.nameInput::placeholder { color: #5a5470; }
+.submitBtn {
+  padding: 10px 24px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.25), rgba(200, 160, 255, 0.12));
+  color: #c8a0ff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.submitBtn:hover {
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.35), rgba(200, 160, 255, 0.18));
+}
+.submitBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Loading / Error ── */
+.loading {
+  text-align: center;
+  padding: 120px 20px;
+  color: #6a6480;
+  font-size: 15px;
+}
+.notFound {
+  text-align: center;
+  padding: 120px 20px;
+}
+.notFoundTitle {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.notFoundText {
+  color: #8a84a8;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.notFoundLink {
+  color: #c8a0ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ── Sanrı CTA (bottom) ── */
+.sanriCta {
+  margin-top: 48px;
+  padding: 32px 24px;
+  text-align: center;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at center, rgba(120, 60, 200, 0.08) 0%, transparent 70%);
+  border: 1px solid rgba(200, 160, 255, 0.08);
+}
+.sanriCtaText {
+  font-size: 15px;
+  color: #a098b8;
+  font-style: italic;
+  margin: 0 0 18px;
+  line-height: 1.6;
+}
+.sanriCtaBtn {
+  display: inline-block;
+  padding: 12px 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.2), rgba(120, 60, 200, 0.15));
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  color: #c8a0ff;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: 0.3px;
+  transition: all 0.3s;
+}
+.sanriCtaBtn:hover {
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.3), rgba(120, 60, 200, 0.22));
+  border-color: rgba(200, 160, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(200, 160, 255, 0.15);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .title { font-size: 24px; }
+  .content { font-size: 15px; }
+  .sanriWrap { padding: 20px; }
+  .commentText { padding-left: 0; margin-top: 8px; }
+  .deeperLinks { flex-direction: column; }
+  .deeperBtn { text-align: center; }
+}

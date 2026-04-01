@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import styles from "./LibraryPage.module.css";
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
+import { usePremium } from "../contexts/PremiumContext";
+import { LockBadge } from "../components/premium/PremiumGate";
 import { unlockAudio } from "../utils/sfx";
 import { booksMetadata } from "../data/booksContent";
 
 export default function LibraryPage() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
+  const { isPremium } = usePremium();
   const isTR = language === "tr";
 
   const goBack = () => {
@@ -65,12 +68,15 @@ export default function LibraryPage() {
             }}
           >
             <div className={styles.bookAccent} style={{ background: book.color }} />
-            <img
-              className={styles.bookCover}
-              src={book.cover}
-              alt={book.title}
-              loading="lazy"
-            />
+            <div style={{ position: "relative" }}>
+              <img
+                className={styles.bookCover}
+                src={book.cover}
+                alt={book.title}
+                loading="lazy"
+              />
+              {book.isPremium && !isPremium && <LockBadge />}
+            </div>
             <div className={styles.bookInfo}>
               <div className={styles.bookTitle}>{book.title}</div>
               <div className={styles.bookAuthor}>CELINE RIVER</div>

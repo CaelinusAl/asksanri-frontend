@@ -1,16 +1,15 @@
 
  import React, { createContext, useCallback, useContext, useMemo, useState } from "react";
+ import { useAuth } from "./AuthContext";
 
-/**
- * FEATURES: PremiumComponents.jsx bunu import ediyor.
- * Bu yüzden burada mutlaka export olmalı.
- */
 export const FEATURES = {
   SANRI_UNLIMITED: "sanri_unlimited",
   RITUEL_ALANI: "rituel_alani",
   FREKANS_ALANI: "frekans_alani",
   BILINC_ALANI: "bilinc_alani",
   PROFILE_MIRROR: "profile_mirror",
+  OKUMA_PREMIUM: "okuma_premium",
+  LIBRARY_PREMIUM: "library_premium",
 };
 
 const PremiumContext = createContext(null);
@@ -21,17 +20,16 @@ export function usePremium() {
   return ctx;
 }
 
-/**
- * B-Mode: Backend yokken bile crash etmeyen "SAFE" provider.
- * Şimdilik her şeyi free gibi davranır.
- */
 export function PremiumProvider({ children }) {
-  // şimdilik sabit free
+  const { isPremium: authPremium } = useAuth();
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [requestedFeature, setRequestedFeature] = useState(FEATURES.SANRI_UNLIMITED);
 
-  const isPremium = false;
-  const currentPlan = "free"; // sadece UI için
+  const devOverride = typeof window !== "undefined"
+    ? localStorage.getItem("sanri_mock_premium")
+    : null;
+  const isPremium = devOverride !== null ? devOverride === "true" : Boolean(authPremium);
+  const currentPlan = isPremium ? "premium" : "free";
 
   const showUpgradeModal = useCallback((featureKey = FEATURES.SANRI_UNLIMITED) => {
     setRequestedFeature(featureKey);
@@ -42,10 +40,9 @@ export function PremiumProvider({ children }) {
     setIsUpgradeModalOpen(false);
   }, []);
 
-  // Kapı kilidi: premium yoksa false döner (istersen bazılarına true yaparız)
   const hasFeature = useCallback((_featureKey) => {
-    return false;
-  }, []);
+    return isPremium;
+  }, [isPremium]);
 
   const getRequiredPlan = useCallback((_featureKey) => {
     return "premium";

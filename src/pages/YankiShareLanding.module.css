@@ -1,0 +1,244 @@
+.page {
+  min-height: 100vh;
+  background: #07080d;
+  color: #e2e0f0;
+  font-family: "Inter", system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(140, 100, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 480px;
+  width: 100%;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ── Invite text ── */
+.inviteText {
+  font-size: 14px;
+  color: #8b7faa;
+  text-align: center;
+}
+.inviteHighlight {
+  color: #c8a0ff;
+  font-weight: 600;
+}
+
+/* ── Card ── */
+.card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.badge {
+  display: inline-flex;
+  align-self: flex-start;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #f0ecff;
+  margin: 0;
+}
+
+.cardContent {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #c5c0dd;
+  margin: 0;
+  white-space: pre-line;
+}
+
+.author {
+  font-size: 12.5px;
+  color: #6b6290;
+  font-style: italic;
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  gap: 14px;
+  font-size: 12.5px;
+  color: #5a5475;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* ── Sanri reflection card ── */
+.reflCard {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(160, 100, 255, 0.06) 0%, rgba(100, 60, 200, 0.03) 100%);
+  border: 1px solid rgba(200, 160, 255, 0.18);
+  border-radius: 14px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.reflCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.25), transparent, rgba(200, 160, 255, 0.12));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.reflHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.reflGlyph {
+  font-size: 18px;
+  color: #c8a0ff;
+  text-shadow: 0 0 12px rgba(200, 160, 255, 0.5);
+}
+.reflLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: #c8a0ff;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+.reflBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.reflText {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #d0c8e8;
+  margin: 0;
+}
+.reflDeep {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: #b8aed4;
+  margin: 0;
+  font-style: italic;
+}
+.reflQuestion {
+  font-size: 14px;
+  line-height: 1.55;
+  color: #e0d8f4;
+  margin: 0;
+  font-weight: 500;
+  padding: 10px 12px;
+  background: rgba(200, 160, 255, 0.05);
+  border-radius: 10px;
+  border-left: 3px solid rgba(200, 160, 255, 0.3);
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.ctaBtn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, rgba(140, 100, 255, 0.3), rgba(100, 70, 200, 0.15));
+  border: 1px solid rgba(140, 100, 255, 0.35);
+  color: #e2dcff;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+}
+.ctaBtn:hover {
+  background: linear-gradient(135deg, rgba(140, 100, 255, 0.45), rgba(100, 70, 200, 0.25));
+  border-color: rgba(160, 120, 255, 0.5);
+}
+
+.secondaryBtn {
+  width: 100%;
+  padding: 12px;
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #8b7faa;
+  font-size: 13.5px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.secondaryBtn:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #c8a0ff;
+}
+
+/* ── Footer ── */
+.footer {
+  font-size: 11.5px;
+  color: #3d3658;
+  text-align: center;
+  margin-top: 12px;
+}
+
+/* ── Loader ── */
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+.loadingText {
+  font-size: 28px;
+  color: #c8a0ff;
+}
+
+/* ── Error ── */
+.errorWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px;
+}
+.errorText {
+  color: #8b7faa;
+  font-size: 15px;
+}

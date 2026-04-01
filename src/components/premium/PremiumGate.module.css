@@ -1,0 +1,110 @@
+/* ── PremiumGate — Content Lock Overlay ── */
+
+.wrap {
+  position: relative;
+}
+
+.locked {
+  max-height: 320px;
+  overflow: hidden;
+}
+
+.blurLayer {
+  filter: blur(6px);
+  pointer-events: none;
+  user-select: none;
+}
+
+.gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(10, 10, 16, 0.7) 40%,
+    rgba(10, 10, 16, 0.95) 100%
+  );
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 20px 36px;
+  z-index: 2;
+}
+
+.lockIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.15), rgba(200, 160, 255, 0.06));
+  border: 1px solid rgba(200, 160, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+
+.lockTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.lockDesc {
+  font-size: 13px;
+  color: #8a84a8;
+  margin-bottom: 18px;
+  text-align: center;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.unlockBtn {
+  padding: 12px 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(200, 160, 255, 0.3);
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.18), rgba(200, 160, 255, 0.06));
+  color: #c8a0ff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s;
+  letter-spacing: 0.3px;
+}
+.unlockBtn:hover {
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.3), rgba(200, 160, 255, 0.12));
+  border-color: rgba(200, 160, 255, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(120, 60, 200, 0.15);
+}
+
+/* ── Lock Badge (for cards) ── */
+.lockBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(10, 10, 16, 0.7);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  z-index: 3;
+}

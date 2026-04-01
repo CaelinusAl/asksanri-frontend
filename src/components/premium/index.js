@@ -1,10 +1,2 @@
-// Premium Components Index
-export {
-  PremiumBadge,
-  FeatureLock,
-  ContentLimiter,
-  UpgradePromptBanner,
-  DailyLimitIndicator,
-  PlanCard,
-  UpgradeModal
-} from './PremiumComponents';
+export { PremiumBadge, UpgradeModal } from "./PremiumComponents";
+export { PremiumGate, LockBadge } from "./PremiumGate";

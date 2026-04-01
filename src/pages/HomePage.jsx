@@ -8,6 +8,7 @@ import AuthModal from "../components/AuthModal";
 
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
+import { getDailyQuestion } from "../data/dailyQuestions";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -125,7 +126,6 @@ export default function HomePage() {
         hint: isTR ? "Ritüeli Başlat →" : "Start Ritual →",
         path: "/rituel-alani",
         img: "/assets/gates/rituel.jpg",
-        premium: true,
       },
       {
         key: "library",
@@ -136,6 +136,26 @@ export default function HomePage() {
         hint: isTR ? "Arşive Gir →" : "Enter Archive →",
         path: "/library",
         img: "/assets/gates/kutuphane.jpg",
+      },
+      {
+        key: "yanki",
+        title: isTR ? "Yankı Alanı" : "Echo Field",
+        desc: isTR
+          ? "Kolektif bilinç akışı — paylaş, yankıla, dinle"
+          : "Collective consciousness — share, echo, listen",
+        hint: isTR ? "Akışa Gir →" : "Enter Flow →",
+        path: "/yanki-alani",
+        img: "/assets/gates/yanki-alani.jpg",
+      },
+      {
+        key: "okuma",
+        title: isTR ? "Okuma Alanı" : "Reading Field",
+        desc: isTR
+          ? "Hologram Matrix okumaları — gerçekliğin kodlarını çöz"
+          : "Hologram Matrix readings — decode the codes of reality",
+        hint: isTR ? "Okumalara Gir →" : "Enter Readings →",
+        path: "/okuma-alani",
+        img: "/assets/gates/okuma-alani.jpg",
       },
     ];
 
@@ -288,6 +308,27 @@ export default function HomePage() {
                 <span className={styles.featuredHint}>{featured.hint}</span>
               </div>
             </div>
+
+            {/* DAILY QUESTION */}
+            {(() => {
+              const dq = getDailyQuestion();
+              return (
+                <div
+                  className={styles.dailyQuestion}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => navigate("/yanki-alani/yeni", { state: { skipIntro: true } })}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ")
+                      navigate("/yanki-alani/yeni", { state: { skipIntro: true } });
+                  }}
+                >
+                  <span className={styles.dqLabel}>{isTR ? "BUGÜNÜN SORUSU" : "TODAY'S QUESTION"}</span>
+                  <p className={styles.dqText}>{isTR ? dq.tr : dq.en}</p>
+                  <span className={styles.dqHint}>{isTR ? "Yankı bırak →" : "Leave an echo →"}</span>
+                </div>
+              );
+            })()}
 
             {/* GATE GRID */}
             <div className={styles.grid}>
