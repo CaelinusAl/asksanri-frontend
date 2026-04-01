@@ -55,11 +55,12 @@ export function AdminProvider({ children }) {
       throw new Error(err.detail || "Login failed");
     }
     const data = await res.json();
-    if (!data.access_token) throw new Error("No token received");
-    localStorage.setItem(TOKEN_KEY, data.access_token);
+    const tkn = data.access_token || data.token;
+    if (!tkn) throw new Error("No token received");
+    localStorage.setItem(TOKEN_KEY, tkn);
 
     const meRes = await fetch(`${API}/auth/me`, {
-      headers: { Authorization: `Bearer ${data.access_token}` },
+      headers: { Authorization: `Bearer ${tkn}` },
     });
     if (!meRes.ok) throw new Error("Failed to verify user");
     const me = await meRes.json();
