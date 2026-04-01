@@ -28,7 +28,7 @@ export function Footer() {
 
         {/* Company */}
         <div style={companyStyle}>
-          CR YAPIM VE AJANS TEKNOLOJİLERİ TİC.ŞTİ.
+          CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ.
         </div>
         <div style={detailStyle}>
           Kadıköy Rasimpaşa Vergi Dairesi &nbsp;•&nbsp; İstanbul, Türkiye

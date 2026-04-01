@@ -157,6 +157,16 @@ export default function HomePage() {
         path: "/okuma-alani",
         img: "/assets/gates/okuma-alani.jpg",
       },
+      {
+        key: "kod-egitmeni",
+        title: isTR ? "Kod Eğitmeni" : "Code Teacher",
+        desc: isTR
+          ? "Sembol okuma, frekans çözme, sistem analizi — kodları öğren"
+          : "Symbol reading, frequency decoding, system analysis — learn the codes",
+        hint: isTR ? "Eğitime Başla →" : "Start Learning →",
+        path: "/kod-egitmeni",
+        img: "/assets/gates/kod-egitmeni.jpg",
+      },
     ];
 
     const adminKey = import.meta.env.VITE_ADMIN_KEY;

@@ -12,7 +12,7 @@ function LegalLayout({ title, children }) {
         <h1 className={styles.h1}>{title}</h1>
         <div className={styles.content}>{children}</div>
         <div className={styles.footerNote}>
-          © {new Date().getFullYear()} CR YAPIM VE AJANS TEKNOLOJİLERİ TİC.ŞTİ. — CaelinusAI / SANRI
+          © {new Date().getFullYear()} CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ. — CaelinusAI / SANRI
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@ export function HakkimizdaPage() {
         <h2>Şirket Bilgileri</h2>
         <table className={styles.infoTable}>
           <tbody>
-            <tr><td>Ticari Unvan</td><td>CR YAPIM VE AJANS TEKNOLOJİLERİ TİC.ŞTİ.</td></tr>
+            <tr><td>Ticari Unvan</td><td>CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ.</td></tr>
             <tr><td>Mersis No</td><td>—</td></tr>
             <tr><td>Vergi Dairesi</td><td>Kadıköy Rasimpaşa Vergi Dairesi</td></tr>
             <tr><td>Adres</td><td>Kadıköy, İstanbul, Türkiye</td></tr>
@@ -84,7 +84,7 @@ export function GizlilikPolitikasiPage() {
       <section className={styles.section}>
         <h2>1. Veri Sorumlusu</h2>
         <p>
-          CR YAPIM VE AJANS TEKNOLOJİLERİ TİC.ŞTİ. ("Şirket"), CAELINUS AI / SANRI platformunun
+          CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ. ("Şirket"), CAELINUS AI / SANRI platformunun
           veri sorumlusudur. İletişim: <a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a>
         </p>
       </section>
@@ -158,7 +158,7 @@ export function MesafeliSatisPage() {
         <p><strong>SATICI:</strong></p>
         <table className={styles.infoTable}>
           <tbody>
-            <tr><td>Ticari Unvan</td><td>CR YAPIM VE AJANS TEKNOLOJİLERİ TİC.ŞTİ.</td></tr>
+            <tr><td>Ticari Unvan</td><td>CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ.</td></tr>
             <tr><td>Adres</td><td>Kadıköy, İstanbul, Türkiye</td></tr>
             <tr><td>E-posta</td><td><a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a></td></tr>
           </tbody>
