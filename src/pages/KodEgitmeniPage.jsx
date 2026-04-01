@@ -13,7 +13,7 @@ import {
 } from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
-import { Footer } from "../components/layout/Footer";
+
 
 const API_URL =
   (import.meta?.env?.VITE_BACKEND_URL &&
@@ -681,7 +681,6 @@ export default function KodEgitmeniPage() {
         )}
       </AnimatePresence>
 
-      <Footer />
     </div>
   );
 }
