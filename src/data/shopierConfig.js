@@ -1,15 +1,17 @@
 /* ═══════════════════════════════════════════════════
    SHOPIER PAYMENT CONFIGURATION — Multi-tier
-   ═══════════════════════════════════════════════════
-   FREE      : Nurun Frekansı, OKU
-   MICRO 9.90: Okuma devamları
-   CORE  49  : Kod Eğitmeni
-   PREMIUM   : 112. Kitap (369₺), Matrix Code İkra (470₺)
-*/
+   Server-side purchase persistence + localStorage cache
+   ═══════════════════════════════════════════════════ */
 
 const SITE_URL =
   (typeof window !== "undefined" && window.location.origin) ||
   "https://asksanri.com";
+
+const API =
+  (typeof window !== "undefined" &&
+    import.meta?.env?.VITE_BACKEND_URL &&
+    String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+  "https://sanri-api-production-4a7b.up.railway.app";
 
 export const SHOPIER_PRODUCTS = {
   okuma_devami: {
@@ -86,7 +88,26 @@ export const SHOPIER_PRODUCTS = {
   },
 };
 
-// ── Access key management ──
+// ── Device fingerprint (stable per browser) ──
+const FP_KEY = "sanri_device_fp";
+
+export function getDeviceFingerprint() {
+  try {
+    let fp = localStorage.getItem(FP_KEY);
+    if (!fp) {
+      fp =
+        Date.now().toString(36) +
+        Math.random().toString(36).slice(2, 10) +
+        Math.random().toString(36).slice(2, 6);
+      localStorage.setItem(FP_KEY, fp);
+    }
+    return fp;
+  } catch {
+    return "anon";
+  }
+}
+
+// ── Access key management (localStorage cache) ──
 const SHOPIER_ACCESS_KEY = "sanri_shopier_access";
 const SHOPIER_PENDING_KEY = "sanri_shopier_pending";
 
@@ -127,6 +148,73 @@ export function unlockViaShopier(contentId) {
     access[contentId] = { unlocked: true, at: new Date().toISOString() };
   }
   saveShopierAccess(access);
+  _recordPurchaseToServer(contentId);
+}
+
+// ── Server-side purchase recording ──
+function _getAuthHeaders() {
+  const h = { "Content-Type": "application/json" };
+  try {
+    const t = localStorage.getItem("sanri_token");
+    if (t) h["Authorization"] = `Bearer ${t}`;
+  } catch {}
+  return h;
+}
+
+function _recordPurchaseToServer(contentId) {
+  const product = SHOPIER_PRODUCTS[contentId];
+  fetch(`${API}/shopier/record`, {
+    method: "POST",
+    headers: _getAuthHeaders(),
+    body: JSON.stringify({
+      content_id: contentId,
+      product_id: product?.id || contentId,
+      device_fp: getDeviceFingerprint(),
+      amount: product ? parseFloat(product.price) : 0,
+    }),
+  }).catch(() => {});
+}
+
+export async function syncPurchasesFromServer() {
+  try {
+    const fp = getDeviceFingerprint();
+    const res = await fetch(
+      `${API}/shopier/my-purchases?device_fp=${fp}`,
+      { headers: _getAuthHeaders() }
+    );
+    const data = await res.json();
+    if (!data.purchases?.length) return;
+    const access = getShopierAccess();
+    let changed = false;
+    for (const p of data.purchases) {
+      if (!access[p.content_id]) {
+        access[p.content_id] = { unlocked: true, at: p.purchased_at };
+        changed = true;
+      }
+    }
+    if (changed) saveShopierAccess(access);
+  } catch {}
+}
+
+export async function checkServerUnlock(contentId) {
+  try {
+    const fp = getDeviceFingerprint();
+    const res = await fetch(
+      `${API}/shopier/check/${contentId}?device_fp=${fp}`,
+      { headers: _getAuthHeaders() }
+    );
+    const data = await res.json();
+    if (data.unlocked) {
+      const access = getShopierAccess();
+      if (!access[contentId]) {
+        access[contentId] = { unlocked: true, at: data.purchased_at || new Date().toISOString() };
+        saveShopierAccess(access);
+      }
+    }
+    return data.unlocked;
+  } catch {
+    return false;
+  }
 }
 
 export function getUnlockedItems() {
@@ -186,6 +274,11 @@ export function clearPendingPurchase() {
 export function redirectToShopier(productId, contentId, returnPath) {
   const product = SHOPIER_PRODUCTS[productId];
   if (!product) return;
+
+  try {
+    const { trackShopierRedirect } = require("./analytics");
+    trackShopierRedirect(contentId || productId, parseFloat(product.price) || 0);
+  } catch {}
 
   const key = setPendingPurchase(productId, contentId, returnPath);
   const returnUrl = `${SITE_URL}/odeme-basarili?key=${key}&content=${encodeURIComponent(

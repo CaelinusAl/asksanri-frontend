@@ -5,6 +5,7 @@ import {
   getPendingPurchase,
   clearPendingPurchase,
   unlockViaShopier,
+  syncPurchasesFromServer,
 } from "../data/shopierConfig";
 
 const STYLE = {
@@ -85,6 +86,8 @@ export default function PendingPurchaseRecovery() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    syncPurchasesFromServer();
+
     if (location.pathname === "/odeme-basarili") return;
 
     const p = getPendingPurchase();

@@ -5,7 +5,10 @@ import {
   getPendingPurchase,
   clearPendingPurchase,
   unlockViaShopier,
+  syncPurchasesFromServer,
+  SHOPIER_PRODUCTS,
 } from "../data/shopierConfig";
+import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
 
 export default function OdemeBasariliPage() {
@@ -22,12 +25,13 @@ export default function OdemeBasariliPage() {
     if (startedRef.current) return;
     startedRef.current = true;
 
-    if (contentId) {
-      unlockViaShopier(contentId);
-    } else {
-      unlockViaShopier("premium");
-    }
+    const target = contentId || "premium";
+    unlockViaShopier(target);
     clearPendingPurchase();
+    syncPurchasesFromServer();
+
+    const product = SHOPIER_PRODUCTS[target] || SHOPIER_PRODUCTS[pending?.productId];
+    trackPurchase(target, product ? parseFloat(product.price) : 0);
 
     setPhase("glow");
     const t1 = setTimeout(() => setPhase("kapi"), 1000);

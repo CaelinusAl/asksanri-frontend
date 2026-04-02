@@ -53,12 +53,14 @@ import RolOkumaPage from "./pages/RolOkumaPage";
 import AnKodPage from "./pages/AnKodPage";
 import AuthCallback from "./components/AuthCallback";
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
+import EmailCaptureModal from "./components/EmailCaptureModal";
 
 export default function App() {
   usePageView();
   return (
     <>
     <PendingPurchaseRecovery />
+    <EmailCaptureModal trigger="timer" page="global" />
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/giris" element={<GirisPage />} />

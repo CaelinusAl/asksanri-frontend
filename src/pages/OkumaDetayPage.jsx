@@ -7,6 +7,7 @@ import { PremiumGate } from "../components/premium/PremiumGate";
 import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
+import { EmailCaptureInline } from "../components/EmailCaptureModal";
 import styles from "./OkumaDetayPage.module.css";
 
 const API =
@@ -457,6 +458,14 @@ export default function OkumaDetayPage() {
             </div>
           </form>
         </div>
+
+        {/* ── Email Capture ── */}
+        {!isLocked && (
+          <EmailCaptureInline
+            page={`okuma/${post.slug}`}
+            label="Bu okumanın devamını ve yeni frekans analizlerini almak ister misin?"
+          />
+        )}
 
         {/* ── Sanrı CTA (after everything) ── */}
         {!isLocked && sr && (
