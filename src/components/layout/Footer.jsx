@@ -63,8 +63,8 @@ export function Footer() {
 
 const footerStyle = {
   width: "100%",
-  borderTop: "1px solid rgba(255,255,255,0.06)",
-  background: "linear-gradient(180deg, rgba(6,6,14,0.95) 0%, rgba(4,4,10,1) 100%)",
+  borderTop: "1px solid var(--border)",
+  background: "var(--bg-primary)",
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
   padding: "32px 20px 24px",
@@ -90,7 +90,7 @@ const navStyle = {
 };
 
 const linkStyle = {
-  color: "rgba(255,255,255,0.55)",
+  color: "var(--text-muted)",
   textDecoration: "none",
   fontSize: 12,
   fontWeight: 500,
@@ -99,21 +99,21 @@ const linkStyle = {
 };
 
 const sepStyle = {
-  color: "rgba(255,255,255,0.15)",
+  color: "var(--text-dimmed)",
   fontSize: 12,
   userSelect: "none",
 };
 
 const companyStyle = {
   marginTop: 8,
-  color: "rgba(255,255,255,0.45)",
+  color: "var(--text-muted)",
   fontSize: 11,
   fontWeight: 700,
   letterSpacing: 0.4,
 };
 
 const detailStyle = {
-  color: "rgba(255,255,255,0.3)",
+  color: "var(--text-dimmed)",
   fontSize: 11,
   lineHeight: 1.5,
 };
@@ -136,19 +136,19 @@ const cardLogoStyle = {
   width: 44,
   height: 28,
   borderRadius: 4,
-  border: "1px solid rgba(255,255,255,0.08)",
+  border: "1px solid var(--border)",
 };
 
 const iyzicoTextStyle = {
   fontSize: 11,
   fontWeight: 600,
-  color: "rgba(255,255,255,0.4)",
+  color: "var(--text-dimmed)",
   letterSpacing: 0.3,
 };
 
 const copyrightStyle = {
   marginTop: 8,
-  color: "rgba(255,255,255,0.22)",
+  color: "var(--text-dimmed)",
   fontSize: 10,
   letterSpacing: 0.3,
 };

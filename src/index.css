@@ -1,10 +1,59 @@
 /* Fonts loaded via index.html <link> for faster delivery */
 
-/* Global base */
+/* ═══ Theme tokens ═══ */
 :root {
   --font-title: "Cormorant Garamond", "Georgia", serif;
   --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color-scheme: dark;
+
+  /* Dark mode (default) */
+  --bg-primary: #07080d;
+  --bg-page: #0a0a10;
+  --bg-surface: rgba(255,255,255,0.04);
+  --bg-card: rgba(255,255,255,0.05);
+  --bg-card-hover: rgba(255,255,255,0.08);
+  --bg-input: rgba(200,160,255,0.06);
+  --text-primary: #e9ecff;
+  --text-secondary: #b0a8c8;
+  --text-muted: #8a84a8;
+  --text-dimmed: #6a6480;
+  --accent: #c8a0ff;
+  --accent2: #ff9a6c;
+  --accent-green: #78f7d8;
+  --border: rgba(255,255,255,0.07);
+  --border-accent: rgba(200,160,255,0.2);
+  --shadow: rgba(0,0,0,0.4);
+  --gradient-page: linear-gradient(170deg, #0a0a10 0%, #12101e 40%, #0d0b16 100%);
+  --gradient-hero: linear-gradient(180deg, #070810 0%, #0b0d18 50%, #06070c 100%);
+  --cover-overlay: rgba(0,0,0,0.5);
+  --lock-blur: 8px;
+  --modal-bg: rgba(10,10,16,0.96);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-primary: #f5f3f8;
+  --bg-page: #faf8fc;
+  --bg-surface: rgba(0,0,0,0.03);
+  --bg-card: #ffffff;
+  --bg-card-hover: #f0ecf6;
+  --bg-input: rgba(100,80,140,0.06);
+  --text-primary: #1a1625;
+  --text-secondary: #4a4260;
+  --text-muted: #7a7290;
+  --text-dimmed: #9a92b0;
+  --accent: #7c5cbf;
+  --accent2: #d4713a;
+  --accent-green: #2a9d6e;
+  --border: rgba(0,0,0,0.08);
+  --border-accent: rgba(100,80,160,0.2);
+  --shadow: rgba(0,0,0,0.08);
+  --gradient-page: linear-gradient(170deg, #faf8fc 0%, #f0ecf6 40%, #f5f3f8 100%);
+  --gradient-hero: linear-gradient(180deg, #faf8fc 0%, #f0ecf6 50%, #f5f3f8 100%);
+  --cover-overlay: rgba(255,255,255,0.3);
+  --lock-blur: 6px;
+  --modal-bg: rgba(250,248,252,0.97);
 }
 
 @tailwind base;
@@ -24,15 +73,16 @@
 html, body, #root { height: 100%; }
 
 html, body {
-  background: #05010c;
-  color: rgba(245, 240, 255, 0.92);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background 0.35s ease, color 0.35s ease;
 }
 
 body {
   margin: 0;
   font-family: var(--font-body);
-  background: #07080d;
-  color: #e9ecff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   overflow-x: hidden;
 }
 

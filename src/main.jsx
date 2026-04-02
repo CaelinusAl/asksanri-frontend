@@ -7,6 +7,8 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import App from "./App";
 import { Footer } from "./components/layout/Footer";
 import MicroPayModal from "./components/MicroPayModal";
+import ThemeToggle from "./components/ThemeToggle";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AdminProvider } from "./contexts/AdminContext";
@@ -18,6 +20,7 @@ import "./data/analytics";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+    <ThemeProvider>
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <LanguageProvider>
         <AuthProvider>
@@ -27,12 +30,14 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 <App />
                 <Footer />
                 <MicroPayModal />
+                <ThemeToggle />
               </DoorNavProvider>
             </PremiumProvider>
           </AdminProvider>
         </AuthProvider>
       </LanguageProvider>
     </BrowserRouter>
+    </ThemeProvider>
     <Analytics />
     <SpeedInsights />
   </React.StrictMode>
