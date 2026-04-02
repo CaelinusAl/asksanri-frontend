@@ -5,6 +5,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { fetchMyProfile, fetchMyPosts } from "../data/yankiApi";
 import { KOD_MODULLERI, getAllLessonsFlat } from "../data/kodEgitmeniData";
+import { getUnlockedItems, isShopierUnlocked } from "../data/shopierConfig";
+import { getAllKatmanlar } from "../data/katmanEngine";
 import styles from "./BenimAlanimPage.module.css";
 
 /* ═══════════════════════════════════════════════
@@ -898,6 +900,188 @@ function Defterim({ isTR, yankiPosts, navigate }) {
 }
 
 /* ═══════════════════════════════════════════════
+   SATIN ALINAN AÇILIMLAR
+   ═══════════════════════════════════════════════ */
+
+function SatinAlinanAcilimlar({ isTR, navigate }) {
+  const unlockedItems = useMemo(() => getUnlockedItems(), []);
+  const allKatmanlar = useMemo(() => getAllKatmanlar(), []);
+
+  const CONTENT_MAP = {
+    role_unlock: {
+      label: "Matrix Rol Okuma",
+      icon: "◈",
+      desc: isTR
+        ? "Adın ve doğum tarihin birleşti. Rolün açıldı."
+        : "Your name and birth date merged. Your role is revealed.",
+      path: "/rol-okuma",
+      btnText: isTR ? "Tekrar Oku" : "Re-read",
+    },
+    ankod_unlock: {
+      label: "AN_KOD — Derin Okuma",
+      icon: "✦",
+      desc: isTR
+        ? "Bilinçaltın konuştu. Derin okuman açıldı."
+        : "Your subconscious spoke. Deep reading unlocked.",
+      path: "/an-kod",
+      btnText: isTR ? "Tekrar Bak" : "Look Again",
+    },
+    subconscious_unlock: {
+      label: "Bilinçaltı Yansıtma",
+      icon: "◎",
+      desc: isTR
+        ? "Seçimlerin bir desen oluşturdu. Ayna açıldı."
+        : "Your choices formed a pattern. The mirror is open.",
+      path: "/an-kod",
+      btnText: isTR ? "Tekrar Bak" : "Look Again",
+    },
+    iliski_acilimi: {
+      label: isTR ? "İlişki Açılımı" : "Relationship Expansion",
+      icon: "◈",
+      desc: isTR
+        ? "İlişkilerindeki tekrar eden kalıp açıldı."
+        : "The repeating pattern in your relationships is revealed.",
+      path: "/rol-okuma",
+      btnText: isTR ? "Hatırla" : "Remember",
+    },
+    para_akisi: {
+      label: isTR ? "Para Akışı Açılımı" : "Money Flow Expansion",
+      icon: "✦",
+      desc: isTR
+        ? "Bolluk blokajın ve enerji akışın açıldı."
+        : "Your abundance blockage and energy flow are revealed.",
+      path: "/rol-okuma",
+      btnText: isTR ? "Hatırla" : "Remember",
+    },
+    kariyer_acilimi: {
+      label: isTR ? "Kariyer Açılımı" : "Career Expansion",
+      icon: "⟁",
+      desc: isTR
+        ? "Gerçek yön enerjin ve sıkışma döngün açıldı."
+        : "Your true direction energy and stagnation cycle revealed.",
+      path: "/rol-okuma",
+      btnText: isTR ? "Hatırla" : "Remember",
+    },
+    haftalik_akis: {
+      label: isTR ? "Haftalık Akış" : "Weekly Flow",
+      icon: "☽",
+      desc: isTR
+        ? "Bu haftanın kodu ve SANRI mesajın açıldı."
+        : "This week's code and SANRI message revealed.",
+      path: "/rol-okuma",
+      btnText: isTR ? "Oku" : "Read",
+    },
+    saglik_enerji: {
+      label: isTR ? "Sağlık & Enerji Katmanı" : "Health & Energy Layer",
+      icon: "∞",
+      desc: isTR
+        ? "Bedensel enerji haritanın ve tıkanma noktaların açıldı."
+        : "Your body energy map and blockage points revealed.",
+      path: "/rol-okuma",
+      btnText: isTR ? "Hatırla" : "Remember",
+    },
+    premium: {
+      label: "Premium Erişim",
+      icon: "⭐",
+      desc: isTR ? "Tüm katmanlara erişim açık." : "Access to all layers is open.",
+      path: "/",
+      btnText: isTR ? "Keşfet" : "Explore",
+    },
+  };
+
+  const availableKatmanlar = allKatmanlar.filter(
+    (k) => !isShopierUnlocked(k.contentId) && !unlockedItems.find((u) => u.id === k.contentId)
+  );
+
+  if (unlockedItems.length === 0 && availableKatmanlar.length === 0) return null;
+
+  return (
+    <div className={styles.section}>
+      <div className={styles.sectionHeader}>
+        <div className={styles.sectionTitle}>
+          <span className={styles.sectionIcon}>✦</span>
+          {isTR ? "Açılımlarım" : "My Expansions"}
+        </div>
+      </div>
+      <div className={styles.glass}>
+        {unlockedItems.length > 0 ? (
+          <>
+            <div className={styles.acilimCount}>
+              {unlockedItems.length} {isTR ? "katman açıldı" : "layer(s) unlocked"}
+            </div>
+            <div className={styles.acilimList}>
+              {unlockedItems.map((item) => {
+                const meta = CONTENT_MAP[item.id] || {
+                  label: item.label,
+                  icon: "✦",
+                  desc: "",
+                  path: "/",
+                  btnText: isTR ? "Git" : "Go",
+                };
+                return (
+                  <div key={item.id} className={styles.acilimCard}>
+                    <div className={styles.acilimCardIcon}>{meta.icon}</div>
+                    <div className={styles.acilimCardBody}>
+                      <div className={styles.acilimCardTitle}>{meta.label}</div>
+                      {meta.desc && (
+                        <div className={styles.acilimCardDesc}>{meta.desc}</div>
+                      )}
+                      {item.at && (
+                        <div className={styles.acilimCardDate}>
+                          {formatDate(item.at)}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      className={styles.acilimCardBtn}
+                      onClick={() => navigate(meta.path)}
+                    >
+                      {meta.btnText}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <div className={styles.acilimEmpty}>
+            <div className={styles.acilimEmptyIcon}>◎</div>
+            <p className={styles.acilimEmptyText}>
+              {isTR
+                ? "Henüz bir açılımın yok. İlk katmanını aç."
+                : "No expansions yet. Open your first layer."}
+            </p>
+          </div>
+        )}
+
+        {availableKatmanlar.length > 0 && (
+          <div className={styles.acilimSuggest}>
+            <div className={styles.acilimSuggestLabel}>
+              {isTR ? "Açılabilecek katmanlar" : "Available layers"}
+            </div>
+            {availableKatmanlar.slice(0, 3).map((k) => (
+              <div key={k.id} className={styles.acilimSuggestItem}>
+                <span className={styles.acilimSuggestIcon}>{k.icon}</span>
+                <div className={styles.acilimSuggestBody}>
+                  <div className={styles.acilimSuggestQ}>{k.question}</div>
+                  <div className={styles.acilimSuggestTeaser}>{k.teaser}</div>
+                </div>
+                <button
+                  className={styles.acilimSuggestBtn}
+                  onClick={() => navigate("/rol-okuma")}
+                >
+                  {isTR ? "Aç" : "Open"}
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    ROZETLER
    ═══════════════════════════════════════════════ */
 
@@ -1026,6 +1210,8 @@ export default function BenimAlanimPage() {
       <SanriVision isTR={isTR} />
 
       <StreakMilestoneBar streak={streak} isTR={isTR} />
+
+      <SatinAlinanAcilimlar isTR={isTR} navigate={navigate} />
 
       <KodHaritam avatarId={avatarId} kodProgress={kodProgress} isTR={isTR} />
 
