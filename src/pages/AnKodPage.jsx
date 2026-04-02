@@ -95,12 +95,12 @@ function generateReading(answers) {
   return fallbacks[seed % fallbacks.length];
 }
 
-const DEEP_READINGS = [
-  "Döngünün kırılma noktası burada gizli.",
-  "Gölge katmanın: kaçtığın şey seni tanımlıyor.",
-  "Bastırdığın duygunun frekans analizi.",
-  "İsmin ve bu kodun kesişim noktası.",
-  "Tekrar eden kalıbın kök nedeni.",
+const DEEP_LAYERS = [
+  { icon: "◉", text: "Döngünün kırılma noktası — neden aynı yere dönüyorsun?" },
+  { icon: "☽", text: "Gölge katmanın — kaçtığın şey seni nasıl tanımlıyor?" },
+  { icon: "✦", text: "Bastırdığın duygunun frekans analizi" },
+  { icon: "⟁", text: "İsmin ve bu anın kesişim noktası — numerolojik çözümleme" },
+  { icon: "∞", text: "Tekrar eden kalıbın kök nedeni ve kırılma formülü" },
 ];
 
 const PHASES = {
@@ -258,10 +258,10 @@ export default function AnKodPage() {
                 transition={{ delay: 0.8, duration: 0.6 }}
               >
                 <div className={styles.lockPreview}>
-                  {DEEP_READINGS.map((line, i) => (
+                  {DEEP_LAYERS.map((layer, i) => (
                     <div key={i} className={styles.lockLine}>
-                      <span className={styles.lockLineIcon}>◈</span>
-                      <span className={styles.lockLineText}>{line}</span>
+                      <span className={styles.lockLineIcon}>{layer.icon}</span>
+                      <span className={styles.lockLineText}>{layer.text}</span>
                     </div>
                   ))}
                 </div>
@@ -284,6 +284,7 @@ export default function AnKodPage() {
               </motion.div>
             )}
 
+            {/* ── Unlocked: direct to Rol Okuma ── */}
             {unlocked && (
               <motion.div
                 className={styles.unlockedZone}
@@ -291,23 +292,20 @@ export default function AnKodPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
               >
-                <div className={styles.deepSections}>
-                  {DEEP_READINGS.map((line, i) => (
-                    <motion.div
-                      key={i}
-                      className={styles.deepCard}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 + i * 0.15, duration: 0.4 }}
-                    >
-                      <span className={styles.deepIcon}>◈</span>
-                      <span className={styles.deepText}>{line}</span>
-                    </motion.div>
-                  ))}
+                <div className={styles.unlockedCard}>
+                  <div className={styles.unlockedGlyph}>✦</div>
+                  <p className={styles.unlockedText}>
+                    Anın kodları açıldı.
+                    <br />
+                    Şimdi ismin ve doğum tarihini girerek tam Matrix analizini al.
+                  </p>
+                  <button
+                    className={styles.unlockedBtn}
+                    onClick={() => navigate("/rol-okuma")}
+                  >
+                    Tam Analizine Git
+                  </button>
                 </div>
-                <p className={styles.deepNote}>
-                  Tam analiz Matrix Rol Okuma ile birleştirildiğinde açılır.
-                </p>
               </motion.div>
             )}
 
@@ -343,14 +341,19 @@ export default function AnKodPage() {
             >
               <div className={styles.modalGlyph}>✦</div>
               <p className={styles.modalText}>
-                Bu katmanı açmak için{" "}
+                Anın kodlarını açmak için{" "}
                 <span className={styles.modalPrice}>369₺</span> enerji
                 değişimi gerekir.
+              </p>
+              <p className={styles.modalSub}>
+                Matrix Rol Okuma ile ismin, doğum tarihin ve bu anın
+                cevapları birleştirilir. Tam numerolojik analiz + kişisel
+                SANRI yorumu sana açılır.
               </p>
               <button
                 className={styles.modalBtn}
                 onClick={() =>
-                  redirectToShopier("rol_okuma", "ankod_unlock", "/an-kod")
+                  redirectToShopier("rol_okuma", "ankod_unlock", "/rol-okuma")
                 }
               >
                 Kapıyı Aç

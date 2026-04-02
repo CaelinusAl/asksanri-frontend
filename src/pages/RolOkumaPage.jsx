@@ -68,7 +68,7 @@ export default function RolOkumaPage() {
 
   const [modal, setModal] = useState(null);
 
-  const unlocked = isShopierUnlocked("role_unlock");
+  const unlocked = isShopierUnlocked("role_unlock") || isShopierUnlocked("ankod_unlock");
 
   const openModal = (label, price, productId, contentId) => {
     setModal({ label, price, productId, contentId });

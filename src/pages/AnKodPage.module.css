@@ -371,40 +371,45 @@
   font-style: italic;
 }
 
-/* ── Unlocked deep content ── */
+/* ── Unlocked: redirect card ── */
 .unlockedZone {
   margin-bottom: 36px;
 }
-.deepSections {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 20px;
+.unlockedCard {
+  padding: 40px 28px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(120, 247, 216, 0.06), rgba(200, 160, 255, 0.04));
+  border: 1px solid rgba(120, 247, 216, 0.15);
+  text-align: center;
 }
-.deepCard {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 20px;
+.unlockedGlyph {
+  font-size: 28px;
+  color: rgba(120, 247, 216, 0.55);
+  margin-bottom: 18px;
+}
+.unlockedText {
+  font-size: 15px;
+  color: rgba(200, 160, 255, 0.65);
+  line-height: 1.75;
+  margin: 0 0 28px;
+}
+.unlockedBtn {
+  padding: 16px 40px;
   border-radius: 14px;
-  background: linear-gradient(160deg, rgba(120, 247, 216, 0.04), rgba(200, 160, 255, 0.04));
-  border: 1px solid rgba(120, 247, 216, 0.12);
+  border: 1px solid rgba(120, 247, 216, 0.25);
+  background: rgba(120, 247, 216, 0.08);
+  color: rgba(120, 247, 216, 0.85);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
 }
-.deepIcon {
-  font-size: 18px;
-  color: rgba(120, 247, 216, 0.5);
-  flex-shrink: 0;
-}
-.deepText {
-  font-size: 14px;
-  color: rgba(200, 160, 255, 0.6);
-  line-height: 1.6;
-}
-.deepNote {
-  font-size: 12px;
-  color: rgba(200, 160, 255, 0.3);
-  font-style: italic;
-  margin: 0;
+.unlockedBtn:hover {
+  background: rgba(120, 247, 216, 0.15);
+  border-color: rgba(120, 247, 216, 0.4);
+  box-shadow: 0 0 30px rgba(120, 247, 216, 0.1);
+  transform: translateY(-1px);
 }
 
 /* ── Again ── */
@@ -470,6 +475,13 @@
 .modalPrice {
   color: #c8a0ff;
   font-weight: 700;
+}
+.modalSub {
+  font-size: 13px;
+  color: rgba(200, 160, 255, 0.4);
+  line-height: 1.7;
+  margin: 0 0 28px;
+  font-style: italic;
 }
 .modalBtn {
   width: 100%;
