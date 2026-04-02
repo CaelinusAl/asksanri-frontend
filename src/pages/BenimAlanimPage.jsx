@@ -352,6 +352,7 @@ function StreakMilestoneBar({ streak, isTR }) {
   const MILESTONES = [3, 7, 21];
 
   return (
+    <>
     <div className={styles.streakBar}>
       <div className={styles.streakFlame}>{streak > 0 ? "🔥" : "💫"}</div>
       <div className={styles.streakInfo}>
@@ -371,6 +372,12 @@ function StreakMilestoneBar({ streak, isTR }) {
         ))}
       </div>
     </div>
+    <p className={styles.streakHint}>
+      {isTR
+        ? "Streak, her İstanbul günü Bu alanı açtığında güncellenir (canlı veri, sunucudan)."
+        : "Streak updates each Istanbul calendar day you open My Space (live from server)."}
+    </p>
+    </>
   );
 }
 
