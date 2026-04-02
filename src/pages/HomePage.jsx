@@ -178,6 +178,16 @@ export default function HomePage() {
         img: "/assets/gates/bilinc.jpg",
       },
       {
+        key: "an-kod",
+        title: "AN_KOD",
+        desc: isTR
+          ? "Anın sana ne söylediğini görmek ister misin? 4 soru. Bir yansıma. Bir kod."
+          : "Want to see what this moment tells you? 4 questions. A reflection. A code.",
+        hint: isTR ? "Kodunu Gör →" : "See Your Code →",
+        path: "/an-kod",
+        img: "/assets/gates/frekans.jpg",
+      },
+      {
         key: "benim-alanim",
         title: isTR ? "Benim Alanım" : "My Space",
         desc: isTR

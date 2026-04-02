@@ -49,6 +49,7 @@ import { HakkimizdaPage, GizlilikPolitikasiPage, MesafeliSatisPage, IadeKosullar
 import KodEgitmeniPage from "./pages/KodEgitmeniPage";
 import BenimAlanimPage from "./pages/BenimAlanimPage";
 import RolOkumaPage from "./pages/RolOkumaPage";
+import AnKodPage from "./pages/AnKodPage";
 import AuthCallback from "./components/AuthCallback";
 
 export default function App() {
@@ -90,6 +91,7 @@ export default function App() {
 
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
       <Route path="/rol-okuma" element={<RolOkumaPage />} />
+      <Route path="/an-kod" element={<AnKodPage />} />
       <Route path="/benim-alanim" element={<BenimAlanimPage />} />
 
       <Route path="/payment/success" element={<PaymentSuccessPage />} />

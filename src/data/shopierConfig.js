@@ -54,6 +54,12 @@ export const SHOPIER_PRODUCTS = {
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
+  ankod: {
+    id: "ankod",
+    label: "AN_KOD — Anın Kodları Tam Analiz",
+    price: "369",
+    url: "https://shopier.com/asksanri/45787285",
+  },
 };
 
 // ── Access key management ──

@@ -1,0 +1,515 @@
+/* ═══════════════════════════════════════
+   AN_KOD — Anın Kodları
+   Hypnotic, card-based, soul-pull UI
+   ═══════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: #07080d;
+  color: #e2e2e8;
+  font-family: "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.bgOrb {
+  position: fixed;
+  top: -25%;
+  left: -20%;
+  width: 65vmax;
+  height: 65vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 160, 255, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orbDrift 20s ease-in-out infinite alternate;
+}
+.bgOrb2 {
+  position: fixed;
+  bottom: -30%;
+  right: -15%;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 247, 216, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  animation: orbDrift 25s ease-in-out infinite alternate-reverse;
+}
+@keyframes orbDrift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(30px, -20px); }
+}
+
+/* ── Topbar ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  background: rgba(7, 8, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.backBtn {
+  background: none;
+  border: none;
+  color: rgba(200, 160, 255, 0.7);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.backBtn:hover { color: #c8a0ff; }
+.topTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(200, 160, 255, 0.55);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.topStep {
+  margin-left: auto;
+  font-size: 12px;
+  color: rgba(200, 160, 255, 0.3);
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ═══════════════════════
+   INTRO
+   ═══════════════════════ */
+.introWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 75vh;
+  padding: 40px 24px;
+  text-align: center;
+}
+.introGlyph {
+  font-size: 52px;
+  color: rgba(200, 160, 255, 0.35);
+  margin-bottom: 32px;
+  animation: glyphFloat 4s ease-in-out infinite;
+}
+@keyframes glyphFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; }
+  50% { transform: translateY(-8px) scale(1.08); opacity: 0.6; }
+}
+.introTitle {
+  font-size: clamp(24px, 5.5vw, 38px);
+  font-weight: 300;
+  color: #e8e4f4;
+  line-height: 1.45;
+  margin: 0 0 16px;
+  letter-spacing: 0.01em;
+}
+.introSub {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.35);
+  margin: 0 0 40px;
+  letter-spacing: 0.04em;
+}
+.startBtn {
+  padding: 16px 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  background: rgba(200, 160, 255, 0.06);
+  color: #e0dcf0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.04em;
+}
+.startBtn:hover {
+  background: rgba(200, 160, 255, 0.14);
+  border-color: rgba(200, 160, 255, 0.4);
+  box-shadow: 0 0 40px rgba(200, 160, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════
+   QUESTIONS
+   ═══════════════════════ */
+.questionWrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+  text-align: center;
+}
+.questionNum {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(200, 160, 255, 0.08);
+  border: 1px solid rgba(200, 160, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 18px;
+  font-weight: 700;
+  color: rgba(200, 160, 255, 0.6);
+}
+.questionText {
+  font-size: clamp(20px, 4.5vw, 28px);
+  font-weight: 300;
+  color: #e8e4f4;
+  margin: 0 0 40px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+.optionsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.optionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(200, 160, 255, 0.1);
+  background: rgba(200, 160, 255, 0.03);
+  color: #e2e2e8;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.optionCard:hover {
+  background: rgba(200, 160, 255, 0.1);
+  border-color: rgba(200, 160, 255, 0.3);
+  box-shadow: 0 0 30px rgba(200, 160, 255, 0.08);
+  transform: translateY(-2px);
+}
+.optionCard:active {
+  transform: scale(0.97);
+}
+.optionIcon {
+  font-size: 24px;
+  color: rgba(200, 160, 255, 0.5);
+}
+.optionLabel {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ═══════════════════════
+   LOADING
+   ═══════════════════════ */
+.loadWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: 40px 24px;
+}
+.loadOrb {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 160, 255, 0.12) 0%, transparent 70%);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 28px;
+  animation: orbPulse 2.2s ease-in-out infinite;
+}
+@keyframes orbPulse {
+  0%, 100% { transform: scale(0.92); box-shadow: 0 0 30px rgba(200, 160, 255, 0.06); }
+  50% { transform: scale(1.1); box-shadow: 0 0 60px rgba(200, 160, 255, 0.18); }
+}
+.loadGlyph {
+  font-size: 32px;
+  color: rgba(200, 160, 255, 0.5);
+  animation: glyphSpin 5s linear infinite;
+}
+@keyframes glyphSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.loadText {
+  font-size: 15px;
+  color: rgba(200, 160, 255, 0.4);
+  letter-spacing: 0.06em;
+  animation: textPulse 2s ease-in-out infinite;
+}
+@keyframes textPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ═══════════════════════
+   RESULT
+   ═══════════════════════ */
+.resultWrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 48px 24px 100px;
+  text-align: center;
+}
+.resultGlyph {
+  font-size: 28px;
+  color: rgba(120, 247, 216, 0.5);
+  margin-bottom: 28px;
+}
+.resultCard {
+  padding: 36px 28px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(200, 160, 255, 0.06), rgba(10, 10, 16, 0.7));
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  margin-bottom: 40px;
+}
+.resultText {
+  font-size: clamp(16px, 3.5vw, 19px);
+  color: rgba(230, 226, 245, 0.85);
+  line-height: 1.8;
+  margin: 0;
+  font-weight: 300;
+  white-space: pre-line;
+  letter-spacing: 0.01em;
+}
+
+/* ── Lock Zone ── */
+.lockZone {
+  position: relative;
+  margin-bottom: 36px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.lockPreview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 20px;
+  filter: blur(5px);
+  pointer-events: none;
+  user-select: none;
+}
+.lockLine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(200, 160, 255, 0.04);
+  border: 1px solid rgba(200, 160, 255, 0.08);
+}
+.lockLineIcon {
+  font-size: 16px;
+  color: rgba(200, 160, 255, 0.4);
+}
+.lockLineText {
+  font-size: 13px;
+  color: rgba(200, 160, 255, 0.5);
+}
+.lockGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(7, 8, 13, 0.6) 30%,
+    rgba(7, 8, 13, 0.95) 70%
+  );
+  pointer-events: none;
+}
+.lockOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 32px;
+  z-index: 2;
+}
+.lockLine1 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 6px;
+}
+.lockLine2 {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.5);
+  margin: 0 0 24px;
+  font-style: italic;
+}
+.lockBtn {
+  padding: 16px 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.25);
+  background: rgba(200, 160, 255, 0.08);
+  color: #e0dcf0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.03em;
+}
+.lockBtn:hover {
+  background: rgba(200, 160, 255, 0.16);
+  border-color: rgba(200, 160, 255, 0.4);
+  box-shadow: 0 0 40px rgba(200, 160, 255, 0.12);
+  transform: translateY(-2px);
+}
+.lockHint {
+  margin-top: 14px;
+  font-size: 11px;
+  color: rgba(200, 160, 255, 0.28);
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+/* ── Unlocked deep content ── */
+.unlockedZone {
+  margin-bottom: 36px;
+}
+.deepSections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.deepCard {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, rgba(120, 247, 216, 0.04), rgba(200, 160, 255, 0.04));
+  border: 1px solid rgba(120, 247, 216, 0.12);
+}
+.deepIcon {
+  font-size: 18px;
+  color: rgba(120, 247, 216, 0.5);
+  flex-shrink: 0;
+}
+.deepText {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.6);
+  line-height: 1.6;
+}
+.deepNote {
+  font-size: 12px;
+  color: rgba(200, 160, 255, 0.3);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Again ── */
+.againBtn {
+  display: block;
+  margin: 0 auto;
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  background: rgba(200, 160, 255, 0.04);
+  color: rgba(200, 160, 255, 0.5);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.againBtn:hover {
+  background: rgba(200, 160, 255, 0.1);
+  border-color: rgba(200, 160, 255, 0.3);
+  color: #c8a0ff;
+}
+
+/* ═══════════════════════
+   ENERGY MODAL
+   ═══════════════════════ */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 4, 8, 0.84);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 24px;
+}
+.modalCard {
+  max-width: 400px;
+  width: 100%;
+  padding: 48px 32px 36px;
+  border-radius: 24px;
+  background: linear-gradient(170deg, rgba(20, 18, 30, 0.98), rgba(10, 10, 16, 0.96));
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  box-shadow:
+    0 0 80px rgba(200, 160, 255, 0.08),
+    0 0 160px rgba(120, 247, 216, 0.04);
+  text-align: center;
+}
+.modalGlyph {
+  font-size: 36px;
+  color: rgba(120, 247, 216, 0.5);
+  margin-bottom: 24px;
+  animation: glyphFloat 3s ease-in-out infinite;
+}
+.modalText {
+  font-size: 16px;
+  color: rgba(230, 226, 245, 0.8);
+  line-height: 1.75;
+  margin: 0 0 32px;
+  font-weight: 300;
+}
+.modalPrice {
+  color: #c8a0ff;
+  font-weight: 700;
+}
+.modalBtn {
+  width: 100%;
+  padding: 16px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.3);
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.25), rgba(120, 247, 216, 0.15));
+  color: #e8e4f4;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.03em;
+}
+.modalBtn:hover {
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.35), rgba(120, 247, 216, 0.2));
+  box-shadow: 0 0 40px rgba(200, 160, 255, 0.2);
+  transform: translateY(-1px);
+}
+.modalClose {
+  background: none;
+  border: none;
+  color: rgba(200, 160, 255, 0.3);
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: color 0.2s;
+  letter-spacing: 0.03em;
+}
+.modalClose:hover {
+  color: rgba(200, 160, 255, 0.55);
+}
+
+/* ═══════════════════════
+   RESPONSIVE
+   ═══════════════════════ */
+@media (max-width: 480px) {
+  .questionWrap { padding: 40px 16px 60px; }
+  .resultWrap { padding: 36px 16px 80px; }
+  .optionsGrid { grid-template-columns: 1fr; }
+  .optionCard { flex-direction: row; padding: 20px 18px; gap: 14px; }
+  .resultCard { padding: 28px 20px; }
+}
