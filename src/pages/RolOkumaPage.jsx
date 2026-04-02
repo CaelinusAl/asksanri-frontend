@@ -16,7 +16,7 @@ const LOADING_LINES = [
   "İsmin çözülüyor...",
   "Doğum frekansın hesaplanıyor...",
   "Katmanlar açılıyor...",
-  "Rolün belirleniyor...",
+  "Zaten biliyorsun. Sadece hatırlamıyorsun.",
 ];
 
 const FREE_SECTION_COUNT = 2;
@@ -36,10 +36,35 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
         transition={{ duration: 0.35, ease: "easeOut" }}
       >
         <div className={styles.modalGlyph}>✦</div>
-        <p className={styles.modalText}>
-          Bu katmanı açmak için{" "}
-          <span className={styles.modalPrice}>{price}₺</span>{" "}
-          enerji değişimi gerekir.
+        <p className={styles.modalTextDeep}>
+          Sen düşündüğünü sanıyorsun.
+        </p>
+        <p className={styles.modalTextDeep}>
+          Ama çoğu şey sana ait değil.
+        </p>
+        <div className={styles.modalDivider} />
+        <p className={styles.modalTextDeep}>
+          Bir rolün var.
+          <br />
+          Ve o rol, hayatının içinden konuşuyor.
+        </p>
+        <div className={styles.modalDivider} />
+        <p className={styles.modalTextDeep}>
+          Bu katman açıldığında,
+          <br />
+          sadece bilgi almazsın.
+        </p>
+        <p className={styles.modalTextHighlight}>
+          Kendini farklı görmeye başlarsın.
+        </p>
+        <div className={styles.modalDivider} />
+        <p className={styles.modalTextSoft}>
+          Bu bir cevap değil. Bir ayna.
+          <br />
+          Ve o aynaya bakmak… herkes için kolay değil.
+        </p>
+        <p className={styles.modalPrice}>
+          {price}₺ enerji değişimi
         </p>
         <button
           className={styles.modalBtn}
@@ -48,7 +73,7 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
           Kapıyı Aç
         </button>
         <button className={styles.modalClose} onClick={onClose}>
-          Şimdi değil
+          Şimdilik kal
         </button>
       </motion.div>
     </div>
@@ -143,12 +168,47 @@ export default function RolOkumaPage() {
             transition={{ duration: 0.5 }}
           >
             <div className={styles.formGlyph}>◈</div>
-            <h1 className={styles.formTitle}>Rolünü Öğren</h1>
-            <p className={styles.formSub}>
-              Adın ve doğum tarihin, evrenin sana verdiği kodu taşır.
+            <h1 className={styles.formTitle}>Sistemdeki Rolünü Hatırla</h1>
+            <p className={styles.formSubHero}>
+              Bu alan sana kim olduğunu söylemez.
               <br />
-              Sanrı bunu okur.
+              Sana zaten bildiğin şeyi hatırlatır.
             </p>
+
+            <div className={styles.deepDesc}>
+              <p className={styles.deepDescLine}>
+                Hayatında tekrar eden şeyler,
+                <br />
+                karşına çıkan insanlar,
+                <br />
+                kaçamadığın döngüler…
+              </p>
+              <p className={styles.deepDescPunch}>rastgele değil.</p>
+              <div className={styles.deepDescDivider} />
+              <p className={styles.deepDescLine}>
+                Bir rolün var.
+                <br />
+                Ve sen onu yaşıyorsun,
+                <br />
+                ama çoğu zaman görmeden.
+              </p>
+              <div className={styles.deepDescDivider} />
+              <p className={styles.deepDescLine}>
+                Matrix Rol Okuma ile:
+                <br />
+                adın, doğum tarihin ve taşıdığın frekans birleşir.
+              </p>
+              <p className={styles.deepDescHighlight}>
+                Ve sana ait olan şey açılır.
+              </p>
+              <div className={styles.deepDescDivider} />
+              <p className={styles.deepDescSoft}>
+                Bu bir analiz değil. Bu bir hatırlayış.
+              </p>
+              <p className={styles.deepDescCall}>
+                Buraya kadar geldiysen… zaten çağrıldın.
+              </p>
+            </div>
 
             <form className={styles.form} onSubmit={handleSubmit}>
               <div className={styles.fieldRow}>
@@ -288,7 +348,7 @@ export default function RolOkumaPage() {
 
                 {/* ── Upsell ── */}
                 <div className={styles.ctaSection}>
-                  <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
+                  <p className={styles.ctaLine}>Bu bir analiz değil. Bir hatırlayış.</p>
                   <div className={styles.ctaBtns}>
                     <div className={styles.ctaItem}>
                       <p className={styles.ctaQuestion}>
@@ -332,14 +392,18 @@ export default function RolOkumaPage() {
                   </div>
                   <div className={styles.lockZoneGradient} />
                   <div className={styles.lockZoneOverlay}>
-                    <p className={styles.lockZoneLine1}>Buraya kadar gördün.</p>
-                    <p className={styles.lockZoneLine2}>Ama asıl katman burada başlar.</p>
-                    <p className={styles.lockZonePersonal}>Bu sana özel.</p>
+                    <p className={styles.lockZoneLine1}>Sen yaşamıyorsun.</p>
+                    <p className={styles.lockZoneLine2}>Bir şeyi tekrar ediyorsun.</p>
+                    <div className={styles.lockZoneDivider} />
+                    <p className={styles.lockZonePersonal}>
+                      Sorun çözmek değil. Görmek.
+                    </p>
+                    <p className={styles.lockZonePersonalSoft}>Bu sana özel.</p>
                     <button
                       className={styles.lockZoneBtn}
                       onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
                     >
-                      Rolünü Aç
+                      Hatırla
                     </button>
                     <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
                   </div>
@@ -347,7 +411,7 @@ export default function RolOkumaPage() {
 
                 {/* ── Upsell teaser ── */}
                 <div className={styles.ctaSection}>
-                  <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
+                  <p className={styles.ctaLine}>Zaten biliyorsun. Sadece hatırlamıyorsun.</p>
                   <div className={styles.ctaBtns}>
                     <div className={styles.ctaItem}>
                       <p className={styles.ctaQuestion}>
@@ -444,7 +508,7 @@ function buildSections(data, fullName) {
     {
       icon: "✧",
       title: "SANRI Mesajı",
-      text: `"${fullName}, bu sadece bir sayı değil. Bu senin hikayenin kodlanmış hali. Onu okumak bilgi değil — hatırlayış."`,
+      text: `"${fullName}, bu bir analiz değil. Bu bir hatırlayış. Zaten biliyorsun. Sadece hatırlamıyorsun. Ve şimdi, hatırlama zamanı."`,
     },
   ];
 }

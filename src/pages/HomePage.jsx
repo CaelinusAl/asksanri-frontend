@@ -171,9 +171,9 @@ export default function HomePage() {
         key: "rol-okuma",
         title: isTR ? "Matrix Rol Okuma" : "Matrix Role Reading",
         desc: isTR
-          ? "Adın ve doğum tarihin bir kod taşır — Sanrı bunu okur"
-          : "Your name and birth date carry a code — Sanri reads it",
-        hint: isTR ? "Rolünü Öğren →" : "Discover Your Role →",
+          ? "Kim olduğunu öğrenmek için değil, hatırlamak için buradasın."
+          : "You're not here to learn who you are — you're here to remember.",
+        hint: isTR ? "Hatırla →" : "Remember →",
         path: "/rol-okuma",
         img: "/assets/gates/bilinc.jpg",
       },
