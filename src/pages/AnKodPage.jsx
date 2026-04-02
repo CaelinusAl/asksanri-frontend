@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
+import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./AnKodPage.module.css";
 
@@ -478,6 +478,15 @@ export default function AnKodPage() {
                   <span className={styles.lockHintSmall}>
                     Bu katman ücretli olarak açılır
                   </span>
+                  <button
+                    className={styles.lockRecovery}
+                    onClick={() => {
+                      unlockViaShopier("ankod_unlock");
+                      window.location.reload();
+                    }}
+                  >
+                    Zaten satın aldım
+                  </button>
                 </motion.div>
               </motion.div>
             )}

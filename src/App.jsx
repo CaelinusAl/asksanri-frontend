@@ -51,10 +51,13 @@ import BenimAlanimPage from "./pages/BenimAlanimPage";
 import RolOkumaPage from "./pages/RolOkumaPage";
 import AnKodPage from "./pages/AnKodPage";
 import AuthCallback from "./components/AuthCallback";
+import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 
 export default function App() {
   usePageView();
   return (
+    <>
+    <PendingPurchaseRecovery />
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/giris" element={<GirisPage />} />
@@ -123,5 +126,6 @@ export default function App() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </>
   );
 }

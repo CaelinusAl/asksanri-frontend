@@ -14,18 +14,16 @@ export default function OdemeBasariliPage() {
   const [phase, setPhase] = useState("void");
   const startedRef = useRef(false);
 
-  const contentId = params.get("content") || null;
-  const returnPath = params.get("ref") || "/";
+  const pending = getPendingPurchase();
+  const contentId = params.get("content") || pending?.contentId || null;
+  const returnPath = params.get("ref") || pending?.returnPath || "/";
 
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
 
-    const pending = getPendingPurchase();
-    const target = contentId || pending?.contentId || null;
-
-    if (target) {
-      unlockViaShopier(target);
+    if (contentId) {
+      unlockViaShopier(contentId);
     } else {
       unlockViaShopier("premium");
     }

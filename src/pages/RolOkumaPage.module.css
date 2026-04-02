@@ -451,6 +451,21 @@
   letter-spacing: 0.04em;
   font-style: italic;
 }
+.lockZoneRecovery {
+  margin-top: 18px;
+  background: none;
+  border: none;
+  color: rgba(200, 160, 255, 0.25);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  letter-spacing: 0.03em;
+}
+.lockZoneRecovery:hover {
+  color: rgba(200, 160, 255, 0.5);
+}
 
 /* ── Teaser Card ── */
 .teaserCard {

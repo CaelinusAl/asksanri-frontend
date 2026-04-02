@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
+import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./RolOkumaPage.module.css";
 
@@ -387,6 +387,15 @@ export default function RolOkumaPage() {
                       Hatırla
                     </button>
                     <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
+                    <button
+                      className={styles.lockZoneRecovery}
+                      onClick={() => {
+                        unlockViaShopier("role_unlock");
+                        window.location.reload();
+                      }}
+                    >
+                      Zaten satın aldım
+                    </button>
                   </div>
                 </div>
 
