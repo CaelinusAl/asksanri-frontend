@@ -45,6 +45,37 @@
   line-height: 1.5;
 }
 
+/* ── Live Indicator ── */
+.liveBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px auto 0;
+  padding: 7px 18px;
+  background: rgba(80, 200, 120, 0.08);
+  border: 1px solid rgba(80, 200, 120, 0.18);
+  border-radius: 50px;
+  width: fit-content;
+}
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #50c878;
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px #50c878; }
+  50% { opacity: 0.4; box-shadow: 0 0 10px #50c878; }
+}
+.liveText {
+  font-size: 13px;
+  color: #78dfa4;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
 /* ── Filters ── */
 .filters {
   max-width: 1120px;

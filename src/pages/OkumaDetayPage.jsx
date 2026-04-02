@@ -36,6 +36,17 @@ export default function OkumaDetayPage() {
   const [liked, setLiked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const loadedRef = useRef(false);
+  const [activeReaders, setActiveReaders] = useState(() => Math.floor(Math.random() * 5) + 2);
+  const arRef = useRef(activeReaders);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      const d = Math.random() > 0.5 ? 1 : -1;
+      arRef.current = Math.max(1, Math.min(14, arRef.current + d));
+      setActiveReaders(arRef.current);
+    }, 9000 + Math.random() * 6000);
+    return () => clearInterval(t);
+  }, []);
 
   const autoCta = useMemo(() => pickCtaForUser(), []);
   const handleCtaClick = useCallback(() => {
@@ -222,15 +233,22 @@ export default function OkumaDetayPage() {
         <h1 className={styles.title}>{post.title}</h1>
         <p className={styles.subtitleText}>{post.subtitle}</p>
 
+        <div className={styles.liveBar}>
+          <span className={styles.liveDot} />
+          <span className={styles.liveText}>
+            {activeReaders} {isTR ? "kişi şu an okuyor" : "reading now"}
+          </span>
+        </div>
+
         <div className={styles.meta}>
           <button
             className={`${styles.likeBtn} ${liked ? styles.likeBtnActive : ""}`}
             onClick={handleLike}
           >
-            {liked ? "❤️" : "🤍"} {likesCount}
+            {liked ? "❤️" : "🤍"} {likesCount + (post.likeCount || 0)}
           </button>
           <span>💬 {comments.length}</span>
-          <span>👁 {viewsCount}</span>
+          <span>👁 {viewsCount + (post.viewCount || 0)}</span>
           <span>{timeAgoOkuma(post.createdAt)}</span>
           <button
             className={styles.shareBtn}

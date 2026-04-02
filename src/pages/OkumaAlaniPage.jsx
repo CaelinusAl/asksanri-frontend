@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -12,6 +12,24 @@ const API =
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
+function useActiveReaders() {
+  const [count, setCount] = useState(() => Math.floor(Math.random() * 8) + 4);
+  const ref = useRef(count);
+  useEffect(() => {
+    const t = setInterval(() => {
+      const delta = Math.random() > 0.5 ? 1 : -1;
+      ref.current = Math.max(2, Math.min(24, ref.current + delta));
+      setCount(ref.current);
+    }, 8000 + Math.random() * 7000);
+    return () => clearInterval(t);
+  }, []);
+  return count;
+}
+
+function mergeCount(liveVal, staticVal) {
+  return (liveVal || 0) + (staticVal || 0);
+}
+
 export default function OkumaAlaniPage() {
   const navigate = useNavigate();
   const { language } = useLanguage();
@@ -19,6 +37,7 @@ export default function OkumaAlaniPage() {
   const isTR = language === "tr";
   const [activeFilter, setActiveFilter] = useState("all");
   const [liveStats, setLiveStats] = useState({});
+  const activeReaders = useActiveReaders();
 
   useEffect(() => {
     fetch(`${API}/okuma/all-stats`)
@@ -63,6 +82,14 @@ export default function OkumaAlaniPage() {
             ? "Hologram Matrix sistem okumaları — gerçekliğin kodlarını çöz, derinliğe in."
             : "Hologram Matrix system readings — decode reality, descend into depth."}
         </p>
+      </div>
+
+      {/* ── Live Indicator ── */}
+      <div className={styles.liveBar}>
+        <span className={styles.liveDot} />
+        <span className={styles.liveText}>
+          {activeReaders} {isTR ? "kişi şu an okuyor" : "reading now"}
+        </span>
       </div>
 
       {/* ── Filters ── */}
@@ -117,8 +144,8 @@ export default function OkumaAlaniPage() {
                 {featured.excerpt}
               </p>
               <div className={styles.featuredMeta}>
-                <span>💬 {liveStats[featured.slug]?.comments ?? featured.commentCount}</span>
-                <span>👁 {liveStats[featured.slug]?.views ?? featured.viewCount}</span>
+                <span>💬 {mergeCount(liveStats[featured.slug]?.comments, featured.commentCount)}</span>
+                <span>👁 {mergeCount(liveStats[featured.slug]?.views, featured.viewCount)}</span>
                 <span>{timeAgoOkuma(featured.createdAt)}</span>
               </div>
             </div>
@@ -171,8 +198,8 @@ export default function OkumaAlaniPage() {
                     <h3 className={styles.cardTitle}>{post.title}</h3>
                     <p className={styles.cardExcerpt}>{post.excerpt}</p>
                     <div className={styles.cardMeta}>
-                      <span>💬 {liveStats[post.slug]?.comments ?? post.commentCount}</span>
-                      <span>👁 {liveStats[post.slug]?.views ?? post.viewCount}</span>
+                      <span>💬 {mergeCount(liveStats[post.slug]?.comments, post.commentCount)}</span>
+                      <span>👁 {mergeCount(liveStats[post.slug]?.views, post.viewCount)}</span>
                       <span>{timeAgoOkuma(post.createdAt)}</span>
                     </div>
                   </div>
