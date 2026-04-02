@@ -66,6 +66,24 @@ export const SHOPIER_PRODUCTS = {
     price: "369",
     url: "https://shopier.com/asksanri/45787285",
   },
+  kariyer_acilimi: {
+    id: "kariyer_acilimi",
+    label: "Kariyer Açılımı",
+    price: "369",
+    url: "https://shopier.com/asksanri/45786763",
+  },
+  haftalik_akis: {
+    id: "haftalik_akis",
+    label: "Haftalık Akış — Bu Haftanın Kodu",
+    price: "69",
+    url: "https://shopier.com/asksanri/45786803",
+  },
+  saglik_enerji: {
+    id: "saglik_enerji",
+    label: "Sağlık & Enerji Katmanı",
+    price: "369",
+    url: "https://shopier.com/asksanri/45786763",
+  },
 };
 
 // ── Access key management ──

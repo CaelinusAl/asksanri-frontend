@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
+import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./AnKodPage.module.css";
 
 /* ═══════════════════════════════════════
@@ -506,35 +507,11 @@ export default function AnKodPage() {
                   </motion.div>
                 ))}
 
-                {/* Upsell */}
-                <div className={styles.upsellSection}>
-                  <div className={styles.upsellItem}>
-                    <p className={styles.upsellQ}>
-                      İlişkilerinde tekrar eden şey ne söylüyor?
-                    </p>
-                    <button
-                      className={styles.upsellBtn}
-                      onClick={() =>
-                        redirectToShopier("iliski_acilimi", "iliski_acilimi", "/an-kod")
-                      }
-                    >
-                      Bunu açabilirsin.
-                    </button>
-                  </div>
-                  <div className={styles.upsellItem}>
-                    <p className={styles.upsellQ}>
-                      Enerji akışı nerede kesiliyor olabilir?
-                    </p>
-                    <button
-                      className={styles.upsellBtn}
-                      onClick={() =>
-                        redirectToShopier("para_akisi", "para_akisi", "/an-kod")
-                      }
-                    >
-                      Bunu açabilirsin.
-                    </button>
-                  </div>
-                </div>
+                {/* Katmanlı Açılım */}
+                <KatmanliAcilim
+                  analysisData={{ answers, reading, reflection }}
+                  returnPath="/an-kod"
+                />
 
                 {/* Go to Rol Okuma */}
                 <div className={styles.unlockedCard}>

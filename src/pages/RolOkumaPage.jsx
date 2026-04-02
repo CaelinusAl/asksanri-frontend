@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
+import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./RolOkumaPage.module.css";
 
 const API =
@@ -346,34 +347,14 @@ export default function RolOkumaPage() {
                   </div>
                 )}
 
-                {/* ── Upsell ── */}
-                <div className={styles.ctaSection}>
-                  <p className={styles.ctaLine}>Bu bir analiz değil. Bir hatırlayış.</p>
-                  <div className={styles.ctaBtns}>
-                    <div className={styles.ctaItem}>
-                      <p className={styles.ctaQuestion}>
-                        İlişkilerinde neden hep aynı şeyi yaşıyorsun?
-                      </p>
-                      <button
-                        className={styles.ctaSoft}
-                        onClick={() => openModal("İlişki Katmanı", "369", "iliski_acilimi", "iliski_acilimi")}
-                      >
-                        Bunu açabilirsin.
-                      </button>
-                    </div>
-                    <div className={styles.ctaItem}>
-                      <p className={styles.ctaQuestion}>
-                        Para neden sana akmıyor?
-                      </p>
-                      <button
-                        className={styles.ctaSoft}
-                        onClick={() => openModal("Para Akışı Katmanı", "369", "para_akisi", "para_akisi")}
-                      >
-                        Bunu açabilirsin.
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                {/* ── Katmanlı Açılım ── */}
+                <KatmanliAcilim
+                  analysisData={{
+                    ...result.data,
+                    sectionTexts: result.sections.map((s) => s.text),
+                  }}
+                  returnPath="/rol-okuma"
+                />
               </>
             ) : (
               <>
@@ -409,34 +390,14 @@ export default function RolOkumaPage() {
                   </div>
                 </div>
 
-                {/* ── Upsell teaser ── */}
-                <div className={styles.ctaSection}>
-                  <p className={styles.ctaLine}>Zaten biliyorsun. Sadece hatırlamıyorsun.</p>
-                  <div className={styles.ctaBtns}>
-                    <div className={styles.ctaItem}>
-                      <p className={styles.ctaQuestion}>
-                        İlişkilerinde neden hep aynı şeyi yaşıyorsun?
-                      </p>
-                      <button
-                        className={styles.ctaSoft}
-                        onClick={() => openModal("İlişki Katmanı", "369", "iliski_acilimi", "iliski_acilimi")}
-                      >
-                        Bunu açabilirsin.
-                      </button>
-                    </div>
-                    <div className={styles.ctaItem}>
-                      <p className={styles.ctaQuestion}>
-                        Para neden sana akmıyor?
-                      </p>
-                      <button
-                        className={styles.ctaSoft}
-                        onClick={() => openModal("Para Akışı Katmanı", "369", "para_akisi", "para_akisi")}
-                      >
-                        Bunu açabilirsin.
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                {/* ── Katmanlı Açılım (locked teaser) ── */}
+                <KatmanliAcilim
+                  analysisData={{
+                    ...result.data,
+                    sectionTexts: result.sections.map((s) => s.text),
+                  }}
+                  returnPath="/rol-okuma"
+                />
               </>
             )}
 

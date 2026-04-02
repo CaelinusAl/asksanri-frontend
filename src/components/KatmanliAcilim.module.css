@@ -1,0 +1,302 @@
+/* ═══════════════════════════════════════
+   KATMANLI AÇILIM — Infinite Depth UI
+   ═══════════════════════════════════════ */
+
+.container {
+  padding: 24px 0 0;
+  position: relative;
+}
+
+/* ── Header ── */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.headerGlyph {
+  font-size: 28px;
+  color: rgba(200, 160, 255, 0.4);
+  margin-bottom: 12px;
+  animation: glyphPulse 3s ease-in-out infinite;
+}
+@keyframes glyphPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+.headerTitle {
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 300;
+  color: #e8e4f4;
+  margin: 0 0 8px;
+  letter-spacing: 0.04em;
+}
+.headerSub {
+  font-size: 13px;
+  color: rgba(200, 160, 255, 0.4);
+  margin: 0;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* ── Cards Grid ── */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.card {
+  padding: 28px 24px;
+  border-radius: 20px;
+  background: linear-gradient(165deg, rgba(200, 160, 255, 0.05), rgba(10, 10, 16, 0.7));
+  border: 1px solid rgba(200, 160, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(200, 160, 255, 0.2), transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+.card:hover {
+  border-color: rgba(200, 160, 255, 0.2);
+  box-shadow:
+    0 0 40px rgba(200, 160, 255, 0.06),
+    0 8px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+.card:hover::before {
+  opacity: 1;
+}
+
+.cardUnlocked {
+  border-color: rgba(120, 247, 216, 0.15);
+  background: linear-gradient(165deg, rgba(120, 247, 216, 0.04), rgba(10, 10, 16, 0.7));
+}
+
+.cardIcon {
+  font-size: 22px;
+  color: rgba(200, 160, 255, 0.5);
+  margin-bottom: 14px;
+}
+
+.cardQuestion {
+  font-size: 17px;
+  font-weight: 500;
+  color: #e8e4f0;
+  margin: 0 0 10px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+}
+
+.cardTeaser {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.5);
+  line-height: 1.7;
+  margin: 0 0 20px;
+  font-weight: 300;
+}
+
+.cardBtn {
+  display: inline-block;
+  padding: 14px 32px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.2);
+  background: rgba(200, 160, 255, 0.06);
+  color: #e0dcf0;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+.cardBtn:hover {
+  background: rgba(200, 160, 255, 0.12);
+  border-color: rgba(200, 160, 255, 0.35);
+  box-shadow: 0 0 30px rgba(200, 160, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.cardUnlockedBadge {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: rgba(120, 247, 216, 0.08);
+  border: 1px solid rgba(120, 247, 216, 0.2);
+  color: rgba(120, 247, 216, 0.7);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.weeklyBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background: rgba(200, 160, 255, 0.1);
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  color: rgba(200, 160, 255, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── Reveal More ── */
+.revealBtn {
+  display: block;
+  margin: 0 auto 20px;
+  padding: 14px 32px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  background: rgba(200, 160, 255, 0.03);
+  color: rgba(200, 160, 255, 0.5);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+}
+.revealBtn:hover {
+  background: rgba(200, 160, 255, 0.08);
+  border-color: rgba(200, 160, 255, 0.25);
+  color: rgba(200, 160, 255, 0.7);
+}
+
+/* ── Footer Whisper ── */
+.footerWhisper {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(200, 160, 255, 0.2);
+  font-style: italic;
+  letter-spacing: 0.06em;
+  margin: 8px 0 0;
+}
+
+/* ═══════════════════════════════════════
+   MODAL
+   ═══════════════════════════════════════ */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 4, 8, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 24px;
+}
+
+.modalCard {
+  max-width: 420px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 44px 28px 32px;
+  border-radius: 24px;
+  background: linear-gradient(170deg, rgba(20, 18, 30, 0.98), rgba(10, 10, 16, 0.96));
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  box-shadow:
+    0 0 80px rgba(200, 160, 255, 0.08),
+    0 0 160px rgba(120, 247, 216, 0.04);
+  text-align: center;
+  position: relative;
+}
+
+.modalGlyph {
+  font-size: 32px;
+  color: rgba(120, 247, 216, 0.5);
+  margin-bottom: 20px;
+  animation: glyphPulse 3s ease-in-out infinite;
+}
+
+.modalLine {
+  font-size: 15px;
+  color: rgba(230, 226, 245, 0.65);
+  line-height: 1.7;
+  margin: 0 0 4px;
+  font-weight: 300;
+}
+
+.modalBullet {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.55);
+  line-height: 1.6;
+  margin: 0 0 3px;
+  font-weight: 400;
+  text-align: left;
+  padding-left: 12px;
+}
+
+.modalDivider {
+  width: 28px;
+  height: 1px;
+  background: rgba(200, 160, 255, 0.12);
+  margin: 14px auto;
+}
+
+.modalEthic {
+  font-size: 13px;
+  color: rgba(200, 160, 255, 0.35);
+  font-style: italic;
+  line-height: 1.6;
+  margin: 16px 0 8px;
+}
+
+.modalPrice {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.55);
+  font-weight: 600;
+  margin: 12px 0 24px;
+  letter-spacing: 0.04em;
+}
+
+.modalBtn {
+  width: 100%;
+  padding: 16px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.3);
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.25), rgba(120, 247, 216, 0.15));
+  color: #e8e4f4;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.03em;
+}
+.modalBtn:hover {
+  background: linear-gradient(135deg, rgba(200, 160, 255, 0.35), rgba(120, 247, 216, 0.2));
+  box-shadow: 0 0 40px rgba(200, 160, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  color: rgba(200, 160, 255, 0.3);
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 18px;
+  transition: color 0.2s;
+  letter-spacing: 0.03em;
+}
+.modalClose:hover {
+  color: rgba(200, 160, 255, 0.55);
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .card { padding: 22px 18px; }
+  .modalCard { padding: 36px 20px 28px; }
+}
