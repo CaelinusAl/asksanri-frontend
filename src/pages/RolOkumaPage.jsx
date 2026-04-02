@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
+import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./RolOkumaPage.module.css";
 
@@ -98,7 +99,8 @@ export default function RolOkumaPage() {
 
   const [modal, setModal] = useState(null);
 
-  const unlocked = isShopierUnlocked("role_unlock") || isShopierUnlocked("ankod_unlock") || isShopierUnlocked("subconscious_unlock");
+  const [serverUnlocked] = useServerUnlock("role_unlock", "ankod_unlock", "subconscious_unlock");
+  const unlocked = serverUnlocked;
 
   useEffect(() => { trackFunnelEvent("role_page_view"); }, []);
   useEffect(() => { if (unlocked) trackFunnelEvent("role_unlock_success"); }, [unlocked]);

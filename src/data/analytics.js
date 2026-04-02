@@ -69,3 +69,7 @@ export function trackShopierRedirect(contentId, value) {
   trackAddToCart(contentId, value);
   trackEvent("shopier_redirect", { content_id: contentId, value });
 }
+
+if (typeof window !== "undefined") {
+  window.__sanri_trackShopierRedirect = trackShopierRedirect;
+}

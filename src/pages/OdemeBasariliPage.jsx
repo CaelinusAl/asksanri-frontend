@@ -5,11 +5,18 @@ import {
   getPendingPurchase,
   clearPendingPurchase,
   unlockViaShopier,
+  recordPurchaseToServer,
   syncPurchasesFromServer,
   SHOPIER_PRODUCTS,
 } from "../data/shopierConfig";
 import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
+
+const CROSS_UNLOCK_MAP = {
+  role_unlock: ["ankod_unlock", "subconscious_unlock"],
+  ankod_unlock: ["role_unlock", "subconscious_unlock"],
+  subconscious_unlock: ["role_unlock", "ankod_unlock"],
+};
 
 export default function OdemeBasariliPage() {
   const navigate = useNavigate();
@@ -26,7 +33,14 @@ export default function OdemeBasariliPage() {
     startedRef.current = true;
 
     const target = contentId || "premium";
+
     unlockViaShopier(target);
+
+    const crossIds = CROSS_UNLOCK_MAP[target] || [];
+    for (const cid of crossIds) {
+      unlockViaShopier(cid);
+    }
+
     clearPendingPurchase();
     syncPurchasesFromServer();
 

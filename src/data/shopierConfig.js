@@ -139,18 +139,6 @@ export function isShopierUnlocked(contentId) {
   return Boolean(access[contentId]);
 }
 
-export function unlockViaShopier(contentId) {
-  const access = getShopierAccess();
-  if (contentId === "premium") {
-    access.premium = true;
-    access.premium_at = new Date().toISOString();
-  } else {
-    access[contentId] = { unlocked: true, at: new Date().toISOString() };
-  }
-  saveShopierAccess(access);
-  _recordPurchaseToServer(contentId);
-}
-
 // ── Server-side purchase recording ──
 function _getAuthHeaders() {
   const h = { "Content-Type": "application/json" };
@@ -161,9 +149,21 @@ function _getAuthHeaders() {
   return h;
 }
 
-function _recordPurchaseToServer(contentId) {
+export function unlockViaShopier(contentId) {
+  const access = getShopierAccess();
+  if (contentId === "premium") {
+    access.premium = true;
+    access.premium_at = new Date().toISOString();
+  } else {
+    access[contentId] = { unlocked: true, at: new Date().toISOString() };
+  }
+  saveShopierAccess(access);
+  recordPurchaseToServer(contentId);
+}
+
+export function recordPurchaseToServer(contentId) {
   const product = SHOPIER_PRODUCTS[contentId];
-  fetch(`${API}/shopier/record`, {
+  return fetch(`${API}/shopier/record`, {
     method: "POST",
     headers: _getAuthHeaders(),
     body: JSON.stringify({
@@ -171,6 +171,7 @@ function _recordPurchaseToServer(contentId) {
       product_id: product?.id || contentId,
       device_fp: getDeviceFingerprint(),
       amount: product ? parseFloat(product.price) : 0,
+      timestamp: new Date().toISOString(),
     }),
   }).catch(() => {});
 }
@@ -183,17 +184,20 @@ export async function syncPurchasesFromServer() {
       { headers: _getAuthHeaders() }
     );
     const data = await res.json();
-    if (!data.purchases?.length) return;
+    if (!data.purchases?.length) return 0;
     const access = getShopierAccess();
-    let changed = false;
+    let changed = 0;
     for (const p of data.purchases) {
       if (!access[p.content_id]) {
         access[p.content_id] = { unlocked: true, at: p.purchased_at };
-        changed = true;
+        changed++;
       }
     }
     if (changed) saveShopierAccess(access);
-  } catch {}
+    return changed;
+  } catch {
+    return 0;
+  }
 }
 
 export async function checkServerUnlock(contentId) {
@@ -276,8 +280,9 @@ export function redirectToShopier(productId, contentId, returnPath) {
   if (!product) return;
 
   try {
-    const { trackShopierRedirect } = require("./analytics");
-    trackShopierRedirect(contentId || productId, parseFloat(product.price) || 0);
+    if (window.__sanri_trackShopierRedirect) {
+      window.__sanri_trackShopierRedirect(contentId || productId, parseFloat(product.price) || 0);
+    }
   } catch {}
 
   const key = setPendingPurchase(productId, contentId, returnPath);

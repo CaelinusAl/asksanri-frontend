@@ -14,6 +14,7 @@ import { DoorNavProvider } from "./contexts/DoorNavContext";
 import { PremiumProvider } from "./contexts/PremiumContext";
 
 import "./index.css";
+import "./data/analytics";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

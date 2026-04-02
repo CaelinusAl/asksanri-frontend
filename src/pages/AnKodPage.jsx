@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
+import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./AnKodPage.module.css";
 
@@ -240,10 +241,8 @@ export default function AnKodPage() {
   const [deepSections, setDeepSections] = useState([]);
   const [modal, setModal] = useState(false);
 
-  const unlocked =
-    isShopierUnlocked("ankod_unlock") ||
-    isShopierUnlocked("subconscious_unlock") ||
-    isShopierUnlocked("role_unlock");
+  const [serverUnlocked] = useServerUnlock("ankod_unlock", "subconscious_unlock", "role_unlock");
+  const unlocked = serverUnlocked;
 
   useEffect(() => { trackFunnelEvent("ankod_page_view"); }, []);
   useEffect(() => { if (unlocked) trackFunnelEvent("ankod_unlock_success"); }, [unlocked]);
