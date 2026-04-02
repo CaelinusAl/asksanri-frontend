@@ -60,6 +60,12 @@ export const SHOPIER_PRODUCTS = {
     price: "369",
     url: "https://shopier.com/asksanri/45787285",
   },
+  bilinc_alti: {
+    id: "bilinc_alti",
+    label: "Bilinçaltın Ne Diyor? — Derin Okuma",
+    price: "369",
+    url: "https://shopier.com/asksanri/45787285",
+  },
 };
 
 // ── Access key management ──

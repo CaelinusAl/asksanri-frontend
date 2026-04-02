@@ -188,6 +188,16 @@ export default function HomePage() {
         img: "/assets/gates/frekans.jpg",
       },
       {
+        key: "bilinc-alti",
+        title: isTR ? "Bilinçaltın Ne Diyor?" : "What Does Your Subconscious Say?",
+        desc: isTR
+          ? "Seçimlerin rastgele değil. Bir desen oluşturuyor. 6 soru — bir yansıtma deneyi."
+          : "Your choices aren't random. They form a pattern. 6 questions — a reflection experiment.",
+        hint: isTR ? "Deneyi Başlat →" : "Start Experiment →",
+        path: "/bilinc-alti",
+        img: "/assets/gates/bilinc.jpg",
+      },
+      {
         key: "benim-alanim",
         title: isTR ? "Benim Alanım" : "My Space",
         desc: isTR

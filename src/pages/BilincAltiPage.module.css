@@ -1,0 +1,554 @@
+/* ═══════════════════════════════════════
+   BİLİNÇALTIN NE DİYOR? — SANRI Yansıtma
+   Fast cards, purple glow, mobile-first
+   ═══════════════════════════════════════ */
+
+.page {
+  min-height: 100vh;
+  background: #07080d;
+  color: #e2e2e8;
+  font-family: "Inter", system-ui, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.bgOrb {
+  position: fixed;
+  top: -20%;
+  right: -25%;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.bgOrb2 {
+  position: fixed;
+  bottom: -25%;
+  left: -20%;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 247, 216, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  animation: drift 28s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(25px, -18px); }
+}
+
+/* ── Topbar ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+  background: rgba(7, 8, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+.backBtn {
+  background: none;
+  border: none;
+  color: rgba(168, 85, 247, 0.7);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+.backBtn:hover { color: #a855f7; }
+.topTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.04em;
+}
+.topStep {
+  margin-left: auto;
+  font-size: 12px;
+  color: rgba(168, 85, 247, 0.3);
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Shared center ── */
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 75vh;
+  padding: 40px 24px;
+  text-align: center;
+}
+
+/* ═══════════════════════
+   INTRO
+   ═══════════════════════ */
+.introGlyph {
+  font-size: 48px;
+  color: rgba(168, 85, 247, 0.35);
+  margin-bottom: 28px;
+  animation: gFloat 4s ease-in-out infinite;
+}
+@keyframes gFloat {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.35; }
+  50% { transform: translateY(-8px) scale(1.06); opacity: 0.55; }
+}
+.introTitle {
+  font-size: clamp(24px, 5.5vw, 36px);
+  font-weight: 300;
+  color: #e8e4f4;
+  margin: 0 0 8px;
+  letter-spacing: 0.01em;
+}
+.introSub {
+  font-size: 14px;
+  color: rgba(168, 85, 247, 0.5);
+  margin: 0 0 6px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.introDesc {
+  font-size: 15px;
+  color: rgba(200, 160, 255, 0.4);
+  margin: 0 0 36px;
+  font-style: italic;
+}
+.startBtn {
+  padding: 16px 52px;
+  border-radius: 14px;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  background: rgba(168, 85, 247, 0.06);
+  color: #e0dcf0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.startBtn:hover {
+  background: rgba(168, 85, 247, 0.14);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════
+   QUIZ — fast card flow
+   ═══════════════════════ */
+.quizWrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 50px 24px 80px;
+  text-align: center;
+}
+.qText {
+  font-size: clamp(20px, 4.5vw, 28px);
+  font-weight: 300;
+  color: #e8e4f4;
+  margin: 0 0 36px;
+  line-height: 1.4;
+}
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+.optBtn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  background: rgba(168, 85, 247, 0.03);
+  color: #e2e2e8;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s;
+  min-width: 110px;
+  justify-content: center;
+}
+.optBtn:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.08);
+  transform: translateY(-1px);
+}
+.optBtn:active { transform: scale(0.96); }
+.optIcon { font-size: 20px; }
+.optDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.optLabel { font-weight: 500; }
+
+/* ═══════════════════════
+   LOADING
+   ═══════════════════════ */
+.loadOrb {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: orbPulse 2.2s ease-in-out infinite;
+}
+@keyframes orbPulse {
+  0%, 100% { transform: scale(0.92); box-shadow: 0 0 30px rgba(168, 85, 247, 0.06); }
+  50% { transform: scale(1.1); box-shadow: 0 0 60px rgba(168, 85, 247, 0.16); }
+}
+.loadGlyph {
+  font-size: 30px;
+  color: rgba(168, 85, 247, 0.5);
+  animation: spin 5s linear infinite;
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.loadText {
+  font-size: 15px;
+  color: rgba(168, 85, 247, 0.4);
+  letter-spacing: 0.06em;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+/* ═══════════════════════
+   REFLECTION RESULT
+   ═══════════════════════ */
+.resultWrap {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 44px 24px 100px;
+  text-align: center;
+}
+.reflectionCard {
+  padding: 36px 28px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(168, 85, 247, 0.06), rgba(10, 10, 16, 0.7));
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  margin-bottom: 8px;
+}
+.reflectionText {
+  font-size: clamp(16px, 3.5vw, 19px);
+  color: rgba(230, 226, 245, 0.85);
+  line-height: 1.85;
+  margin: 0;
+  font-weight: 300;
+  white-space: pre-line;
+}
+
+/* ── Divider ── */
+.divider {
+  width: 36px;
+  height: 1px;
+  background: rgba(168, 85, 247, 0.15);
+  margin: 28px auto;
+}
+
+/* ── Lock Section ── */
+.lockSection {
+  margin-bottom: 32px;
+}
+.lockP {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 300;
+  color: #e8e4f0;
+  margin: 0 0 16px;
+}
+.lockSub {
+  font-size: 15px;
+  color: rgba(168, 85, 247, 0.45);
+  line-height: 1.7;
+  margin: 0 0 10px;
+}
+.lockSub2 {
+  font-size: 15px;
+  color: rgba(168, 85, 247, 0.35);
+  line-height: 1.7;
+  margin: 0 0 28px;
+  font-style: italic;
+}
+.lockCta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.lockBtn {
+  padding: 16px 44px;
+  border-radius: 14px;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+  background: rgba(168, 85, 247, 0.08);
+  color: #e0dcf0;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.03em;
+}
+.lockBtn:hover {
+  background: rgba(168, 85, 247, 0.16);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.12);
+  transform: translateY(-2px);
+}
+.lockHint {
+  font-size: 11px;
+  color: rgba(168, 85, 247, 0.25);
+  font-style: italic;
+}
+
+/* ── Deep Reading (unlocked) ── */
+.deepZone { margin-bottom: 32px; }
+.deepIntro {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(168, 85, 247, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 24px;
+}
+.deepCard {
+  padding: 28px 22px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(168, 85, 247, 0.05), rgba(10, 10, 16, 0.6));
+  border: 1px solid rgba(168, 85, 247, 0.1);
+  margin-bottom: 16px;
+  text-align: left;
+  transition: border-color 0.3s;
+}
+.deepCard:hover {
+  border-color: rgba(168, 85, 247, 0.22);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.05);
+}
+.deepIcon {
+  font-size: 18px;
+  color: rgba(168, 85, 247, 0.5);
+  margin-bottom: 10px;
+}
+.deepTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 8px;
+}
+.deepText {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.55);
+  line-height: 1.8;
+  margin: 0;
+  white-space: pre-line;
+}
+
+/* ── Upsell ── */
+.upsellSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 32px;
+  margin-bottom: 8px;
+}
+.upsellItem {
+  padding: 24px 20px;
+  border-radius: 16px;
+  background: rgba(168, 85, 247, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.08);
+  text-align: center;
+}
+.upsellQ {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(230, 226, 245, 0.7);
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+.upsellBtn {
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  background: rgba(168, 85, 247, 0.05);
+  color: rgba(230, 226, 245, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.upsellBtn:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #e0dcf0;
+}
+
+/* ── Again ── */
+.againBtn {
+  display: block;
+  margin: 24px auto 0;
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  background: rgba(168, 85, 247, 0.03);
+  color: rgba(168, 85, 247, 0.45);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.againBtn:hover {
+  background: rgba(168, 85, 247, 0.1);
+  border-color: rgba(168, 85, 247, 0.25);
+  color: #a855f7;
+}
+
+/* ═══════════════════════
+   MODAL
+   ═══════════════════════ */
+.modalBg {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(4, 4, 8, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 24px;
+}
+.modalCard {
+  max-width: 420px;
+  width: 100%;
+  padding: 44px 28px 32px;
+  border-radius: 24px;
+  background: linear-gradient(170deg, rgba(20, 18, 30, 0.98), rgba(10, 10, 16, 0.96));
+  border: 1px solid rgba(168, 85, 247, 0.15);
+  box-shadow:
+    0 0 80px rgba(168, 85, 247, 0.08),
+    0 0 160px rgba(120, 247, 216, 0.03);
+  text-align: center;
+}
+.modalGlyph {
+  font-size: 32px;
+  color: rgba(120, 247, 216, 0.45);
+  margin-bottom: 20px;
+  animation: gFloat 3s ease-in-out infinite;
+}
+.modalP {
+  font-size: 16px;
+  color: rgba(230, 226, 245, 0.75);
+  line-height: 1.6;
+  margin: 0 0 6px;
+  font-weight: 300;
+}
+.modalP2 {
+  font-size: 15px;
+  color: rgba(168, 85, 247, 0.55);
+  line-height: 1.6;
+  margin: 0 0 24px;
+  font-style: italic;
+}
+.modalList {
+  text-align: left;
+  padding: 0 12px;
+  margin: 0 0 20px;
+}
+.modalListTitle {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.5);
+  margin: 0 0 8px;
+}
+.modalUl {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+.modalUl li {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.6);
+  padding: 4px 0 4px 16px;
+  position: relative;
+}
+.modalUl li::before {
+  content: "◈";
+  position: absolute;
+  left: 0;
+  color: rgba(168, 85, 247, 0.4);
+  font-size: 10px;
+  top: 6px;
+}
+.modalListEnd {
+  font-size: 14px;
+  color: rgba(230, 226, 245, 0.65);
+  margin: 0;
+  font-style: italic;
+}
+.modalEthic {
+  font-size: 13px;
+  color: rgba(168, 85, 247, 0.35);
+  line-height: 1.7;
+  margin: 0 0 24px;
+  font-style: italic;
+}
+.modalPrice {
+  font-size: 15px;
+  color: rgba(230, 226, 245, 0.7);
+  margin: 0 0 24px;
+}
+.modalPriceVal {
+  color: #a855f7;
+  font-weight: 700;
+}
+.modalBtn {
+  width: 100%;
+  padding: 16px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(120, 247, 216, 0.1));
+  color: #e8e4f4;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.modalBtn:hover {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.32), rgba(120, 247, 216, 0.16));
+  box-shadow: 0 0 40px rgba(168, 85, 247, 0.16);
+  transform: translateY(-1px);
+}
+.modalClose {
+  background: none;
+  border: none;
+  color: rgba(168, 85, 247, 0.28);
+  font-size: 13px;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: color 0.2s;
+}
+.modalClose:hover { color: rgba(168, 85, 247, 0.5); }
+
+/* ═══════════════════════
+   RESPONSIVE
+   ═══════════════════════ */
+@media (max-width: 480px) {
+  .quizWrap { padding: 36px 16px 60px; }
+  .resultWrap { padding: 32px 16px 80px; }
+  .options { gap: 10px; }
+  .optBtn { min-width: 90px; padding: 14px 16px; font-size: 14px; }
+  .reflectionCard { padding: 28px 20px; }
+  .deepCard { padding: 22px 18px; }
+}
