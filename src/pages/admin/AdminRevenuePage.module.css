@@ -159,3 +159,53 @@
 .perfTable tbody tr:last-child td {
   border-bottom: none;
 }
+
+.loading {
+  text-align: center;
+  color: rgba(200, 160, 255, 0.4);
+  padding: 60px 0;
+  font-size: 14px;
+}
+
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  padding: 40px 0;
+  font-size: 14px;
+}
+
+.statusOk {
+  color: #78f7d8;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.statusFail {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.statusPending {
+  color: #ffd700;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.emptyIcon {
+  font-size: 32px;
+  color: rgba(200, 160, 255, 0.2);
+  margin-bottom: 12px;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.35);
+  margin: 0;
+  font-style: italic;
+}

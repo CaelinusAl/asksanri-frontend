@@ -1,9 +1,11 @@
 import { useMemo, useState, useCallback, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import DataTable from "../../components/admin/DataTable";
+import StatCard from "../../components/admin/StatCard";
 import styles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminOkumaPage.module.css";
 import { OKUMA_POSTS, OKUMA_CATEGORIES, getCategoryById } from "../../data/okumaData";
+import { fetchOkumaAllStats } from "../../data/adminApi";
 
 function slugifyFromTitle(title) {
   if (!title || typeof title !== "string") return "";
@@ -60,6 +62,13 @@ export default function AdminOkumaPage() {
   const draftApplied = useRef(false);
   const [posts, setPosts] = useState(clonePostsWithStatus);
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [liveStats, setLiveStats] = useState({});
+
+  useEffect(() => {
+    fetchOkumaAllStats()
+      .then((data) => { if (data?.stats) setLiveStats(data.stats); })
+      .catch(() => {});
+  }, []);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
@@ -275,8 +284,42 @@ export default function AdminOkumaPage() {
           </button>
         ),
       },
-      { key: "viewCount", label: "Görüntülenme" },
-      { key: "commentCount", label: "Yorum" },
+      {
+        key: "viewCount",
+        label: "👁 Görüntüleme",
+        render: (row) => {
+          const live = liveStats[row.slug];
+          return (
+            <span style={{ fontWeight: 600, color: live?.views ? "#78f7d8" : "#5a5470" }}>
+              {live?.views ?? row.viewCount ?? 0}
+            </span>
+          );
+        },
+      },
+      {
+        key: "likesCount",
+        label: "❤️ Beğeni",
+        render: (row) => {
+          const live = liveStats[row.slug];
+          return (
+            <span style={{ fontWeight: 600, color: live?.likes ? "#ffd700" : "#5a5470" }}>
+              {live?.likes ?? 0}
+            </span>
+          );
+        },
+      },
+      {
+        key: "commentCount",
+        label: "💬 Yorum",
+        render: (row) => {
+          const live = liveStats[row.slug];
+          return (
+            <span style={{ fontWeight: 600, color: live?.comments ? "#c8a0ff" : "#5a5470" }}>
+              {live?.comments ?? row.commentCount ?? 0}
+            </span>
+          );
+        },
+      },
       {
         key: "actions",
         label: "Aksiyonlar",
@@ -296,19 +339,30 @@ export default function AdminOkumaPage() {
         ),
       },
     ],
-    [openEdit, toggleFeatured, handleDelete]
+    [openEdit, toggleFeatured, handleDelete, liveStats]
   );
+
+  const totalViews = Object.values(liveStats).reduce((s, v) => s + (v.views || 0), 0);
+  const totalLikes = Object.values(liveStats).reduce((s, v) => s + (v.likes || 0), 0);
+  const totalComments = Object.values(liveStats).reduce((s, v) => s + (v.comments || 0), 0);
 
   return (
     <div>
       <div className={pageStyles.topBar}>
         <div>
           <h1 className={styles.pageTitle}>Okuma Alanı Yönetimi</h1>
-          <p className={styles.pageDesc}>Matrix okumalarını yönet</p>
+          <p className={styles.pageDesc}>Matrix okumalarını yönet — gerçek zamanlı etkileşim verileri</p>
         </div>
         <button type="button" className={pageStyles.createBtn} onClick={openNew}>
           Yeni Okuma
         </button>
+      </div>
+
+      <div className={styles.grid4} style={{ marginBottom: 20 }}>
+        <StatCard label="Toplam Okuma" value={posts.length} icon="◈" />
+        <StatCard label="Toplam Görüntüleme" value={totalViews} icon="👁" accent="#78f7d8" />
+        <StatCard label="Toplam Beğeni" value={totalLikes} icon="❤️" accent="#ffd700" />
+        <StatCard label="Toplam Yorum" value={totalComments} icon="💬" accent="#c8a0ff" />
       </div>
 
       <div className={styles.filterBar}>

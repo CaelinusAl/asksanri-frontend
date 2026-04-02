@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import StatCard from "../../components/admin/StatCard";
 import DataTable from "../../components/admin/DataTable";
 import styles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminPremiumPage.module.css";
+import { fetchMembership } from "../../data/adminApi";
 
 const MOCK_PACKAGES_INITIAL = [
   {
@@ -103,6 +104,13 @@ function subscriberOrSalesCell(row) {
 export default function AdminPremiumPage() {
   const [packages, setPackages] = useState(MOCK_PACKAGES_INITIAL);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [membership, setMembershipData] = useState(null);
+
+  useEffect(() => {
+    fetchMembership()
+      .then((d) => setMembershipData(d))
+      .catch(() => {});
+  }, []);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({
     name: "",
@@ -267,9 +275,21 @@ export default function AdminPremiumPage() {
       </div>
 
       <div className={styles.grid3}>
-        <StatCard label="Aktif Premium" value="34" accent="#50c878" />
-        <StatCard label="Aylık Gelir" value="$1,240" accent="#c8a0ff" />
-        <StatCard label="Dönüşüm Oranı" value="%4.2" accent="#78b4ff" />
+        <StatCard
+          label="Aktif Premium"
+          value={membership?.premium ?? membership?.premium_count ?? "—"}
+          accent="#50c878"
+        />
+        <StatCard
+          label="Toplam Kullanıcı"
+          value={membership?.total_users ?? "—"}
+          accent="#c8a0ff"
+        />
+        <StatCard
+          label="Dönüşüm Oranı"
+          value={membership?.conversion_rate != null ? `%${membership.conversion_rate}` : "—"}
+          accent="#78b4ff"
+        />
       </div>
 
       <h2 className={styles.sectionTitle}>Paketler & ürünler</h2>

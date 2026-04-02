@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
+import StatCard from "../../components/admin/StatCard";
 import adminStyles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminSystemPage.module.css";
-import { fetchHealth } from "../../data/adminApi";
+import { fetchHealth, fetchVisitorStats, fetchFunnelStats } from "../../data/adminApi";
 
 const MOCK_HEALTH = { status: "ok", ok: true };
-
-const MOCK_LOGS = [
-  { time: "31 Mar 12:45", level: "warn", message: "Slow query: /yanki/posts (850ms)" },
-  { time: "31 Mar 10:22", level: "error", message: "OpenAI API timeout on /bilinc-alani/ask" },
-  { time: "30 Mar 18:10", level: "warn", message: "Rate limit approached: 95/100 requests" },
-  { time: "30 Mar 14:30", level: "info", message: "Database connection pool expanded to 20" },
-  { time: "29 Mar 22:00", level: "info", message: "Scheduled cleanup: removed 45 expired sessions" },
-];
 
 function isHealthy(data) {
   if (!data || typeof data !== "object") return false;
@@ -32,6 +25,8 @@ export default function AdminSystemPage() {
   const [health, setHealth] = useState(null);
   const [usedMock, setUsedMock] = useState(false);
   const [ready, setReady] = useState(false);
+  const [visitors, setVisitors] = useState(null);
+  const [funnel, setFunnel] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,6 +42,15 @@ export default function AdminSystemPage() {
         setUsedMock(true);
       } finally {
         if (!cancelled) setReady(true);
+      }
+
+      const [v, f] = await Promise.all([
+        fetchVisitorStats().catch(() => null),
+        fetchFunnelStats(7).catch(() => null),
+      ]);
+      if (!cancelled) {
+        if (v) setVisitors(v);
+        if (f) setFunnel(f);
       }
     })();
     return () => {
@@ -105,7 +109,7 @@ export default function AdminSystemPage() {
           <span className={`${pageStyles.statusDot} ${pageStyles.statusDotGreen}`} aria-hidden />
           <div>
             <div className={pageStyles.statusLabel}>Son Deploy</div>
-            <div className={pageStyles.statusValue}>v2.4.1 — 31 Mart 2026</div>
+            <div className={pageStyles.statusValue}>v3.0 — {new Date().toLocaleDateString("tr-TR")}</div>
           </div>
         </div>
       </div>
@@ -123,26 +127,46 @@ export default function AdminSystemPage() {
         ))}
       </div>
 
-      <h2 className={adminStyles.sectionTitle}>Son Hatalar</h2>
-      <div className={pageStyles.logCard}>
-        {MOCK_LOGS.map((log) => (
-          <div key={`${log.time}-${log.message}`} className={pageStyles.logRow}>
-            <span className={pageStyles.logTime}>{log.time}</span>
-            <span
-              className={`${pageStyles.logLevel} ${
-                log.level === "error"
-                  ? pageStyles.logError
-                  : log.level === "warn"
-                    ? pageStyles.logWarn
-                    : pageStyles.logInfo
-              }`}
-            >
-              {log.level}
-            </span>
-            <span className={pageStyles.logMessage}>{log.message}</span>
-          </div>
-        ))}
+      <h2 className={adminStyles.sectionTitle}>Gerçek Zamanlı Metrikler</h2>
+      <div className={adminStyles.grid4} style={{ marginBottom: 24 }}>
+        <StatCard
+          label="Toplam Ziyaret"
+          value={visitors?.views?.total ?? "—"}
+          icon="👁"
+        />
+        <StatCard
+          label="Bugün Ziyaret"
+          value={visitors?.views?.today ?? "—"}
+          icon="📊"
+          accent="#78f7d8"
+        />
+        <StatCard
+          label="Tekil Ziyaretçi (Bugün)"
+          value={visitors?.unique_visitors?.today ?? "—"}
+          icon="◇"
+          accent="#ffd700"
+        />
+        <StatCard
+          label="Funnel Events (7g)"
+          value={funnel?.total_events ?? "—"}
+          icon="⊳"
+          accent="#c8a0ff"
+        />
       </div>
+
+      {visitors?.top_pages && visitors.top_pages.length > 0 && (
+        <>
+          <h2 className={adminStyles.sectionTitle}>En Çok Ziyaret Edilen Sayfalar</h2>
+          <div className={pageStyles.logCard}>
+            {visitors.top_pages.slice(0, 10).map((p) => (
+              <div key={p.path} className={pageStyles.logRow}>
+                <span className={pageStyles.logMessage} style={{ flex: 1 }}>{p.path}</span>
+                <span className={pageStyles.logTime} style={{ fontWeight: 700, color: "#c8a0ff" }}>{p.views}</span>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       <div className={pageStyles.infoSection}>
         <h2 className={adminStyles.sectionTitle}>Sistem Bilgisi</h2>

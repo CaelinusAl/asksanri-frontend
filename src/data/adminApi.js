@@ -54,3 +54,9 @@ export const fetchHealth = () => fetch(`${API}/health`).then((r) => r.json());
 
 // ── Funnel Analytics ──
 export const fetchFunnelStats = (days = 7) => adminFetch(`/funnel/admin/stats?days=${days}`);
+
+// ── Okuma Stats ──
+export const fetchOkumaAllStats = () =>
+  fetch(
+    `${API}/okuma/all-stats`
+  ).then((r) => r.json());

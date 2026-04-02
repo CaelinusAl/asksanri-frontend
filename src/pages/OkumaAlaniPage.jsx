@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -7,12 +7,25 @@ import { LockBadge } from "../components/premium/PremiumGate";
 import { OKUMA_POSTS, OKUMA_CATEGORIES, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import styles from "./OkumaAlaniPage.module.css";
 
+const API =
+  (import.meta?.env?.VITE_BACKEND_URL &&
+    String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+  "https://sanri-api-production-4a7b.up.railway.app";
+
 export default function OkumaAlaniPage() {
   const navigate = useNavigate();
   const { language } = useLanguage();
   const { isPremium } = usePremium();
   const isTR = language === "tr";
   const [activeFilter, setActiveFilter] = useState("all");
+  const [liveStats, setLiveStats] = useState({});
+
+  useEffect(() => {
+    fetch(`${API}/okuma/all-stats`)
+      .then((r) => r.json())
+      .then((data) => { if (data.stats) setLiveStats(data.stats); })
+      .catch(() => {});
+  }, []);
 
   const featured = useMemo(() => OKUMA_POSTS.find((p) => p.isFeatured) || OKUMA_POSTS[0], []);
 
@@ -104,8 +117,8 @@ export default function OkumaAlaniPage() {
                 {featured.excerpt}
               </p>
               <div className={styles.featuredMeta}>
-                <span>💬 {featured.commentCount}</span>
-                <span>👁 {featured.viewCount}</span>
+                <span>💬 {liveStats[featured.slug]?.comments ?? featured.commentCount}</span>
+                <span>👁 {liveStats[featured.slug]?.views ?? featured.viewCount}</span>
                 <span>{timeAgoOkuma(featured.createdAt)}</span>
               </div>
             </div>
@@ -158,8 +171,8 @@ export default function OkumaAlaniPage() {
                     <h3 className={styles.cardTitle}>{post.title}</h3>
                     <p className={styles.cardExcerpt}>{post.excerpt}</p>
                     <div className={styles.cardMeta}>
-                      <span>💬 {post.commentCount}</span>
-                      <span>👁 {post.viewCount}</span>
+                      <span>💬 {liveStats[post.slug]?.comments ?? post.commentCount}</span>
+                      <span>👁 {liveStats[post.slug]?.views ?? post.viewCount}</span>
                       <span>{timeAgoOkuma(post.createdAt)}</span>
                     </div>
                   </div>

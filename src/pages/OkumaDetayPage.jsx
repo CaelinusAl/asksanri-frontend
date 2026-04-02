@@ -32,6 +32,7 @@ export default function OkumaDetayPage() {
   const [coverError, setCoverError] = useState(false);
   const [copied, setCopied] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
+  const [viewsCount, setViewsCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const loadedRef = useRef(false);
@@ -99,6 +100,11 @@ export default function OkumaDetayPage() {
         setLikesCount(data.count || 0);
         setLiked(Boolean(data.liked));
       })
+      .catch(() => {});
+
+    fetch(`${API}/okuma/view/${post.slug}`, { method: "POST" })
+      .then((r) => r.json())
+      .then((data) => { if (data.count != null) setViewsCount(data.count); })
       .catch(() => {});
   }, [post]);
 
@@ -224,6 +230,7 @@ export default function OkumaDetayPage() {
             {liked ? "❤️" : "🤍"} {likesCount}
           </button>
           <span>💬 {comments.length}</span>
+          <span>👁 {viewsCount}</span>
           <span>{timeAgoOkuma(post.createdAt)}</span>
           <button
             className={styles.shareBtn}
