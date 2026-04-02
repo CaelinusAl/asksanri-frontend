@@ -372,6 +372,7 @@ export default function RolOkumaPage() {
                     sectionTexts: result.sections.map((s) => s.text),
                   }}
                   returnPath="/rol-okuma"
+                  showFooterWhisper={false}
                 />
               </>
             ) : (
@@ -424,6 +425,7 @@ export default function RolOkumaPage() {
                     sectionTexts: result.sections.map((s) => s.text),
                   }}
                   returnPath="/rol-okuma"
+                  showFooterWhisper={false}
                 />
               </>
             )}

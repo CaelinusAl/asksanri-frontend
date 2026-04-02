@@ -53,7 +53,11 @@ function AcilimModal({ katman, onClose }) {
   );
 }
 
-export default function KatmanliAcilim({ analysisData, returnPath = "/rol-okuma" }) {
+export default function KatmanliAcilim({
+  analysisData,
+  returnPath = "/rol-okuma",
+  showFooterWhisper = true,
+}) {
   const [activeModal, setActiveModal] = useState(null);
   const [revealedCount, setRevealedCount] = useState(3);
 
@@ -124,9 +128,11 @@ export default function KatmanliAcilim({ analysisData, returnPath = "/rol-okuma"
         </motion.button>
       )}
 
-      <p className={styles.footerWhisper}>
-        Merak → Aç → Daha fazla merak → Tekrar aç
-      </p>
+      {showFooterWhisper && (
+        <p className={styles.footerWhisper}>
+          Merak → Aç → Daha fazla merak → Tekrar aç
+        </p>
+      )}
 
       <AnimatePresence>
         {activeModal && (
