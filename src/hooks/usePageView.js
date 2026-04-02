@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { trackPageView } from "../data/analytics";
 
 const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
 
@@ -23,6 +24,8 @@ export default function usePageView() {
     const path = location.pathname + location.search;
     if (path === lastPath.current) return;
     lastPath.current = path;
+
+    trackPageView(path);
 
     const token = localStorage.getItem("sanri_token");
     const headers = { "Content-Type": "application/json" };

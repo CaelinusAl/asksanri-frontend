@@ -25,7 +25,14 @@ export function trackEvent(eventName, params = {}) {
 }
 
 export function trackPageView(path) {
-  gtag("event", "page_view", { page_path: path });
+  const pagePath = path || window.location.pathname + window.location.search;
+  const pageLocation = window.location.origin + pagePath;
+  const pageTitle = typeof document !== "undefined" ? document.title : "";
+  gtag("event", "page_view", {
+    page_path: pagePath,
+    page_location: pageLocation,
+    page_title: pageTitle,
+  });
   fbq("track", "PageView");
 }
 
