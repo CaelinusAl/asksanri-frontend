@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════
-   AN_KOD — Anın Kodları
+   AN_KOD — Anın Kodları + Bilinçaltı Deneyi
    Hypnotic, card-based, soul-pull UI
    ═══════════════════════════════════════ */
 
@@ -104,8 +104,16 @@
   font-weight: 300;
   color: #e8e4f4;
   line-height: 1.45;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   letter-spacing: 0.01em;
+}
+.introSub2 {
+  font-size: 14px;
+  color: rgba(168, 85, 247, 0.5);
+  margin: 0 0 6px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .introSub {
   font-size: 14px;
@@ -194,6 +202,13 @@
   font-size: 24px;
   color: rgba(200, 160, 255, 0.5);
 }
+.optionDot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+}
 .optionLabel {
   font-size: 14px;
   font-weight: 500;
@@ -266,7 +281,7 @@
   border-radius: 20px;
   background: linear-gradient(160deg, rgba(200, 160, 255, 0.06), rgba(10, 10, 16, 0.7));
   border: 1px solid rgba(200, 160, 255, 0.12);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 .resultText {
   font-size: clamp(16px, 3.5vw, 19px);
@@ -278,7 +293,33 @@
   letter-spacing: 0.01em;
 }
 
-/* ── Lock Section — Psychology-driven flow ── */
+/* ── Reflection (bilinçaltı yansıtma) ── */
+.reflectionCard {
+  padding: 32px 24px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(168, 85, 247, 0.06), rgba(10, 10, 16, 0.65));
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  margin-bottom: 8px;
+}
+.reflectionLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(168, 85, 247, 0.45);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+.reflectionText {
+  font-size: clamp(15px, 3.2vw, 18px);
+  color: rgba(200, 160, 255, 0.7);
+  line-height: 1.85;
+  margin: 0;
+  font-weight: 300;
+  white-space: pre-line;
+  font-style: italic;
+}
+
+/* ── Lock Section ── */
 .lockSection {
   margin-bottom: 40px;
   text-align: center;
@@ -296,10 +337,17 @@
   margin: 0 0 8px;
   letter-spacing: 0.01em;
 }
-.lockPSub {
+.lockSub {
   font-size: 15px;
-  color: rgba(200, 160, 255, 0.45);
-  margin: 0;
+  color: rgba(168, 85, 247, 0.45);
+  line-height: 1.7;
+  margin: 0 0 10px;
+}
+.lockSub2 {
+  font-size: 15px;
+  color: rgba(168, 85, 247, 0.35);
+  line-height: 1.7;
+  margin: 0 0 20px;
   font-style: italic;
 }
 .lockBlock {
@@ -324,15 +372,8 @@
   margin: 0;
   letter-spacing: 0.01em;
 }
-.lockBlockRole {
-  font-size: clamp(22px, 5vw, 32px);
-  font-weight: 300;
-  color: #c8a0ff;
-  margin: 16px 0 0;
-  letter-spacing: 0.06em;
-}
 .lockPersonal {
-  margin: 32px 0;
+  margin: 28px 0;
 }
 .lockPersonalText {
   font-size: 14px;
@@ -348,12 +389,16 @@
 }
 .lockCta {
   margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
 }
 .lockCtaHint {
   font-size: 13px;
   color: rgba(200, 160, 255, 0.3);
   font-style: italic;
-  margin: 0 0 20px;
+  margin: 0;
   letter-spacing: 0.03em;
 }
 .lockBtn {
@@ -374,17 +419,100 @@
   box-shadow: 0 0 40px rgba(200, 160, 255, 0.12);
   transform: translateY(-2px);
 }
-
-/* ── Unlocked: redirect card ── */
-.unlockedZone {
-  margin-bottom: 36px;
+.lockHintSmall {
+  font-size: 11px;
+  color: rgba(168, 85, 247, 0.25);
+  font-style: italic;
 }
+
+/* ── Deep Reading (unlocked) ── */
+.deepZone { margin-bottom: 32px; }
+.deepIntro {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(168, 85, 247, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 24px;
+}
+.deepCard {
+  padding: 28px 22px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(168, 85, 247, 0.05), rgba(10, 10, 16, 0.6));
+  border: 1px solid rgba(168, 85, 247, 0.1);
+  margin-bottom: 16px;
+  text-align: left;
+  transition: border-color 0.3s;
+}
+.deepCard:hover {
+  border-color: rgba(168, 85, 247, 0.22);
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.05);
+}
+.deepIcon {
+  font-size: 18px;
+  color: rgba(168, 85, 247, 0.5);
+  margin-bottom: 10px;
+}
+.deepTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 8px;
+}
+.deepText {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.55);
+  line-height: 1.8;
+  margin: 0;
+  white-space: pre-line;
+}
+
+/* ── Upsell ── */
+.upsellSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 32px 0;
+}
+.upsellItem {
+  padding: 24px 20px;
+  border-radius: 16px;
+  background: rgba(168, 85, 247, 0.03);
+  border: 1px solid rgba(168, 85, 247, 0.08);
+  text-align: center;
+}
+.upsellQ {
+  font-size: 15px;
+  font-weight: 300;
+  color: rgba(230, 226, 245, 0.7);
+  margin: 0 0 14px;
+  line-height: 1.5;
+}
+.upsellBtn {
+  padding: 12px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(168, 85, 247, 0.18);
+  background: rgba(168, 85, 247, 0.05);
+  color: rgba(230, 226, 245, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.upsellBtn:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.3);
+  color: #e0dcf0;
+}
+
+/* ── Unlocked redirect card ── */
 .unlockedCard {
   padding: 40px 28px;
   border-radius: 20px;
   background: linear-gradient(160deg, rgba(120, 247, 216, 0.06), rgba(200, 160, 255, 0.04));
   border: 1px solid rgba(120, 247, 216, 0.15);
   text-align: center;
+  margin-top: 24px;
 }
 .unlockedGlyph {
   font-size: 28px;
@@ -426,7 +554,7 @@
 /* ── Again ── */
 .againBtn {
   display: block;
-  margin: 0 auto;
+  margin: 24px auto 0;
   padding: 12px 28px;
   border-radius: 12px;
   border: 1px solid rgba(200, 160, 255, 0.15);
@@ -444,7 +572,7 @@
 }
 
 /* ═══════════════════════
-   ENERGY MODAL
+   MODAL (detailed)
    ═══════════════════════ */
 .modalBackdrop {
   position: fixed;
@@ -453,15 +581,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(4, 4, 8, 0.84);
+  background: rgba(4, 4, 8, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   padding: 24px;
 }
 .modalCard {
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
-  padding: 48px 32px 36px;
+  padding: 44px 28px 32px;
   border-radius: 24px;
   background: linear-gradient(170deg, rgba(20, 18, 30, 0.98), rgba(10, 10, 16, 0.96));
   border: 1px solid rgba(200, 160, 255, 0.15);
@@ -469,18 +597,76 @@
     0 0 80px rgba(200, 160, 255, 0.08),
     0 0 160px rgba(120, 247, 216, 0.04);
   text-align: center;
+  max-height: 85vh;
+  overflow-y: auto;
 }
 .modalGlyph {
-  font-size: 36px;
-  color: rgba(120, 247, 216, 0.5);
-  margin-bottom: 24px;
+  font-size: 32px;
+  color: rgba(120, 247, 216, 0.45);
+  margin-bottom: 20px;
   animation: glyphFloat 3s ease-in-out infinite;
 }
-.modalText {
+.modalP {
   font-size: 16px;
-  color: rgba(230, 226, 245, 0.8);
+  color: rgba(230, 226, 245, 0.75);
+  line-height: 1.6;
+  margin: 0 0 6px;
+  font-weight: 300;
+}
+.modalP2 {
+  font-size: 15px;
+  color: rgba(168, 85, 247, 0.55);
+  line-height: 1.6;
+  margin: 0 0 24px;
+  font-style: italic;
+}
+.modalList {
+  text-align: left;
+  padding: 0 12px;
+  margin: 0 0 20px;
+}
+.modalListTitle {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.5);
+  margin: 0 0 8px;
+}
+.modalUl {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+.modalUl li {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.6);
+  padding: 4px 0 4px 16px;
+  position: relative;
+}
+.modalUl li::before {
+  content: "◈";
+  position: absolute;
+  left: 0;
+  color: rgba(168, 85, 247, 0.4);
+  font-size: 10px;
+  top: 6px;
+}
+.modalListEnd {
+  font-size: 14px;
+  color: rgba(230, 226, 245, 0.65);
+  margin: 0;
+  font-style: italic;
+}
+.modalEthic {
+  font-size: 13px;
+  color: rgba(168, 85, 247, 0.35);
+  line-height: 1.7;
+  margin: 0 0 24px;
+  font-style: italic;
+}
+.modalText {
+  font-size: 15px;
+  color: rgba(230, 226, 245, 0.7);
   line-height: 1.75;
-  margin: 0 0 32px;
+  margin: 0 0 24px;
   font-weight: 300;
 }
 .modalPrice {
@@ -511,7 +697,7 @@
   color: rgba(200, 160, 255, 0.3);
   font-size: 13px;
   cursor: pointer;
-  margin-top: 18px;
+  margin-top: 16px;
   transition: color 0.2s;
   letter-spacing: 0.03em;
 }
@@ -528,4 +714,6 @@
   .optionsGrid { grid-template-columns: 1fr; }
   .optionCard { flex-direction: row; padding: 20px 18px; gap: 14px; }
   .resultCard { padding: 28px 20px; }
+  .reflectionCard { padding: 24px 18px; }
+  .deepCard { padding: 22px 18px; }
 }

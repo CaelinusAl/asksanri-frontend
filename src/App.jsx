@@ -50,7 +50,6 @@ import KodEgitmeniPage from "./pages/KodEgitmeniPage";
 import BenimAlanimPage from "./pages/BenimAlanimPage";
 import RolOkumaPage from "./pages/RolOkumaPage";
 import AnKodPage from "./pages/AnKodPage";
-import BilincAltiPage from "./pages/BilincAltiPage";
 import AuthCallback from "./components/AuthCallback";
 
 export default function App() {
@@ -93,7 +92,6 @@ export default function App() {
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
       <Route path="/rol-okuma" element={<RolOkumaPage />} />
       <Route path="/an-kod" element={<AnKodPage />} />
-      <Route path="/bilinc-alti" element={<BilincAltiPage />} />
       <Route path="/benim-alanim" element={<BenimAlanimPage />} />
 
       <Route path="/payment/success" element={<PaymentSuccessPage />} />

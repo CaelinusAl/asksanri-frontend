@@ -181,21 +181,11 @@ export default function HomePage() {
         key: "an-kod",
         title: "AN_KOD",
         desc: isTR
-          ? "Anın sana ne söylediğini görmek ister misin? 4 soru. Bir yansıma. Bir kod."
-          : "Want to see what this moment tells you? 4 questions. A reflection. A code.",
-        hint: isTR ? "Kodunu Gör →" : "See Your Code →",
+          ? "Bilinçaltın ne diyor? 8 soru. Bir yansıma. Bir kod. — Seçimlerin rastgele değil."
+          : "What does your subconscious say? 8 questions. A reflection. A code.",
+        hint: isTR ? "Deneyi Başlat →" : "Start Experiment →",
         path: "/an-kod",
         img: "/assets/gates/frekans.jpg",
-      },
-      {
-        key: "bilinc-alti",
-        title: isTR ? "Bilinçaltın Ne Diyor?" : "What Does Your Subconscious Say?",
-        desc: isTR
-          ? "Seçimlerin rastgele değil. Bir desen oluşturuyor. 6 soru — bir yansıtma deneyi."
-          : "Your choices aren't random. They form a pattern. 6 questions — a reflection experiment.",
-        hint: isTR ? "Deneyi Başlat →" : "Start Experiment →",
-        path: "/bilinc-alti",
-        img: "/assets/gates/bilinc.jpg",
       },
       {
         key: "benim-alanim",

@@ -1,10 +1,58 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
 import styles from "./AnKodPage.module.css";
 
+/* ═══════════════════════════════════════
+   QUESTIONS — 8 merged (intuitive + deep)
+   Fast pick first, then soul-level
+   ═══════════════════════════════════════ */
 const QUESTIONS = [
+  {
+    id: "renk",
+    text: "Şu an seni en çok çeken renk?",
+    options: [
+      { id: "mavi", label: "Mavi", color: "#4a8fe7" },
+      { id: "kirmizi", label: "Kırmızı", color: "#e74a5a" },
+      { id: "siyah", label: "Siyah", color: "#2a2a2f" },
+      { id: "yesil", label: "Yeşil", color: "#4ae78a" },
+      { id: "mor", label: "Mor", color: "#a855f7" },
+    ],
+  },
+  {
+    id: "hayvan",
+    text: "İçinden gelen bir hayvan?",
+    options: [
+      { id: "kurt", label: "Kurt", icon: "🐺" },
+      { id: "kus", label: "Kuş", icon: "🦅" },
+      { id: "yilan", label: "Yılan", icon: "🐍" },
+      { id: "kedi", label: "Kedi", icon: "🐈‍⬛" },
+      { id: "balina", label: "Balina", icon: "🐋" },
+    ],
+  },
+  {
+    id: "sayi",
+    text: "En çok tekrar eden sayı?",
+    options: [
+      { id: "1", label: "1", icon: "①" },
+      { id: "3", label: "3", icon: "③" },
+      { id: "6", label: "6", icon: "⑥" },
+      { id: "7", label: "7", icon: "⑦" },
+      { id: "9", label: "9", icon: "⑨" },
+    ],
+  },
+  {
+    id: "sembol",
+    text: "Sana yakın gelen sembol?",
+    options: [
+      { id: "daire", label: "Daire", icon: "◯" },
+      { id: "ucgen", label: "Üçgen", icon: "△" },
+      { id: "spiral", label: "Spiral", icon: "◎" },
+      { id: "kapi", label: "Kapı", icon: "▯" },
+      { id: "ayna", label: "Ayna", icon: "◇" },
+    ],
+  },
   {
     id: "hisset",
     text: "Şu an en çok neyi hissediyorsun?",
@@ -26,11 +74,13 @@ const QUESTIONS = [
   },
   {
     id: "kacis",
-    text: "En çok kaçtığın şey ne?",
+    text: "Kaçtığın şey?",
     options: [
-      { id: "yuzlesmek", label: "Yüzleşmek", icon: "◉" },
-      { id: "karar_vermek", label: "Karar vermek", icon: "⟁" },
+      { id: "karar", label: "Karar", icon: "⟁" },
+      { id: "yuzlesme", label: "Yüzleşme", icon: "◉" },
       { id: "birakmak", label: "Bırakmak", icon: "✧" },
+      { id: "soylemek", label: "Söylemek", icon: "☽" },
+      { id: "degisim", label: "Değişim", icon: "∞" },
     ],
   },
   {
@@ -45,6 +95,9 @@ const QUESTIONS = [
   },
 ];
 
+/* ═══════════════════════════════════════
+   AN_KOD READINGS (feeling × escape/repeat)
+   ═══════════════════════════════════════ */
 const READINGS = {
   bosluk: {
     sikisma: "Boşluk ve sıkışma aynı anda var — bu, eski bir yapının çöktüğü ama yenisinin henüz oluşmadığı an. Sen arada değilsin. Aranın ta kendisisin.",
@@ -53,8 +106,8 @@ const READINGS = {
     ayni_dongu: "Döngü kırılmadıysa, fark edilmedi demektir. Boşluk sana alan açıyor — ama sen o alanı doldurmakla meşgulsün.",
   },
   sikisma: {
-    yuzlesmek: "Sıkışman dışarıdan değil — içeriden. Yüzleşmekten kaçtıkça duvarlar daralıyor. Ama duvar sen değilsin. Duvarı kuran sensin.",
-    karar_vermek: "Karar vermemek de bir karardır — ve en ağır olanıdır. Sıkışma kararın kendisinde değil, kararsızlığın ağırlığında.",
+    yuzlesme: "Sıkışman dışarıdan değil — içeriden. Yüzleşmekten kaçtıkça duvarlar daralıyor. Ama duvar sen değilsin. Duvarı kuran sensin.",
+    karar: "Karar vermemek de bir karardır — ve en ağır olanıdır. Sıkışma kararın kendisinde değil, kararsızlığın ağırlığında.",
     birakmak: "Bırakamıyorsun çünkü bırakmak kaybetmek gibi hissettiriyor. Ama tuttuğun şey seni tutuyor — ve boğuyor.",
   },
   heyecan: {
@@ -67,41 +120,106 @@ const READINGS = {
     ayni_insanlar: "Belirsizlikte güvenli limana koşuyorsun — aynı insanlara. Ama güvenli olan tanıdık olandır, doğru olan değil.",
     ayni_hatalar: "Belirsizlik seni tanıdık hatalara itiyor. Bilmediğin yolda yürümek yerine bildiğin çukura düşüyorsun.",
     ayni_dongu: "Döngü belirsizliğin ilacı gibi hissettiriyor — en azından tanıdık. Ama tanıdık olan iyileştirmez, uyuşturur.",
-    yuzlesmek: "Yüzleşmekten kaçıyorsun çünkü belirsizlik zaten çok yoğun. Ama belirsizliğin kaynağı dışarıda değil — yüzleşmediğin şeyde.",
-    karar_vermek: "Belirsizlik karar vermemek için bir mazeret haline geldi. Ama karar vermek netlik beklemez — netliği yaratır.",
+    yuzlesme: "Yüzleşmekten kaçıyorsun çünkü belirsizlik zaten çok yoğun. Ama belirsizliğin kaynağı dışarıda değil — yüzleşmediğin şeyde.",
+    karar: "Belirsizlik karar vermemek için bir mazeret haline geldi. Ama karar vermek netlik beklemez — netliği yaratır.",
     birakmak: "Bırakmak belirsizliği artırır diye tutuyorsun. Ama tuttuğun şey belirsizliğin ta kendisi.",
   },
 };
 
-function generateReading(answers) {
-  const feeling = answers.hisset;
-  const repeat = answers.tekrar;
-  const escape = answers.kacis;
-  const suppressed = answers.bastirilan;
-
-  const pool = READINGS[feeling] || {};
-  const text = pool[escape] || pool[repeat] || pool[suppressed];
-
+function generateAnKodReading(a) {
+  const pool = READINGS[a.hisset] || {};
+  const text = pool[a.kacis] || pool[a.tekrar] || pool[a.bastirilan];
   if (text) return text;
-
   const fallbacks = [
     "Sen bir şeyi çözmeye çalışmıyorsun.\nOnu görmemek için dolaşıyorsun.",
     "Cevabı dışarıda aramaktan yoruldun — çünkü cevap içeride bekliyor.\nAma içeri bakmak cesareti gerektiriyor.",
     "Tekrar eden her şey bir mesajdır.\nSen mesajı okumuyorsun — mesaj seni okuyor.",
     "Bastırdığın duygu kaybolmadı.\nSadece ses tonunu değiştirdi — ve artık bedenin konuşuyor.",
   ];
-
-  const seed = (feeling + repeat + escape + suppressed).length;
+  const seed = ((a.hisset || "") + (a.tekrar || "") + (a.kacis || "") + (a.bastirilan || "")).length;
   return fallbacks[seed % fallbacks.length];
 }
 
-const DEEP_LAYERS = [
-  { icon: "◉", text: "Döngünün kırılma noktası — neden aynı yere dönüyorsun?" },
-  { icon: "☽", text: "Gölge katmanın — kaçtığın şey seni nasıl tanımlıyor?" },
-  { icon: "✦", text: "Bastırdığın duygunun frekans analizi" },
-  { icon: "⟁", text: "İsmin ve bu anın kesişim noktası — numerolojik çözümleme" },
-  { icon: "∞", text: "Tekrar eden kalıbın kök nedeni ve kırılma formülü" },
-];
+/* ═══════════════════════════════════════
+   BİLİNÇALTI LAYERS (reflection + deep)
+   ═══════════════════════════════════════ */
+const THEMES = {
+  mavi: "derinlik arayışı", kirmizi: "bastırılmış enerji", siyah: "kontrol ihtiyacı",
+  yesil: "iyileşme arzusu", mor: "sezgisel uyanış",
+};
+const ANIMAL_POWER = {
+  kurt: "bağımsızlık ve sadakat", kus: "özgürlük ve perspektif", yilan: "dönüşüm ve yenilenme",
+  kedi: "sınır koyma ve gizem", balina: "derinlik ve duygusal hafıza",
+};
+const NUMBER_MEANING = {
+  "1": "başlangıç enerjisi — bağımsız hareket", "3": "yaratıcı ifade — duyguyu forma dönüştürme",
+  "6": "sorumluluk ve şifa — dengeyi arama", "7": "sorgulama — yüzeyle yetinmeme",
+  "9": "tamamlanma — eski döngüyü kapatma",
+};
+const SYMBOL_LAYER = {
+  daire: "bütünlük arayışı", ucgen: "yükselme isteği", spiral: "içe dönüş",
+  kapi: "geçiş eşiğinde durma", ayna: "kendini görme ihtiyacı",
+};
+const ESCAPE_SHADOW = {
+  karar: "belirsizlikte kalarak güvenli hissetmek", yuzlesme: "acıyı erteleyerek korumak",
+  birakmak: "kaybetme korkusunu kontrol etmek", soylemek: "reddedilme korkusu",
+  degisim: "bilineni terk etme korkusu",
+};
+const EMOTION_FREQ = {
+  sikisma: "daralan bir enerji — bir şeyin patlamayı beklediği alan",
+  bosluk: "aranan ama bulunamayan — yokluğun kendisi bir mesaj",
+  heyecan: "yükselen ama yönlendirilmemiş enerji",
+  belirsizlik: "puslu alan — netlik karar vermekle gelir",
+};
+
+function generateReflection(a) {
+  const pool = [
+    `Seçtiklerin rastgele değil.\n\nBir yön gösteriyor.\n\nBelki de kaçtığın şey,\ntam olarak bakman gereken yer.\n\nAma bu sadece yüzey.\n\nAsıl desen,\ndaha derinde.`,
+    `${THEMES[a.renk] || "İçsel arayış"} ve ${ANIMAL_POWER[a.hayvan] || "gizli güç"} — bu ikisi yan yana geldiğinde bir şey anlatıyor.\n\nAma henüz tamamlanmadı.`,
+    `Seçtiğin sembol ${SYMBOL_LAYER[a.sembol] || "bir katmanı"} işaret ediyor.\nKaçtığın şey ise ${ESCAPE_SHADOW[a.kacis] || "bir gölgeyi"} taşıyor.\n\nBu ikisi birbirini tanıyor.\nAma sen henüz ikisini yan yana getirmedin.`,
+  ];
+  const seed = ((a.renk || "") + (a.hayvan || "") + (a.sayi || "") + (a.hisset || "")).length;
+  return pool[seed % pool.length];
+}
+
+function generateDeepReading(a) {
+  const theme = THEMES[a.renk] || "içsel arayış";
+  const power = ANIMAL_POWER[a.hayvan] || "gizli güç";
+  const numMeaning = NUMBER_MEANING[a.sayi] || "döngüsel enerji";
+  const symbolLayer = SYMBOL_LAYER[a.sembol] || "iç yön";
+  const emotion = EMOTION_FREQ[a.hisset] || "belirsiz frekans";
+  const shadow = ESCAPE_SHADOW[a.kacis] || "kaçış kalıbı";
+
+  return [
+    {
+      title: "Ana Tema",
+      icon: "◉",
+      text: `Seçimlerinin birleşim noktası: ${theme} ve ${symbolLayer}. Bu ikisi birlikte "kontrol–bırakma gerilimi" oluşturuyor. Hayatında bir şeyi hem tutmak hem bırakmak istediğin bir alan var. Bu gerilim çözümsüz değil — ama fark edilmeden çözülemez.`,
+    },
+    {
+      title: "Güç Alanı",
+      icon: "✦",
+      text: `Hayvan seçimin (${power}) senin doğal gücünü gösteriyor. Bu, zorlamadan aktığın, çevrendeki insanların fark ettiği ama senin hafife aldığın şey. ${a.sayi} sayısı bunu destekliyor: ${numMeaning}. Bu güç bilinçli kullanıldığında büyür.`,
+    },
+    {
+      title: "Zorlayan Döngü",
+      icon: "∞",
+      text: `Tekrar eden duygun (${emotion}) ve kaçtığın şey (${shadow}) birlikte bir döngü oluşturuyor. Bu döngü seni korumak için kurulmuş — ama artık korumuyor, sınırlıyor. Döngüyü kırmak için onu önce tanımak gerekir. Şu an onu tanıyorsun.`,
+    },
+    {
+      title: "Kör Nokta",
+      icon: "☽",
+      text: `Göremediğin alan, en çok güvendiğin alanın tam karşısında duruyor. Renk seçimin (${theme}) sezgisel bir ihtiyacı, sembol seçimin (${symbolLayer}) ise bilinçli bir arayışı temsil ediyor. Bu ikisi arasındaki boşluk — senin kör noktan. Onu görmek cesareti gerektirir.`,
+    },
+    {
+      title: "SANRI Mesajı",
+      icon: "✧",
+      text: `Bu çalışma kesin yargı vermez. Sana bir ayna tutar.\n\nSende şu şekilde hissediliyor olabilir: bir şeyi bildiğin halde yapamama. Ya da bir şeyi hissettiğin halde söyleyememe.\n\nBu normal. Ama "normal" olan her şey doğru değildir.\n\nFark ettiğin an, döngü kırılmaya başlar.`,
+    },
+  ];
+}
+
+/* ═══════════════════════════════════════ */
 
 const PHASES = {
   INTRO: "intro",
@@ -116,9 +234,14 @@ export default function AnKodPage() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [reading, setReading] = useState("");
+  const [reflection, setReflection] = useState("");
+  const [deepSections, setDeepSections] = useState([]);
   const [modal, setModal] = useState(false);
 
-  const unlocked = isShopierUnlocked("ankod_unlock");
+  const unlocked =
+    isShopierUnlocked("ankod_unlock") ||
+    isShopierUnlocked("subconscious_unlock") ||
+    isShopierUnlocked("role_unlock");
 
   const handleStart = useCallback(() => {
     setPhase(PHASES.QUESTIONS);
@@ -136,9 +259,13 @@ export default function AnKodPage() {
         setStep(step + 1);
       } else {
         setPhase(PHASES.READING_LOAD);
-        const text = generateReading(next);
+        const ankodText = generateAnKodReading(next);
+        const reflText = generateReflection(next);
+        const deep = generateDeepReading(next);
         setTimeout(() => {
-          setReading(text);
+          setReading(ankodText);
+          setReflection(reflText);
+          setDeepSections(deep);
           setPhase(PHASES.RESULT);
         }, 2800);
       }
@@ -182,8 +309,9 @@ export default function AnKodPage() {
               <br />
               görmek ister misin?
             </h1>
+            <p className={styles.introSub2}>Bilinçaltın Ne Diyor?</p>
             <p className={styles.introSub}>
-              4 soru. Bir yansıma. Bir kod.
+              8 soru. Bir yansıma. Bir kod.
             </p>
             <button className={styles.startBtn} onClick={handleStart}>
               Başla
@@ -199,7 +327,7 @@ export default function AnKodPage() {
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -60 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <div className={styles.questionNum}>{step + 1}</div>
             <h2 className={styles.questionText}>{currentQ.text}</h2>
@@ -209,8 +337,15 @@ export default function AnKodPage() {
                   key={opt.id}
                   className={styles.optionCard}
                   onClick={() => handleAnswer(opt.id)}
+                  style={opt.color ? { borderColor: opt.color + "33" } : undefined}
                 >
-                  <span className={styles.optionIcon}>{opt.icon}</span>
+                  {opt.icon && <span className={styles.optionIcon}>{opt.icon}</span>}
+                  {opt.color && (
+                    <span
+                      className={styles.optionDot}
+                      style={{ background: opt.color }}
+                    />
+                  )}
                   <span className={styles.optionLabel}>{opt.label}</span>
                 </button>
               ))}
@@ -244,10 +379,22 @@ export default function AnKodPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
+            {/* AN_KOD reading */}
             <div className={styles.resultGlyph}>✦</div>
             <div className={styles.resultCard}>
               <p className={styles.resultText}>{reading}</p>
             </div>
+
+            {/* Bilinçaltı yansıtma */}
+            <motion.div
+              className={styles.reflectionCard}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <div className={styles.reflectionLabel}>Yansıtma</div>
+              <p className={styles.reflectionText}>{reflection}</p>
+            </motion.div>
 
             {/* ── Lock Zone ── */}
             {!unlocked && (
@@ -267,14 +414,23 @@ export default function AnKodPage() {
                 >
                   Buraya kadar gördün.
                 </motion.p>
-                <motion.p
-                  className={styles.lockPSub}
+
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 1.4, duration: 0.6 }}
+                  transition={{ delay: 1.4, duration: 0.5 }}
                 >
-                  Ama bu sadece yüzeydi.
-                </motion.p>
+                  <p className={styles.lockSub}>
+                    Ama bilinçaltı,
+                    <br />
+                    sembollerle konuşur.
+                  </p>
+                  <p className={styles.lockSub2}>
+                    Ve bu katman,
+                    <br />
+                    açılmadan anlaşılmaz.
+                  </p>
+                </motion.div>
 
                 <div className={styles.lockDivider} />
 
@@ -284,39 +440,18 @@ export default function AnKodPage() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.8, duration: 0.6 }}
                 >
-                  <p className={styles.lockBlockText}>
-                    Bu katman açıldığında:
-                  </p>
-                  <p className={styles.lockBlockItem}>
-                    Sadece cevap almazsın —
-                  </p>
+                  <p className={styles.lockBlockText}>Bu katman açıldığında:</p>
+                  <p className={styles.lockBlockItem}>Sadece cevap almazsın —</p>
                   <p className={styles.lockBlockHighlight}>
                     kendini farklı görmeye başlarsın.
                   </p>
-                </motion.div>
-
-                <div className={styles.lockDivider} />
-
-                <motion.div
-                  className={styles.lockBlock}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 2.2, duration: 0.6 }}
-                >
-                  <p className={styles.lockBlockText}>
-                    Adın, doğum tarihin ve bu an verdiğin cevaplar birleşir.
-                  </p>
-                  <p className={styles.lockBlockText}>
-                    Ve sana özel olan şey açılır:
-                  </p>
-                  <p className={styles.lockBlockRole}>Rolün.</p>
                 </motion.div>
 
                 <motion.div
                   className={styles.lockPersonal}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 2.8, duration: 0.6 }}
+                  transition={{ delay: 2.2, duration: 0.6 }}
                 >
                   <p className={styles.lockPersonalText}>
                     Bu, herkes için aynı değildir.
@@ -328,7 +463,7 @@ export default function AnKodPage() {
                   className={styles.lockCta}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 3.2, duration: 0.5 }}
+                  transition={{ delay: 2.6, duration: 0.5 }}
                 >
                   <p className={styles.lockCtaHint}>
                     Bu kapı, hazır olana açılır.
@@ -337,20 +472,71 @@ export default function AnKodPage() {
                     className={styles.lockBtn}
                     onClick={() => setModal(true)}
                   >
-                    Kapıyı Aç
+                    Derin Okumayı Aç
                   </button>
+                  <span className={styles.lockHintSmall}>
+                    Bu katman ücretli olarak açılır
+                  </span>
                 </motion.div>
               </motion.div>
             )}
 
-            {/* ── Unlocked: direct to Rol Okuma ── */}
+            {/* ── Deep Reading (unlocked) ── */}
             {unlocked && (
               <motion.div
-                className={styles.unlockedZone}
+                className={styles.deepZone}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.6 }}
               >
+                <div className={styles.lockDivider} />
+                <p className={styles.deepIntro}>Derin Okuma</p>
+
+                {deepSections.map((sec, i) => (
+                  <motion.div
+                    key={sec.title}
+                    className={styles.deepCard}
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 + i * 0.18, duration: 0.45 }}
+                  >
+                    <div className={styles.deepIcon}>{sec.icon}</div>
+                    <h3 className={styles.deepTitle}>{sec.title}</h3>
+                    <p className={styles.deepText}>{sec.text}</p>
+                  </motion.div>
+                ))}
+
+                {/* Upsell */}
+                <div className={styles.upsellSection}>
+                  <div className={styles.upsellItem}>
+                    <p className={styles.upsellQ}>
+                      İlişkilerinde tekrar eden şey ne söylüyor?
+                    </p>
+                    <button
+                      className={styles.upsellBtn}
+                      onClick={() =>
+                        redirectToShopier("iliski_acilimi", "iliski_acilimi", "/an-kod")
+                      }
+                    >
+                      Bunu açabilirsin.
+                    </button>
+                  </div>
+                  <div className={styles.upsellItem}>
+                    <p className={styles.upsellQ}>
+                      Enerji akışı nerede kesiliyor olabilir?
+                    </p>
+                    <button
+                      className={styles.upsellBtn}
+                      onClick={() =>
+                        redirectToShopier("para_akisi", "para_akisi", "/an-kod")
+                      }
+                    >
+                      Bunu açabilirsin.
+                    </button>
+                  </div>
+                </div>
+
+                {/* Go to Rol Okuma */}
                 <div className={styles.unlockedCard}>
                   <div className={styles.unlockedGlyph}>✦</div>
                   <p className={styles.unlockedText}>
@@ -376,6 +562,8 @@ export default function AnKodPage() {
                 setStep(0);
                 setAnswers({});
                 setReading("");
+                setReflection("");
+                setDeepSections([]);
               }}
             >
               Tekrar Başla
@@ -384,7 +572,7 @@ export default function AnKodPage() {
         )}
       </AnimatePresence>
 
-      {/* ── Energy Modal ── */}
+      {/* ── Modal ── */}
       <AnimatePresence>
         {modal && (
           <div
@@ -400,15 +588,45 @@ export default function AnKodPage() {
               transition={{ duration: 0.35, ease: "easeOut" }}
             >
               <div className={styles.modalGlyph}>✦</div>
+
+              <p className={styles.modalP}>
+                Seçimlerin,
+                <br />
+                tek başına anlamlı değil.
+              </p>
+              <p className={styles.modalP2}>
+                Ama birlikte…
+                <br />
+                bir desen oluşturur.
+              </p>
+
+              <div className={styles.modalList}>
+                <p className={styles.modalListTitle}>Derin Okuma'da:</p>
+                <ul className={styles.modalUl}>
+                  <li>tekrar eden iç tema</li>
+                  <li>güçlü yönün</li>
+                  <li>zorlayan döngün</li>
+                  <li>dikkat etmen gereken alan</li>
+                </ul>
+                <p className={styles.modalListEnd}>sana özel olarak açılır.</p>
+              </div>
+
+              <p className={styles.modalEthic}>
+                Bu çalışma kesin yargı vermez.
+                <br />
+                Sana bir ayna tutar.
+              </p>
+
               <p className={styles.modalText}>
                 Bu katmanı açmak için{" "}
                 <span className={styles.modalPrice}>369₺</span> enerji
                 değişimi gerekir.
               </p>
+
               <button
                 className={styles.modalBtn}
                 onClick={() =>
-                  redirectToShopier("rol_okuma", "ankod_unlock", "/rol-okuma")
+                  redirectToShopier("rol_okuma", "ankod_unlock", "/an-kod")
                 }
               >
                 Kapıyı Aç
@@ -417,7 +635,7 @@ export default function AnKodPage() {
                 className={styles.modalClose}
                 onClick={() => setModal(false)}
               >
-                Şimdi değil
+                Şimdilik kal
               </button>
             </motion.div>
           </div>
