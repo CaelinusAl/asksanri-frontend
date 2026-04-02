@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useRef, useMemo } from "react";
+import React, { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
+import { trackFunnelEvent } from "../data/funnelTracker";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./RolOkumaPage.module.css";
 
@@ -69,7 +70,10 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
         </p>
         <button
           className={styles.modalBtn}
-          onClick={() => redirectToShopier(productId, contentId, "/rol-okuma")}
+          onClick={() => {
+            trackFunnelEvent("role_shopier_redirect");
+            redirectToShopier(productId, contentId, "/rol-okuma");
+          }}
         >
           Kapıyı Aç
         </button>
@@ -96,7 +100,11 @@ export default function RolOkumaPage() {
 
   const unlocked = isShopierUnlocked("role_unlock") || isShopierUnlocked("ankod_unlock") || isShopierUnlocked("subconscious_unlock");
 
+  useEffect(() => { trackFunnelEvent("role_page_view"); }, []);
+  useEffect(() => { if (unlocked) trackFunnelEvent("role_unlock_success"); }, [unlocked]);
+
   const openModal = (label, price, productId, contentId) => {
+    trackFunnelEvent("role_unlock_click");
     setModal({ label, price, productId, contentId });
   };
 
@@ -113,9 +121,14 @@ export default function RolOkumaPage() {
     if (intervalRef.current) clearInterval(intervalRef.current);
   }, []);
 
+  const handleFormStart = useCallback(() => {
+    trackFunnelEvent("role_form_start");
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!name.trim() || !birthDate.trim()) return;
+    trackFunnelEvent("role_form_submit");
     setError("");
     setPhase(PHASES.LOADING);
     startLoading();
@@ -138,6 +151,8 @@ export default function RolOkumaPage() {
       setResult({ data, sections, fullName });
       stopLoading();
       setPhase(PHASES.RESULT);
+      trackFunnelEvent("role_free_result_view");
+      if (!unlocked) trackFunnelEvent("role_lock_view");
     } catch {
       stopLoading();
       setError("Bir hata oluştu. Lütfen tekrar dene.");
@@ -220,6 +235,7 @@ export default function RolOkumaPage() {
                     type="text"
                     placeholder="Adın"
                     value={name}
+                    onFocus={handleFormStart}
                     onChange={(e) => setName(e.target.value)}
                     required
                   />

@@ -1,7 +1,8 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
+import { trackFunnelEvent } from "../data/funnelTracker";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import styles from "./AnKodPage.module.css";
 
@@ -244,7 +245,11 @@ export default function AnKodPage() {
     isShopierUnlocked("subconscious_unlock") ||
     isShopierUnlocked("role_unlock");
 
+  useEffect(() => { trackFunnelEvent("ankod_page_view"); }, []);
+  useEffect(() => { if (unlocked) trackFunnelEvent("ankod_unlock_success"); }, [unlocked]);
+
   const handleStart = useCallback(() => {
+    trackFunnelEvent("ankod_quiz_start");
     setPhase(PHASES.QUESTIONS);
     setStep(0);
     setAnswers({});
@@ -259,6 +264,7 @@ export default function AnKodPage() {
       if (step < QUESTIONS.length - 1) {
         setStep(step + 1);
       } else {
+        trackFunnelEvent("ankod_quiz_complete");
         setPhase(PHASES.READING_LOAD);
         const ankodText = generateAnKodReading(next);
         const reflText = generateReflection(next);
@@ -268,6 +274,7 @@ export default function AnKodPage() {
           setReflection(reflText);
           setDeepSections(deep);
           setPhase(PHASES.RESULT);
+          if (!unlocked) trackFunnelEvent("ankod_lock_view");
         }, 2800);
       }
     },
@@ -471,7 +478,7 @@ export default function AnKodPage() {
                   </p>
                   <button
                     className={styles.lockBtn}
-                    onClick={() => setModal(true)}
+                    onClick={() => { trackFunnelEvent("ankod_unlock_click"); setModal(true); }}
                   >
                     Derin Okumayı Aç
                   </button>
@@ -611,9 +618,10 @@ export default function AnKodPage() {
 
               <button
                 className={styles.modalBtn}
-                onClick={() =>
-                  redirectToShopier("rol_okuma", "ankod_unlock", "/an-kod")
-                }
+                onClick={() => {
+                  trackFunnelEvent("ankod_shopier_redirect");
+                  redirectToShopier("rol_okuma", "ankod_unlock", "/an-kod");
+                }}
               >
                 Kapıyı Aç
               </button>

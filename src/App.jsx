@@ -37,6 +37,7 @@ import AdminContentEnginePage from "./pages/admin/AdminContentEnginePage";
 import AdminCalendarPage from "./pages/admin/AdminCalendarPage";
 import AdminGrowthPage from "./pages/admin/AdminGrowthPage";
 import AdminBillingPage from "./pages/admin/AdminBillingPage";
+import AdminFunnelPage from "./pages/admin/AdminFunnelPage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentCancelPage from "./pages/PaymentCancelPage";
 import IyzicoCallbackPage from "./pages/IyzicoCallbackPage";
@@ -119,6 +120,7 @@ export default function App() {
         <Route path="growth" element={<AdminGrowthPage />} />
         <Route path="premium" element={<AdminPremiumPage />} />
         <Route path="revenue" element={<AdminRevenuePage />} />
+        <Route path="funnel" element={<AdminFunnelPage />} />
         <Route path="billing" element={<AdminBillingPage />} />
         <Route path="notifications" element={<AdminNotificationsPage />} />
         <Route path="system" element={<AdminSystemPage />} />

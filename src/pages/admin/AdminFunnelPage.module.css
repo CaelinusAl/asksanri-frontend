@@ -1,0 +1,333 @@
+.page {
+  padding: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: rgba(200, 160, 255, 0.45);
+  margin: 0;
+}
+
+.filterRow {
+  display: flex;
+  gap: 8px;
+}
+
+.filterBtn {
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  background: rgba(200, 160, 255, 0.04);
+  color: rgba(200, 160, 255, 0.5);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  border-color: rgba(200, 160, 255, 0.25);
+  color: rgba(200, 160, 255, 0.7);
+}
+
+.filterBtnActive {
+  border-color: rgba(200, 160, 255, 0.4);
+  background: rgba(200, 160, 255, 0.1);
+  color: #c8a0ff;
+}
+
+.loading {
+  text-align: center;
+  color: rgba(200, 160, 255, 0.4);
+  padding: 60px 0;
+  font-size: 14px;
+}
+
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  padding: 40px 0;
+  font-size: 14px;
+}
+
+/* ── Stats Grid ── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+/* ── Funnel ── */
+.funnelSection,
+.ratesSection {
+  background: rgba(200, 160, 255, 0.03);
+  border: 1px solid rgba(200, 160, 255, 0.08);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 20px;
+  letter-spacing: 0.02em;
+}
+
+.funnelBars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.funnelRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.funnelLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 180px;
+  flex-shrink: 0;
+}
+
+.funnelIcon {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+}
+
+.funnelName {
+  font-size: 13px;
+  color: rgba(230, 226, 245, 0.65);
+  font-weight: 500;
+}
+
+.funnelBarWrap {
+  flex: 1;
+  height: 28px;
+  background: rgba(200, 160, 255, 0.04);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.funnelBar {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(200, 160, 255, 0.3),
+    rgba(120, 247, 216, 0.25)
+  );
+  border-radius: 8px;
+  transition: width 0.6s ease;
+  min-width: 4px;
+}
+
+.funnelVal {
+  width: 50px;
+  text-align: right;
+  font-size: 14px;
+  font-weight: 700;
+  color: #e8e4f0;
+  flex-shrink: 0;
+}
+
+/* ── Rates ── */
+.ratesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.rateCard {
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.06);
+  background: rgba(200, 160, 255, 0.02);
+  text-align: center;
+}
+
+.rateCardHighlight {
+  border-color: rgba(120, 247, 216, 0.2);
+  background: rgba(120, 247, 216, 0.04);
+}
+
+.rateLabel {
+  font-size: 11px;
+  color: rgba(200, 160, 255, 0.4);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.rateValue {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+/* ── Meta Row ── */
+.metaRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metaCard {
+  background: rgba(200, 160, 255, 0.03);
+  border: 1px solid rgba(200, 160, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.metaTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 14px;
+}
+
+.metaList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metaItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.metaItemLabel {
+  color: rgba(230, 226, 245, 0.6);
+}
+
+.metaItemVal {
+  font-weight: 700;
+  color: #c8a0ff;
+}
+
+.metaEmpty {
+  font-size: 12px;
+  color: rgba(200, 160, 255, 0.3);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Hourly Grid ── */
+.hourlyGrid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 4px;
+}
+
+.hourCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 2px;
+  border-radius: 6px;
+  background: rgba(200, 160, 255, 0.15);
+}
+
+.hourLabel {
+  font-size: 10px;
+  color: rgba(200, 160, 255, 0.5);
+  font-weight: 600;
+}
+
+.hourCount {
+  font-size: 11px;
+  color: #e8e4f0;
+  font-weight: 700;
+}
+
+/* ── Total ── */
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.06);
+  background: rgba(200, 160, 255, 0.02);
+}
+
+.totalLabel {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.5);
+  font-weight: 600;
+}
+
+.totalValue {
+  font-size: 20px;
+  font-weight: 800;
+  color: #c8a0ff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .page {
+    padding: 16px;
+  }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ratesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metaRow {
+    grid-template-columns: 1fr;
+  }
+  .funnelLabel {
+    width: 120px;
+  }
+  .funnelName {
+    font-size: 11px;
+  }
+  .hourlyGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .ratesGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .funnelLabel {
+    width: 90px;
+  }
+}

@@ -51,3 +51,6 @@ export const fetchVisitorStats = () => adminFetch("/analytics/stats");
 
 // ── System ──
 export const fetchHealth = () => fetch(`${API}/health`).then((r) => r.json());
+
+// ── Funnel Analytics ──
+export const fetchFunnelStats = (days = 7) => adminFetch(`/funnel/admin/stats?days=${days}`);
