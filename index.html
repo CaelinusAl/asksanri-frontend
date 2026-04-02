@@ -92,7 +92,8 @@
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq("init", "970415639263912");
-      /* PageView: SPA — sent from usePageView + analytics.trackPageView (avoids double hit with GA4 path) */
+      /* Meta kurulum / tarayıcı doğrulaması bu satırı HTML’de bekler; SPA geçişleri usePageView ile ek PageView atar */
+      fbq("track", "PageView");
     </script>
   </head>
 

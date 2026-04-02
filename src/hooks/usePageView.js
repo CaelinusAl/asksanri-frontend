@@ -19,13 +19,18 @@ function getSessionId() {
 export default function usePageView() {
   const location = useLocation();
   const lastPath = useRef("");
+  /** İlk rota: index.html zaten fbq('track','PageView') attı — çift sayımı önle */
+  const metaPageViewFromHead = useRef(true);
 
   useEffect(() => {
     const path = location.pathname + location.search;
     if (path === lastPath.current) return;
     lastPath.current = path;
 
-    trackPageView(path);
+    trackPageView(path, {
+      skipMetaPageView: metaPageViewFromHead.current,
+    });
+    if (metaPageViewFromHead.current) metaPageViewFromHead.current = false;
 
     const token = localStorage.getItem("sanri_token");
     const headers = { "Content-Type": "application/json" };

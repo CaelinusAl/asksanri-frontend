@@ -24,7 +24,12 @@ export function trackEvent(eventName, params = {}) {
   fbq("trackCustom", eventName, params);
 }
 
-export function trackPageView(path) {
+/**
+ * @param {string} [path]
+ * @param {{ skipMetaPageView?: boolean }} [opts] — true on first SPA hit when index.html already fired fbq PageView
+ */
+export function trackPageView(path, opts = {}) {
+  const { skipMetaPageView = false } = opts;
   const pagePath = path || window.location.pathname + window.location.search;
   const pageLocation = window.location.origin + pagePath;
   const pageTitle = typeof document !== "undefined" ? document.title : "";
@@ -33,7 +38,9 @@ export function trackPageView(path) {
     page_location: pageLocation,
     page_title: pageTitle,
   });
-  fbq("track", "PageView");
+  if (!skipMetaPageView) {
+    fbq("track", "PageView");
+  }
 }
 
 export function trackPurchase(contentId, value, currency = "TRY") {
