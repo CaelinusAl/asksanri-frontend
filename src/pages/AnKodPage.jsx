@@ -252,35 +252,94 @@ export default function AnKodPage() {
             {/* ── Lock Zone ── */}
             {!unlocked && (
               <motion.div
-                className={styles.lockZone}
+                className={styles.lockSection}
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
+                transition={{ delay: 0.8, duration: 0.7 }}
               >
-                <div className={styles.lockPreview}>
-                  {DEEP_LAYERS.map((layer, i) => (
-                    <div key={i} className={styles.lockLine}>
-                      <span className={styles.lockLineIcon}>{layer.icon}</span>
-                      <span className={styles.lockLineText}>{layer.text}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className={styles.lockGradient} />
-                <div className={styles.lockOverlay}>
-                  <p className={styles.lockLine1}>Buraya kadar gördün.</p>
-                  <p className={styles.lockLine2}>
-                    Ama asıl kod burada başlar.
+                <div className={styles.lockDivider} />
+
+                <motion.p
+                  className={styles.lockP}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.0, duration: 0.6 }}
+                >
+                  Buraya kadar gördün.
+                </motion.p>
+                <motion.p
+                  className={styles.lockPSub}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.4, duration: 0.6 }}
+                >
+                  Ama bu sadece yüzeydi.
+                </motion.p>
+
+                <div className={styles.lockDivider} />
+
+                <motion.div
+                  className={styles.lockBlock}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.8, duration: 0.6 }}
+                >
+                  <p className={styles.lockBlockText}>
+                    Bu katman açıldığında:
+                  </p>
+                  <p className={styles.lockBlockItem}>
+                    Sadece cevap almazsın —
+                  </p>
+                  <p className={styles.lockBlockHighlight}>
+                    kendini farklı görmeye başlarsın.
+                  </p>
+                </motion.div>
+
+                <div className={styles.lockDivider} />
+
+                <motion.div
+                  className={styles.lockBlock}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.2, duration: 0.6 }}
+                >
+                  <p className={styles.lockBlockText}>
+                    Adın, doğum tarihin ve bu an verdiğin cevaplar birleşir.
+                  </p>
+                  <p className={styles.lockBlockText}>
+                    Ve sana özel olan şey açılır:
+                  </p>
+                  <p className={styles.lockBlockRole}>Rolün.</p>
+                </motion.div>
+
+                <motion.div
+                  className={styles.lockPersonal}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.8, duration: 0.6 }}
+                >
+                  <p className={styles.lockPersonalText}>
+                    Bu, herkes için aynı değildir.
+                  </p>
+                  <p className={styles.lockPersonalStrong}>Bu sana özel.</p>
+                </motion.div>
+
+                <motion.div
+                  className={styles.lockCta}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 3.2, duration: 0.5 }}
+                >
+                  <p className={styles.lockCtaHint}>
+                    Bu kapı, hazır olana açılır.
                   </p>
                   <button
                     className={styles.lockBtn}
                     onClick={() => setModal(true)}
                   >
-                    Kodunu Aç
+                    Kapıyı Aç
                   </button>
-                  <span className={styles.lockHint}>
-                    Bu katman ücretli olarak açılır
-                  </span>
-                </div>
+                </motion.div>
               </motion.div>
             )}
 
@@ -295,15 +354,16 @@ export default function AnKodPage() {
                 <div className={styles.unlockedCard}>
                   <div className={styles.unlockedGlyph}>✦</div>
                   <p className={styles.unlockedText}>
-                    Anın kodları açıldı.
-                    <br />
-                    Şimdi ismin ve doğum tarihini girerek tam Matrix analizini al.
+                    Kapı açıldı. Kodun hazır.
+                  </p>
+                  <p className={styles.unlockedSubtext}>
+                    Adını ve doğum tarihini gir — sana özel analiz açılsın.
                   </p>
                   <button
                     className={styles.unlockedBtn}
                     onClick={() => navigate("/rol-okuma")}
                   >
-                    Tam Analizine Git
+                    Rolünü Gör
                   </button>
                 </div>
               </motion.div>
@@ -341,14 +401,9 @@ export default function AnKodPage() {
             >
               <div className={styles.modalGlyph}>✦</div>
               <p className={styles.modalText}>
-                Anın kodlarını açmak için{" "}
+                Bu katmanı açmak için{" "}
                 <span className={styles.modalPrice}>369₺</span> enerji
                 değişimi gerekir.
-              </p>
-              <p className={styles.modalSub}>
-                Matrix Rol Okuma ile ismin, doğum tarihin ve bu anın
-                cevapları birleştirilir. Tam numerolojik analiz + kişisel
-                SANRI yorumu sana açılır.
               </p>
               <button
                 className={styles.modalBtn}

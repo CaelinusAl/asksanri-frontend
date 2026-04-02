@@ -94,12 +94,13 @@ export default function OdemeBasariliPage() {
             <p
               style={{
                 marginTop: 14,
-                color: "rgba(200,160,255,0.55)",
+                color: "rgba(200,160,255,0.45)",
                 fontSize: 15,
                 letterSpacing: "0.04em",
+                fontStyle: "italic",
               }}
             >
-              Artık görüyorsun.
+              Ama artık geri dönüş yok.
             </p>
           </motion.div>
         )}
@@ -112,44 +113,66 @@ export default function OdemeBasariliPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div style={{ fontSize: 28, color: "rgba(120,247,216,0.6)", marginBottom: 20 }}>
+            <div style={{ fontSize: 28, color: "rgba(120,247,216,0.5)", marginBottom: 24 }}>
               ✦
             </div>
-            <h2
-              style={{
-                fontSize: "clamp(24px, 5vw, 36px)",
-                fontWeight: 300,
-                color: "#e8e4f4",
-                margin: "0 0 10px",
-                letterSpacing: "0.03em",
-              }}
-            >
-              Kapı açıldı. Artık görüyorsun.
-            </h2>
             <p
               style={{
-                color: "rgba(200,160,255,0.5)",
-                fontSize: 14,
-                margin: "0 0 32px",
+                color: "rgba(200,160,255,0.45)",
+                fontSize: 15,
+                margin: "0 0 8px",
+                lineHeight: 1.7,
               }}
             >
-              İçerik artık sana açık.
+              Devam ettiğinde:
             </p>
+            <p
+              style={{
+                color: "rgba(200,160,255,0.4)",
+                fontSize: 14,
+                margin: "0 0 6px",
+                fontStyle: "italic",
+              }}
+            >
+              okuduğun şey değişmeyecek.
+            </p>
+            <h2
+              style={{
+                fontSize: "clamp(22px, 5vw, 32px)",
+                fontWeight: 300,
+                color: "#e8e4f4",
+                margin: "0 0 36px",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Sen değişeceksin.
+            </h2>
             <button
               onClick={() => navigate(finalPath, { replace: true })}
               style={{
-                padding: "15px 40px",
+                padding: "16px 44px",
                 borderRadius: 14,
-                border: "none",
-                background: "linear-gradient(135deg, #c8a0ff, #7cf7d8)",
-                color: "#07080d",
+                border: "1px solid rgba(200,160,255,0.25)",
+                background: "rgba(200,160,255,0.08)",
+                color: "#e0dcf0",
                 fontSize: 15,
-                fontWeight: 700,
+                fontWeight: 600,
                 cursor: "pointer",
-                transition: "all 0.25s",
+                transition: "all 0.3s",
+                letterSpacing: "0.03em",
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = "rgba(200,160,255,0.16)";
+                e.target.style.borderColor = "rgba(200,160,255,0.4)";
+                e.target.style.boxShadow = "0 0 40px rgba(200,160,255,0.12)";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = "rgba(200,160,255,0.08)";
+                e.target.style.borderColor = "rgba(200,160,255,0.25)";
+                e.target.style.boxShadow = "none";
               }}
             >
-              Devam Et
+              {finalPath.includes("rol-okuma") ? "Rolünü Gör" : "Devam Et"}
             </button>
           </motion.div>
         )}

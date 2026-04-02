@@ -278,75 +278,86 @@
   letter-spacing: 0.01em;
 }
 
-/* ── Lock Zone ── */
-.lockZone {
-  position: relative;
-  margin-bottom: 36px;
-  border-radius: 20px;
-  overflow: hidden;
+/* ── Lock Section — Psychology-driven flow ── */
+.lockSection {
+  margin-bottom: 40px;
+  text-align: center;
 }
-.lockPreview {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 24px 20px;
-  filter: blur(5px);
-  pointer-events: none;
-  user-select: none;
+.lockDivider {
+  width: 40px;
+  height: 1px;
+  background: rgba(200, 160, 255, 0.15);
+  margin: 28px auto;
 }
-.lockLine {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 12px;
-  background: rgba(200, 160, 255, 0.04);
-  border: 1px solid rgba(200, 160, 255, 0.08);
-}
-.lockLineIcon {
-  font-size: 16px;
-  color: rgba(200, 160, 255, 0.4);
-}
-.lockLineText {
-  font-size: 13px;
-  color: rgba(200, 160, 255, 0.5);
-}
-.lockGradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 0%,
-    rgba(7, 8, 13, 0.6) 30%,
-    rgba(7, 8, 13, 0.95) 70%
-  );
-  pointer-events: none;
-}
-.lockOverlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px 20px 32px;
-  z-index: 2;
-}
-.lockLine1 {
-  font-size: 17px;
-  font-weight: 700;
+.lockP {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 300;
   color: #e8e4f0;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
+  letter-spacing: 0.01em;
 }
-.lockLine2 {
-  font-size: 14px;
-  color: rgba(200, 160, 255, 0.5);
-  margin: 0 0 24px;
+.lockPSub {
+  font-size: 15px;
+  color: rgba(200, 160, 255, 0.45);
+  margin: 0;
   font-style: italic;
 }
+.lockBlock {
+  padding: 0 8px;
+  margin: 0 0 4px;
+}
+.lockBlockText {
+  font-size: 15px;
+  color: rgba(200, 160, 255, 0.5);
+  line-height: 1.75;
+  margin: 0 0 4px;
+}
+.lockBlockItem {
+  font-size: 15px;
+  color: rgba(200, 160, 255, 0.5);
+  margin: 0 0 2px;
+}
+.lockBlockHighlight {
+  font-size: 16px;
+  color: #e8e4f0;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+.lockBlockRole {
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 300;
+  color: #c8a0ff;
+  margin: 16px 0 0;
+  letter-spacing: 0.06em;
+}
+.lockPersonal {
+  margin: 32px 0;
+}
+.lockPersonalText {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.4);
+  margin: 0 0 8px;
+}
+.lockPersonalStrong {
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 400;
+  color: #e8e4f0;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+.lockCta {
+  margin-top: 8px;
+}
+.lockCtaHint {
+  font-size: 13px;
+  color: rgba(200, 160, 255, 0.3);
+  font-style: italic;
+  margin: 0 0 20px;
+  letter-spacing: 0.03em;
+}
 .lockBtn {
-  padding: 16px 44px;
+  padding: 16px 48px;
   border-radius: 14px;
   border: 1px solid rgba(200, 160, 255, 0.25);
   background: rgba(200, 160, 255, 0.08);
@@ -362,13 +373,6 @@
   border-color: rgba(200, 160, 255, 0.4);
   box-shadow: 0 0 40px rgba(200, 160, 255, 0.12);
   transform: translateY(-2px);
-}
-.lockHint {
-  margin-top: 14px;
-  font-size: 11px;
-  color: rgba(200, 160, 255, 0.28);
-  letter-spacing: 0.04em;
-  font-style: italic;
 }
 
 /* ── Unlocked: redirect card ── */
@@ -388,10 +392,17 @@
   margin-bottom: 18px;
 }
 .unlockedText {
-  font-size: 15px;
-  color: rgba(200, 160, 255, 0.65);
-  line-height: 1.75;
+  font-size: clamp(18px, 4vw, 24px);
+  font-weight: 300;
+  color: #e8e4f0;
+  line-height: 1.5;
+  margin: 0 0 10px;
+}
+.unlockedSubtext {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.45);
   margin: 0 0 28px;
+  font-style: italic;
 }
 .unlockedBtn {
   padding: 16px 40px;
@@ -475,13 +486,6 @@
 .modalPrice {
   color: #c8a0ff;
   font-weight: 700;
-}
-.modalSub {
-  font-size: 13px;
-  color: rgba(200, 160, 255, 0.4);
-  line-height: 1.7;
-  margin: 0 0 28px;
-  font-style: italic;
 }
 .modalBtn {
   width: 100%;

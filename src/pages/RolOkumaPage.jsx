@@ -291,22 +291,26 @@ export default function RolOkumaPage() {
                   <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
                   <div className={styles.ctaBtns}>
                     <div className={styles.ctaItem}>
+                      <p className={styles.ctaQuestion}>
+                        İlişkilerinde neden hep aynı şeyi yaşıyorsun?
+                      </p>
                       <button
                         className={styles.ctaSoft}
                         onClick={() => openModal("İlişki Katmanı", "369", "iliski_acilimi", "iliski_acilimi")}
                       >
-                        İlişki Katmanını Aç
+                        Bunu açabilirsin.
                       </button>
-                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
                     </div>
                     <div className={styles.ctaItem}>
+                      <p className={styles.ctaQuestion}>
+                        Para neden sana akmıyor?
+                      </p>
                       <button
                         className={styles.ctaSoft}
                         onClick={() => openModal("Para Akışı Katmanı", "369", "para_akisi", "para_akisi")}
                       >
-                        Para Akışını Aç
+                        Bunu açabilirsin.
                       </button>
-                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
                     </div>
                   </div>
                 </div>
@@ -328,16 +332,16 @@ export default function RolOkumaPage() {
                   </div>
                   <div className={styles.lockZoneGradient} />
                   <div className={styles.lockZoneOverlay}>
-                    <div className={styles.lockZoneIcon}>🔒</div>
                     <p className={styles.lockZoneLine1}>Buraya kadar gördün.</p>
                     <p className={styles.lockZoneLine2}>Ama asıl katman burada başlar.</p>
+                    <p className={styles.lockZonePersonal}>Bu sana özel.</p>
                     <button
                       className={styles.lockZoneBtn}
                       onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
                     >
                       Rolünü Aç
                     </button>
-                    <span className={styles.lockZoneHint}>Bu katman ücretli olarak açılır</span>
+                    <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
                   </div>
                 </div>
 
@@ -346,22 +350,26 @@ export default function RolOkumaPage() {
                   <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
                   <div className={styles.ctaBtns}>
                     <div className={styles.ctaItem}>
+                      <p className={styles.ctaQuestion}>
+                        İlişkilerinde neden hep aynı şeyi yaşıyorsun?
+                      </p>
                       <button
                         className={styles.ctaSoft}
                         onClick={() => openModal("İlişki Katmanı", "369", "iliski_acilimi", "iliski_acilimi")}
                       >
-                        İlişki Katmanını Aç
+                        Bunu açabilirsin.
                       </button>
-                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
                     </div>
                     <div className={styles.ctaItem}>
+                      <p className={styles.ctaQuestion}>
+                        Para neden sana akmıyor?
+                      </p>
                       <button
                         className={styles.ctaSoft}
                         onClick={() => openModal("Para Akışı Katmanı", "369", "para_akisi", "para_akisi")}
                       >
-                        Para Akışını Aç
+                        Bunu açabilirsin.
                       </button>
-                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
                     </div>
                   </div>
                 </div>
