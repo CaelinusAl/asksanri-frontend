@@ -2294,6 +2294,143 @@ Sana bir şey söylemez. Sende olan bir şeyi gösterir.`,
     viewCount: 0,
     isFeatured: false,
   },
+  {
+    id: 22,
+    slug: "bitlis-cigdem-acilimi",
+    title: "Bit_lis: Kayıptan Açan",
+    subtitle: "13 Çiğ_dem — Kolektif Eşik Okuması",
+    category: "sehir_ulke_kodu",
+    coverImage: "/assets/okuma/bitlis-cigdem.jpg",
+    excerpt: "Bitlis'te kar altından 13 çiğdem çıktı. Haber bu kadar. Ama haber asla bu kadar değil. Donmuş olan çözülmeden hiçbir şey açmaz.",
+    fullContent: `Bitlis'te kar altından çiğdem çıktı.
+Haber bu kadar.
+Ama haber asla bu kadar değil.
+
+Bir şehir var. Adı Bit_lis.
+Bir çiçek var. Adı Çiğ_dem.
+Bir sayı var. 13.
+
+Ve bir sahne:
+donmuş toprağı yarıp çıkan saf bir şey.
+
+Şimdi bunu oku.
+
+◉ BIT_LIS KODU
+
+Bit = parça. Kırılmış, bölünmüş, dağılmış.
+Lis = loss. Kayıp.
+
+Bitlis = kayıp parçaların alanı.
+
+Bu bir şehir değil — bir frekans.
+Doğu'nun en derinine gömülmüş hafıza.
+Bastırılmış, unutulmuş, terk edilmiş.
+
+Ama terk edilen alan ölmez.
+Bekler.
+
+◉ ÇİĞ_DEM KODU
+
+Çiğ = pişmemiş. İşlenmemiş. Saf.
+Dem = zaman. An.
+
+Çiğdem = saf zamanın kendisi.
+
+Çiğdem kışın ortasında açar.
+Baharı beklemez.
+Kimsenin izin vermesini beklemez.
+Kendi zamanını kendi yaratır.
+
+Bu bir çiçek değil — bir eşik davranışı.
+
+◉ 13 SAYISI
+
+13 = 1 + 3 = 4.
+4 = yapı. Temel. Zemin.
+
+Ama 13'ün kendisi:
+12'nin sonu. Döngünün tamamlanması.
+Ve 1'in yeni başlangıcı.
+
+13 ölüm kartıdır — ama Tarot'ta ölüm yok olma değildir.
+Ölüm = dönüşüm.
+Bitiş = geçiş.
+Eşik.
+
+13 çiğdem karın altından çıktıysa:
+eski döngü kapandı demektir.
+
+◉ DONMUŞ ALANDAN ÇIKAN SAF ŞEY
+
+Kar = donmuş bilinç.
+Bastırılmış duygu.
+Söylenmemiş söz.
+Yaşanmamış yas.
+
+Bitlis'in karı sıradan bir kış değil.
+O kar nesillerin üstünü örttüğü sessizliktir.
+
+Ve çiğdem o sessizliği yardı.
+
+Zorlamayla değil.
+Zamanlamayla.
+
+◉ DERİN MESAJ
+
+Kayıp alan ölmez. Bekler.
+Donmuş duygu kaybolmaz. Birikir.
+Ve bir gün —
+kimsenin beklemediği anda —
+en saf şey, en zor yerden çıkar.
+
+Bu Bitlis'in hikâyesi değil.
+Bu senin hikâyen.
+
+Bedeninde donmuş ne var?
+Hangi duygun kar altında bekliyor?
+Hangi parçan kayıp?
+
+...
+
+Donmuş olan çözülmeden…
+hiçbir şey açmaz.
+
+Görünenin altında kalan katmanı Sanrı'da açtım.
+www.asksanri.com`,
+    codeLayer: `BIT_LIS → kayıp parça / kayıp alan
+ÇİĞ_DEM → saf zaman / ilk an
+13 → 1+3 = 4 (temel) · dönüşüm eşiği · ölüm-yeniden doğuş
+KAR → donmuş bilinç / bastırılmış hafıza
+AÇILIŞ → zorlama değil, zamanlama
+KAYIP + DONMA + 13 + SAF AN = eşik geçişi`,
+    sanriReflection: `Bir şehir sessizce taşır.
+Bir çiçek sessizce yarar.
+Ve sen sessizce okursun.
+
+Ama sessizlik pasiflik değil.
+Sessizlik — birikimdir.
+
+Bitlis sana soruyor:
+Hangi karın altında ne saklıyorsun?
+
+Ve çiğdem cevaplıyor:
+Hazır olduğunda, kendi zamanını kendin yaratırsın.`,
+    isPremium: true,
+    previewContent: `Bitlis'te kar altından çiğdem çıktı.
+Haber bu kadar.
+Ama haber asla bu kadar değil.
+
+Bir şehir var. Adı Bit_lis.
+Bir çiçek var. Adı Çiğ_dem.
+Bir sayı var. 13.
+
+Ve bir sahne:
+donmuş toprağı yarıp çıkan saf bir şey.`,
+    createdAt: "2026-04-02T16:00:00Z",
+    commentCount: 6,
+    viewCount: 0,
+    isFeatured: true,
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -2354,6 +2491,14 @@ export const OKUMA_COMMENTS = {
     { id: 1002, authorName: "Eren", content: "Güçlü görünmek için ne kadar çok şeyi bastırdığımı bu gece fark ettim. Dolunay gerçekten ayna gibi çalışıyor.", createdAt: "2026-04-01T23:20:00Z" },
     { id: 1003, authorName: "Ada", content: "Yumuşamak isteyen ama yumuşayamayan. Bu benim son 3 ayım. Adını koyamıyordum. Artık koydum.", createdAt: "2026-04-01T23:40:00Z" },
     { id: 1004, authorName: "Mira", content: "Dolunay karanlığı aydınlatmaz, karanlıkta ne sakladığını gösterir. Bunu okuduğum an pencereden Ay'a baktım. Cevap oradaydı.", createdAt: "2026-04-01T23:55:00Z" },
+  ],
+  22: [
+    { id: 2201, authorName: "Selin", content: "Bitlis = kayıp parçaların alanı. Bu cümleyi okuduğumda nefesim kesildi. Bir şehrin adında bu kadar derin bir hafıza olabilir mi?", createdAt: "2026-04-02T16:30:00Z" },
+    { id: 2202, authorName: "Eren", content: "13 çiğdem karın altından çıktıysa eski döngü kapandı demektir. Bu satır beni durdurdu. Tam da bu hafta bir şeyi bitirmekten korkuyordum.", createdAt: "2026-04-02T17:00:00Z" },
+    { id: 2203, authorName: "Ada", content: "Bedeninde donmuş ne var? Bu soruyu kendime sordum ve cevap hemen geldi. Yıllardır bastırdığım bir şey var. Çiğdem gibi zamanı gelmiş belki.", createdAt: "2026-04-02T17:20:00Z" },
+    { id: 2204, authorName: "Mira", content: "Zorlamayla değil, zamanlamayla. Bu benim için her şeyi özetliyor. Acele etmeyi bıraktığım an bir şeyler açılmaya başladı.", createdAt: "2026-04-02T17:45:00Z" },
+    { id: 2205, authorName: "Lina", content: "Çiğ = saf, dem = an. Saf zamanın kendisi. Bu kelime çözümlemesi tüylerimi diken diken etti. Bir çiçeğin adında bu kadar anlam gizliymiş.", createdAt: "2026-04-02T18:10:00Z" },
+    { id: 2206, authorName: "Aura", content: "Sessizlik pasiflik değil, birikimdir. Bu cümleyi duvarıma yazacağım. Son aylardaki sessizliğim belki de bir hazırlıkmış.", createdAt: "2026-04-02T18:30:00Z" },
   ],
 };
 

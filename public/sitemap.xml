@@ -92,4 +92,11 @@
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
+
+  <!-- Kolektif Eşik Okuması -->
+  <url>
+    <loc>https://asksanri.com/okuma-alani/bitlis-cigdem-acilimi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>
