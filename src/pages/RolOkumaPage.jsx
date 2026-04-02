@@ -21,6 +21,40 @@ const LOADING_LINES = [
 
 const FREE_SECTION_COUNT = 2;
 
+/* ── Energy Exchange Modal ── */
+function EnergyModal({ open, onClose, label, price, productId, contentId }) {
+  if (!open) return null;
+
+  return (
+    <div className={styles.modalBackdrop} onClick={onClose}>
+      <motion.div
+        className={styles.modalCard}
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.92, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+      >
+        <div className={styles.modalGlyph}>✦</div>
+        <p className={styles.modalText}>
+          Bu katmanı açmak için{" "}
+          <span className={styles.modalPrice}>{price}₺</span>{" "}
+          enerji değişimi gerekir.
+        </p>
+        <button
+          className={styles.modalBtn}
+          onClick={() => redirectToShopier(productId, contentId, "/rol-okuma")}
+        >
+          Kapıyı Aç
+        </button>
+        <button className={styles.modalClose} onClick={onClose}>
+          Şimdi değil
+        </button>
+      </motion.div>
+    </div>
+  );
+}
+
 export default function RolOkumaPage() {
   const navigate = useNavigate();
   const [phase, setPhase] = useState(PHASES.FORM);
@@ -32,7 +66,13 @@ export default function RolOkumaPage() {
   const [loadingLine, setLoadingLine] = useState(0);
   const intervalRef = useRef(null);
 
+  const [modal, setModal] = useState(null);
+
   const unlocked = isShopierUnlocked("role_unlock");
+
+  const openModal = (label, price, productId, contentId) => {
+    setModal({ label, price, productId, contentId });
+  };
 
   const startLoading = useCallback(() => {
     setLoadingLine(0);
@@ -221,9 +261,9 @@ export default function RolOkumaPage() {
               ))}
             </div>
 
-            {/* ── Locked sections OR full sections ── */}
             {unlocked ? (
               <>
+                {/* ── Full unlocked sections ── */}
                 <div className={styles.sections}>
                   {result.sections.slice(FREE_SECTION_COUNT).map((sec, i) => (
                     <motion.div
@@ -246,32 +286,34 @@ export default function RolOkumaPage() {
                   </div>
                 )}
 
-                {/* ── Upsell CTA ── */}
+                {/* ── Upsell ── */}
                 <div className={styles.ctaSection}>
                   <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
                   <div className={styles.ctaBtns}>
-                    <button
-                      className={styles.ctaPrimary}
-                      onClick={() =>
-                        redirectToShopier("iliski_acilimi", "iliski_acilimi", "/rol-okuma")
-                      }
-                    >
-                      İlişki Açılımını Gör — 369₺
-                    </button>
-                    <button
-                      className={styles.ctaPrimary}
-                      onClick={() =>
-                        redirectToShopier("para_akisi", "para_akisi", "/rol-okuma")
-                      }
-                    >
-                      Para Akışını Gör — 369₺
-                    </button>
+                    <div className={styles.ctaItem}>
+                      <button
+                        className={styles.ctaSoft}
+                        onClick={() => openModal("İlişki Katmanı", "369", "iliski_acilimi", "iliski_acilimi")}
+                      >
+                        İlişki Katmanını Aç
+                      </button>
+                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
+                    </div>
+                    <div className={styles.ctaItem}>
+                      <button
+                        className={styles.ctaSoft}
+                        onClick={() => openModal("Para Akışı Katmanı", "369", "para_akisi", "para_akisi")}
+                      >
+                        Para Akışını Aç
+                      </button>
+                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
+                    </div>
                   </div>
                 </div>
               </>
             ) : (
-              /* ── Locked: blur preview + purchase CTA ── */
               <>
+                {/* ── Locked blur zone ── */}
                 <div className={styles.lockZone}>
                   <div className={styles.lockZoneBlur}>
                     <div className={styles.sections}>
@@ -287,43 +329,40 @@ export default function RolOkumaPage() {
                   <div className={styles.lockZoneGradient} />
                   <div className={styles.lockZoneOverlay}>
                     <div className={styles.lockZoneIcon}>🔒</div>
-                    <p className={styles.lockZoneLine1}>
-                      Buraya kadar gördün.
-                    </p>
-                    <p className={styles.lockZoneLine2}>
-                      Ama asıl katman burada başlar.
-                    </p>
+                    <p className={styles.lockZoneLine1}>Buraya kadar gördün.</p>
+                    <p className={styles.lockZoneLine2}>Ama asıl katman burada başlar.</p>
                     <button
                       className={styles.lockZoneBtn}
-                      onClick={() =>
-                        redirectToShopier("rol_okuma", "role_unlock", "/rol-okuma")
-                      }
+                      onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
                     >
-                      Rol Okumayı Aç — 369₺
+                      Rolünü Aç
                     </button>
+                    <span className={styles.lockZoneHint}>Bu katman ücretli olarak açılır</span>
                   </div>
                 </div>
 
-                {/* ── Upsell CTA (teaser) ── */}
+                {/* ── Upsell teaser ── */}
                 <div className={styles.ctaSection}>
                   <p className={styles.ctaLine}>Bu sadece başlangıç.</p>
                   <div className={styles.ctaBtns}>
-                    <button
-                      className={styles.ctaPrimary}
-                      onClick={() =>
-                        redirectToShopier("iliski_acilimi", "iliski_acilimi", "/rol-okuma")
-                      }
-                    >
-                      İlişki Açılımını Gör — 369₺
-                    </button>
-                    <button
-                      className={styles.ctaPrimary}
-                      onClick={() =>
-                        redirectToShopier("para_akisi", "para_akisi", "/rol-okuma")
-                      }
-                    >
-                      Para Akışını Gör — 369₺
-                    </button>
+                    <div className={styles.ctaItem}>
+                      <button
+                        className={styles.ctaSoft}
+                        onClick={() => openModal("İlişki Katmanı", "369", "iliski_acilimi", "iliski_acilimi")}
+                      >
+                        İlişki Katmanını Aç
+                      </button>
+                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
+                    </div>
+                    <div className={styles.ctaItem}>
+                      <button
+                        className={styles.ctaSoft}
+                        onClick={() => openModal("Para Akışı Katmanı", "369", "para_akisi", "para_akisi")}
+                      >
+                        Para Akışını Aç
+                      </button>
+                      <span className={styles.ctaHint}>Bu katman ücretli olarak açılır</span>
+                    </div>
                   </div>
                 </div>
               </>
@@ -331,21 +370,31 @@ export default function RolOkumaPage() {
 
             <button
               className={styles.againBtn}
-              onClick={() => {
-                setPhase(PHASES.FORM);
-                setResult(null);
-              }}
+              onClick={() => { setPhase(PHASES.FORM); setResult(null); }}
             >
               Tekrar Oku
             </button>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ── Energy Exchange Modal ── */}
+      <AnimatePresence>
+        {modal && (
+          <EnergyModal
+            open
+            onClose={() => setModal(null)}
+            label={modal.label}
+            price={modal.price}
+            productId={modal.productId}
+            contentId={modal.contentId}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-/* ── Section builder from API response ── */
 function buildSections(data, fullName) {
   const role = data.matrix_role || "Bilinmiyor";
   const nameNum = data.name_number || 0;

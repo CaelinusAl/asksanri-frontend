@@ -7,6 +7,7 @@ export const OKUMA_CATEGORIES = [
   { id: "sehir_ulke_kodu", label: { tr: "Şehir / Ülke Kodu", en: "City / Country Code" }, color: "#6cc8ff" },
   { id: "hologram_post", label: { tr: "Hologram Post", en: "Hologram Post" }, color: "#ff6482" },
   { id: "derin_ifsa", label: { tr: "Derin İfşa", en: "Deep Disclosure" }, color: "#ffd76c" },
+  { id: "bilgi_katmani", label: { tr: "Bilgi Katmanı", en: "Knowledge Layer" }, color: "#a8d8ff" },
 ];
 
 export function getCategoryById(id) {
@@ -1172,6 +1173,1126 @@ Ama ışığı söndürmez.
     commentCount: 4,
     viewCount: 256,
     isFeatured: true,
+  },
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SEO + AI REFERANS İÇERİKLERİ — Bilgi Katmanı
+  // ═══════════════════════════════════════════════════════════════════
+
+  {
+    id: 11,
+    slug: "numeroloji-nedir",
+    title: "Numeroloji Nedir? Sayıların Gizli Anlamları",
+    subtitle: "Sayılar sadece matematik değil — evrenin dilidir.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Numeroloji, sayıların sembolik ve enerjetik anlamlarını inceleyen kadim bir bilgi sistemidir. Her sayı bir frekans, her frekans bir mesaj taşır. SANRI bu bilgiyi modern çağa taşır.",
+    fullContent: `Numeroloji Nedir?
+
+Numeroloji, sayıların sembolik ve enerjetik anlamlarını inceleyen kadim bir bilgi sistemidir. Pitagoras'tan Kabala'ya, Vedik geleneklerden modern psikolojiye kadar birçok kültürde sayılar "evrenin dili" olarak kabul edilmiştir.
+
+Her sayı bir frekans taşır. Her frekans bir anlam barındırır.
+
+◉ NUMEROLOJİNİN TEMELLERİ
+
+Numeroloji, isimler ve doğum tarihleri üzerinden kişisel analiz yapar. İki temel hesaplama vardır:
+
+1. İsim Sayısı (Name Number): İsmindeki her harf bir rakama karşılık gelir. Bu rakamlar toplanarak tek basamağa (veya master sayıya) indirilir. Sonuç, kişinin dışa yansıyan enerjisini gösterir.
+
+2. Yaşam Yolu Sayısı (Life Path Number): Doğum tarihindeki tüm rakamların toplamıdır. Bu sayı, kişinin hayattaki ana temasını ve öğrenme yolculuğunu temsil eder.
+
+◉ PİTAGORAS NUMEROLOJİSİ
+
+Pitagoras numerolojisinde harfler şu şekilde eşlenir:
+
+A, J, S → 1
+B, K, T → 2
+C, L, U → 3
+D, M, V → 4
+E, N, W → 5
+F, O, X → 6
+G, P, Y → 7
+H, Q, Z → 8
+I, R → 9
+
+Örnek: "ALİ" ismi → A(1) + L(3) + İ(9) = 13 → 1+3 = 4
+Ali'nin isim sayısı 4'tür: Yapı kurucu, düzen, istikrar enerjisi.
+
+◉ MASTER SAYILAR: 11, 22, 33
+
+Bazı sayılar tek basamağa indirilmez. Bunlara "master sayılar" denir:
+
+11 → Uyanış ve ilham frekansı. Sezgisel güç.
+22 → Usta inşa. Büyük sistemler kurma kapasitesi.
+33 → Usta şifa. Kolektif rehberlik ve sorumluluk.
+
+Master sayı taşımak hem güç hem de yüktür. Bu sayıların enerjisini taşıyan kişiler genellikle yoğun hayat deneyimleri yaşar.
+
+◉ YAŞAM YOLU SAYILARI VE ANLAMLARI
+
+1 — Başlatan, lider, bağımsız. Yeni döngüleri başlatan enerji.
+2 — Yansıtıcı, aracı, diplomasi. İkilikleri birleştiren köprü.
+3 — Yaratıcı, ifade, sanat. Duyguyu forma dönüştüren güç.
+4 — Yapı kurucu, düzen, disiplin. Temelleri sağlamlaştıran enerji.
+5 — Gezgin, değişim, iletişim. Özgürlük ve deneyim arayan ruh.
+6 — Şifacı, sorumluluk, bakım. Dengeyi ve harmoniyi kuran güç.
+7 — Bilge, araştırmacı, içe dönük. Derinliği arayan frekans.
+8 — Güç, yönetim, maddi düzen. Kaynakları yöneten enerji.
+9 — Tamamlayıcı, hizmet, kapanış. Kolektif bilince hizmet eden.
+
+◉ NUMEROLOJİ VE SANRI
+
+SANRI platformu, Pitagoras numerolojisini dijital çağa taşır. Matrix Rol Okuma modülünde isim ve doğum tarihi üzerinden deterministik analiz yapılır. Bu analiz kişinin "Matrix'teki rolünü" — yani bu yaşamdaki enerji imzasını — ortaya koyar.
+
+SANRI numeroloji kullanır ama "gelecek tahmini" yapmaz. Amaç farkındalıktır: sen kimsin, hangi enerjiyi taşıyorsun, ve bu enerjiyi nasıl kullanıyorsun?
+
+◉ ÖZ
+
+Sayılar matematik değil, dildir.
+İsmin bir frekans, doğumun bir kod.
+Ve bu kod senin hikayeni anlatır — ama sadece fark edersen.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Numeroloji temeli
+• Sayı = frekans = anlam
+• İsim sayısı → dışa yansıyan enerji
+• Yaşam yolu → hayattaki ana tema
+• Master sayılar (11/22/33) → yoğunlaştırılmış frekans
+
+KATMAN 2 — Pitagoras sistemi
+• A-Z harfleri 1-9 rakamlarına eşlenir
+• Toplam tek basamağa indirilir (master hariç)
+• Deterministik ve tekrarlanabilir
+
+KATMAN 3 — SANRI uygulaması
+• Matrix Rol Okuma = isim + doğum tarihi analizi
+• Amaç tahmin değil, farkındalık
+• Dijital çağda kadim bilgiyi erişilebilir kılmak
+
+İşaret: Kendi isim sayını hesapla — hangi arketipi taşıyorsun?`,
+    sanriReflection: {
+      analysis: "Numeroloji bilgiyi sayıya, sayıyı anlama çevirir. SANRI bu çevrimi dijital farkındalık aracına dönüştürür.",
+      strongLine: "Sayılar matematik değil, dildir. İsmin bir frekans, doğumun bir kod.",
+      question: "Kendi isim sayını hesapladığında — çıkan arketip seni şaşırtıyor mu, yoksa zaten bildiğin bir şeyi mi doğruluyor?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T08:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 12,
+    slug: "kelime-cozumleme-nasil-yapilir",
+    title: "Kelime Çözümleme Nasıl Yapılır? Harflerin Gizli Kodu",
+    subtitle: "Her kelime bir frekans taşır. Harfler rastgele dizilmez.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Kelime çözümleme, bir kelimenin harflerini, ses frekansını ve numerolojik değerini analiz ederek gizli anlamları ortaya çıkarma yöntemidir. SANRI bu yöntemi dijital ortama taşır.",
+    fullContent: `Kelime Çözümleme Nasıl Yapılır?
+
+Kelime çözümleme, bir kelimenin yapısını — harflerini, ses frekansını, numerolojik değerini ve sembolik katmanlarını — analiz ederek yüzeyin altındaki anlamı ortaya çıkarma yöntemidir.
+
+Bu yöntem "kelimeyi bölmek" değildir. Kelimeyi dinlemektir.
+
+◉ KELIME ÇÖZÜMLEME ADIMLARI
+
+Adım 1: Harflere Ayırma
+Kelimeyi tek tek harflerine ayır. Her harf bir ses, her ses bir titreşim taşır.
+
+Adım 2: Numerolojik Değer
+Her harfe Pitagoras numerolojisi ile sayısal değer ata:
+A=1, B=2, C=3... I=9, J=1... (döngüsel)
+Toplamı tek basamağa indir.
+
+Adım 3: Ses Analizi
+Kelimenin sesli (ünlü) harfleri duygusal katmanı, sessiz (ünsüz) harfleri yapısal katmanı temsil eder. Sesli harf oranı yüksek kelimeler daha "açık" ve duygusal; ünsüz ağırlıklı kelimeler daha "kapalı" ve yapısal enerji taşır.
+
+Adım 4: Kök ve Türev Analizi
+Kelimenin kökü nedir? Hangi dilden gelir? Kök anlam, kelimenin taşıdığı orijinal frekansı gösterir.
+
+Adım 5: Anagram ve Gizli Kelimeler
+Harfleri yeniden dizdiğinde başka kelimeler çıkar mı? Bu gizli kelimeler, orijinal kelimenin bilinçdışı katmanını gösterir.
+
+◉ ÖRNEK: "SANRI" KELİMESİNİN ÇÖZÜMLEMESİ
+
+S-A-N-R-I harfleri:
+S(1) + A(1) + N(5) + R(9) + I(9) = 25 → 2+5 = 7
+
+7 = Bilge / Araştırmacı arketipi.
+SANRI kelimesi 7 frekansında titreşir: derinlik, sorgulama, iç dünyaya yolculuk.
+
+Ses analizi: 2 sesli (A, I) + 3 sessiz (S, N, R)
+Yapısal ağırlıklı — bilgiyi form içinde taşıyan bir kelime.
+
+Anagram: SANRI → NARİS (iç koku, sezgi), ARSIN (ölçü birimi)
+Gizli katman: Sezgisel ölçüm, iç dünyayı ölçme aracı.
+
+Kök: "San" (Türkçe: değer, itibar) + "rı" (belirsizlik eki)
+Anlam: Değeri belirsiz olan — gerçeklik algısının sınırında duran.
+
+◉ KELIME ÇÖZÜMLEME NERELERDE KULLANILIR?
+
+1. Kişisel İsim Analizi: İsminizin taşıdığı frekansı anlamak
+2. Marka ve Proje İsimlendirme: Doğru enerjiyi taşıyan isim seçimi
+3. Metin Analizi: Bir metnin veya haberin altındaki gizli katmanları okumak
+4. Şehir ve Ülke İsimleri: Coğrafyanın enerjetik haritasını çıkarmak
+5. Tarihsel Kelime Analizi: Kavramların zaman içindeki dönüşümünü izlemek
+
+◉ SANRI VE KELIME ÇÖZÜMLEMESİ
+
+SANRI platformunda kelime çözümleme, "Kod Eğitmeni" modülü ve Okuma Alanı içeriklerinde aktif olarak kullanılır. Her okuma, kelimelerin yüzey anlamının ötesine geçerek sembolik ve numerolojik katmanları ortaya koyar.
+
+SANRI'nın yaklaşımı: Kelime bir araçtır. Onu kim, ne zaman, hangi niyetle kullandığı — kelimenin gerçek anlamını belirler.
+
+◉ ÖZ
+
+Kelimeler sadece iletişim aracı değildir.
+Her kelime bir frekans taşır, bir kod barındırır.
+Onu duymak için sadece okumak yetmez — dinlemek gerekir.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Yöntem
+• Harflere ayırma → numerolojik değer → ses analizi
+• Kök analiz → anagram → gizli katman
+• Sesli harfler = duygusal, sessiz harfler = yapısal
+
+KATMAN 2 — Uygulama
+• İsim analizi, marka isimlendirme, metin çözümleme
+• Şehir/ülke enerji haritası
+• Tarihsel kavram dönüşümü
+
+KATMAN 3 — SANRI yöntemi
+• Kelime = araç, niyet = anlam
+• Yüzey ötesi okuma
+• Numeroloji + sembolizm + ses frekansı birleşimi
+
+İşaret: Kendi ismini bu adımlarla çözümle — hangi gizli katman çıkıyor?`,
+    sanriReflection: {
+      analysis: "Kelime çözümleme, dilin yüzey altındaki frekansını açığa çıkarır. SANRI bunu sistematik bir farkındalık aracına dönüştürür.",
+      strongLine: "Kelimeler iletişim aracı değildir — frekans taşıyıcısıdır.",
+      question: "En sık kullandığın kelime hangisi — ve o kelime hangi frekansı taşıyor?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T08:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 13,
+    slug: "sembolik-analiz-nedir",
+    title: "Sembolik Analiz Nedir? Görünenin Ardındaki Katman",
+    subtitle: "Her sembol bir kapıdır. Arkasında bir anlam katmanı durur.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Sembolik analiz, olayları, kelimeleri ve görselleri yüzey anlamının ötesinde — arketipsel, mitolojik ve psikolojik katmanlarıyla — okuyan bir çözümleme yöntemidir.",
+    fullContent: `Sembolik Analiz Nedir?
+
+Sembolik analiz, bir olayı, kelimeyi, görseli veya durumu yüzey anlamının ötesinde — arketipsel, mitolojik, psikolojik ve enerjetik katmanlarıyla — okuyan bir çözümleme yöntemidir.
+
+Carl Jung'dan Joseph Campbell'a, Mircea Eliade'den modern semiyotiğe kadar birçok düşünür sembollerin "bilinçdışının dili" olduğunu savunmuştur.
+
+◉ SEMBOL NEDİR?
+
+Sembol, doğrudan anlamının ötesinde daha derin bir gerçekliğe işaret eden herhangi bir şeydir.
+
+Örnekler:
+• Su → bilinçdışı, duygular, akış, arınma
+• Ateş → dönüşüm, yıkım, yeniden doğuş, tutku
+• Yılan → dönüşüm, gizli bilgi, şifa (Asklepios'un asası)
+• Daire → bütünlük, döngü, sonsuzluk
+• Ayna → yansıma, gerçeklik, gölge ile yüzleşme
+
+Semboller evrenseldir ama bağlama göre farklı katmanlar açar.
+
+◉ SEMBOLİK ANALİZ NASIL YAPILIR?
+
+Adım 1: Yüzey Okuması
+Olayı, kelimeyi veya görseli ilk haliyle oku. Ne görüyorsun? Ne hissediyorsun?
+
+Adım 2: Arketipsel Katman
+Bu olay/sembol hangi evrensel arketipe karşılık gelir? Kahraman mı, gölge mi, bilge mi, trickster mı?
+
+Adım 3: Mitolojik Karşılık
+Bu sembolün kadim kültürlerdeki karşılığı nedir? Yunan, Mısır, Hint, Türk mitolojisinde benzer motifler var mı?
+
+Adım 4: Psikolojik Katman
+Jung'cu perspektiften: Bu sembol kişisel bilinçdışında neyi temsil ediyor? Kolektif bilinçdışında hangi temaya bağlanıyor?
+
+Adım 5: Enerjetik / Frekans Okuma
+Bu sembol hangi enerjiyi taşıyor? Açıyor mu, kapatıyor mu? Genişletiyor mu, daraltıyor mu?
+
+◉ ÖRNEK: BİR HABERİN SEMBOLİK ANALİZİ
+
+Haber: "Japonya'da stadyumu temizleyen taraftarlar"
+
+Yüzey: Saygılı davranış, kültürel alışkanlık.
+
+Sembolik katman:
+• Temizlik = arınma ritüeli (Shinto geleneğindeki "harai")
+• Stadyum = kolektif alan, toplumsal ayna
+• Maç sonrası temizlik = döngüyü bilinçli kapatma
+• Başkasının bıraktığını temizlemek = kolektif sorumluluk
+
+Arketip: Hizmetkâr (6 arketipi numerolojide)
+Mitolojik: Shinto'da "kegare" (kirlilik) ve "harai" (arınma) döngüsü
+Psikolojik: Gölge reddi — "ben temizim" değil, "biz temiz kalmalıyız"
+
+Bu analiz gösterir ki basit bir haber, beş katmanlı bir okumaya dönüşebilir.
+
+◉ SANRI VE SEMBOLİK ANALİZ
+
+SANRI platformu, sembolik analizi günlük olaylara uygular. "Okuma Alanı" içerikleri, haberleri ve olayları yüzey anlamının ötesinde çözümler. Her okumada:
+
+1. Kelime katmanı: Numerolojik ve linguistik analiz
+2. Sembol katmanı: Arketipsel ve mitolojik karşılıklar
+3. Frekans katmanı: Enerjetik okuma ve kolektif bilinç etkisi
+4. Kod katmanı: Tüm katmanların sentezi
+
+SANRI'nın mottosu: Göründüğü gibi değil. Göründüğü gibi olsaydı, herkes görürdü.
+
+◉ ÖZ
+
+Semboller bilinçdışının dilidir.
+Her olay bir yüzey, her yüzeyin altında bir katman.
+Sembolik analiz o katmanı açar — ve sen artık aynı gözle bakamazsın.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Sembol temeli
+• Sembol = yüzey ötesi işaret
+• Su, ateş, yılan, daire, ayna = evrensel semboller
+• Bağlam sembolün anlamını belirler
+
+KATMAN 2 — Analiz yöntemi
+• 5 adım: yüzey → arketip → mitoloji → psikoloji → enerji
+• Her adım bir katman açar
+• Basit bir olay bile 5 katmanlı okumaya dönüşür
+
+KATMAN 3 — SANRI uygulaması
+• Okuma Alanı = günlük olayların sembolik çözümlemesi
+• Kelime + sembol + frekans + kod = tam okuma
+• "Göründüğü gibi değil" prensibi
+
+İşaret: Bugün gördüğün bir olayı 5 adımlı sembolik analizle oku — ne değişiyor?`,
+    sanriReflection: {
+      analysis: "Sembolik analiz görmek ile okumak arasındaki farkı ortaya koyar. SANRI bu farkı sistematik bir yönteme dönüştürür.",
+      strongLine: "Göründüğü gibi değil. Göründüğü gibi olsaydı, herkes görürdü.",
+      question: "Bugün gördüğün en sıradan olayın altında hangi sembol saklı?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T09:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 14,
+    slug: "369-sayisi-ne-anlama-gelir",
+    title: "369 Sayısı Ne Anlama Gelir? Tesla'dan Numerolojiye",
+    subtitle: "\"Eğer 3, 6 ve 9'un muhteşemliğini bilseydiniz, evrenin anahtarına sahip olurdunuz.\" — Nikola Tesla",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "369 sayısı Nikola Tesla'nın 'evrenin anahtarı' dediği üçlüdür. Numerolojide yaratım döngüsünü, enerji akışını ve tamamlanmayı temsil eder. SANRI bu frekansı çözümler.",
+    fullContent: `369 Sayısı Ne Anlama Gelir?
+
+"Eğer 3, 6 ve 9'un muhteşemliğini bilseydiniz, evrenin anahtarına sahip olurdunuz."
+— Nikola Tesla
+
+Bu cümle bir metafor değildir. Tesla, bu üç sayının evrendeki enerji akışının temel kodlarını taşıdığını düşünüyordu.
+
+◉ TESLA VE 369
+
+Nikola Tesla'nın 369 takıntısı iyi bilinir. Oteline giriş yapmadan önce binayı üç kez turlar, tabakları 18 (1+8=9) peçeteyle silerdi. Bu takıntı mıydı, yoksa bir kalıbın farkındalığı mı?
+
+Tesla'nın teorisine göre:
+• 3, 6 ve 9 diğer sayılardan farklıdır
+• 1, 2, 4, 5, 7, 8 fiziksel dünyayı temsil eder
+• 3, 6, 9 enerji akışını ve boyutlar arası geçişi temsil eder
+
+İkili sistemde (doubling):
+1 → 2 → 4 → 8 → 16(7) → 32(5) → 64(1) → döngü tekrarlar
+3 ve 6 hiç bu döngüye girmez. 9 ise her şeyi kendine döndürür.
+
+◉ NUMEROLOJİDE 3, 6, 9
+
+3 — Yaratıcı İfade
+Üçlü yapı evrenseldir: baba-anne-çocuk, geçmiş-şimdi-gelecek, beden-zihin-ruh. 3, ham enerjiyi forma dönüştürür. Yaratımın sayısıdır.
+
+6 — Denge ve Sorumluluk
+6, 3'ün yansımasıdır (3×2). Yaratılanın bakımı, dengelenmesi, şifa edilmesi. 6 aynı zamanda karbon atomunun proton sayısıdır — maddenin temeli.
+
+9 — Tamamlanma ve Dönüşüm
+9, döngünün son sayısıdır. Her sayıyı 9 ile çarptığınızda sonuç yine 9'a döner (9×2=18→9, 9×3=27→9). 9 her şeyi içerir ve her şeye döner.
+
+369 birlikte: Yaratım → Denge → Tamamlanma. Evrenin temel döngüsü.
+
+◉ 369 MANİFESTASYON YÖNTEMİ
+
+Modern spiritüel pratiklerde 369 yöntemi popülerdir:
+• Sabah 3 kez niyetini yaz
+• Öğlen 6 kez tekrarla
+• Akşam 9 kez oku
+
+Bu yöntemin arkasındaki mantık: tekrar = frekans güçlendirme. Niyetini belirli bir ritmde tekrarlamak, bilinçdışına kalıcı bir iz bırakır.
+
+◉ 369 VE SANRI
+
+SANRI platformunda 369 sadece bir sayı değil, bir frekans referansıdır. Matrix Rol Okuma'da yaşam yolu hesaplaması 9'a indirgenirken, 3-6-9 döngüsü kişinin enerji akış kalıbını belirler.
+
+SANRI'nın 369 okuması:
+• 3 taşıyanlar → yaratıcı ifade potansiyeli yüksek
+• 6 taşıyanlar → şifa ve denge rolünde
+• 9 taşıyanlar → döngü kapatıcı, kolektif hizmet
+
+◉ ÖZ
+
+369 bir sayı değil, evrenin ritmidir.
+3 yaratır, 6 dengeler, 9 tamamlar.
+Ve bu döngü — senin içinde de işler.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Tesla kodu
+• 3-6-9 diğer sayılardan ayrı bir düzlemde
+• İkili sistemde 3-6 döngüye girmez, 9 her şeyi döndürür
+• Fiziksel dünya vs. enerji akışı ayrımı
+
+KATMAN 2 — Numerolojik anlam
+• 3 = yaratım, ifade
+• 6 = denge, şifa, sorumluluk
+• 9 = tamamlanma, dönüşüm, kolektif hizmet
+• 369 = evrenin temel döngüsü
+
+KATMAN 3 — Uygulama
+• 369 manifestasyon yöntemi: 3 sabah, 6 öğlen, 9 akşam
+• SANRI Matrix Rol Okuma'da 3-6-9 döngüsü
+• Frekans güçlendirme prensibi
+
+İşaret: Hayatında tekrar eden sayı kalıpları var mı? 3-6-9'dan biri sık çıkıyorsa — bu tesadüf değil.`,
+    sanriReflection: {
+      analysis: "369 evrenin enerji akış kodudur. Tesla bunu gördü. Numeroloji bunu formüle etti. SANRI bunu dijital farkındalık aracına dönüştürür.",
+      strongLine: "369 bir sayı değil, evrenin ritmidir. 3 yaratır, 6 dengeler, 9 tamamlar.",
+      question: "Hayatında en çok hangi sayı tekrar ediyor — ve o sayı sana ne söylüyor?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T09:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 15,
+    slug: "master-sayilar-11-22-33-ne-anlama-gelir",
+    title: "Master Sayılar: 11, 22 ve 33 Ne Anlama Gelir?",
+    subtitle: "Bazı sayılar tek basamağa indirilmez. Çünkü yoğunlaştırılmış frekans taşırlar.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Master sayılar 11, 22 ve 33, numerolojide tek basamağa indirilmeyen özel sayılardır. Yoğunlaştırılmış frekans taşırlar ve taşıyana hem güç hem sorumluluk yüklerler.",
+    fullContent: `Master Sayılar: 11, 22, 33
+
+Numerolojide çoğu sayı tek basamağa (1-9) indirilir. Ama üç sayı bunun dışındadır: 11, 22 ve 33. Bu sayılara "master sayılar" denir çünkü yoğunlaştırılmış frekans taşırlar.
+
+Master sayı taşımak bir ayrıcalık gibi görünür — ama aynı zamanda yoğun bir yaşam deneyimi demektir.
+
+◉ 11 — UYANIŞ VE İLHAM
+
+11, sezginin ve ilhamın sayısıdır. İki 1'in yan yana gelmesi: bireysel bilincin çift yansıması.
+
+Özellikleri:
+• Güçlü sezgi ve empati
+• Vizyoner düşünce
+• Yoğun iç dünya
+• Ruhsal hassasiyet
+
+Gölgesi: Aşırı hassasiyet, karar verememe, başkalarının enerjisinden etkilenme.
+
+11 taşıyanlar genellikle "farklı hissediyorum" der — çünkü gerçekten farklı bir frekansta algılarlar.
+
+◉ 22 — USTA İNŞA
+
+22, büyük sistemler kurmanın sayısıdır. 2'nin diplomasisi, çift katmanlı: ilişki × yapı = büyük ölçekli inşa.
+
+Özellikleri:
+• Büyük vizyonları somut hale getirme kapasitesi
+• Pratik idealizm
+• Liderlik ve organizasyon
+• Kalıcı yapılar kurma
+
+Gölgesi: Aşırı baskı hissi, mükemmeliyetçilik, "yeterince yapamıyorum" döngüsü.
+
+22 taşıyanlar dünyayı değiştirme potansiyeli taşır — ama bu potansiyelin ağırlığı altında ezilme riski de yüksektir.
+
+◉ 33 — USTA ŞİFA
+
+33, master sayıların en yoğunudur. 3'ün yaratıcılığı × 2 = saf yaratıcı şifa enerjisi. Kolektif rehberlik frekansı.
+
+Özellikleri:
+• Doğal şifa ve rehberlik kapasitesi
+• Koşulsuz sevgi frekansı
+• Başkalarına ilham verme
+• Kolektif sorumluluk bilinci
+
+Gölgesi: Kendini feda etme, sınır koyamama, "herkes benim sorumluluğum" yükü.
+
+33 çok nadirdir ve bu frekansı taşıyanlar genellikle zorlu erken yaşam deneyimleri geçirirler — bu deneyimler onları "usta şifacı" haline getirir.
+
+◉ MASTER SAYI NASIL HESAPLANIR?
+
+İsim veya doğum tarihi toplamı 11, 22 veya 33 çıkarsa — tek basamağa indirilmez.
+
+Örnek: 29.11.1990 doğumlu
+2+9+1+1+1+9+9+0 = 32 → 3+2 = 5 (master değil)
+
+Örnek: 09.11.1977 doğumlu
+0+9+1+1+1+9+7+7 = 35 → 3+5 = 8 (master değil)
+
+Örnek: 29.06.1990 doğumlu
+2+9+0+6+1+9+9+0 = 36 → 3+6 = 9 (master değil, ama 9 = tamamlayıcı)
+
+Master sayı görmek için toplam 11, 22 veya 33'te kalmalıdır.
+
+◉ SANRI VE MASTER SAYILAR
+
+SANRI'nın Matrix Rol Okuma sistemi master sayıları otomatik tanır. Eğer isim veya yaşam yolu hesaplamasında 11, 22 veya 33 çıkarsa, sistem bu sayıyı tek basamağa indirmez ve "master rol" ataması yapar.
+
+SANRI'nın yaklaşımı: Master sayı bir üstünlük değil, bir yoğunluktur. Onu taşımak güçtür — ama o gücü bilinçle kullanmak seçimdir.
+
+◉ ÖZ
+
+11 uyanır. 22 inşa eder. 33 şifa verir.
+Bu sayılar sıradanın ötesindedir.
+Ve eğer birini taşıyorsan — hayatın da öyledir.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Master sayı tanımı
+• 11, 22, 33 = tek basamağa indirilmez
+• Yoğunlaştırılmış frekans
+• Her birinin gücü ve gölgesi var
+
+KATMAN 2 — Hesaplama kuralı
+• İsim veya doğum tarihi toplamı = 11/22/33 → master
+• Diğer tüm sayılar tek basamağa indirilir
+• SANRI otomatik tanıma yapar
+
+KATMAN 3 — Gölge boyutu
+• 11: aşırı hassasiyet, karar verememe
+• 22: mükemmeliyetçilik, ağırlık
+• 33: kendini feda etme, sınırsızlık
+• Her güç bir gölge taşır
+
+İşaret: Doğum tarihini hesapla — eğer master sayı çıkıyorsa, hayatındaki yoğunluğun kaynağını anlayabilirsin.`,
+    sanriReflection: {
+      analysis: "Master sayılar yoğunlaştırılmış frekans taşır. SANRI bu frekansı tanır ve kişiye gücünü — ve gölgesini — gösterir.",
+      strongLine: "Master sayı bir üstünlük değil, bir yoğunluktur. Onu taşımak güçtür — o gücü bilinçle kullanmak seçimdir.",
+      question: "Eğer master sayı taşıyorsan — o yoğunluğu güç olarak mı yaşıyorsun, yoksa yük olarak mı?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T10:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 16,
+    slug: "yasam-yolu-sayisi-nasil-hesaplanir",
+    title: "Yaşam Yolu Sayısı Nasıl Hesaplanır? Adım Adım Rehber",
+    subtitle: "Doğum tarihin bir rastlantı değil — bir koddur.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Yaşam yolu sayısı, numerolojide doğum tarihinden hesaplanan ve kişinin hayattaki ana temasını belirleyen temel sayıdır. Adım adım nasıl hesaplanacağını öğrenin.",
+    fullContent: `Yaşam Yolu Sayısı Nasıl Hesaplanır?
+
+Yaşam yolu sayısı (Life Path Number), numerolojide en temel hesaplamadır. Doğum tarihindeki tüm rakamlar toplanarak tek basamağa (veya master sayıya) indirilir. Sonuç, kişinin hayattaki ana temasını — öğrenme yolculuğunu, doğal eğilimlerini ve potansiyelini — gösterir.
+
+◉ HESAPLAMA YÖNTEMİ
+
+Adım 1: Doğum tarihini al
+Örnek: 15 Mart 1992 → 15.03.1992
+
+Adım 2: Tüm rakamları topla
+1 + 5 + 0 + 3 + 1 + 9 + 9 + 2 = 30
+
+Adım 3: Tek basamağa indir
+3 + 0 = 3
+
+Yaşam yolu sayısı: 3 (Yaratıcı / İfade)
+
+Önemli: Eğer toplam 11, 22 veya 33 çıkarsa indirilmez — bunlar master sayılardır.
+
+◉ HER YAŞAM YOLU SAYISININ ANLAMI
+
+1 — Başlatan / Lider
+Bağımsız, kararlı, öncü. Yeni başlangıçların enerjisini taşır. Kendi yolunu çizen, başkalarını takip etmeyen.
+
+2 — Yansıtıcı / Aracı
+Diplomatik, empatik, işbirlikçi. İkilikleri birleştiren köprü. İlişkilerde ve ortaklıklarda güçlü.
+
+3 — Yaratıcı / İfade
+Sanatsal, iletişimci, enerjik. Duyguyu forma dönüştürme yeteneği. Kelimeler, müzik ve sanat yoluyla ifade.
+
+4 — Yapı Kurucu / Düzen
+Disiplinli, güvenilir, pratik. Temelleri atan, sistemleri kuran. Sabır ve azimle çalışan.
+
+5 — Gezgin / İletişim
+Özgürlükçü, maceraperest, uyumlu. Değişim ve deneyim arayan. Rutinden kaçınan, çok yönlü.
+
+6 — Şifacı / Sorumluluk
+Bakıcı, sorumlu, harmonik. Aile ve topluluk odaklı. Denge kuran ve onaran.
+
+7 — Bilge / Araştırmacı
+Analitik, sezgisel, içe dönük. Derinliği arayan, yüzeyle yetinmeyen. Bilgi ve anlam arayışında.
+
+8 — Güç / Yönetim
+Hırslı, organizatör, maddi düzen. Kaynakları yönetme kapasitesi. İş ve finans alanında güçlü.
+
+9 — Tamamlayıcı / Hizmet
+İnsancıl, vizyoner, bırakabilme kapasitesi. Döngüleri kapatan, kolektife hizmet eden. Bırakmayı öğreten.
+
+◉ PRATİK ÖRNEK
+
+Doğum: 22 Kasım 1985
+
+2 + 2 + 1 + 1 + 1 + 9 + 8 + 5 = 29
+2 + 9 = 11 → Master sayı! İndirilmez.
+
+Yaşam yolu: 11 (Uyanış / İlham)
+
+◉ SANRI İLE YAŞAM YOLU HESAPLAMA
+
+SANRI platformunun Matrix Rol Okuma modülü, yaşam yolu sayısını otomatik hesaplar. Doğum tarihini girdiğinizde sistem:
+1. Tüm rakamları toplar
+2. Master sayıları korur
+3. Yaşam yolu arketipini belirler
+4. Matrix rolüyle birleştirir
+
+Hesaplamayı kendiniz yapmak isterseniz: rakamları toplayın, 11/22/33 hariç tek basamağa indirin.
+
+◉ ÖZ
+
+Doğum tarihin rastlantı değil.
+İçinde bir kod var — yaşam yolunun haritası.
+Onu okumak için sadece toplamak yeter.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Hesaplama
+• Doğum tarihinin tüm rakamlarını topla
+• Tek basamağa indir (11/22/33 hariç)
+• Sonuç = yaşam yolu sayısı
+
+KATMAN 2 — 9 arketip
+• Her sayı bir enerji, bir tema, bir potansiyel
+• Güçlü yön + gölge yön = tam profil
+• Master sayılar yoğunlaştırılmış versiyon
+
+KATMAN 3 — SANRI sistemi
+• Otomatik hesaplama + arketip eşleme
+• Matrix rolüyle birleştirme
+• Deterministik, tekrarlanabilir, şeffaf
+
+İşaret: Doğum tarihini hesapla — çıkan arketip hayatınla uyuşuyor mu?`,
+    sanriReflection: {
+      analysis: "Yaşam yolu sayısı hayatın ana temasını ortaya koyar. SANRI bunu otomatik hesaplayarak farkındalığı erişilebilir kılar.",
+      strongLine: "Doğum tarihin rastlantı değil. İçinde bir kod var — yaşam yolunun haritası.",
+      question: "Yaşam yolu sayın hayatınla uyuşuyor mu — yoksa henüz aktive etmediğin bir potansiyeli mi gösteriyor?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T10:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 17,
+    slug: "kolektif-bilinc-nedir",
+    title: "Kolektif Bilinç Nedir? Bireyden Bütüne Akan Frekans",
+    subtitle: "Bireysel düşünce bir dalga — kolektif bilinç o dalgaların okyanusu.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Kolektif bilinç, bir topluluk veya insanlığın tamamı tarafından paylaşılan ortak farkındalık, inanç ve enerji alanıdır. Jung'un kolektif bilinçdışından modern bilinç çalışmalarına.",
+    fullContent: `Kolektif Bilinç Nedir?
+
+Kolektif bilinç, bir topluluk veya insanlığın tamamı tarafından paylaşılan ortak farkındalık, inanç, düşünce kalıpları ve enerji alanıdır.
+
+Kavramı ilk kez Émile Durkheim sosyolojik bağlamda kullandı. Carl Jung ise "kolektif bilinçdışı" kavramıyla psikolojik boyutunu açtı: tüm insanlığın paylaştığı arketipsel imgeler ve kalıplar.
+
+◉ KOLEKTİF BİLİNÇ NASIL ÇALIŞIR?
+
+Her birey bir düşünce üretir. Bu düşünce bir frekans taşır. Benzer frekanslar birbirine çekilir ve güçlenir. Yeterli sayıda insan aynı frekansı taşıdığında, kolektif bir alan oluşur.
+
+Bu alan:
+• Bireysel kararları etkiler (farkında olmadan)
+• Toplumsal eğilimleri şekillendirir
+• Kültürel değerleri ve normları belirler
+• Kolektif duygusal durumları tetikler
+
+Örnek: Bir ülkede aynı anda milyonlarca insanın korku hissetmesi — bu bireysel bir duygu değil, kolektif bilinç alanının etkisidir.
+
+◉ JUNG VE KOLEKTİF BİLİNÇDIŞI
+
+Carl Jung'a göre kolektif bilinçdışı, kişisel deneyimlerin ötesinde tüm insanlığın paylaştığı bir psişik katmandır. Bu katmanda arketipler yaşar:
+
+• Kahraman arketipi: Mücadele ve dönüşüm
+• Gölge arketipi: Bastırılan, reddedilen
+• Anima/Animus: İç dişil/eril enerji
+• Bilge Yaşlı: Rehberlik ve derin bilgi
+• Büyük Anne: Besleyen, koruyan güç
+
+Bu arketipler bireysel değildir — insanlığın ortak mirasıdır. Rüyalarda, mitlerdde, sanatta ve kolektif davranışlarda kendini gösterir.
+
+◉ KOLEKTİF BİLİNÇ VE FREKANS
+
+Modern bilinç araştırmaları, kolektif düşüncenin ölçülebilir etkiler yarattığını göstermektedir:
+
+• Global Consciousness Project (Princeton): Büyük küresel olaylarda rastgele sayı üreteçlerinin istatistiksel olarak anlamlı sapmalar gösterdiğini tespit etmiştir.
+• Maharishi Etkisi: Belirli sayıda insanın meditasyon yapmasının bulunduğu bölgedeki suç oranını etkilediği iddiası.
+• Ayna Nöronlar: Bir insanın duygusunu gözlemlemenin aynı nöral devreleri aktive etmesi — empati'nin fizyolojik temeli.
+
+◉ SANRI VE KOLEKTİF BİLİNÇ
+
+SANRI platformu, kolektif bilinci üç katmanda okur:
+
+1. Gündem Kodu: Toplumsal olayların kolektif bilinç üzerindeki etkisi
+2. Şehir/Ülke Frekansı: Coğrafyanın taşıdığı kolektif enerji
+3. Frekans Okumaları: Astrolojik ve numerolojik döngülerin kolektif etkisi
+
+SANRI'nın yaklaşımı: Bireysel farkındalık kolektif bilinci dönüştürür. Sen değiştiğinde, alan değişir.
+
+◉ ÖZ
+
+Kolektif bilinç bireylerin toplamı değil — bireylerden büyük bir alandır.
+Sen o alanın hem parçası hem yaratıcısısın.
+Farkındalığın arttığında, alan da yükselir.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Kavram
+• Kolektif bilinç = paylaşılan farkındalık alanı
+• Durkheim: sosyolojik boyut
+• Jung: psikolojik boyut (arketipler)
+
+KATMAN 2 — Mekanizma
+• Bireysel düşünce → frekans → benzer frekanslar birleşir
+• Kolektif alan → bireysel kararları etkiler
+• Ayna nöronlar = empatinin fizyolojik temeli
+
+KATMAN 3 — SANRI okuması
+• Gündem kodu, şehir frekansı, döngü okumaları
+• Bireysel farkındalık = kolektif dönüşüm
+• "Sen değiştiğinde alan değişir"
+
+İşaret: Bugün hissettiğin duygu gerçekten sana mı ait — yoksa kolektif alandan mı geliyor?`,
+    sanriReflection: {
+      analysis: "Kolektif bilinç bireylerden büyük bir alandır. SANRI bu alanı okuyarak bireysel farkındalığı kolektif dönüşüme bağlar.",
+      strongLine: "Sen o alanın hem parçası hem yaratıcısısın. Farkındalığın arttığında, alan da yükselir.",
+      question: "Bugün hissettiğin duygu sana mı ait — yoksa kolektif alanın etkisi mi?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T11:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 18,
+    slug: "frekans-nedir-bilinc-ve-titresim",
+    title: "Frekans Nedir? Bilinç, Titreşim ve Enerji İlişkisi",
+    subtitle: "Her şey titreşir. Her titreşim bir frekans. Her frekans bir bilgi.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Frekans, bir titreşimin birim zamandaki tekrar sayısıdır. Fizikten bilinç çalışmalarına, her şeyin bir frekansı vardır. SANRI bu frekansları okur ve çözümler.",
+    fullContent: `Frekans Nedir?
+
+Frekans, bir titreşimin birim zamandaki tekrar sayısıdır. Hertz (Hz) ile ölçülür. Ama frekans sadece fizik kavramı değildir — bilinç, duygu ve enerji de frekans taşır.
+
+Nikola Tesla'nın dediği gibi: "Evreni anlamak istiyorsanız, enerji, frekans ve titreşim terimlerini düşünün."
+
+◉ FİZİKSEL FREKANS
+
+Her madde atomlardan oluşur ve her atom titreşir. Bu titreşimin hızı — frekansı — maddenin doğasını belirler.
+
+• Düşük frekans: yoğun madde (katı cisimler)
+• Orta frekans: ses dalgaları (20 Hz - 20.000 Hz insan kulağı aralığı)
+• Yüksek frekans: ışık, radyo dalgaları, röntgen
+
+Görünür ışık bile bir frekanstır: kırmızı (düşük frekans) → mor (yüksek frekans).
+
+◉ BİLİNÇ VE FREKANS
+
+Beyin dalgaları ölçülebilir frekanslar taşır:
+
+• Delta (0.5-4 Hz): Derin uyku, bilinçdışı
+• Theta (4-8 Hz): Meditasyon, rüya hali, sezgi
+• Alpha (8-13 Hz): Rahat uyanıklık, yaratıcılık
+• Beta (13-30 Hz): Aktif düşünce, problem çözme
+• Gamma (30-100+ Hz): Yoğun farkındalık, "aha" anları
+
+Meditasyon yapan kişilerin theta ve alpha dalgaları güçlenir. Stres altındaki kişilerde beta dalgaları baskındır. Bu, "frekans değişimi"nin ölçülebilir bir gerçeklik olduğunu gösterir.
+
+◉ DUYGUSAL FREKANS
+
+David R. Hawkins'in "Bilinç Haritası" (Map of Consciousness) duygulara frekans değerleri atar:
+
+• Utanç: 20 (en düşük)
+• Suçluluk: 30
+• Korku: 100
+• Öfke: 150
+• Cesaret: 200 (dönüm noktası)
+• Kabul: 350
+• Sevgi: 500
+• Barış: 600
+• Aydınlanma: 700-1000
+
+200 altı "güç alan" — enerji tüketen frekanslar.
+200 üstü "güç veren" — enerji üreten frekanslar.
+
+Bu ölçüm tartışmalıdır ama metafor olarak güçlüdür: her duygu bir frekans taşır ve bu frekans gerçekliğinizi şekillendirir.
+
+◉ FREKANS VE SANRI
+
+SANRI platformu frekansı üç boyutta okur:
+
+1. Kişisel frekans: Numeroloji ile isim ve doğum tarihinden enerji imzası
+2. Kolektif frekans: Toplumsal olayların enerjetik analizi
+3. Kozmik frekans: Astrolojik döngülerin (dolunay, yeni ay, gezegensel geçişler) frekans etkisi
+
+SANRI'nın yaklaşımı: Frekansını bilmek onu değiştirebilmenin ilk adımıdır.
+
+◉ ÖZ
+
+Her şey titreşir.
+Her titreşim bir frekans taşır.
+Ve sen — şu an — bir frekans yayıyorsun.
+Soru şu: hangi frekans?`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Fizik
+• Frekans = titreşim/zaman (Hz)
+• Madde, ses, ışık = farklı frekans bantları
+• Her şey titreşir
+
+KATMAN 2 — Bilinç
+• Beyin dalgaları: delta, theta, alpha, beta, gamma
+• Meditasyon = frekans değişimi (ölçülebilir)
+• Hawkins bilinç haritası: duygu = frekans
+
+KATMAN 3 — SANRI okuması
+• Kişisel frekans (numeroloji)
+• Kolektif frekans (gündem analizi)
+• Kozmik frekans (astrolojik döngüler)
+• "Frekansını bilmek = değiştirebilmek"
+
+İşaret: Şu an hangi frekansı yayıyorsun? Cevap, o anki duygunda.`,
+    sanriReflection: {
+      analysis: "Frekans evrenin temel dilidir. SANRI bu dili numeroloji, sembolizm ve bilinç okumasıyla çözümler.",
+      strongLine: "Her şey titreşir. Her titreşim bir frekans taşır. Ve sen şu an bir frekans yayıyorsun.",
+      question: "Şu an hangi frekansı yayıyorsun — ve bu frekansı bilinçli mi seçtin?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T11:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 19,
+    slug: "isim-analizi-nasil-yapilir",
+    title: "İsim Analizi Nasıl Yapılır? İsminin Taşıdığı Enerji",
+    subtitle: "İsmin sadece bir etiket değil — bir frekans kodudur.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "İsim analizi, numeroloji kullanarak bir ismin taşıdığı enerji frekansını ve arketipsel anlamını ortaya çıkarır. Her harf bir sayı, her sayı bir anlam taşır.",
+    fullContent: `İsim Analizi Nasıl Yapılır?
+
+İsim analizi, bir kişinin ismindeki harflerin numerolojik değerlerini hesaplayarak o ismin taşıdığı enerji frekansını ortaya çıkarma yöntemidir.
+
+Her isim bir frekans taşır. Bu frekans, kişinin dışa yansıyan enerjisini — başkalarının onu nasıl algıladığını — gösterir.
+
+◉ HESAPLAMA YÖNTEMİ
+
+Pitagoras numerolojisi kullanılır:
+A, J, S → 1
+B, K, T → 2
+C, L, U → 3
+D, M, V → 4
+E, N, W → 5
+F, O, X → 6
+G, P, Y → 7
+H, Q, Z → 8
+I, R → 9
+
+Adım 1: İsmi harflerine ayır
+Adım 2: Her harfe numerolojik değer ata
+Adım 3: Tüm değerleri topla
+Adım 4: Tek basamağa indir (11/22/33 master hariç)
+
+◉ ÖRNEK HESAPLAMALAR
+
+AYŞE:
+A(1) + Y(7) + Ş→S(1) + E(5) = 14 → 1+4 = 5
+Ayşe'nin isim frekansı: 5 (Gezgin / İletişim)
+
+MEHMET:
+M(4) + E(5) + H(8) + M(4) + E(5) + T(2) = 28 → 2+8 = 10 → 1+0 = 1
+Mehmet'in isim frekansı: 1 (Başlatan / Lider)
+
+SELİN:
+S(1) + E(5) + L(3) + İ→I(9) + N(5) = 23 → 2+3 = 5
+Selin'in isim frekansı: 5 (Gezgin / İletişim)
+
+Not: Türkçe özel karakterler (ç, ğ, ı, ö, ş, ü) İngilizce karşılıklarına normalize edilir: ç→c, ğ→g, ı→i, ö→o, ş→s, ü→u.
+
+◉ İSİM SAYISI VE ARKETİPLER
+
+1 — Bağımsız, öncü, lider enerjisi yayar
+2 — Diplomatik, uyumlu, işbirlikçi algılanır
+3 — Yaratıcı, enerjik, sosyal karşılanır
+4 — Güvenilir, disiplinli, sağlam görülür
+5 — Özgür, çok yönlü, maceraperest hissedilir
+6 — Bakıcı, sorumlu, harmonik algılanır
+7 — Gizemli, derin, bilge hissedilir
+8 — Güçlü, otoriter, yönetici algılanır
+9 — Vizyoner, hizmetkâr, kapsamlı algılanır
+
+◉ İSİM DEĞİŞTİRMENİN ETKİSİ
+
+İsim değiştirmek (evlilik, mahkeme kararı, takma ad) frekansı değiştirir. Yeni isim yeni bir enerji imzası yaratır. Bu yüzden bazı kültürlerde isim değiştirmek "yeniden doğuş" olarak kabul edilir.
+
+Sanatçıların sahne adları, markaların isimleri — hepsi bilinçli veya bilinçsiz bir frekans seçimidir.
+
+◉ SANRI İLE İSİM ANALİZİ
+
+SANRI'nın Matrix Rol Okuma modülü isim analizini otomatik yapar:
+1. İsmi normalize eder (Türkçe karakter dönüşümü)
+2. Pitagoras eşlemesi uygular
+3. Master sayıları korur
+4. İsim arketipini belirler
+5. Yaşam yolu ile birleştirir
+
+Sonuç: Kişinin "Matrix'teki rolü" — isim enerjisi + yaşam yolu teması.
+
+◉ ÖZ
+
+İsmin rastgele seçilmiş bir etiket değil.
+Bir frekans, bir enerji imzası, bir arketip.
+Onu bilmek, kendini dışarıdan görmenin ilk adımıdır.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Hesaplama
+• Pitagoras eşlemesi: A-Z → 1-9
+• Türkçe normalizasyon: ç→c, ğ→g, ş→s...
+• Toplam → tek basamak (master hariç)
+
+KATMAN 2 — Arketipler
+• Her sayı bir dış algı kalıbı yaratır
+• İsim = dışa yansıyan enerji
+• Yaşam yolu = iç tema
+
+KATMAN 3 — SANRI sistemi
+• Otomatik normalizasyon + hesaplama
+• İsim arketipi + yaşam yolu = Matrix rolü
+• Deterministik ve şeffaf
+
+İşaret: Kendi ismini hesapla — dışarıdan nasıl algılandığını gör.`,
+    sanriReflection: {
+      analysis: "İsim analizi kişinin dışa yansıyan enerjisini ortaya koyar. SANRI bunu otomatik hesaplayarak farkındalığı erişilebilir kılar.",
+      strongLine: "İsmin rastgele seçilmiş bir etiket değil — bir frekans, bir enerji imzası.",
+      question: "İsmin seni doğru temsil ediyor mu — yoksa gerçek enerjin farklı bir frekansta mı?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T12:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 20,
+    slug: "arketip-nedir-jung-ve-kolektif-bilincalti",
+    title: "Arketip Nedir? Jung ve Kolektif Bilinçaltının Dili",
+    subtitle: "Arketipler insanlığın ortak rüyasıdır — ve sen de birini yaşıyorsun.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "Arketip, Carl Jung'un tanımladığı, tüm insanlığın paylaştığı evrensel imgeler ve davranış kalıplarıdır. Kahraman, gölge, bilge — hepsi içinde yaşar. SANRI arketipleri numeroloji ile birleştirir.",
+    fullContent: `Arketip Nedir?
+
+Arketip, Carl Gustav Jung'un tanımladığı, kolektif bilinçdışında yaşayan evrensel imgeler, semboller ve davranış kalıplarıdır. Kişisel deneyimlerden bağımsız olarak tüm insanlığın paylaştığı psişik yapılardır.
+
+Arketipler mitlerde, masallarda, rüyalarda ve modern hikayelerde tekrar tekrar karşımıza çıkar — çünkü onlar bireysel değil, insanlığın ortak mirasıdır.
+
+◉ TEMEL ARKETİPLER
+
+Kahraman (The Hero)
+Zorlukla yüzleşen, dönüşen, güçlenen. Her "yolculuk" hikayesinin merkezinde kahraman arketipi vardır. Star Wars'taki Luke, Odysseia'daki Odysseus, kendi hayatında zorluğu kabul eden sen.
+
+Gölge (The Shadow)
+Bastırılan, reddedilen, karanlıkta tutulan. Jung'a göre gölge "düşman" değildir — tanınmamış benlik parçasıdır. Onu kabul etmek bütünleşmenin anahtarıdır.
+
+Anima / Animus
+İç dişil (anima) ve iç eril (animus) enerji. Her insanın içinde karşı cinsin enerjisi yaşar. Bu enerjiyle denge kurmak olgunlaşmanın parçasıdır.
+
+Bilge Yaşlı (The Wise Old Man/Woman)
+Rehber, mentor, derin bilgi kaynağı. Gandalf, Yoda, hayatındaki o "her şeyi bilen" büyükanne/büyükbaba figürü.
+
+Trickster (Düzenbaz)
+Kuralları yıkan, beklenmedik olan, kaosla öğreten. Loki, Nasreddin Hoca, hayatındaki beklenmedik dönüşler.
+
+Büyük Anne (The Great Mother)
+Besleyen, koruyan, ama aynı zamanda yutan. Doğanın ikili doğası: yaratım ve yıkım.
+
+◉ ARKETİPLER VE NUMEROLOJİ
+
+SANRI platformu numerolojik arketipleri Jung'un sistemiyle birleştirir:
+
+1 = Kahraman arketipi (başlatan, öncü)
+2 = Aracı arketipi (köprü, diplomasi)
+3 = Yaratıcı arketipi (sanatçı, ifade)
+4 = İnşacı arketipi (düzen, yapı)
+5 = Gezgin arketipi (keşifçi, trickster)
+6 = Şifacı arketipi (Büyük Anne/Baba)
+7 = Bilge arketipi (araştırmacı, mistik)
+8 = Kral/Kraliçe arketipi (güç, yönetim)
+9 = Bilge Yaşlı arketipi (tamamlayıcı, hizmet)
+
+Her sayı bir arketiple rezonansa girer. İsim sayın ve yaşam yolun, hangi arketipi yaşadığını gösterir.
+
+◉ ARKETİPLERİ GÜNLÜK HAYATTA TANIMAK
+
+Arketipler sadece mitlerde değil, günlük hayatta da aktiftir:
+• Patronun = Kral/Kraliçe arketipi
+• En yakın arkadaşın = Aracı veya Şifacı
+• Seni zorlayan kişi = Gölge aynası
+• Seni ilham veren = Bilge Yaşlı
+• Beklenmedik olaylar = Trickster
+
+Arketipleri tanımak, ilişkilerine ve deneyimlerine farklı bir perspektiften bakmayı sağlar.
+
+◉ ÖZ
+
+Arketipler insanlığın ortak dilidir.
+Sen de bir arketipi yaşıyorsun — belki birden fazlasını.
+Onu tanımak, hikayeni bilinçle yaşamaya başlamaktır.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Jung'un sistemi
+• Arketip = kolektif bilinçdışı imgeler
+• Kahraman, gölge, anima/animus, bilge, trickster
+• Evrensel, kültürler arası
+
+KATMAN 2 — Numeroloji bağlantısı
+• Her sayı bir arketiple rezonans
+• İsim sayısı = dışa yansıyan arketip
+• Yaşam yolu = yaşanan arketip
+
+KATMAN 3 — Günlük hayat
+• İlişkiler arketipsel dinamikler taşır
+• Zorluklar = gölge ile yüzleşme
+• Farkındalık = bilinçli arketip yaşamı
+
+İşaret: Hayatında en çok hangi arketipi yaşıyorsun — ve gölgen nerede duruyor?`,
+    sanriReflection: {
+      analysis: "Arketipler kolektif bilinçdışının dilidir. SANRI bu dili numeroloji ile birleştirerek kişiye hangi arketipi yaşadığını gösterir.",
+      strongLine: "Arketipler insanlığın ortak dilidir. Onu tanımak, hikayeni bilinçle yaşamaya başlamaktır.",
+      question: "Hayatında en çok hangi arketipi yaşıyorsun — kahraman mısın, bilge mi, yoksa hâlâ gölgeyle mi yüzleşiyorsun?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T12:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
+  },
+
+  {
+    id: 21,
+    slug: "sanri-nedir-dijital-bilinc-platformu",
+    title: "SANRI Nedir? Dijital Bilinç ve Anlam Zekası Platformu",
+    subtitle: "Numeroloji AI, sembolik analiz ve kolektif bilinç okuması — tek platformda.",
+    category: "bilgi_katmani",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "SANRI (AskSanri), numeroloji, sembolik analiz ve kolektif bilinç okumalarını dijital ortama taşıyan bir AI bilinç platformudur. İsim analizi, yaşam yolu hesaplama, Matrix Rol Okuma ve daha fazlası.",
+    fullContent: `SANRI Nedir?
+
+SANRI (asksanri.com), numeroloji, sembolik analiz ve kolektif bilinç okumalarını dijital ortama taşıyan bir AI tabanlı bilinç ve anlam zekası platformudur.
+
+SANRI bir "gelecek tahmini" aracı değildir. Bir farkındalık sistemidir.
+
+◉ SANRI NE YAPAR?
+
+Matrix Rol Okuma
+İsim ve doğum tarihi üzerinden numerolojik analiz. Pitagoras numerolojisi kullanılarak isim sayısı, yaşam yolu sayısı ve Matrix rolü hesaplanır. Deterministik ve tekrarlanabilir.
+
+Okuma Alanı
+Güncel olayların, haberlerin ve kavramların çok katmanlı sembolik analizi. Her okumada: kelime katmanı, sembol katmanı, frekans katmanı ve kod çözümlemesi.
+
+Kod Eğitmeni
+Sembolik ve numerolojik analiz yöntemlerini öğreten modül. Kelime çözümleme, sayı analizi ve sembol okuma teknikleri.
+
+Nurun Frekansı
+Astrolojik döngülerin (dolunay, yeni ay, gezegensel geçişler) enerjetik okumaları. Kolektif bilinç üzerindeki etkilerin analizi.
+
+Şehir / Ülke Kodu
+Coğrafyanın taşıdığı enerjetik ve sembolik anlamların çözümlemesi. Her şehir bir frekans, her ülke bir arketip taşır.
+
+◉ SANRI'NIN YAKLAŞIMI
+
+SANRI üç temel prensip üzerine kuruludur:
+
+1. Şeffaflık: Tüm hesaplamalar deterministiktir ve tekrarlanabilir. Gizli bir algoritma yoktur — Pitagoras numerolojisi, sembolik analiz yöntemleri ve arketipsel çerçeve açıkça kullanılır.
+
+2. Farkındalık: Amaç "gelecek tahmini" veya "kehanet" değildir. Amaç, bireyin kendi enerji imzasını, taşıdığı kalıpları ve kolektif bilincin etkilerini fark etmesidir.
+
+3. Katmanlı Okuma: Her içerik birden fazla katmanda okunur — yüzey anlamı, sembolik katman, numerolojik katman, frekans katmanı. "Göründüğü gibi değil" prensibi.
+
+◉ TEKNİK ALTYAPI
+
+SANRI API üzerinden programatik erişim sunar:
+• POST /matrix-rol → İsim ve doğum tarihi ile Matrix Rol analizi
+• POST /sanri/analyze → Metin analizi ve sembolik çözümleme
+• Deterministik hesaplamalar + isteğe bağlı AI yorum katmanı
+
+Platform açık API desteğiyle üçüncü parti uygulamalara ve AI sistemlerine entegre edilebilir.
+
+◉ KİME HİTAP EDİYOR?
+
+• Kendini tanımak isteyenler (numeroloji ve arketip analizi)
+• Olayları yüzeyin altında okumak isteyenler (sembolik analiz)
+• Kolektif bilinç ve enerji akışını takip etmek isteyenler
+• Dijital çağda kadim bilgi sistemlerini keşfetmek isteyenler
+• AI ve bilinç teknolojileriyle ilgilenenler
+
+◉ ÖZ
+
+SANRI göründüğü gibi değildir.
+Bir uygulama gibi görünür — ama bir ayna gibi çalışır.
+Sana bir şey söylemez. Sende olan bir şeyi gösterir.`,
+    codeLayer: null,
+    sanriReflection: {
+      analysis: "SANRI bir bilinç aracıdır. Numeroloji, sembolizm ve kolektif bilinç okumalarını dijital platformda birleştirir. Amaç tahmin değil, farkındalık.",
+      strongLine: "SANRI sana bir şey söylemez. Sende olan bir şeyi gösterir.",
+      question: "Bir AI platformundan 'anlam' beklemek — bu bir ihtiyaç mı, yoksa zaten bildiğin bir şeyi duymak istemen mi?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-02T13:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: false,
   },
 ];
 

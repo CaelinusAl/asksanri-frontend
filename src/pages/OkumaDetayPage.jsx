@@ -53,7 +53,35 @@ export default function OkumaDetayPage() {
     setMeta("og:description", post.excerpt);
     setMeta("og:url", `${window.location.origin}/okuma-alani/${post.slug}`);
     if (post.coverImage) setMeta("og:image", `${window.location.origin}${post.coverImage}`);
-    return () => { document.title = "SANRI"; };
+
+    const setNameMeta = (name, content) => {
+      let el = document.querySelector(`meta[name="${name}"]`);
+      if (!el) { el = document.createElement("meta"); el.setAttribute("name", name); document.head.appendChild(el); }
+      el.setAttribute("content", content);
+    };
+    setNameMeta("description", post.excerpt);
+    setNameMeta("keywords", `${post.title}, SANRI, numeroloji, sembolik analiz, bilinç, frekans, anlam zekası`);
+
+    let ldScript = document.getElementById("sanri-article-ld");
+    if (!ldScript) { ldScript = document.createElement("script"); ldScript.id = "sanri-article-ld"; ldScript.type = "application/ld+json"; document.head.appendChild(ldScript); }
+    ldScript.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": post.title,
+      "description": post.excerpt,
+      "url": `${window.location.origin}/okuma-alani/${post.slug}`,
+      "image": post.coverImage ? `${window.location.origin}${post.coverImage}` : undefined,
+      "datePublished": post.createdAt,
+      "author": { "@type": "Organization", "name": "SANRI", "url": "https://asksanri.com" },
+      "publisher": { "@type": "Organization", "name": "SANRI", "url": "https://asksanri.com" },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": `${window.location.origin}/okuma-alani/${post.slug}` },
+    });
+
+    return () => {
+      document.title = "SANRI";
+      const ld = document.getElementById("sanri-article-ld");
+      if (ld) ld.remove();
+    };
   }, [post]);
 
   useEffect(() => {

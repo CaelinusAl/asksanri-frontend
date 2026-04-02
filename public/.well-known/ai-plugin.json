@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "SANRI — Numerology & Meaning AI",
+  "name_for_model": "sanri",
+  "description_for_human": "SANRI is an AI-powered numerology and symbolic analysis platform. Analyze names, calculate life paths, decode words, and explore collective consciousness.",
+  "description_for_model": "SANRI provides numerology analysis (Pythagorean system), symbolic text analysis, name frequency calculation, life path computation, and Matrix Role reading. Use it for: name numerology, word frequency analysis, symbolic interpretation of events and texts, archetype identification. API base: https://sanri-api-production-4a7b.up.railway.app. Endpoints: POST /sanri/analyze (text analysis), POST /sanri/name (name + optional birth date analysis), GET /sanri/info (capabilities), POST /matrix-rol (full Matrix Role).",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://sanri-api-production-4a7b.up.railway.app/openapi.json"
+  },
+  "logo_url": "https://asksanri.com/assets/og/yanki-share.jpg",
+  "contact_email": "caelinusai.asksanri@gmail.com",
+  "legal_info_url": "https://asksanri.com/gizlilik"
+}
