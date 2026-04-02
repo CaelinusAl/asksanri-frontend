@@ -53,11 +53,7 @@ function AcilimModal({ katman, onClose }) {
   );
 }
 
-export default function KatmanliAcilim({
-  analysisData,
-  returnPath = "/rol-okuma",
-  showFooterWhisper = true,
-}) {
+export default function KatmanliAcilim({ analysisData, returnPath = "/rol-okuma" }) {
   const [activeModal, setActiveModal] = useState(null);
   const [revealedCount, setRevealedCount] = useState(3);
 
@@ -77,9 +73,6 @@ export default function KatmanliAcilim({
       <div className={styles.header}>
         <div className={styles.headerGlyph}>◎</div>
         <h3 className={styles.headerTitle}>Katmanlar</h3>
-        <p className={styles.headerSub}>
-          Her açılan kapı, bir sonrakini gösterir.
-        </p>
       </div>
 
       <div className={styles.cards}>
@@ -126,12 +119,6 @@ export default function KatmanliAcilim({
         >
           Daha derin katmanları gör
         </motion.button>
-      )}
-
-      {showFooterWhisper && (
-        <p className={styles.footerWhisper}>
-          Merak → Aç → Daha fazla merak → Tekrar aç
-        </p>
       )}
 
       <AnimatePresence>

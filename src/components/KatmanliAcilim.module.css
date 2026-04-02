@@ -26,15 +26,8 @@
   font-size: clamp(20px, 4vw, 26px);
   font-weight: 300;
   color: #e8e4f4;
-  margin: 0 0 8px;
-  letter-spacing: 0.04em;
-}
-.headerSub {
-  font-size: 13px;
-  color: rgba(200, 160, 255, 0.4);
   margin: 0;
-  font-style: italic;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
 }
 
 /* ── Cards Grid ── */
@@ -170,16 +163,6 @@
   background: rgba(200, 160, 255, 0.08);
   border-color: rgba(200, 160, 255, 0.25);
   color: rgba(200, 160, 255, 0.7);
-}
-
-/* ── Footer Whisper ── */
-.footerWhisper {
-  text-align: center;
-  font-size: 12px;
-  color: rgba(200, 160, 255, 0.2);
-  font-style: italic;
-  letter-spacing: 0.06em;
-  margin: 8px 0 0;
 }
 
 /* ═══════════════════════════════════════
