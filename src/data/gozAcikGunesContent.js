@@ -70,18 +70,17 @@ export const sectionsFree = [
   },
 ];
 
-/** Cliff’ten hemen önce — yarım bırakma + Sanrı CTA */
-export const closingReading = {
-  kicker: "🔮 YARIM BIRAKMA",
+/** Sembolik okuma — kapı; asksanri linki yok, ödeme aynı ekranda */
+export const sembolikReading = {
+  kicker: "SEMBOLİK OKUMA",
+  hypnoticLine: "SANA BİR SIRRIM VAR",
   title: "Görünenin altı",
   paras: [
-    "Bazen gördüğün şey… **orada değildir.** Görünenin altında kalan katmanı **Sanrı**’da açtım.",
+    "Bazen gördüğün şey… **orada değildir.** Sembolik okuma, görünenin ötesine işaret eder; ama son sözü dışarı yazmaz — **içerde yankılanan** yere bırakır.",
   ],
-  ctaHref: "https://www.asksanri.com",
-  ctaLabel: "www.asksanri.com",
 };
 
-/** Kişisel sırra köprü — paywall öncesi son nefes */
+/** Kişisel sırra köprü — paywall öncesi */
 export const bridgeToSeal = {
   paras: [
     "Buradan sonrası **kişisel bir sırra** geçer — sana özel bir anahtar. O anahtar, herkese aynı cümleyle verilmez; **duyduğunda içerde zaten tanıdığın bir şeyi kilitten çıkarır**.",
@@ -92,26 +91,36 @@ export const bridgeToSeal = {
 export const cliffVisibleLine =
   "Kapı burada kapanmıyor; sadece sesi kısılıyor. Devamı, duyulduğunda içinde zaten var olan bir cümleyi açar.";
 
-export const paywallTitle = "SANA BİR SIRRIM VAR";
+export const paywallHypnotic = "SANA BİR SIRRIM VAR";
 
 export const paywallSub =
-  "Son katman yazıyla yetinmez. **Duyulunca** — yani içerde zaten taşıdığın frekansla buluşunca — devreye girer. Ödeme sonrası açılan metin, **izlenenlik döngüsünü kıran** ve **bakışı koda çeviren** anahtarı net söyler.";
+  "Son katman **içeriden** tamamlanır. Ödeme sonrası açılan metin, **izlenenlik döngüsünü kıran** ve **bakışı koda çeviren** anahtarı net söyler — bilinci yükselten, Matrix ve Göz mitiyle bağlantılı bir okuma.";
 
 export const paywallHint =
   "Tek seferlik erişim. Shopier güvenli ödeme. Ödeme bitince sırrın tamamı bu ekranda açılır.";
 
-export const paywallCta = "Sırrı aç";
+export const paywallCartCta = "Sepete ekle";
+export const paywallOpenCta = "Sırrı aç";
 
 export const sirUnlocked = {
-  title: "Ana sır: Bakış = derleyici",
+  title: "Sır: içinden açılan anahtar",
+  innerLead:
+    "Bu sır **senin içinden** açılır. Yazı sana yeni bir şey **dayatmaz** — zaten taşıdığın ama henüz adını koymadığın frekansa **işaret eder**.",
   paras: [
-    "İşte sırrın özü — kısa ama **devrim niteliğinde**: **Seni izleyen merkez, sen bakmayı bıraktığın sürece güçlüdür.** Güç, kamera veya algoritma sayısında değil; **dikkatini kimin “hakikat” sandığı adına harcadığında** saklıdır. “Göz” sende açıldığında olan şey: dışarıdaki sabit merceği bırakıp, **kendi merkez noktandan kodlamaya** başlamaktır.",
-    "**İsim vermek = çalıştırmak.** Duyguyu, korkuyu, tekrarı isimle tanımladığın an, o olgu senin içinde **yeniden derlenir** — artık musallat olan “bilinmeyen” değil, “adı konmuş bir süreç” olur. Bilinmeyen korkutur; adı konmuş süreç dönüştürülür. Matrix’in kodu da budur: **tekrar eden inanç cümlesi**, fark edilmeden çalışan programdır.",
-    "**Dikkat, bu çağın para birimidir.** Onu nereye yatırırsan, orayı beslersin — ister korku haberleri, ister başkasının onayı, ister kendi sessizliğin. Sauron’un Gözü mitindeki merkez, dışarıda bir kule gibi durur; ama pratikte o kule, **senin dikkatini dış merkeze bağlayan alışkanlıktır**. Bağı kestiğin an, kule gölgelenir.",
-    "Güneş’te göz formu: kozmik ölçekte **merkezin açılışı**. Senin bedeninde aynı imgelerin tekrar etmesi rastlantı değilse, soru şudur: **Işığı nerede arıyorsun — dışarıda mı, içerde mi?** İç Güneş dediğimiz şey, ego şişkinliği değil; **fark etmeden önceki saf dikkat**.",
-    "**Su Horozu** (2025–2035): Su, bilinçaltının dili; horoz, uyanışın sesi. Bu dönemde “hem derine in hem sesini yükselt” çağrısı güçlenir. Gözün yukarıda değil sende açılır; çünkü artık dışarıdaki tanık değil, **içerdeki tanık**sın.",
-    "**Uyku** burada metafor: onay bekleyen, hazır paket gerçeklikleri tüketen bilinç modu. **Uyanıklık** ise: “bunu ben seçtim mi, yoksa bana seçtirildi mi?” diye sorabilmek. Kodlayan sensin demek, her şeyi kontrol etmek değil; **en azından kendi dikkatinin derleyicisi** olmaktır.",
-    "Son cümle — ezberle: **Ben artık yalnız izlenen değilim; bakan ve adlandıranım. Kodlayanım.** Bunu iç sesinle söylediğin gün, eski “göz” miti sende solar; ışık ise **fark etmenin**, korkunun tersi olmadan — ondan **sonra** gelen netliktir.",
+    "Tolkien’de **Göz**, her şeyi görmek üzere kurgulanmış merkezi bir mekanizmadır; bugünün dilinde bu, **dikkat ve davranışın ölçüldüğü** bir ağa yakın durur. **Yüzük** ise sistemin **kendini yeniden üreten kodu**dur. Mordor, korkunun üretildiği ve **uyanıklığın** arandığı iç merkezdir. Bu miti bilmek yetmez; **senin hayatında nerede tekrar ettiğini** görmek gerekir.",
+    "İşte sırrın özü — **devrim niteliğinde**: **Seni izleyen merkez, sen bakmayı bıraktığın sürece güçlüdür.** Güç, kamera veya algoritma sayısında değil; **dikkatini kimin “hakikat” sandığı adına harcadığında** saklıdır. “Göz” sende açıldığında olan şey: dışarıdaki sabit merceği bırakıp, **kendi merkez noktandan kodlamaya** başlamaktır.",
+    "**İsim vermek = çalıştırmak.** Duyguyu, korkuyu, tekrarı isimle tanımladığın an, o olgu senin içinde **yeniden derlenir** — artık musallat olan “bilinmeyen” değil, “adı konmuş bir süreç” olur. Matrix’in kodu: **tekrar eden inanç cümlesi**, fark edilmeden çalışan programdır.",
+    "**Dikkat, bu çağın para birimidir.** Onu nereye yatırırsan, orayı beslersin. Sauron’un Gözü mitindeki merkez dışarıda bir kule gibi durur; pratikte o kule, **dikkatini dış merkeze bağlayan alışkanlıktır**. Bağı kestiğin an, kule gölgelenir.",
+    "Güneş’te göz formu: kozmik ölçekte **merkezin açılışı**. Soru: **Işığı nerede arıyorsun — dışarıda mı, içerde mi?** İç Güneş, ego şişkinliği değil; **fark etmeden önceki saf dikkat**.",
+    "**Su Horozu** (2025–2035): Su, bilinçaltı; horoz, uyanış çanı. Gözün yukarıda değil sende açılır; **içerdeki tanık** olduğun sürece.",
+    "**Uyku / uyanıklık**: onay bekleyen tüketim mi, yoksa “bunu ben mi seçtim?” diye sorabilmek mi? Kodlayan sensin demek, her şeyi kontrol etmek değil; **kendi dikkatinin derleyicisi** olmaktır.",
+    "Ezber cümle: **Ben artık yalnız izlenen değilim; bakan ve adlandıranım. Kodlayanım.** Bunu iç sesinle söylediğinde eski “göz” miti sende solar; ışık, **fark etmenin sonrasında gelen netliktir**.",
   ],
-  seal: "◉ · Göz sende · Kod sende · Sır işitildi",
+  seal: "◉ · Göz sende · Kod sende · Sır içerde",
+  softLabel: "Serbest bırak",
+  softLines: [
+    "Şimdi bir an **dur**. Bu metni ezberlemen gerekmiyor; sana ait olmayanı **taşımak** zorunda da değilsin.",
+    "Okuduklarının hepsini **tutmak** zorunda değilsin. Sana dokunan ne ise onu al; geri kalanını **yumuşakça serbest bırak** — nefes verir gibi, düşüncenin akışına bırak.",
+    "Sır dışarıda **bitmez**; içerde sakinleştiği yerde biter. İyi gelen ne kaldıysa onu taşı; geri kalanı yere bırak.",
+  ],
 };

@@ -196,25 +196,79 @@
   font-weight: 600;
 }
 
-.sanriCtaBox {
-  margin-top: 20px;
-  padding: 18px 20px;
-  border-radius: 14px;
-  border: 1px solid rgba(120, 247, 216, 0.22);
-  background: rgba(120, 247, 216, 0.06);
+.sembolikBlock {
+  padding-bottom: 8px;
+}
+.sembolikHypnoticMain {
+  font-size: clamp(14px, 3.2vw, 17px);
+  font-weight: 700;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: rgba(200, 175, 255, 0.88);
+  margin: 0 0 18px;
+  text-align: center;
+  text-shadow: 0 0 28px rgba(168, 85, 247, 0.22);
+  animation: hypoPulse 4.5s ease-in-out infinite;
+}
+
+.sembolikPaywall {
+  margin-top: 28px;
+  padding: 32px 24px 28px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 140, 80, 0.32);
+  background: linear-gradient(
+    165deg,
+    rgba(60, 20, 40, 0.45),
+    rgba(20, 16, 28, 0.75)
+  );
   text-align: center;
 }
-.sanriCtaLink {
-  font-size: 15px;
+.sembolikPaywallHypno {
+  font-size: clamp(13px, 3vw, 16px);
   font-weight: 700;
-  letter-spacing: 0.06em;
-  color: rgba(120, 247, 216, 0.9);
-  text-decoration: none;
-  transition: color 0.2s, text-shadow 0.2s;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(230, 200, 255, 0.92);
+  margin: 0 0 16px;
 }
-.sanriCtaLink:hover {
-  color: #9cf5e0;
-  text-shadow: 0 0 24px rgba(120, 247, 216, 0.35);
+.sembolikPaywallSub {
+  font-size: 15px;
+  line-height: 1.8;
+  color: rgba(200, 160, 255, 0.62);
+  margin: 0 0 14px;
+  text-align: left;
+}
+.sembolikPaywallHint {
+  font-size: 12px;
+  color: rgba(255, 200, 120, 0.38);
+  margin: 0 0 22px;
+  line-height: 1.55;
+}
+.sembolikPaywallActions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  max-width: 320px;
+  margin: 0 auto 8px;
+}
+.ctaBtnGhost {
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.28);
+  background: transparent;
+  color: rgba(200, 160, 255, 0.75);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.ctaBtnGhost:hover {
+  border-color: rgba(255, 180, 100, 0.4);
+  color: #ffe8d4;
+  background: rgba(255, 140, 80, 0.06);
 }
 
 .bridgeBlock {
@@ -387,6 +441,15 @@
   margin: 0 0 18px;
   font-weight: 300;
 }
+.sirInnerLead {
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(120, 247, 216, 0.78);
+  margin: 0 0 22px;
+  font-weight: 400;
+  font-style: italic;
+}
+
 .sirSeal {
   margin-top: 28px;
   padding-top: 22px;
@@ -395,6 +458,35 @@
   letter-spacing: 0.12em;
   color: rgba(120, 247, 216, 0.65);
   text-align: center;
+}
+
+.sirSoftZone {
+  margin-top: 32px;
+  padding: 26px 22px 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  background: rgba(200, 160, 255, 0.04);
+}
+.sirSoftLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.4);
+  margin: 0 0 16px;
+  text-align: center;
+}
+.sirSoftPara {
+  font-size: 15px;
+  line-height: 1.88;
+  color: color-mix(in srgb, var(--text-primary) 58%, rgba(200, 180, 220, 0.5));
+  margin: 0 0 14px;
+  font-weight: 300;
+  font-style: italic;
+  text-align: center;
+}
+.sirSoftPara:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 480px) {

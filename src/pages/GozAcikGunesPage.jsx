@@ -10,18 +10,20 @@ import {
 } from "../data/shopierConfig";
 import { useLanguage } from "../contexts/LanguageContext";
 import { trackFunnelEvent } from "../data/funnelTracker";
+import { trackAddToCart } from "../data/analytics";
 import {
   GOZ_CONTENT_ID,
   GOZ_RETURN_PATH,
   sectionsFree,
   cliffVisibleLine,
-  paywallTitle,
+  paywallHypnotic,
   paywallSub,
   paywallHint,
-  paywallCta,
+  paywallCartCta,
+  paywallOpenCta,
   sirUnlocked,
   heroHypnoticLine,
-  closingReading,
+  sembolikReading,
   bridgeToSeal,
 } from "../data/gozAcikGunesContent";
 import styles from "./GozAcikGunesPage.module.css";
@@ -75,8 +77,10 @@ export default function GozAcikGunesPage() {
 
   const onShopier = useCallback(() => {
     trackFunnelEvent("goz_acik_gunes_shopier_click");
+    const amt = parseFloat(String(price).replace(",", ".")) || 9.9;
+    trackAddToCart(GOZ_CONTENT_ID, amt, "TRY");
     redirectToShopier("okuma_devami", GOZ_CONTENT_ID, GOZ_RETURN_PATH);
-  }, []);
+  }, [price]);
 
   const onRecovery = useCallback(() => {
     unlockViaShopier(GOZ_CONTENT_ID);
@@ -144,24 +148,15 @@ export default function GozAcikGunesPage() {
               </section>
             ))}
 
-            <section className={styles.block}>
-              <p className={styles.kicker}>{closingReading.kicker}</p>
-              <h2 className={styles.blockTitle}>{closingReading.title}</h2>
-              {closingReading.paras.map((t, j) => (
+            <section className={`${styles.block} ${styles.sembolikBlock}`}>
+              <p className={styles.kicker}>{sembolikReading.kicker}</p>
+              <p className={styles.sembolikHypnoticMain}>{sembolikReading.hypnoticLine}</p>
+              <h2 className={styles.blockTitle}>{sembolikReading.title}</h2>
+              {sembolikReading.paras.map((t, j) => (
                 <p key={j} className={styles.para}>
                   {rich(t)}
                 </p>
               ))}
-              <div className={styles.sanriCtaBox}>
-                <a
-                  className={styles.sanriCtaLink}
-                  href={closingReading.ctaHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  👉 {closingReading.ctaLabel}
-                </a>
-              </div>
             </section>
 
             <section className={styles.bridgeBlock}>
@@ -177,27 +172,21 @@ export default function GozAcikGunesPage() {
             </div>
 
             {!unlocked ? (
-              <div className={styles.lockZone}>
-                <div className={styles.lockFake} aria-hidden>
-                  <p>
-                    ████ ██████ ██ ███ ██████ ██… dikkat frekansı… merkez
-                    kayması… ████…
-                  </p>
-                  <p>
-                    ████████ … izlenme miti … ████ bakış derleyici … ████
-                  </p>
-                </div>
-                <div className={styles.lockOverlay}>
-                  <h3 className={styles.lockTitle}>{paywallTitle}</h3>
-                  <p className={styles.lockSub}>{rich(paywallSub)}</p>
-                  <p className={styles.lockHint}>{paywallHint}</p>
+              <div className={styles.sembolikPaywall}>
+                <p className={styles.sembolikPaywallHypno}>{paywallHypnotic}</p>
+                <p className={styles.sembolikPaywallSub}>{rich(paywallSub)}</p>
+                <p className={styles.sembolikPaywallHint}>{paywallHint}</p>
+                <div className={styles.sembolikPaywallActions}>
                   <button type="button" className={styles.ctaBtn} onClick={onShopier}>
-                    {isTR ? `${paywallCta} — ${price}₺` : `Unlock — ${price}₺ TRY`}
+                    {paywallCartCta} — {price}₺
                   </button>
-                  <button type="button" className={styles.recoveryBtn} onClick={onRecovery}>
-                    {isTR ? "Ödemeyi yaptım, kilidi aç" : "I paid — unlock"}
+                  <button type="button" className={styles.ctaBtnGhost} onClick={onShopier}>
+                    {paywallOpenCta}
                   </button>
                 </div>
+                <button type="button" className={styles.recoveryBtn} onClick={onRecovery}>
+                  {isTR ? "Ödemeyi yaptım, kilidi aç" : "I paid — unlock"}
+                </button>
               </div>
             ) : (
               <motion.div
@@ -208,12 +197,21 @@ export default function GozAcikGunesPage() {
               >
                 <p className={styles.sirLabel}>{isTR ? "Kilit açıldı" : "Unsealed"}</p>
                 <h2 className={styles.sirTitle}>{sirUnlocked.title}</h2>
+                <p className={styles.sirInnerLead}>{rich(sirUnlocked.innerLead)}</p>
                 {sirUnlocked.paras.map((t, i) => (
                   <p key={i} className={styles.sirPara}>
                     {rich(t)}
                   </p>
                 ))}
                 <p className={styles.sirSeal}>{sirUnlocked.seal}</p>
+                <div className={styles.sirSoftZone}>
+                  <p className={styles.sirSoftLabel}>{sirUnlocked.softLabel}</p>
+                  {sirUnlocked.softLines.map((t, i) => (
+                    <p key={i} className={styles.sirSoftPara}>
+                      {rich(t)}
+                    </p>
+                  ))}
+                </div>
               </motion.div>
             )}
               </div>
