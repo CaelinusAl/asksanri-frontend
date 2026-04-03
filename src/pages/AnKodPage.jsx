@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { redirectToShopier, isShopierUnlocked, unlockViaShopier, SHOPIER_PRODUCTS } from "../data/shopierConfig";
@@ -222,6 +222,43 @@ function generateDeepReading(a) {
   ];
 }
 
+const SNAPSHOT_KEY = "sanri_ankod_snapshot";
+
+const API_ANKOD =
+  (import.meta?.env?.VITE_BACKEND_URL &&
+    String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+  "https://sanri-api-production-4a7b.up.railway.app";
+
+function buildAnkodLines(answersObj) {
+  return QUESTIONS.map((q) => {
+    const pick = answersObj[q.id];
+    const opt = q.options.find((o) => o.id === pick);
+    const label = opt ? opt.label : pick || "—";
+    return `${q.text} → ${label}`;
+  });
+}
+
+function mapDeepFromApi(s) {
+  if (!s?.ana_tema) return null;
+  return [
+    { title: "Ana Tema", icon: "◉", text: s.ana_tema },
+    { title: "Güç Alanı", icon: "✦", text: s.guc_alani },
+    { title: "Zorlayan Döngü", icon: "∞", text: s.zorlayan_dongu },
+    { title: "Kör Nokta", icon: "☽", text: s.kor_nokta },
+    { title: "SANRI Mesajı", icon: "✧", text: s.sanri_mesaji },
+  ];
+}
+
+async function fetchAnkodSanri(lines, mode) {
+  const res = await fetch(`${API_ANKOD}/sanri/ankod-commentary`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lines, mode }),
+  });
+  if (!res.ok) throw new Error(`ankod_sanri_${res.status}`);
+  return res.json();
+}
+
 /* ═══════════════════════════════════════ */
 
 const PHASES = {
@@ -240,6 +277,9 @@ export default function AnKodPage() {
   const [reflection, setReflection] = useState("");
   const [deepSections, setDeepSections] = useState([]);
   const [modal, setModal] = useState(false);
+  const [deepSanriLoading, setDeepSanriLoading] = useState(false);
+
+  const lastDeepFetchKey = useRef("");
 
   const [serverUnlocked] = useServerUnlock("ankod_unlock", "subconscious_unlock", "role_unlock");
   const unlocked = serverUnlocked;
@@ -265,20 +305,84 @@ export default function AnKodPage() {
       } else {
         trackFunnelEvent("ankod_quiz_complete");
         setPhase(PHASES.READING_LOAD);
-        const ankodText = generateAnKodReading(next);
-        const reflText = generateReflection(next);
-        const deep = generateDeepReading(next);
-        setTimeout(() => {
-          setReading(ankodText);
-          setReflection(reflText);
-          setDeepSections(deep);
+
+        const lines = buildAnkodLines(next);
+        const fallbackReading = generateAnKodReading(next);
+        const fallbackReflection = generateReflection(next);
+        const fallbackDeep = generateDeepReading(next);
+        const minMs = 1600;
+        const t0 = Date.now();
+
+        (async () => {
+          let readingText = fallbackReading;
+          let reflectionText = fallbackReflection;
+          try {
+            const data = await fetchAnkodSanri(lines, "teaser");
+            if (data?.an_kod) readingText = data.an_kod;
+            if (data?.yansitma) reflectionText = data.yansitma;
+          } catch {
+            /* API yok / hata — şablon metin */
+          }
+
+          const elapsed = Date.now() - t0;
+          await new Promise((r) => setTimeout(r, Math.max(0, minMs - elapsed)));
+
+          try {
+            localStorage.setItem(
+              SNAPSHOT_KEY,
+              JSON.stringify({
+                answers: next,
+                lines,
+                reading: readingText,
+                reflection: reflectionText,
+                ts: Date.now(),
+              })
+            );
+          } catch { /* noop */ }
+
+          setReading(readingText);
+          setReflection(reflectionText);
+          setDeepSections(fallbackDeep);
           setPhase(PHASES.RESULT);
           if (!unlocked) trackFunnelEvent("ankod_lock_view");
-        }, 2800);
+        })();
       }
     },
-    [step, answers]
+    [step, answers, unlocked]
   );
+
+  useEffect(() => {
+    if (!unlocked || phase !== PHASES.RESULT || !reading) return;
+    const key = `${reading.slice(0, 120)}|${reflection?.slice(0, 40) || ""}`;
+    if (lastDeepFetchKey.current === key) return;
+
+    let lines;
+    try {
+      const snap = JSON.parse(localStorage.getItem(SNAPSHOT_KEY) || "{}");
+      lines = snap.lines;
+    } catch {
+      return;
+    }
+    if (!Array.isArray(lines) || lines.length < 4) return;
+
+    lastDeepFetchKey.current = key;
+    let cancelled = false;
+    setDeepSanriLoading(true);
+    fetchAnkodSanri(lines, "deep")
+      .then((data) => {
+        if (cancelled || !data?.sections) return;
+        const mapped = mapDeepFromApi(data.sections);
+        if (mapped) setDeepSections(mapped);
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setDeepSanriLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [unlocked, phase, reading, reflection]);
 
   const currentQ = QUESTIONS[step];
 
@@ -373,7 +477,7 @@ export default function AnKodPage() {
             <div className={styles.loadOrb}>
               <span className={styles.loadGlyph}>◈</span>
             </div>
-            <p className={styles.loadText}>Anın okunuyor...</p>
+            <p className={styles.loadText}>SANRI senin kodunu yazıyor…</p>
           </motion.div>
         )}
 
@@ -388,6 +492,7 @@ export default function AnKodPage() {
           >
             {/* AN_KOD reading */}
             <div className={styles.resultGlyph}>✦</div>
+            <div className={styles.resultSanriTag}>SANRI · sana özel</div>
             <div className={styles.resultCard}>
               <p className={styles.resultText}>{reading}</p>
             </div>
@@ -507,6 +612,11 @@ export default function AnKodPage() {
               >
                 <div className={styles.lockDivider} />
                 <p className={styles.deepIntro}>Derin Okuma</p>
+                {deepSanriLoading && (
+                  <p className={styles.deepSanriLoading}>
+                    SANRI derin katmanını senin seçimlerine göre yazıyor…
+                  </p>
+                )}
 
                 {deepSections.map((sec, i) => (
                   <motion.div
@@ -550,12 +660,17 @@ export default function AnKodPage() {
             <button
               className={styles.againBtn}
               onClick={() => {
+                lastDeepFetchKey.current = "";
+                try {
+                  localStorage.removeItem(SNAPSHOT_KEY);
+                } catch { /* noop */ }
                 setPhase(PHASES.INTRO);
                 setStep(0);
                 setAnswers({});
                 setReading("");
                 setReflection("");
                 setDeepSections([]);
+                setDeepSanriLoading(false);
               }}
             >
               Tekrar Başla

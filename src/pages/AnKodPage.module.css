@@ -274,7 +274,15 @@
 .resultGlyph {
   font-size: 28px;
   color: rgba(120, 247, 216, 0.5);
-  margin-bottom: 28px;
+  margin-bottom: 12px;
+}
+.resultSanriTag {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.4);
+  margin: 0 0 20px;
+  font-weight: 600;
 }
 .resultCard {
   padding: 36px 28px;
@@ -427,6 +435,18 @@
 
 /* ── Deep Reading (unlocked) ── */
 .deepZone { margin-bottom: 32px; }
+.deepSanriLoading {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: rgba(200, 160, 255, 0.45);
+  margin: 0 0 16px;
+  animation: deepPulse 1.4s ease-in-out infinite;
+}
+@keyframes deepPulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+}
 .deepIntro {
   font-size: 13px;
   font-weight: 700;
