@@ -5,7 +5,11 @@ import { useAuth } from "../contexts/AuthContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { fetchMyProfile, fetchMyPosts } from "../data/yankiApi";
 import { KOD_MODULLERI, getAllLessonsFlat } from "../data/kodEgitmeniData";
-import { getUnlockedItems, isShopierUnlocked } from "../data/shopierConfig";
+import {
+  getUnlockedItems,
+  isShopierUnlocked,
+  syncPurchasesFromServer,
+} from "../data/shopierConfig";
 import { getAllKatmanlar } from "../data/katmanEngine";
 import styles from "./BenimAlanimPage.module.css";
 
@@ -1005,8 +1009,15 @@ function Defterim({ isTR, yankiPosts, navigate }) {
    SATIN ALINAN AÇILIMLAR
    ═══════════════════════════════════════════════ */
 
-function SatinAlinanAcilimlar({ isTR, navigate }) {
-  const unlockedItems = useMemo(() => getUnlockedItems(), []);
+function SatinAlinanAcilimlar({ isTR, navigate, accessRevision }) {
+  const unlockedItems = useMemo(() => {
+    const raw = getUnlockedItems();
+    return [...raw].sort((a, b) => {
+      const ta = a.at ? new Date(a.at).getTime() : 0;
+      const tb = b.at ? new Date(b.at).getTime() : 0;
+      return tb - ta;
+    });
+  }, [accessRevision]);
   const allKatmanlar = useMemo(() => getAllKatmanlar(), []);
 
   const CONTENT_MAP = {
@@ -1089,6 +1100,24 @@ function SatinAlinanAcilimlar({ isTR, navigate }) {
       path: "/",
       btnText: isTR ? "Keşfet" : "Explore",
     },
+    kod_giris_ders: {
+      label: isTR ? "Kod Öğrenmeye Giriş — İlk Kapı (47 TL)" : "Code Intro — First Door (47 TRY)",
+      icon: "🚪",
+      desc: isTR
+        ? "Modül 1 (ders 3–7) açık. Kod eğitmeni müfredatına buradan devam et."
+        : "Module 1 (lessons 3–7) unlocked. Continue the code curriculum here.",
+      path: "/kod-egitmeni?v=modules",
+      btnText: isTR ? "Kod eğitmenine git" : "Open code trainer",
+    },
+    kod_egitmeni: {
+      label: isTR ? "SANRI Kod Okuma Sistemi™ — Tam erişim" : "SANRI Code Reading System™ — full access",
+      icon: "◈",
+      desc: isTR
+        ? "21 ders ve tüm modüller açık. İlerlemeni buradan sürdür."
+        : "All 21 lessons and modules unlocked. Continue your progress here.",
+      path: "/kod-egitmeni?v=modules",
+      btnText: isTR ? "Müfredata git" : "Open curriculum",
+    },
   };
 
   const availableKatmanlar = allKatmanlar.filter(
@@ -1102,9 +1131,14 @@ function SatinAlinanAcilimlar({ isTR, navigate }) {
       <div className={styles.sectionHeader}>
         <div className={styles.sectionTitle}>
           <span className={styles.sectionIcon}>✦</span>
-          {isTR ? "Açılımlarım" : "My Expansions"}
+          {isTR ? "Satın aldıklarım" : "My purchases"}
         </div>
       </div>
+      <p className={styles.sectionKicker}>
+        {isTR
+          ? "Shopier ve havale ile açılan tüm içerikler burada listelenir; sayfayı yenilesen de sunucudan yenilenir."
+          : "Everything unlocked via Shopier or bank transfer is listed here and refreshed from the server when you reload."}
+      </p>
       <div className={styles.glass}>
         {unlockedItems.length > 0 ? (
           <>
@@ -1234,6 +1268,7 @@ export default function BenimAlanimPage() {
   const [avatarModal, setAvatarModal] = useState(false);
   const [profile, setProfile] = useState(null);
   const [yankiPosts, setYankiPosts] = useState([]);
+  const [shopierAccessRevision, setShopierAccessRevision] = useState(0);
 
   const kodProgress = useMemo(getKodProgress, []);
 
@@ -1251,6 +1286,18 @@ export default function BenimAlanimPage() {
     }).catch(() => {});
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    let cancelled = false;
+    (async () => {
+      await syncPurchasesFromServer();
+      if (!cancelled) setShopierAccessRevision((n) => n + 1);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [isAuthenticated]);
+
   const handleAvatarSave = (id) => {
     setAvatarId(id);
     try { localStorage.setItem(AVATAR_KEY, id); } catch { /* noop */ }
@@ -1261,7 +1308,10 @@ export default function BenimAlanimPage() {
     const streak = profile?.streak?.current || 0;
     const longestStreak = profile?.streak?.longest || streak;
     return {
-      ilk_kapi: isAuthenticated,
+      ilk_kapi:
+        isShopierUnlocked("kod_giris_ders") ||
+        isShopierUnlocked("kod_egitmeni") ||
+        isAuthenticated,
       yanki_birakici: yankiPosts.length > 0,
       kod_tasiyici: kodProgress.done > 0,
       hatirlayan: kodProgress.percent >= 100,
@@ -1277,7 +1327,7 @@ export default function BenimAlanimPage() {
       matrix_cozucu: isShopierUnlocked("kod_egitmeni") || isPremium,
       hafiza_tasiyici: longestStreak >= 21,
     };
-  }, [isAuthenticated, yankiPosts, kodProgress, isPremium, profile]);
+  }, [isAuthenticated, yankiPosts, kodProgress, isPremium, profile, shopierAccessRevision]);
 
   if (authLoading) {
     return (
@@ -1319,7 +1369,11 @@ export default function BenimAlanimPage() {
 
       <StreakMilestoneBar streak={streak} isTR={isTR} />
 
-      <SatinAlinanAcilimlar isTR={isTR} navigate={navigate} />
+      <SatinAlinanAcilimlar
+        isTR={isTR}
+        navigate={navigate}
+        accessRevision={shopierAccessRevision}
+      />
 
       <KodHaritam avatarId={avatarId} kodProgress={kodProgress} isTR={isTR} />
 

@@ -220,6 +220,14 @@
 .sectionIcon {
   font-size: 18px;
 }
+
+.sectionKicker {
+  margin: -6px 0 14px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.42);
+}
+
 .sectionAction {
   background: none;
   border: none;
