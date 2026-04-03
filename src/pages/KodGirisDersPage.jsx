@@ -13,9 +13,14 @@ import {
 import { trackFunnelEvent } from "../data/funnelTracker";
 import { trackEvent } from "../data/analytics";
 import BankTransferLink from "../components/BankTransferLink";
+import {
+  KOD_CONTENT_ID_ILK_KAPI,
+  KOD_PRODUCT_DEBUG_AMOUNT,
+  KOD_PRODUCT_DEBUG_LABEL,
+} from "../data/kodPaymentContentIds";
 import styles from "./KodGirisDersPage.module.css";
 
-export const KOD_GIRIS_CONTENT_ID = "kod_giris_ders";
+export const KOD_GIRIS_CONTENT_ID = KOD_CONTENT_ID_ILK_KAPI;
 
 const PRODUCT_TITLE = "Kod Öğrenmeye Giriş — Zihni Aç, Sistemi Kur";
 
@@ -36,7 +41,7 @@ const BONUS_CLOSING = `Bu sadece kapıydı.
 export default function KodGirisDersPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [unlocked, setUnlocked] = useState(() => isShopierUnlocked(KOD_GIRIS_CONTENT_ID));
+  const [unlocked, setUnlocked] = useState(() => isShopierUnlocked(KOD_CONTENT_ID_ILK_KAPI));
 
   useEffect(() => {
     trackFunnelEvent("kod_giris_landing_view");
@@ -46,7 +51,7 @@ export default function KodGirisDersPage() {
     let c = false;
     (async () => {
       await syncPurchasesFromServer();
-      if (!c && isShopierUnlocked(KOD_GIRIS_CONTENT_ID)) {
+      if (!c && isShopierUnlocked(KOD_CONTENT_ID_ILK_KAPI)) {
         setUnlocked(true);
         trackFunnelEvent("kod_giris_unlock_confirmed");
       }
@@ -67,7 +72,7 @@ export default function KodGirisDersPage() {
     trackEvent("kod_giris_cta_click", { price: PRICE_CANLI_GIRIS_DERS });
     redirectToShopier(
       "kod_giris_ders",
-      KOD_GIRIS_CONTENT_ID,
+      KOD_CONTENT_ID_ILK_KAPI,
       "/kod-ogrenmeye-giris?tesekkur=1"
     );
   }, []);
@@ -142,9 +147,11 @@ export default function KodGirisDersPage() {
             Kartla Anında Öde — {PRICE_CANLI_GIRIS_DERS} TL
           </button>
           <BankTransferLink
-            contentId={KOD_GIRIS_CONTENT_ID}
+            contentId={KOD_CONTENT_ID_ILK_KAPI}
             returnTo="/kod-ogrenmeye-giris"
             className={styles.havaleLink}
+            debugProduct={KOD_PRODUCT_DEBUG_LABEL[KOD_CONTENT_ID_ILK_KAPI]}
+            debugAmount={KOD_PRODUCT_DEBUG_AMOUNT[KOD_CONTENT_ID_ILK_KAPI]}
           >
             Havale / EFT ile öde
           </BankTransferLink>

@@ -18,18 +18,19 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import { redirectToShopier, isShopierProductUnlocked } from "../data/shopierConfig";
 import BankTransferLink from "../components/BankTransferLink";
-
-/** Shopier tam sistem */
-const KOD_TAM_SHOPIER_ID = "kod_egitmeni";
-/** Kod Öğrenmeye Giriş — İlk Kapı (47 TL) */
-const KOD_ILK_KAPI_SHOPIER_ID = "kod_giris_ders";
+import {
+  KOD_CONTENT_ID_ILK_KAPI,
+  KOD_CONTENT_ID_TAM_PROGRAM,
+  KOD_PRODUCT_DEBUG_AMOUNT,
+  KOD_PRODUCT_DEBUG_LABEL,
+} from "../data/kodPaymentContentIds";
 
 function isKodTamShopierUnlocked() {
-  return isShopierProductUnlocked(KOD_TAM_SHOPIER_ID);
+  return isShopierProductUnlocked(KOD_CONTENT_ID_TAM_PROGRAM);
 }
 
 function isIlkKapiUnlocked() {
-  return isShopierProductUnlocked(KOD_ILK_KAPI_SHOPIER_ID);
+  return isShopierProductUnlocked(KOD_CONTENT_ID_ILK_KAPI);
 }
 
 const API_URL =
@@ -547,10 +548,10 @@ function Paywall() {
   const navigate = useNavigate();
 
   const openIlkKapi = () => {
-    redirectToShopier("kod_giris_ders", KOD_ILK_KAPI_SHOPIER_ID, "/kod-egitmeni?v=modules");
+    redirectToShopier("kod_giris_ders", KOD_CONTENT_ID_ILK_KAPI, "/kod-egitmeni?v=modules");
   };
   const openTamSistem = () => {
-    redirectToShopier("kod_egitmeni", KOD_TAM_SHOPIER_ID, "/kod-egitmeni?v=modules");
+    redirectToShopier("kod_egitmeni", KOD_CONTENT_ID_TAM_PROGRAM, "/kod-egitmeni?v=modules");
   };
 
   return (
@@ -592,9 +593,11 @@ function Paywall() {
             Kartla Anında Öde — Sistemi Aç
           </button>
           <BankTransferLink
-            contentId="kod_egitmeni"
+            contentId={KOD_CONTENT_ID_TAM_PROGRAM}
             returnTo="/kod-egitmeni?v=modules"
             className={styles.havaleLink}
+            debugProduct={KOD_PRODUCT_DEBUG_LABEL[KOD_CONTENT_ID_TAM_PROGRAM]}
+            debugAmount={KOD_PRODUCT_DEBUG_AMOUNT[KOD_CONTENT_ID_TAM_PROGRAM]}
           >
             Havale / EFT ile öde
           </BankTransferLink>
@@ -612,9 +615,11 @@ function Paywall() {
             <span className={styles.paywallGateHint}>Yalnız Modül 1 · ders 3–7 (21 dersin tamamı değil)</span>
           </button>
           <BankTransferLink
-            contentId="kod_giris_ders"
+            contentId={KOD_CONTENT_ID_ILK_KAPI}
             returnTo="/kod-egitmeni?v=modules"
             className={styles.havaleLinkGate}
+            debugProduct={KOD_PRODUCT_DEBUG_LABEL[KOD_CONTENT_ID_ILK_KAPI]}
+            debugAmount={KOD_PRODUCT_DEBUG_AMOUNT[KOD_CONTENT_ID_ILK_KAPI]}
           >
             Havale / EFT ile öde (İlk Kapı)
           </BankTransferLink>
@@ -907,7 +912,7 @@ function LessonViewer({ mod, lesson, onComplete, onBack, onGoLesson, adminBypass
                   type="button"
                   className={styles.sanriGateBtn}
                   onClick={() =>
-                    redirectToShopier("kod_giris_ders", KOD_ILK_KAPI_SHOPIER_ID, "/kod-egitmeni?v=modules")
+                    redirectToShopier("kod_giris_ders", KOD_CONTENT_ID_ILK_KAPI, "/kod-egitmeni?v=modules")
                   }
                 >
                   İlk Kapı — {PRICE_CANLI_GIRIS_DERS} TL
@@ -916,11 +921,31 @@ function LessonViewer({ mod, lesson, onComplete, onBack, onGoLesson, adminBypass
                   type="button"
                   className={styles.sanriGateBtnSecondary}
                   onClick={() =>
-                    redirectToShopier("kod_egitmeni", KOD_TAM_SHOPIER_ID, "/kod-egitmeni?v=modules")
+                    redirectToShopier("kod_egitmeni", KOD_CONTENT_ID_TAM_PROGRAM, "/kod-egitmeni?v=modules")
                   }
                 >
                   Tüm sistem — {PRICE_KOD_TAM_PROGRAM} TL
                 </button>
+                <div className={styles.sanriGateHavaleRow}>
+                  <BankTransferLink
+                    contentId={KOD_CONTENT_ID_ILK_KAPI}
+                    returnTo="/kod-egitmeni?v=modules"
+                    className={styles.sanriGateHavaleLink}
+                    debugProduct={KOD_PRODUCT_DEBUG_LABEL[KOD_CONTENT_ID_ILK_KAPI]}
+                    debugAmount={KOD_PRODUCT_DEBUG_AMOUNT[KOD_CONTENT_ID_ILK_KAPI]}
+                  >
+                    Havale — İlk Kapı ({PRICE_CANLI_GIRIS_DERS} TL)
+                  </BankTransferLink>
+                  <BankTransferLink
+                    contentId={KOD_CONTENT_ID_TAM_PROGRAM}
+                    returnTo="/kod-egitmeni?v=modules"
+                    className={styles.sanriGateHavaleLink}
+                    debugProduct={KOD_PRODUCT_DEBUG_LABEL[KOD_CONTENT_ID_TAM_PROGRAM]}
+                    debugAmount={KOD_PRODUCT_DEBUG_AMOUNT[KOD_CONTENT_ID_TAM_PROGRAM]}
+                  >
+                    Havale — Tam sistem ({PRICE_KOD_TAM_PROGRAM} TL)
+                  </BankTransferLink>
+                </div>
                 <Link to="/subscription" className={styles.sanriGateSubLink}>
                   SANRI aboneliği
                 </Link>
@@ -1088,7 +1113,7 @@ export default function KodEgitmeniPage() {
   };
 
   const handleUnlockFull = () => {
-    redirectToShopier("kod_egitmeni", KOD_TAM_SHOPIER_ID, "/kod-egitmeni?v=modules");
+    redirectToShopier("kod_egitmeni", KOD_CONTENT_ID_TAM_PROGRAM, "/kod-egitmeni?v=modules");
   };
 
   return (

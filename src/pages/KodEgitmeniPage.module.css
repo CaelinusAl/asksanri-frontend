@@ -1876,6 +1876,25 @@
   color: #c8a0ff;
   text-decoration: underline;
 }
+.sanriGateHavaleRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(200, 160, 255, 0.12);
+}
+.sanriGateHavaleLink {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(160, 220, 255, 0.95);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.sanriGateHavaleLink:hover {
+  color: #b8e8ff;
+}
 .sanriFreeBadge {
   text-align: center;
   padding: 6px 14px;

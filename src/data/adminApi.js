@@ -12,7 +12,16 @@ async function adminFetch(path, opts = {}) {
   const res = await fetch(`${API}${path}`, { ...opts, headers });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(err.detail || `Request failed: ${res.status}`);
+    const d = err.detail;
+    const msg =
+      typeof d === "string"
+        ? d
+        : d && typeof d === "object" && (d.message_tr || d.message)
+          ? String(d.message_tr || d.message)
+          : d
+            ? JSON.stringify(d)
+            : `Request failed: ${res.status}`;
+    throw new Error(msg);
   }
   return res.json();
 }

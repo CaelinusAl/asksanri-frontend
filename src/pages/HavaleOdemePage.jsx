@@ -5,6 +5,7 @@ import {
   submitBankTransferRequest,
   fetchBankTransferStatus,
 } from "../data/bankTransferApi";
+import { resolveBankDisplay } from "../data/bankTransferDisplayEnv";
 import { syncPurchasesFromServer } from "../data/shopierConfig";
 import styles from "./HavaleOdemePage.module.css";
 
@@ -33,6 +34,13 @@ export default function HavaleOdemePage() {
       setError("Geçersiz bağlantı: content_id eksik.");
       setPhase("error");
       return;
+    }
+    try {
+      console.info("[SANRI havale-odeme] URL’den content_id ile önizleme", {
+        received_content_id: contentId,
+      });
+    } catch {
+      /* ignore */
     }
     let cancelled = false;
     (async () => {
@@ -136,40 +144,61 @@ export default function HavaleOdemePage() {
       <div className={styles.shell}>
         <h1 className={styles.h1}>Havale / EFT ile ödeme</h1>
         <p className={styles.lead}>
-          Kart kullanmak istemiyorsan bu yolu kullanabilirsin. Ödeme manuel onaylanır; dekont ve
-          açıklama kodun eşleşince erişimin açılır.
+          Kart kullanmak istemiyorsan bu yolu kullanabilirsin. Tutar ve açıklama kodu eşleştiğinde
+          kaydın manuel olarak kontrol edilir; onay sonrası erişimin tanımlanır.
         </p>
+
+        <ul className={styles.trustList} aria-label="Ödeme süreci">
+          <li>
+            <span className={styles.trustMark} aria-hidden />
+            <span>
+              <strong>Ödeme manuel kontrol edilir</strong> — dekont ve banka hareketi incelenir.
+            </span>
+          </li>
+          <li>
+            <span className={styles.trustMark} aria-hidden />
+            <span>
+              <strong>Açıklama kodunu EFT açıklamasına aynen yaz</strong> — başka metin ekleme.
+            </span>
+          </li>
+          <li>
+            <span className={styles.trustMark} aria-hidden />
+            <span>
+              <strong>Dekont yükledikten sonra onay beklenir</strong> — kısa sürede sonuçlanır.
+            </span>
+          </li>
+        </ul>
 
         {phase === "ready" && preview && (
           <>
             <div className={styles.card}>
               <p className={styles.cardTitle}>1 · Havale bilgileri</p>
-              <div className={styles.row}>
-                <div className={styles.label}>Alıcı</div>
-                <div className={styles.value}>{preview.recipient_name}</div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.label}>Banka</div>
-                <div className={styles.value}>{preview.bank_name}</div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.label}>IBAN</div>
-                <div className={styles.value}>{preview.iban}</div>
-              </div>
-              {preview.iban_label ? (
-                <div className={styles.row}>
-                  <div className={styles.label}>Hesap etiketi</div>
-                  <div className={styles.value}>{preview.iban_label}</div>
-                </div>
-              ) : null}
-              <div className={styles.row}>
-                <div className={styles.label}>Tutar (tam)</div>
-                <div className={styles.amount}>{preview.amount} TL</div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.label}>Açıklama kodu (EFT’de aynen yaz)</div>
-                <div className={styles.codeBox}>{preview.transfer_code}</div>
-              </div>
+              {(() => {
+                const bank = resolveBankDisplay(preview);
+                return (
+                  <>
+                    <pre className={styles.plainBlock}>
+                      {`IBAN: ${bank.iban || "—"}
+Banka: ${bank.bankName || "—"}
+Alıcı: ${bank.accountName || "—"}`}
+                    </pre>
+                    {preview.iban_label ? (
+                      <p className={styles.plainMeta}>Hesap etiketi: {preview.iban_label}</p>
+                    ) : null}
+                    <div className={styles.row}>
+                      <div className={styles.label}>Tutar (tam)</div>
+                      <div className={styles.amount}>{preview.amount} TL</div>
+                    </div>
+                    <div className={styles.descBlock}>
+                      <div className={styles.descLabel}>Açıklama</div>
+                      <div className={styles.codeBox}>{preview.transfer_code}</div>
+                      <p className={styles.descHint}>
+                        Bu kod benzersizdir — yalnızca senin işlemin için geçerlidir; başka kod kullanma.
+                      </p>
+                    </div>
+                  </>
+                );
+              })()}
               <p className={styles.note}>{preview.instructions_tr}</p>
             </div>
 
@@ -239,15 +268,17 @@ export default function HavaleOdemePage() {
 
         {phase === "submitted" && (
           <>
-            <div className={styles.success}>
-              Ödeme bildirimin alındı. Dekontun kontrol ediliyor; onaylanınca bu e-posta ile
-              satın alma kaydın oluşturulur ve erişimin açılır.
+            <div className={styles.success} role="status">
+              <p className={styles.successTitle}>Tamam</p>
+              <p className={styles.successBody}>
+                Ödeme bildirimin alındı. Kontrol sonrası erişimin açılacak.
+              </p>
             </div>
             <div className={styles.card}>
               <p className={styles.cardTitle}>Durum</p>
               <p className={styles.note}>
-                Onay genelde kısa sürede tamamlanır. Aşağıdan durumu yenileyebilirsin — onaylandıktan
-                sonra ilgili sayfaya dönüp yenile.
+                Onay genelde kısa sürer. Aşağıdan durumu yenileyebilirsin; onaylandıktan sonra ilgili
+                sayfaya dönüp yenile.
               </p>
               <div className={styles.statusBox}>
                 <button

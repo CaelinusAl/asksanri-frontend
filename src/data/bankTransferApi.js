@@ -1,18 +1,43 @@
-const API =
+/** Havale / EFT istekleri bu köke gider (build-time VITE_BACKEND_URL veya varsayılan Railway). */
+export const BANK_TRANSFER_API_BASE =
   (typeof window !== "undefined" &&
     import.meta?.env?.VITE_BACKEND_URL &&
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
+const API = BANK_TRANSFER_API_BASE;
+
+function formatApiDetail(detail) {
+  if (detail == null) return "";
+  if (typeof detail === "string") return detail;
+  if (typeof detail === "object") {
+    if (detail.message_tr) return String(detail.message_tr);
+    if (detail.message) return String(detail.message);
+    return JSON.stringify(detail, null, 2);
+  }
+  return String(detail);
+}
+
 export async function fetchBankTransferPreview(contentId) {
+  const cid = String(contentId || "").trim();
+  try {
+    console.info("[SANRI bank-transfer] POST /bank-transfer/preview", {
+      sent_content_id: cid,
+      api_base: API,
+    });
+  } catch {
+    /* ignore */
+  }
   const res = await fetch(`${API}/bank-transfer/preview`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ content_id: contentId }),
+    body: JSON.stringify({ content_id: cid }),
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    throw new Error(data.detail || data.message || `Hata: ${res.status}`);
+    throw new Error(
+      formatApiDetail(data.detail) || data.message || `Hata: ${res.status}`,
+    );
   }
   return data;
 }
@@ -36,9 +61,9 @@ export async function submitBankTransferRequest({
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const d = data.detail;
-    const msg = typeof d === "string" ? d : d?.message || JSON.stringify(d) || `Hata: ${res.status}`;
-    throw new Error(msg);
+    throw new Error(
+      formatApiDetail(data.detail) || data.message || `Hata: ${res.status}`,
+    );
   }
   return data;
 }
@@ -50,6 +75,8 @@ export async function fetchBankTransferStatus(email, transferCode) {
   });
   const res = await fetch(`${API}/bank-transfer/status?${q}`);
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.detail || `Hata: ${res.status}`);
+  if (!res.ok) {
+    throw new Error(formatApiDetail(data.detail) || `Hata: ${res.status}`);
+  }
   return data;
 }

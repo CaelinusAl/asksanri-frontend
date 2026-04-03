@@ -8,6 +8,7 @@ import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData"
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
 import { EmailCaptureInline } from "../components/EmailCaptureModal";
+import BankTransferLink from "../components/BankTransferLink";
 import styles from "./OkumaDetayPage.module.css";
 
 const API =
@@ -367,6 +368,13 @@ export default function OkumaDetayPage() {
                     >
                       {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
                     </button>
+                    <BankTransferLink
+                      contentId={`okuma_${post.id}`}
+                      returnTo={`${location.pathname}${location.search}`}
+                      className={styles.lockZoneHavale}
+                    >
+                      {isTR ? "Havale / EFT ile öde (9,90 ₺)" : "Pay via bank transfer (₺9.90)"}
+                    </BankTransferLink>
                   </div>
                 </div>
               </>
@@ -411,6 +419,13 @@ export default function OkumaDetayPage() {
                   >
                     {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
                   </button>
+                  <BankTransferLink
+                    contentId={`okuma_${post.id}`}
+                    returnTo={`${location.pathname}${location.search}`}
+                    className={styles.lockZoneHavale}
+                  >
+                    {isTR ? "Havale / EFT ile öde (9,90 ₺)" : "Pay via bank transfer (₺9.90)"}
+                  </BankTransferLink>
                 </div>
               </div>
             </>
@@ -440,6 +455,13 @@ export default function OkumaDetayPage() {
               >
                 {isTR ? "Tüm İçerikler İçin Premium" : "Full Premium Access"}
               </Link>
+              <BankTransferLink
+                contentId={`okuma_${post.id}`}
+                returnTo={`${location.pathname}${location.search}`}
+                className={styles.autoCtaHavale}
+              >
+                {isTR ? "Havale / EFT ile öde" : "Bank transfer (EFT)"}
+              </BankTransferLink>
             </div>
           </motion.div>
         )}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   fetchBankTransfers,
   fetchBankTransferDetail,
@@ -6,6 +6,47 @@ import {
   rejectBankTransfer,
 } from "../../data/adminApi";
 import styles from "./AdminBankTransferPage.module.css";
+
+const FILTERS = [
+  { value: "pending", label: "Bekleyen" },
+  { value: "approved", label: "Onaylı" },
+  { value: "rejected", label: "Red" },
+  { value: "", label: "Tümü" },
+];
+
+const STATUS_TR = {
+  pending: "Beklemede",
+  approved: "Onaylandı",
+  rejected: "Reddedildi",
+};
+
+const NEW_PENDING_MS = 48 * 60 * 60 * 1000;
+
+function statusLabelTr(s) {
+  return STATUS_TR[s] || s || "—";
+}
+
+function formatWhen(iso) {
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return String(iso);
+  const now = Date.now();
+  const diff = now - d.getTime();
+  if (diff < 0) return d.toLocaleString("tr-TR");
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "Az önce";
+  if (m < 60) return `${m} dk önce`;
+  const h = Math.floor(m / 60);
+  if (h < 48) return `${h} sa önce`;
+  return d.toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+}
+
+function isFreshPending(row) {
+  if (row.status !== "pending") return false;
+  const d = new Date(row.created_at);
+  if (Number.isNaN(d.getTime())) return false;
+  return Date.now() - d.getTime() < NEW_PENDING_MS;
+}
 
 export default function AdminBankTransferPage() {
   const [filter, setFilter] = useState("pending");
@@ -15,6 +56,11 @@ export default function AdminBankTransferPage() {
   const [detail, setDetail] = useState(null);
   const [rejectNote, setRejectNote] = useState("");
   const [busy, setBusy] = useState(false);
+
+  const pendingCount = useMemo(
+    () => items.filter((r) => r.status === "pending").length,
+    [items]
+  );
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -80,31 +126,41 @@ export default function AdminBankTransferPage() {
     return "";
   };
 
+  const rowClass = (r) => {
+    const parts = [styles.tr];
+    if (r.status === "pending") parts.push(styles.trPending);
+    if (isFreshPending(r)) parts.push(styles.trNew);
+    return parts.join(" ");
+  };
+
   return (
     <div className={styles.page}>
       <h1 className={styles.h1}>Banka ödemeleri (Havale / EFT)</h1>
       <p className={styles.sub}>
-        Manuel onay: onaylandığında shopier_purchases ile aynı içerik kilidi açılır (e-posta +
-        cihaz kontrolü).
+        Durumlar: <strong>pending</strong> (beklemede) → <strong>approved</strong> (onaylı, içerik kilidi
+        açılır) → <strong>rejected</strong> (red). Onayda <code>shopier_purchases</code> kaydı oluşturulur.
       </p>
 
       {error ? <div className={styles.error}>{error}</div> : null}
 
       <div className={styles.filters}>
-        {["pending", "approved", "rejected", ""].map((f) => (
+        {FILTERS.map(({ value, label }) => (
           <button
-            key={f || "all"}
+            key={value || "all"}
             type="button"
-            className={`${styles.filterBtn} ${filter === f ? styles.filterBtnActive : ""}`}
-            onClick={() => setFilter(f)}
+            className={`${styles.filterBtn} ${filter === value ? styles.filterBtnActive : ""}`}
+            onClick={() => setFilter(value)}
           >
-            {f === "" ? "Tümü" : f}
+            {label}
+            {value === "pending" && filter === "pending" && pendingCount > 0 ? (
+              <span className={styles.filterBadge}>{pendingCount}</span>
+            ) : null}
           </button>
         ))}
       </div>
 
       {loading ? (
-        <p className={styles.sub}>Yükleniyor…</p>
+        <p className={styles.subMuted}>Yükleniyor…</p>
       ) : (
         <div className={styles.tableWrap}>
           <table className={styles.table}>
@@ -116,28 +172,50 @@ export default function AdminBankTransferPage() {
                 <th className={styles.th}>E-posta</th>
                 <th className={styles.th}>Tutar</th>
                 <th className={styles.th}>İçerik</th>
+                <th className={styles.th}>Zaman</th>
                 <th className={styles.th} />
               </tr>
             </thead>
             <tbody>
               {items.length === 0 ? (
-                <tr>
-                  <td className={styles.td} colSpan={7}>
+                <tr className={styles.tr}>
+                  <td className={styles.td} colSpan={8}>
                     Kayıt yok.
                   </td>
                 </tr>
               ) : (
                 items.map((r) => (
-                  <tr key={r.id}>
-                    <td className={styles.td}>{r.id}</td>
-                    <td className={styles.td}>
-                      <span className={`${styles.statusP} ${statusClass(r.status)}`}>{r.status}</span>
+                  <tr key={r.id} className={rowClass(r)}>
+                    <td className={styles.td} data-label="ID">
+                      {r.id}
+                      {isFreshPending(r) ? (
+                        <span className={styles.newTag} title="Son 48 saat içinde, beklemede">
+                          Yeni
+                        </span>
+                      ) : null}
                     </td>
-                    <td className={styles.td}>{r.transfer_code}</td>
-                    <td className={styles.td}>{r.email}</td>
-                    <td className={styles.td}>{r.amount}</td>
-                    <td className={styles.td}>{r.content_id}</td>
-                    <td className={styles.td}>
+                    <td className={styles.td} data-label="Durum">
+                      <span className={`${styles.statusPill} ${statusClass(r.status)}`}>
+                        {statusLabelTr(r.status)}
+                      </span>
+                      <span className={styles.statusCode}>{r.status}</span>
+                    </td>
+                    <td className={styles.td} data-label="Kod">
+                      <code className={styles.mono}>{r.transfer_code}</code>
+                    </td>
+                    <td className={styles.td} data-label="E-posta">
+                      {r.email}
+                    </td>
+                    <td className={styles.td} data-label="Tutar">
+                      {r.amount} TL
+                    </td>
+                    <td className={styles.td} data-label="İçerik">
+                      <code className={styles.monoSm}>{r.content_id}</code>
+                    </td>
+                    <td className={styles.td} data-label="Zaman">
+                      {formatWhen(r.created_at)}
+                    </td>
+                    <td className={styles.td} data-label="İşlem">
                       <button type="button" className={styles.rowBtn} onClick={() => openDetail(r.id)}>
                         Detay
                       </button>
@@ -160,13 +238,17 @@ export default function AdminBankTransferPage() {
             <p className={styles.sub}>
               {detail.product_name} · {detail.amount} TL · <code>{detail.transfer_code}</code>
             </p>
-            <p className={styles.sub}>content_id: {detail.content_id}</p>
+            <p className={styles.sub}>
+              content_id: <code>{detail.content_id}</code>
+            </p>
+            <p className={styles.sub}>
+              Durum:{" "}
+              <span className={`${styles.statusPill} ${statusClass(detail.status)}`}>
+                {statusLabelTr(detail.status)}
+              </span>
+            </p>
             {detail.receipt_file_url ? (
-              <img
-                className={styles.receiptImg}
-                src={detail.receipt_file_url}
-                alt="Dekont"
-              />
+              <img className={styles.receiptImg} src={detail.receipt_file_url} alt="Dekont" />
             ) : (
               <p className={styles.sub}>Dekont yok</p>
             )}
@@ -181,7 +263,7 @@ export default function AdminBankTransferPage() {
                 />
                 <div className={styles.actions}>
                   <button type="button" className={styles.approveBtn} disabled={busy} onClick={onApprove}>
-                    Onayla — erişim aç
+                    Onayla — erişim aç (unlock)
                   </button>
                   <button type="button" className={styles.rejectBtn} disabled={busy} onClick={onReject}>
                     Reddet
@@ -193,7 +275,6 @@ export default function AdminBankTransferPage() {
               </>
             ) : (
               <div className={styles.actions}>
-                <p className={styles.sub}>Durum: {detail.status}</p>
                 {detail.admin_note ? <p className={styles.sub}>Not: {detail.admin_note}</p> : null}
                 <button type="button" className={styles.closeBtn} onClick={() => setDetail(null)}>
                   Kapat
