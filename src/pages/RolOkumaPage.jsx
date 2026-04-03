@@ -5,6 +5,10 @@ import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
+import {
+  buildMatrixRolReading,
+  narrativeToSectionTexts,
+} from "../data/matrixRolNarrative";
 import styles from "./RolOkumaPage.module.css";
 
 const API =
@@ -21,8 +25,6 @@ const LOADING_LINES = [
   "Katmanlar açılıyor...",
   "Zaten biliyorsun. Sadece hatırlamıyorsun.",
 ];
-
-const FREE_SECTION_COUNT = 2;
 
 /* ── Energy Exchange Modal ── */
 function EnergyModal({ open, onClose, label, price, productId, contentId }) {
@@ -149,8 +151,8 @@ export default function RolOkumaPage() {
       if (!res.ok) throw new Error("API error");
       const data = await res.json();
 
-      const sections = buildSections(data, fullName);
-      setResult({ data, sections, fullName });
+      const narrative = buildMatrixRolReading(data, fullName, birthDate);
+      setResult({ data, fullName, narrative });
       stopLoading();
       setPhase(PHASES.RESULT);
       trackFunnelEvent("role_free_result_view");
@@ -323,41 +325,11 @@ export default function RolOkumaPage() {
               )}
             </div>
 
-            {/* ── Free sections ── */}
-            <div className={styles.sections}>
-              {result.sections.slice(0, FREE_SECTION_COUNT).map((sec, i) => (
-                <motion.div
-                  key={sec.title}
-                  className={styles.section}
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * i, duration: 0.4 }}
-                >
-                  <div className={styles.sectionIcon}>{sec.icon}</div>
-                  <h3 className={styles.sectionTitle}>{sec.title}</h3>
-                  <p className={styles.sectionText}>{sec.text}</p>
-                </motion.div>
-              ))}
-            </div>
+            <NarrativeLead s={result.narrative.sections} />
 
             {unlocked ? (
               <>
-                {/* ── Full unlocked sections ── */}
-                <div className={styles.sections}>
-                  {result.sections.slice(FREE_SECTION_COUNT).map((sec, i) => (
-                    <motion.div
-                      key={sec.title}
-                      className={styles.section}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 * (i + FREE_SECTION_COUNT), duration: 0.4 }}
-                    >
-                      <div className={styles.sectionIcon}>{sec.icon}</div>
-                      <h3 className={styles.sectionTitle}>{sec.title}</h3>
-                      <p className={styles.sectionText}>{sec.text}</p>
-                    </motion.div>
-                  ))}
-                </div>
+                <NarrativeDeep narrative={result.narrative} />
 
                 {result.data.teaser && (
                   <div className={styles.teaserCard}>
@@ -365,28 +337,29 @@ export default function RolOkumaPage() {
                   </div>
                 )}
 
-                {/* ── Katmanlı Açılım ── */}
                 <KatmanliAcilim
                   analysisData={{
                     ...result.data,
-                    sectionTexts: result.sections.map((s) => s.text),
+                    sectionTexts: narrativeToSectionTexts(result.narrative),
                   }}
                   returnPath="/rol-okuma"
                 />
               </>
             ) : (
               <>
-                {/* ── Locked blur zone ── */}
                 <div className={styles.lockZone}>
                   <div className={styles.lockZoneBlur}>
                     <div className={styles.sections}>
-                      {result.sections.slice(FREE_SECTION_COUNT, FREE_SECTION_COUNT + 2).map((sec) => (
-                        <div key={sec.title} className={styles.section}>
-                          <div className={styles.sectionIcon}>{sec.icon}</div>
-                          <h3 className={styles.sectionTitle}>{sec.title}</h3>
-                          <p className={styles.sectionText}>{sec.text}</p>
-                        </div>
-                      ))}
+                      <div className={styles.section}>
+                        <p className={styles.sectionText}>
+                          {result.narrative.sections.derin_iliski}
+                        </p>
+                      </div>
+                      <div className={styles.section}>
+                        <p className={styles.sectionText}>
+                          {result.narrative.sections.derin_para}
+                        </p>
+                      </div>
                     </div>
                   </div>
                   <div className={styles.lockZoneGradient} />
@@ -421,7 +394,7 @@ export default function RolOkumaPage() {
                 <KatmanliAcilim
                   analysisData={{
                     ...result.data,
-                    sectionTexts: result.sections.map((s) => s.text),
+                    sectionTexts: narrativeToSectionTexts(result.narrative),
                   }}
                   returnPath="/rol-okuma"
                 />
@@ -455,48 +428,106 @@ export default function RolOkumaPage() {
   );
 }
 
-function buildSections(data, fullName) {
-  const role = data.matrix_role || "Bilinmiyor";
-  const nameNum = data.name_number || 0;
-  const lifePath = data.life_path || 0;
-  const nameArch = data.name_archetype || "";
-  const lpArch = data.life_path_archetype || "";
+function NarrativeLead({ s }) {
+  return (
+    <div className={styles.narrativeLeadWrap}>
+      <motion.p
+        className={styles.narrativeOpening}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45 }}
+      >
+        {s.opening}
+      </motion.p>
+      <motion.p
+        className={styles.narrativeAnaTema}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08, duration: 0.45 }}
+      >
+        {s.ana_tema}
+      </motion.p>
+    </div>
+  );
+}
 
-  return [
-    {
-      icon: "◈",
-      title: "Rol Tanımı",
-      text: `${fullName} — senin Matrix'teki rolün: ${role}. Bu, senin bu yaşamda taşıdığın enerji imzası. Bir kimlik değil, bir frekans.`,
-    },
-    {
-      icon: "⟁",
-      title: "Ana Tema",
-      text: `Yaşam yolun ${lifePath} numarasını taşıyor: ${lpArch}. Bu sayı hayatının ana akışını belirler. Seni buraya getiren tesadüf değil — bir çağrı.`,
-    },
-    {
-      icon: "✦",
-      title: "Güç Alanı",
-      text: `İsmin ${nameNum} frekansında titreşiyor: ${nameArch}. Bu senin doğal gücün. Zorlamadan aktığın, etrafındakilerin fark ettiği ama senin hafife aldığın şey.`,
-    },
-    {
-      icon: "◉",
-      title: "İçsel Çatışma",
-      text: `Her güç bir gölge taşır. ${nameNum} frekansının gölgesi seni zaman zaman yorabilir. Bu gölge düşmanın değil — sana ayna tutan parçan.`,
-    },
-    {
-      icon: "☽",
-      title: "Kör Nokta",
-      text: `Göremediğin alan genellikle en çok güvendiğin alanın tam karşısında durur. ${lifePath} yolunda yürürken, duymayı seçmediğin bir ses var. O sesi duymak cesaret ister.`,
-    },
-    {
-      icon: "∞",
-      title: "Döngü Yorumu",
-      text: `Hayatında tekrar eden kalıplar var mı? ${role} rolü belirli döngüleri tekrarlatır — ta ki fark edene kadar. Fark ettiğin an, döngü kırılır.`,
-    },
-    {
-      icon: "✧",
-      title: "SANRI Mesajı",
-      text: `"${fullName}, bu bir analiz değil. Bu bir hatırlayış. Zaten biliyorsun. Sadece hatırlamıyorsun. Ve şimdi, hatırlama zamanı."`,
-    },
-  ];
+function NarrativeBlock({ label, text, delay }) {
+  return (
+    <motion.div
+      className={styles.narrativeBlock}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay, duration: 0.4 }}
+    >
+      {label ? <span className={styles.narrativeLabel}>{label}</span> : null}
+      <p className={styles.narrativeBody}>{text}</p>
+    </motion.div>
+  );
+}
+
+function NarrativeDeep({ narrative }) {
+  const { sections, share_trigger: shareTrigger, full_narrative: fullNarrative } = narrative;
+
+  const copyJson = () => {
+    const payload = {
+      share_trigger: shareTrigger,
+      sections: {
+        derin_iliski: sections.derin_iliski,
+        derin_para: sections.derin_para,
+        derin_icsel: sections.derin_icsel,
+        derin_davranis: sections.derin_davranis,
+        kor_nokta: sections.kor_nokta,
+        dongu_aciklamasi: sections.dongu_aciklamasi,
+        kirilma_noktasi: sections.kirilma_noktasi,
+        sanri_imza: sections.sanri_imza,
+        paylasim_tetikleyici: sections.paylasim_tetikleyici,
+      },
+    };
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(JSON.stringify(payload, null, 2)).catch(() => {});
+    }
+  };
+
+  const copyPlain = () => {
+    if (navigator.clipboard?.writeText && fullNarrative) {
+      navigator.clipboard.writeText(fullNarrative).catch(() => {});
+    }
+  };
+
+  let t = 0;
+  const d = () => {
+    t += 0.06;
+    return t;
+  };
+
+  return (
+    <div className={styles.narrativeDeepWrap}>
+      <NarrativeBlock label="Derin okuma — ilişki" text={sections.derin_iliski} delay={d()} />
+      <NarrativeBlock label="Derin okuma — para" text={sections.derin_para} delay={d()} />
+      <NarrativeBlock label="Derin okuma — içsel yapı" text={sections.derin_icsel} delay={d()} />
+      <NarrativeBlock label="Derin okuma — davranış kalıbı" text={sections.derin_davranis} delay={d()} />
+      <NarrativeBlock label="Kör nokta" text={sections.kor_nokta} delay={d()} />
+      <NarrativeBlock label="Döngü" text={sections.dongu_aciklamasi} delay={d()} />
+      <NarrativeBlock label="Kırılma" text={sections.kirilma_noktasi} delay={d()} />
+      <NarrativeBlock label="SANRI" text={sections.sanri_imza} delay={d()} />
+      <motion.div
+        className={styles.shareStrip}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: d(), duration: 0.45 }}
+      >
+        <p className={styles.shareStripText}>{sections.paylasim_tetikleyici}</p>
+        {shareTrigger ? (
+          <div className={styles.copyNarrativeRow}>
+            <button type="button" className={styles.copyNarrativeBtn} onClick={copyPlain}>
+              Metni kopyala
+            </button>
+            <button type="button" className={styles.copyNarrativeBtnGhost} onClick={copyJson}>
+              JSON kopyala
+            </button>
+          </div>
+        ) : null}
+      </motion.div>
+    </div>
+  );
 }
