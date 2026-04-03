@@ -75,6 +75,8 @@ export default function GozAcikGunesPage() {
     if (!unlocked) trackFunnelEvent("goz_acik_gunes_paywall_shown");
   }, [unlocked]);
 
+  const price = SHOPIER_PRODUCTS.okuma_devami?.price || "9.90";
+
   const onShopier = useCallback(() => {
     trackFunnelEvent("goz_acik_gunes_shopier_click");
     const amt = parseFloat(String(price).replace(",", ".")) || 9.9;
@@ -89,8 +91,6 @@ export default function GozAcikGunesPage() {
       else window.location.reload();
     });
   }, []);
-
-  const price = SHOPIER_PRODUCTS.okuma_devami?.price || "9.90";
 
   const openDeep = useCallback(() => {
     setDeepOpen(true);
