@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
+import { redirectToShopier, isShopierUnlocked, unlockViaShopier, SHOPIER_PRODUCTS } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
@@ -611,15 +611,15 @@ export default function AnKodPage() {
 
               <p className={styles.modalText}>
                 Bu katmanı açmak için{" "}
-                <span className={styles.modalPrice}>369₺</span> enerji
-                değişimi gerekir.
+                <span className={styles.modalPrice}>{SHOPIER_PRODUCTS.ankod.price}₺</span>{" "}
+                enerji değişimi gerekir.
               </p>
 
               <button
                 className={styles.modalBtn}
                 onClick={() => {
                   trackFunnelEvent("ankod_shopier_redirect");
-                  redirectToShopier("rol_okuma", "ankod_unlock", "/an-kod");
+                  redirectToShopier("ankod", "ankod_unlock", "/an-kod");
                 }}
               >
                 Kapıyı Aç

@@ -42,7 +42,7 @@ export const SHOPIER_PRODUCTS = {
     id: "rol_okuma",
     label: "Matrix Rol Okuma — Tam Analiz",
     price: "369",
-    url: "https://shopier.com/asksanri/45787285",
+    url: "https://shopier.com/asksanri/45812975",
   },
   iliski_acilimi: {
     id: "iliski_acilimi",
@@ -59,14 +59,14 @@ export const SHOPIER_PRODUCTS = {
   ankod: {
     id: "ankod",
     label: "AN_KOD — Anın Kodları Tam Analiz",
-    price: "369",
-    url: "https://shopier.com/asksanri/45787285",
+    price: "247",
+    url: "https://shopier.com/asksanri/45813111",
   },
   bilinc_alti: {
     id: "bilinc_alti",
     label: "Bilinçaltın Ne Diyor? — Derin Okuma",
-    price: "369",
-    url: "https://shopier.com/asksanri/45787285",
+    price: "247",
+    url: "https://shopier.com/asksanri/45813111",
   },
   kariyer_acilimi: {
     id: "kariyer_acilimi",
@@ -86,6 +86,13 @@ export const SHOPIER_PRODUCTS = {
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
+};
+
+/** localStorage unlock key → SHOPIER_PRODUCTS key (labels, server record, analytics) */
+export const CONTENT_TO_PRODUCT = {
+  role_unlock: "rol_okuma",
+  ankod_unlock: "ankod",
+  subconscious_unlock: "ankod",
 };
 
 // ── Device fingerprint (stable per browser) ──
@@ -162,13 +169,14 @@ export function unlockViaShopier(contentId) {
 }
 
 export function recordPurchaseToServer(contentId) {
-  const product = SHOPIER_PRODUCTS[contentId];
+  const productKey = CONTENT_TO_PRODUCT[contentId] || contentId;
+  const product = SHOPIER_PRODUCTS[productKey];
   return fetch(`${API}/shopier/record`, {
     method: "POST",
     headers: _getAuthHeaders(),
     body: JSON.stringify({
       content_id: contentId,
-      product_id: product?.id || contentId,
+      product_id: product?.id || productKey,
       device_fp: getDeviceFingerprint(),
       amount: product ? parseFloat(product.price) : 0,
       timestamp: new Date().toISOString(),
@@ -228,7 +236,8 @@ export function getUnlockedItems() {
     if (key === "premium" && val) {
       items.push({ id: "premium", label: "Premium Erişim", at: access.premium_at });
     } else if (val?.unlocked) {
-      const product = SHOPIER_PRODUCTS[key];
+      const pKey = CONTENT_TO_PRODUCT[key] || key;
+      const product = SHOPIER_PRODUCTS[pKey];
       items.push({
         id: key,
         label: product?.label || key,

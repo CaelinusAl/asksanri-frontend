@@ -8,6 +8,7 @@ import {
   recordPurchaseToServer,
   syncPurchasesFromServer,
   SHOPIER_PRODUCTS,
+  CONTENT_TO_PRODUCT,
 } from "../data/shopierConfig";
 import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
@@ -44,7 +45,11 @@ export default function OdemeBasariliPage() {
     clearPendingPurchase();
     syncPurchasesFromServer();
 
-    const product = SHOPIER_PRODUCTS[target] || SHOPIER_PRODUCTS[pending?.productId];
+    const productKey = CONTENT_TO_PRODUCT[target] || target;
+    const product =
+      SHOPIER_PRODUCTS[target] ||
+      SHOPIER_PRODUCTS[productKey] ||
+      SHOPIER_PRODUCTS[pending?.productId];
     trackPurchase(target, product ? parseFloat(product.price) : 0);
 
     setPhase("glow");
