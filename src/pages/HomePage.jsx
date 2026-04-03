@@ -188,16 +188,6 @@ export default function HomePage() {
         img: "/assets/gates/frekans.jpg",
       },
       {
-        key: "goz-acik-gunes",
-        title: isTR ? "Göz Açık Güneş" : "Eye-Open Sun",
-        desc: isTR
-          ? "Sistem gözü, güneş patlaması ve Matrix kodu — derin okuma; sır 9,90₺ kapıda."
-          : "System eye, solar flare, Matrix code — deep read; a seal opens at ₺9.90.",
-        hint: isTR ? "Metne gir →" : "Enter →",
-        path: "/goz-acik-gunes",
-        img: "/assets/gates/goz-acildi.jpg",
-      },
-      {
         key: "benim-alanim",
         title: isTR ? "Benim Alanım" : "My Space",
         desc: isTR
