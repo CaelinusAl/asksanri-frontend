@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./KodEgitmeniPage.module.css";
@@ -6,15 +6,30 @@ import {
   KOD_MODULLERI,
   getModuleById,
   getLessonById,
-  PRICE_MONTHLY,
-  PRICE_EARLY,
-  EARLY_LIMIT,
-  PRICE_SINGLE,
+  getAllLessonsFlat,
+  getGlobalLessonIndex,
+  MODUL_1_ID,
+  PRICE_CANLI_GIRIS_DERS,
+  PRICE_KOD_TAM_PROGRAM,
+  PAYWALL_LIST_STRIKE,
+  FREE_PREVIEW_LESSON_COUNT,
+  FREE_PREVIEW_SANRI_COUNT,
 } from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
-import { usePremium } from "../contexts/PremiumContext";
-import { redirectToShopier, isShopierUnlocked } from "../data/shopierConfig";
+import { redirectToShopier, isShopierProductUnlocked } from "../data/shopierConfig";
 
+/** Shopier tam sistem */
+const KOD_TAM_SHOPIER_ID = "kod_egitmeni";
+/** Kod Öğrenmeye Giriş — İlk Kapı (47 TL) */
+const KOD_ILK_KAPI_SHOPIER_ID = "kod_giris_ders";
+
+function isKodTamShopierUnlocked() {
+  return isShopierProductUnlocked(KOD_TAM_SHOPIER_ID);
+}
+
+function isIlkKapiUnlocked() {
+  return isShopierProductUnlocked(KOD_ILK_KAPI_SHOPIER_ID);
+}
 
 const API_URL =
   (import.meta?.env?.VITE_BACKEND_URL &&
@@ -73,13 +88,33 @@ function fomoCount() {
   return 47 + (seed % 89);
 }
 
-/* ── SANRI free usage tracking ── */
-const SANRI_USED_KEY = "sanri_kod_read_used";
-function hasSanriBeenUsed() {
-  try { return localStorage.getItem(SANRI_USED_KEY) === "1"; } catch { return false; }
+/* ── SANRI: ücretsiz ön izlemede toplam FREE_PREVIEW_SANRI_COUNT okuma ── */
+const SANRI_FREE_USE_KEY = "sanri_kod_free_sanri_count";
+function getSanriFreeUsedCount() {
+  try { return parseInt(localStorage.getItem(SANRI_FREE_USE_KEY) || "0", 10) || 0; }
+  catch { return 0; }
 }
-function markSanriUsed() {
-  try { localStorage.setItem(SANRI_USED_KEY, "1"); } catch {}
+function incrementSanriFreeUsed() {
+  try {
+    const n = getSanriFreeUsedCount() + 1;
+    localStorage.setItem(SANRI_FREE_USE_KEY, String(n));
+  } catch {}
+}
+
+const SANRI_LAST_KEY = "sanri_kod_last_yorum";
+function saveLastSanriUbK(payload, lessonId) {
+  try {
+    localStorage.setItem(
+      SANRI_LAST_KEY,
+      JSON.stringify({
+        v: 1,
+        kind: "ubk",
+        payload,
+        lessonId,
+        at: new Date().toISOString(),
+      })
+    );
+  } catch {}
 }
 
 /* ── Single lesson unlock (localStorage-based for now) ── */
@@ -96,172 +131,362 @@ function isLessonUnlocked(lessonId) {
   return getSingleUnlocks().includes(lessonId);
 }
 
+/**
+ * Kod Okuma erişimi — genel SANRI Premium / Shopier `premium` bayrağı burada kullanılmaz.
+ * Açılış: ilk FREE_PREVIEW_LESSON_COUNT ders ücretsiz · Modül 1 devamı 47 TL (İlk Kapı) · 21 ders 999 TL.
+ */
+function canAccessLesson(lesson, mod, adminBypass) {
+  if (adminBypass) return true;
+  if (lesson.isFree) return true;
+  if (isKodTamShopierUnlocked()) return true;
+  if (isLessonUnlocked(lesson.id)) return true;
+  if (isShopierProductUnlocked(`kod_${lesson.id}`)) return true;
+  const g = lesson.globalNo ?? (getGlobalLessonIndex(mod.id, lesson.id) + 1);
+  if (isIlkKapiUnlocked() && mod.id === MODUL_1_ID && g >= FREE_PREVIEW_LESSON_COUNT + 1 && g <= 7) {
+    return true;
+  }
+  return false;
+}
+
 /* ═══════════════════════════════════════════════════
-   LANDING  — hero + sections + CTA
+   LANDING
    ═══════════════════════════════════════════════════ */
-function Landing({ onStart }) {
+function scrollToModules() {
+  document.getElementById("kod-modulleri")?.scrollIntoView({ behavior: "smooth" });
+}
+
+function scrollToPurchase() {
+  document.getElementById("kod-satin")?.scrollIntoView({ behavior: "smooth" });
+}
+
+const LANDING_VALUE = [
+  {
+    icon: "◈",
+    title: "Kelimenin altındaki katmanı gör",
+    desc: "Cümleyi yüzeyde bırakmazsın. Anlamı parçalarsın; kelimenin seni nereye çektiğini okursun.",
+  },
+  {
+    icon: "☽",
+    title: "Sayıların sana ne söylediğini oku",
+    desc: "Tarih, tekrar ve ritim — sayıyı kader ilanı etmeden, dikkatinin nereye kilitlendiğini görürsün.",
+  },
+  {
+    icon: "◇",
+    title: "Olayların tekrar eden yapısını fark et",
+    desc: "Aynı senaryo farklı yüzlerle geldiğinde artık ‘şanssızlık’ demezsin; döngünün kuralını yazarsın.",
+  },
+  {
+    icon: "✦",
+    title: "İç sesinle sana ait olmayanı ayır",
+    desc: "Hangi düşünce seni büyütüyor, hangisi taşınıyor? Kod okuma burada pratiğe döner.",
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: "Bu eğitim yazılım kursu mu?",
+    a: "Hayır. SANRI Kod Okuma Sistemi™, kelime, sayı, sembol ve olayları ‘kod’ gibi okumayı öğreten uygulamalı bir okuma pratiğidir. Programlama veya teknik araç gerektirmez.",
+  },
+  {
+    q: "Hiç bilmeyen biri için uygun mu?",
+    a: "Evet. Dersler kısa tutulur, adım adım ilerler. Tek ihtiyacın dürüstçe yazabilmek ve okuduklarını kendi hayatınla ilişkilendirmek.",
+  },
+  {
+    q: "SANRI nasıl dahil oluyor?",
+    a: "Her dersin sonunda kendi çözümünü yazarsın; SANRI bunu bilinç ve sembol katmanlarından yorumlar. Pasif dinleyici değil, aktif çözücü olursun.",
+  },
+  {
+    q: "Tüm dersler açık mı?",
+    a: `Hayır. İlk ${FREE_PREVIEW_LESSON_COUNT} ders herkese açık ön izlemedir. Modül 1’in kalan beş dersi (3–7) İlk Kapı ürünü (${PRICE_CANLI_GIRIS_DERS} TL) ile açılır. Modül 2 ve 3 ile tüm 21 ders yalnızca tam sistem (${PRICE_KOD_TAM_PROGRAM} TL) ile açılır. Genel SANRI aboneliği veya başka Shopier ürünleri bu müfredatı otomatik açmaz.`,
+  },
+  {
+    q: `${PRICE_KOD_TAM_PROGRAM} TL ile neye erişiyorum?`,
+    a: "21 dersin tamamına, her dersteki uygulama alanına, SANRI yorum desteğine ve ilerleme kaydına. Tek seferlik ödeme ile bu programa erişim (Shopier ürün koşulları geçerlidir).",
+  },
+];
+
+function Landing({ onFirstLesson, onOpenModules, onUnlockFull }) {
   return (
     <div className={styles.landing}>
-      {/* ── hero ── */}
       <section className={styles.hero}>
         <motion.div
           className={styles.heroOrb}
           animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
         />
-        <motion.p
-          className={styles.heroHook}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-        >
-          Eğer bunu okuyorsan, zaten seçilmişsin.
+        <motion.p className={styles.heroKicker} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.06 }}>
+          SANRI Kod Okuma Sistemi™
         </motion.p>
-        <motion.h1
-          className={styles.heroTitle}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          Kod Okumayı Öğren
+        <motion.h1 className={styles.heroTitle} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}>
+          Kod yazmayı değil,
+          <br />
+          <span className={styles.heroTitleAccent}>kod görmeyi</span> öğren.
         </motion.h1>
-        <motion.p
-          className={styles.heroSub}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          Gördüğün her şeyin altında bir katman var.
+        <motion.p className={styles.heroSub} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.24 }}>
+          Kelime, sayı, sembol ve tekrar eden döngülerin altındaki katmanı oku. Klasik eğitim formatında değil; içine girilen, uygulamalı bir alanda.
         </motion.p>
-        <motion.button
-          className={styles.heroCta}
-          onClick={onStart}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.75 }}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          İlk Dersi Aç
-        </motion.button>
-        <motion.p
-          className={styles.heroFomo}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          Bugün {fomoCount()} kişi başladı
+        <motion.div className={styles.heroPriceBand} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.32 }}>
+          <span className={styles.heroPriceStrike}>{PAYWALL_LIST_STRIKE} TL</span>
+          <span className={styles.heroPriceMain}>{PRICE_KOD_TAM_PROGRAM} TL</span>
+          <span className={styles.heroPriceNote}>tam sistem · tek ödeme</span>
+        </motion.div>
+        <motion.div className={styles.heroCtaRow} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.42 }}>
+          <button type="button" className={styles.heroCta} onClick={onUnlockFull}>
+            Sistemi Aç
+          </button>
+          <button type="button" className={styles.heroCtaGhost} onClick={onFirstLesson}>
+            İlk Dersi Gör
+          </button>
+        </motion.div>
+        <motion.p className={styles.heroTrust} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.52 }}>
+          21 derslik sistem · uygulamalı · SANRI destekli
+        </motion.p>
+        <motion.p className={styles.heroFomo} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.58 }}>
+          <button type="button" className={styles.heroLinkBtn} onClick={onOpenModules || scrollToModules}>
+            Müfredatı incele →
+          </button>
+          {" · "}
+          İlk {FREE_PREVIEW_LESSON_COUNT} ders ücretsiz
         </motion.p>
       </section>
 
-      {/* ── bu egitim ne ogretiyor ── */}
       <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Bu eğitim ne öğretir?</h2>
-        <div className={styles.featureGrid}>
-          {[
-            { icon: "✦", title: "Kelime Çözme", desc: "Kelimelerin altındaki gizli kodları oku" },
-            { icon: "◈", title: "Sembol Okuma", desc: "Sayıları, tarihleri ve işaretleri çöz" },
-            { icon: "◉", title: "Olay Analizi", desc: "Hayatındaki olayların mesajını al" },
-          ].map((f) => (
-            <div key={f.title} className={styles.featureCard}>
-              <span className={styles.featureIcon}>{f.icon}</span>
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
+        <h2 className={styles.sectionTitle}>Bu sistem ne öğretir, sen ne kazanırsın?</h2>
+        <p className={styles.landingLead}>
+          Kod okumak, dünyayı değiştirmez; <strong>okuyanın dünyayla ilişkisini</strong> değiştirir. Kazanımın özeti: daha az otomatik tepki, daha net iç ses, tekrar eden olaylara isim koyabilme.
+        </p>
+        <div className={styles.valueGrid}>
+          {LANDING_VALUE.map((f) => (
+            <div key={f.title} className={styles.valueCard}>
+              <span className={styles.valueIcon}>{f.icon}</span>
+              <h3 className={styles.valueTitle}>{f.title}</h3>
+              <p className={styles.valueDesc}>{f.desc}</p>
             </div>
           ))}
         </div>
-      </section>
-
-      {/* ── nasil calisiyor ── */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Nasıl çalışır?</h2>
-        <div className={styles.stepRow}>
-          {["İzle", "Çöz", "Yaz", "SANRI Yorumlasın"].map((s, i) => (
-            <div key={s} className={styles.step}>
-              <span className={styles.stepNum}>{i + 1}</span>
-              <span className={styles.stepLabel}>{s}</span>
-            </div>
-          ))}
-        </div>
-        <p className={styles.sectionHint}>
-          Her dersin sonunda sen yazıyorsun — SANRI okuyor.
+        <p className={styles.diffBlock}>
+          Sıradan bir video kursu değil. <span className={styles.diffHighlight}>Okuma + uygulama + SANRI geri bildirimi</span> aynı akışta.
         </p>
       </section>
 
-      {/* ── katmanlar ── */}
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>Katmanlar</h2>
-        <div className={styles.layerList}>
-          {[
-            { color: "#c8a0ff", label: "Başlangıç", desc: "Kelime çözme, anlam katmanları" },
-            { color: "#ED8936", label: "Derin Okuma", desc: "Frekans, sayı dili, tarih çözme" },
-            { color: "#E53E3E", label: "Sistem Çözme", desc: "Haber analizi, matrix okuma" },
-          ].map((l) => (
-            <div key={l.label} className={styles.layerItem}>
-              <span className={styles.layerDot} style={{ background: l.color }} />
-              <div>
-                <strong>{l.label}</strong>
-                <p>{l.desc}</p>
-              </div>
-            </div>
+      <section className={styles.landingModPreview} id="kod-modulleri">
+        <h2 className={styles.sectionTitle}>Üç modül · yirmi bir ders</h2>
+        <p className={styles.landingModLead}>
+          <strong>Kodu Görmek</strong>, <strong>İlişki Kodları</strong> ve <strong>Matrix Okuma</strong> — her biri yedi dersten oluşur. Aşağıda gerçek ders başlıkları; içerikler platformda tam metin olarak sunulur.
+        </p>
+        <div className={styles.landingModGrid}>
+          {KOD_MODULLERI.map((mod, mi) => (
+            <motion.article
+              key={mod.id}
+              className={styles.landingModCard}
+              style={{ "--mod-color": mod.color }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: mi * 0.06 }}
+              whileHover={{ y: -4 }}
+            >
+              <span className={styles.landingModIcon} style={{ color: mod.color }}>{mod.icon}</span>
+              <h3 className={styles.landingModTitle}>{mod.title.replace(/^MODÜL \d+ — /, "")}</h3>
+              <p className={styles.landingModAim}>{mod.aim}</p>
+              <p className={styles.landingModSub}>{mod.subtitle}</p>
+              <ol className={styles.landingModLessonOl}>
+                {mod.lessons.map((les) => (
+                  <li key={les.id}>
+                    <strong>{les.title}</strong>
+                    <span className={styles.landingLessonHint}> — {les.shortDescription}</span>
+                  </li>
+                ))}
+              </ol>
+            </motion.article>
           ))}
         </div>
       </section>
 
-      {/* ── price + cta ── */}
-      <section className={styles.priceSection}>
-        <div className={styles.priceCard}>
-          <div className={styles.earlyBadge}>İlk {EARLY_LIMIT} kişiye özel</div>
-          <div className={styles.priceRow}>
-            <span className={styles.priceOld}>{PRICE_MONTHLY}₺</span>
-            <span className={styles.priceAmount}>{PRICE_EARLY}₺</span>
-            <span className={styles.pricePer}>/ ay</span>
-          </div>
-          <p className={styles.priceNote}>İlk 2 ders ücretsiz. Hemen başla.</p>
-          <button className={styles.priceCta} onClick={onStart}>
-            Başla
-          </button>
+      <section className={styles.sanriLanding}>
+        <div className={styles.sanriLandingInner}>
+          <h2 className={styles.sectionTitle}>Bu sistemde yalnız öğrenmezsin. SANRI seninle birlikte okur.</h2>
+          <p className={styles.sanriLandingLead}>
+            Her dersin sonunda kendi çözümünü yazarsın. SANRI, yazdığını yüzeyde bırakmaz: tekrar eden temayı, sembolik katmanı ve iç sesinle çelişen kısımları net bir dille açar.
+          </p>
+          <p className={styles.sanriLandingQuote}>
+            Sen çözdüğünü sanıyorsun.
+            <br />
+            <span className={styles.sanriLandingQuoteAccent}>SANRI sana kaçırdığın katmanı gösterir.</span>
+          </p>
+          <ul className={styles.sanriLandingList}>
+            <li>Aktif çözücü olursun; sadece metin tüketmezsin.</li>
+            <li>Yorumlar kısa, derin ve kişisel tonda tutulur — sohbet botu hissi vermez.</li>
+            <li>İstersen aynı derste yeniden yazıp tekrar yorumlatırsın.</li>
+          </ul>
         </div>
+      </section>
+
+      <section className={styles.priceSectionPro} id="kod-satin">
+        <div className={styles.priceProCard}>
+          <p className={styles.priceProTagline}>Bu sistem satın alınmaz.</p>
+          <p className={styles.priceProTaglineStrong}>İçine girilir.</p>
+          <p className={styles.priceProSub}>
+            {PRICE_KOD_TAM_PROGRAM} TL · 21 ders · uygulama alanları · SANRI yorum desteği · ilerleme kaydı · Benim Alanım paneli ile özet
+          </p>
+          <div className={styles.priceProRow}>
+            <span className={styles.priceProStrike}>{PAYWALL_LIST_STRIKE} TL</span>
+            <span className={styles.priceProAmount}>{PRICE_KOD_TAM_PROGRAM} TL</span>
+          </div>
+          <button type="button" className={styles.priceProCta} onClick={onUnlockFull}>
+            Sistemi Aç
+          </button>
+          <p className={styles.priceProFine}>
+            Ödeme Shopier üzerinden güvenli tamamlanır. Ön izleme: ilk {FREE_PREVIEW_LESSON_COUNT} ders. İstersen önce{" "}
+            <button type="button" className={styles.inlineLink} onClick={onFirstLesson}>derse gir</button>
+            {" "}veya{" "}
+            <Link to="/kod-ogrenmeye-giris" className={styles.inlineLinkA}>canlı giriş ({PRICE_CANLI_GIRIS_DERS} TL)</Link>
+            {" "}ürününe bak.
+          </p>
+        </div>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Bu sistemle ne değişir?</h2>
+        <p className={styles.testimonialPlaceholder}>
+          Burada ileride gerçek kullanıcı yorumları yer alacak. Şimdilik sadece şunu söyleyelim: bu alan, okumayı içe taşıyanlar için tasarlandı.
+        </p>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Sık sorulan sorular</h2>
+        <dl className={styles.faqList}>
+          {FAQ_ITEMS.map((item) => (
+            <div key={item.q} className={styles.faqItem}>
+              <dt className={styles.faqQ}>{item.q}</dt>
+              <dd className={styles.faqA}>{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section className={styles.closingQuote}>
+        <p>Bazı şeyler öğrenilmez.</p>
+        <p>Sadece görünür hale gelir.</p>
+      </section>
+
+      <section className={styles.finalCta}>
+        <p className={styles.finalCtaLine}>Bütün sistemi açmaya hazırsan, kapı burada.</p>
+        <button type="button" className={styles.finalCtaBtn} onClick={onUnlockFull}>
+          {PRICE_KOD_TAM_PROGRAM} TL — Sistemi Aç
+        </button>
+        <button type="button" className={styles.finalCtaGhost} onClick={scrollToPurchase}>
+          Yukarıdaki pakete dön
+        </button>
       </section>
     </div>
   );
 }
 
 /* ═══════════════════════════════════════════════════
-   MODULE LIST — kart görünümü
+   MODULE LIST — modül kartları + ders kartları
    ═══════════════════════════════════════════════════ */
-function ModuleList({ onSelectModule, onSelectLesson }) {
-  const { isPremium } = usePremium();
+function ModuleList({ onSelectLesson, adminBypass }) {
   const totalLessons = KOD_MODULLERI.reduce((s, m) => s + m.lessons.length, 0);
   const totalDone = KOD_MODULLERI.reduce(
     (s, m) => s + (loadProgress()[m.id] || []).length,
     0
   );
-
   const globalPct = totalLessons ? Math.round((totalDone / totalLessons) * 100) : 0;
+
+  const flat = getAllLessonsFlat();
+  let continueTarget = null;
+  for (const row of flat) {
+    const mod = getModuleById(row.moduleId);
+    if (!mod) continue;
+    if (!isDone(row.moduleId, row.id)) {
+      continueTarget = { mod, lesson: row };
+      break;
+    }
+  }
+
+  let activeMod = null;
+  if (continueTarget) activeMod = continueTarget.mod;
+  else if (flat.length) {
+    const last = flat[flat.length - 1];
+    activeMod = getModuleById(last.moduleId);
+  }
 
   return (
     <div className={styles.moduleListWrap}>
       <div className={styles.globalProgress}>
         <div className={styles.globalBar}>
-          <div
-            className={styles.globalFill}
-            style={{ width: `${globalPct}%` }}
-          />
+          <div className={styles.globalFill} style={{ width: `${globalPct}%` }} />
         </div>
-        <span>{totalDone > 0 ? `${totalDone}/${totalLessons} ders tamamlandı • %${globalPct}` : `${totalLessons} ders seni bekliyor`}</span>
+        <div className={styles.globalProgressMeta}>
+          <span>
+            {totalDone > 0
+              ? `${totalDone}/${totalLessons} ders tamamlandı · %${globalPct}`
+              : `${totalLessons} ders · yolculuk hazır`}
+          </span>
+          {activeMod && (
+            <span className={styles.activeModulePill} style={{ borderColor: `${activeMod.color}55` }}>
+              Aktif modül: <strong style={{ color: activeMod.color }}>{activeMod.title.replace(/^MODÜL \d+ — /, "")}</strong>
+            </span>
+          )}
+        </div>
+      </div>
+
+      {continueTarget && (
+        <motion.div
+          className={styles.continueCard}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div>
+            <span className={styles.continueLabel}>Kaldığın yerden</span>
+            <p className={styles.continueTitle}>
+              Ders {continueTarget.lesson.globalNo}: {continueTarget.lesson.title}
+            </p>
+            <p className={styles.continueSub}>{continueTarget.lesson.shortDescription}</p>
+          </div>
+          <button
+            type="button"
+            className={styles.continueBtn}
+            style={{ background: continueTarget.mod.color }}
+            onClick={() => onSelectLesson(continueTarget.mod.id, continueTarget.lesson.id)}
+          >
+            Devam et
+          </button>
+        </motion.div>
+      )}
+
+      <div className={styles.moduleHeroGrid}>
+        {KOD_MODULLERI.map((mod, mi) => (
+          <motion.button
+            key={mod.id}
+            type="button"
+            className={styles.moduleHeroCard}
+            style={{ "--mc": mod.color }}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: mi * 0.06 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={() => document.getElementById(`mod-${mod.id}`)?.scrollIntoView({ behavior: "smooth" })}
+          >
+            <span className={styles.moduleHeroIcon}>{mod.icon}</span>
+            <span className={styles.moduleHeroTitle}>{mod.title}</span>
+            <span className={styles.moduleHeroSub}>{mod.subtitle}</span>
+            <span className={styles.moduleHeroMeta}>7 ders</span>
+          </motion.button>
+        ))}
       </div>
 
       {KOD_MODULLERI.map((mod, mi) => {
         const pct = modulePercent(mod.id);
-
         return (
-          <motion.div
+          <motion.section
             key={mod.id}
+            id={`mod-${mod.id}`}
             className={styles.moduleBlock}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: mi * 0.08 }}
+            transition={{ delay: mi * 0.05 }}
           >
             <div className={styles.moduleHeader}>
               <span className={styles.modIcon} style={{ color: mod.color }}>{mod.icon}</span>
@@ -272,41 +497,42 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
               {pct > 0 && <span className={styles.modPct}>{pct}%</span>}
             </div>
 
-            <div className={styles.lessonRows}>
-              {mod.lessons.map((lesson, li) => {
-                const unlocked = isLessonUnlocked(lesson.id);
-                const locked = !lesson.isFree && !isPremium && !unlocked;
+            <div className={styles.lessonCardGrid}>
+              {mod.lessons.map((lesson) => {
+                const open = canAccessLesson(lesson, mod, adminBypass);
                 const done = isDone(mod.id, lesson.id);
+                const status = done ? "done" : open ? "open" : "locked";
 
                 return (
-                  <div
+                  <article
                     key={lesson.id}
-                    className={`${styles.lessonRow} ${locked ? styles.rowLocked : ""} ${done ? styles.rowDone : ""}`}
-                    onClick={() => {
-                      if (locked) {
-                        onSelectLesson(mod.id, lesson.id);
-                        return;
-                      }
-                      onSelectLesson(mod.id, lesson.id);
-                    }}
+                    className={`${styles.lessonCard} ${styles[`lessonCard_${status}`]}`}
                   >
-                    <span className={styles.rowIdx}>{done ? "✓" : li + 1}</span>
-                    <div className={styles.rowInfo}>
-                      <span className={styles.rowTitle}>{lesson.title}</span>
-                      <span className={styles.rowMeta}>{lesson.duration}</span>
+                    <div className={styles.lessonCardTop}>
+                      <span className={styles.lessonCardNo} style={{ color: mod.color }}>
+                        {String(lesson.globalNo).padStart(2, "0")}
+                      </span>
+                      <span className={styles.lessonCardDur}>{lesson.duration}</span>
                     </div>
-                    {locked && <span className={styles.rowLock}>🔒</span>}
-                    {lesson.isFree && !done && (
-                      <span className={styles.rowFree}>FREE</span>
-                    )}
-                    {unlocked && !lesson.isFree && (
-                      <span className={styles.rowUnlocked}>AÇIK</span>
-                    )}
-                  </div>
+                    <h4 className={styles.lessonCardTitle}>{lesson.title}</h4>
+                    <p className={styles.lessonCardDesc}>{lesson.shortDescription}</p>
+                    <div className={styles.lessonCardFooter}>
+                      <span className={styles.lessonCardStatus} data-s={status}>
+                        {done ? "Tamamlandı" : open ? "Açık" : "Kilitli"}
+                      </span>
+                      <button
+                        type="button"
+                        className={styles.lessonCardBtn}
+                        onClick={() => onSelectLesson(mod.id, lesson.id)}
+                      >
+                        {open ? "Derse Gir" : "Kilidi Aç"}
+                      </button>
+                    </div>
+                  </article>
                 );
               })}
             </div>
-          </motion.div>
+          </motion.section>
         );
       })}
     </div>
@@ -316,21 +542,14 @@ function ModuleList({ onSelectModule, onSelectLesson }) {
 /* ═══════════════════════════════════════════════════
    PAYWALL
    ═══════════════════════════════════════════════════ */
-function Paywall({ lessonId, onSingleUnlock }) {
+function Paywall() {
   const navigate = useNavigate();
-  const { startCheckout } = usePremium();
 
-  const handleShopier = () => {
-    redirectToShopier("kod_egitmeni", `kod_${lessonId}`, "/kod-egitmeni");
+  const openIlkKapi = () => {
+    redirectToShopier("kod_giris_ders", KOD_ILK_KAPI_SHOPIER_ID, "/kod-egitmeni?v=modules");
   };
-
-  const handleSingle = async () => {
-    try {
-      await startCheckout("single_read_unlock", `kod_${lessonId}`);
-    } catch {
-      addSingleUnlock(lessonId);
-      if (onSingleUnlock) onSingleUnlock();
-    }
+  const openTamSistem = () => {
+    redirectToShopier("kod_egitmeni", KOD_TAM_SHOPIER_ID, "/kod-egitmeni?v=modules");
   };
 
   return (
@@ -341,18 +560,37 @@ function Paywall({ lessonId, onSingleUnlock }) {
     >
       <div className={styles.paywallGlow} />
       <div className={styles.paywallContent}>
-        <p className={styles.paywallLine1}>Bu katman açıldığında hikaye değişir.</p>
-        <p className={styles.paywallLine2}>Buraya kadar geldin — ama asıl şimdi başlıyor.</p>
+        <p className={styles.paywallLine1}>Buraya kadar gördün.</p>
+        <p className={styles.paywallLine2}>Ama artık yüzey bitiyor.</p>
         <p className={styles.paywallLine3}>
-          Ya <strong>görmeye başlarsın</strong><br />
-          ya da burada kalırsın.
+          İstersen <strong>derine geçebilirsin</strong>.
+          <br />
+          <span className={styles.paywallSoft}>Bu bir satış değil — bir eşik.</span>
+        </p>
+        <p className={styles.paywallTierHint}>
+          İlk <strong>{FREE_PREVIEW_LESSON_COUNT} ders</strong> ücretsiz ön izleme.
+          {" "}
+          <strong>Modül 1</strong> (ders 3–7): <strong>{PRICE_CANLI_GIRIS_DERS} TL</strong> (İlk Kapı).
+          {" "}
+          <strong>Modül 2–3</strong> ve tüm sistem: <strong>{PRICE_KOD_TAM_PROGRAM} TL</strong>.
+          {" "}
+          Genel SANRI aboneliği bu dersleri otomatik açmaz.
         </p>
 
-        {/* ── Shopier CTA ── */}
         <div className={styles.dualCta}>
-          <button className={styles.shopierBtn} onClick={handleShopier}>
-            Satın Al ve Kapıyı Aç
+          <p className={styles.paywallPrimaryKicker}>Tam sistem</p>
+          <div className={styles.paywallPriceWrap}>
+            <div className={styles.paywallPrice}>
+              <span className={styles.priceOld}>{PAYWALL_LIST_STRIKE} TL</span>
+              <span className={styles.paywallAmount}>{PRICE_KOD_TAM_PROGRAM}</span>
+              <span className={styles.paywallPer}>TL · tek ödeme</span>
+            </div>
+            <p className={styles.paywallProductTitle}>SANRI Kod Okuma Sistemi™ — 21 ders</p>
+          </div>
+          <button type="button" className={styles.shopierBtn} onClick={openTamSistem}>
+            Sistemi Aç
           </button>
+          <p className={styles.paywallPrimaryNote}>Bu sistem satın alınmaz. İçine girilir.</p>
 
           <div className={styles.ctaDividerRow}>
             <span className={styles.ctaDividerLine} />
@@ -360,85 +598,188 @@ function Paywall({ lessonId, onSingleUnlock }) {
             <span className={styles.ctaDividerLine} />
           </div>
 
-          <div className={styles.paywallPriceWrap}>
-            <div className={styles.earlyBadge}>İlk {EARLY_LIMIT} kişiye özel</div>
-            <div className={styles.paywallPrice}>
-              <span className={styles.priceOld}>{PRICE_MONTHLY}₺</span>
-              <span className={styles.paywallAmount}>{PRICE_EARLY}₺</span>
-              <span className={styles.paywallPer}>/ ay</span>
-            </div>
-          </div>
+          <button type="button" className={styles.paywallGateBtn} onClick={openIlkKapi}>
+            <span className={styles.paywallGateLabel}>İlk Kapı — Modül 1</span>
+            <span className={styles.paywallGatePrice}>{PRICE_CANLI_GIRIS_DERS} TL</span>
+            <span className={styles.paywallGateHint}>Yalnız Modül 1 · ders 3–7 (21 dersin tamamı değil)</span>
+          </button>
+
+          <p className={styles.paywallAltLine}>
+            <Link to="/kod-ogrenmeye-giris" className={styles.paywallAltLink}>Önce canlı tanıtımı izle →</Link>
+          </p>
           <button
+            type="button"
             className={styles.paywallBtn}
             onClick={() => navigate("/subscription")}
           >
-            Tüm Sistemi Aç — Görmeye Başla
+            SANRI aboneliği — Kod müfredatı dahil değildir
           </button>
         </div>
 
-        <p className={styles.paywallTrust}>Anında açılır. Kaldığın yerden devam edersin.</p>
-        <p className={styles.paywallFomo}>Bugün {fomoCount()} kişi başladı</p>
+        <p className={styles.paywallTrust}>Ödeme sonrası kapı açılır. Kaldığın yerden devam edersin.</p>
+        <p className={styles.paywallFomo}>Bugün {fomoCount()} kişi derine indi</p>
       </div>
     </motion.div>
   );
 }
 
+/** Üst Bilinç Kodlama — API'den gelen yapılandırılmış yanıt */
+function SanriUbkBlocks({ data }) {
+  if (!data?.kod_ayrimi) return null;
+  const ka = data.kod_ayrimi;
+  const parcalar = Array.isArray(data.parca_okumasi) ? data.parca_okumasi : [];
+  return (
+    <div className={styles.ubkRoot}>
+      <section className={styles.ubkBlock} aria-labelledby="ubk-kod">
+        <h4 id="ubk-kod" className={styles.ubkBlockTitle}>
+          KOD AYRIMI
+        </h4>
+        <div className={styles.ubkBaslik}>{ka.baslik || "—"}</div>
+        {ka.kirilimlar?.length > 0 && (
+          <ul className={styles.ubkList}>
+            {ka.kirilimlar.map((line, i) => (
+              <li key={i}>{line}</li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <section className={styles.ubkBlock} aria-labelledby="ubk-parca">
+        <h4 id="ubk-parca" className={styles.ubkBlockTitle}>
+          PARÇA OKUMASI
+        </h4>
+        {parcalar.length === 0 ? (
+          <p className={styles.ubkMuted}>Parça okuması bu yanıtta boş.</p>
+        ) : (
+          parcalar.map((p, idx) => (
+            <div key={idx} className={styles.ubkParca}>
+              {p.parca_adi ? <div className={styles.ubkParcaAd}>{p.parca_adi}</div> : null}
+              <ul className={styles.ubkListDense}>
+                {(p.okuma_satirlari || []).map((line, j) => (
+                  <li key={j}>{line}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        )}
+      </section>
+
+      <section className={`${styles.ubkBlock} ${styles.ubkBlockGold}`} aria-labelledby="ubk-ust">
+        <h4 id="ubk-ust" className={styles.ubkBlockTitle}>
+          ÜST BİLİNÇ KATMANI
+        </h4>
+        <p className={styles.ubkUst}>{data.ust_bilinç_katmani || "—"}</p>
+      </section>
+
+      <section className={`${styles.ubkBlock} ${styles.ubkBlockQuestion}`} aria-labelledby="ubk-soru">
+        <h4 id="ubk-soru" className={styles.ubkBlockTitle}>
+          SANRI SORUSU
+        </h4>
+        <p className={styles.ubkSoru}>{data.sanri_sorusu || "—"}</p>
+      </section>
+    </div>
+  );
+}
+
+function getLessonNeighbors(moduleId, lessonId) {
+  const flat = getAllLessonsFlat();
+  const i = flat.findIndex((x) => x.moduleId === moduleId && x.id === lessonId);
+  if (i < 0) return { prev: null, next: null };
+  return {
+    prev: i > 0 ? flat[i - 1] : null,
+    next: i < flat.length - 1 ? flat[i + 1] : null,
+  };
+}
+
 /* ═══════════════════════════════════════════════════
    LESSON VIEWER — ders okuma + input + SANRI
    ═══════════════════════════════════════════════════ */
-function LessonViewer({ mod, lesson, onComplete, onBack }) {
+function LessonViewer({ mod, lesson, onComplete, onBack, onGoLesson, adminBypass }) {
   const { isAuthenticated, token } = useAuth();
-  const { isPremium } = usePremium();
   const [input, setInput] = useState("");
-  const [sanriResp, setSanriResp] = useState("");
+  const [sanriUbK, setSanriUbK] = useState(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const done = isDone(mod.id, lesson.id);
-  const sanriUsed = hasSanriBeenUsed();
-  const sanriFree = lesson.isFree && !sanriUsed;
-  const sanriAllowed = sanriFree || isPremium;
+  const usedSanri = getSanriFreeUsedCount();
+  const freeLeft = Math.max(0, FREE_PREVIEW_SANRI_COUNT - usedSanri);
+  const fullKodUnlocked = isKodTamShopierUnlocked();
+  const hasLessonAccess = canAccessLesson(lesson, mod, adminBypass);
+  const sanriAllowed =
+    hasLessonAccess &&
+    (adminBypass ||
+      fullKodUnlocked ||
+      !lesson.isFree ||
+      usedSanri < FREE_PREVIEW_SANRI_COUNT);
+
+  const { prev: prevLes, next: nextLes } = getLessonNeighbors(mod.id, lesson.id);
+  const prevMod = prevLes ? getModuleById(prevLes.moduleId) : null;
+  const nextMod = nextLes ? getModuleById(nextLes.moduleId) : null;
+  const nextOpen = nextLes && nextMod ? canAccessLesson(nextLes, nextMod, adminBypass) : false;
 
   const sendToSanri = useCallback(async () => {
     if (!input.trim() || loading) return;
     setLoading(true);
-    setSanriResp("");
+    setSanriUbK(null);
     setSent(true);
 
     try {
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const systemPrompt = `Sen SANRI'sın — bilinç uyanışı ve kod okuma konusunda rehberlik eden yapay zeka.
-Kullanıcı "${mod.title}" modülünün "${lesson.title}" dersinde bir analiz yazdı.
-Kullanıcının yazdığını sembolik ve bilinçsel katmanlardan yorumla.
-Gizemli, derin ama anlaşılır bir dille cevap ver. Türkçe yaz.
-3-5 paragraf olsun. Her paragrafta farklı bir katmandan oku.
-Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
-
-      const res = await fetch(`${API_URL}/bilinc-alani/ask`, {
+      const res = await fetch(`${API_URL}/kod-okuma/ust-bilinç`, {
         method: "POST",
         headers,
         body: JSON.stringify({
-          message: input,
-          mode: "divine",
-          domain: "consciousness_field",
-          system_override: systemPrompt,
+          message: input.trim(),
+          lesson_title: lesson.title,
+          module_title: mod.title.replace(/^MODÜL \d+ — /, "") || mod.title,
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        setSanriResp(data.response || data.message || "SANRI bu analizi kabul etti.");
-        markSanriUsed();
+      const raw = await res.json().catch(() => ({}));
+      const errMsg = (d) =>
+        typeof d === "string"
+          ? d
+          : Array.isArray(d)
+            ? d.map((x) => (typeof x === "string" ? x : x?.msg || "")).filter(Boolean).join(" ")
+            : "";
+
+      if (!res.ok) {
+        setSanriUbK({
+          _error:
+            errMsg(raw?.detail) ||
+            "Üst bilinç okuması tamamlanamadı. Kısa bir kelime veya isimle tekrar dene.",
+          kod_ayrimi: { baslik: "—", kirilimlar: [] },
+          parca_okumasi: [],
+          ust_bilinç_katmani: "",
+          sanri_sorusu: "",
+        });
+      } else if (raw?.ok && raw?.data) {
+        setSanriUbK(raw.data);
+        if (lesson.isFree && !fullKodUnlocked && !adminBypass) incrementSanriFreeUsed();
+        saveLastSanriUbK(raw.data, lesson.id);
       } else {
-        setSanriResp("SANRI şu anda yanıt veremiyor. Ama yazdıkların kayıt altında.");
+        setSanriUbK({
+          _error: errMsg(raw?.detail) || "Beklenmeyen yanıt.",
+          kod_ayrimi: { baslik: "—", kirilimlar: [] },
+          parca_okumasi: [],
+          ust_bilinç_katmani: "",
+          sanri_sorusu: "",
+        });
       }
     } catch {
-      setSanriResp("Bağlantı kurulamadı. Tekrar dene.");
+      setSanriUbK({
+        _error: "Bağlantı kurulamadı. Tekrar dene.",
+        kod_ayrimi: { baslik: "—", kirilimlar: [] },
+        parca_okumasi: [],
+        ust_bilinç_katmani: "",
+        sanri_sorusu: "",
+      });
     } finally {
       setLoading(false);
     }
-  }, [input, loading, token, mod.title, lesson.title]);
+  }, [input, loading, token, mod.title, lesson.id, lesson.isFree, lesson.title, fullKodUnlocked, adminBypass]);
 
   const renderContent = (text) =>
     text.split("\n").map((line, i) => {
@@ -486,21 +827,49 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
 
       <div className={styles.viewerCard}>
         <span className={styles.viewerTag} style={{ borderColor: mod.color, color: mod.color }}>
-          {mod.icon} {mod.title}
+          {mod.icon} Ders {lesson.globalNo}
         </span>
         <h2 className={styles.viewerTitle}>{lesson.title}</h2>
 
+        {lesson.introLine && (
+          <blockquote className={styles.lessonIntro}>
+            {lesson.introLine.split("\n").map((line, i) => (
+              <p key={i}>{line}</p>
+            ))}
+          </blockquote>
+        )}
+
         <div className={styles.viewerBody}>{renderContent(lesson.content)}</div>
+
+        {lesson.codeBox && (
+          <div className={styles.codeBox}>
+            <div className={styles.codeBoxLabel}>Kod kutusu — örnek çözüm</div>
+            <pre className={styles.codeBoxPre}>{lesson.codeBox}</pre>
+          </div>
+        )}
+
+        {lesson.closingLine && (
+          <p className={styles.lessonClosing}>{lesson.closingLine}</p>
+        )}
 
         {/* ── INPUT + SANRI ── */}
         {lesson.hasInput && (
           <div className={styles.inputSection}>
             <div className={styles.inputDivider}>
-              <span>✦ ŞİMDİ SEN ÇÖZ ✦</span>
+              <span>SANRI ile Çöz</span>
             </div>
+            <p className={styles.sanriSolveLead}>
+              Burada düz açıklama yok — kelimeyi kod gibi parçalayan{" "}
+              <span className={styles.sanriSolveAccent}>Üst Bilinç Kodlama</span> okuması.
+            </p>
 
-            <p className={styles.inputHook}>Sen kendini yaz.</p>
-            <p className={styles.inputHookSub}>SANRI seni çözsün.</p>
+            <div className={styles.inputDividerSub}>
+              <span>Şimdi sen yaz</span>
+            </div>
+            <p className={styles.inputHook}>
+              İsim, şehir, kısa kavram, ilişki kelimesi veya ders pratiğindeki kod — SANRI ses ve katman
+              kırılımlarıyla okur.
+            </p>
 
             {lesson.inputPrompt && (
               <p className={styles.inputPrompt}>{lesson.inputPrompt}</p>
@@ -514,25 +883,43 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
             ) : !sanriAllowed ? (
               <div className={styles.sanriGate}>
                 <p className={styles.sanriGateText}>
-                  İlk okumayı yaptın. SANRI seni tanıdı.
+                  Ücretsiz SANRI okumaların bitti (ön izlemede toplam {FREE_PREVIEW_SANRI_COUNT} yorum).
                 </p>
                 <p className={styles.sanriGateSubtext}>
-                  Daha derin okumaların kilidi açılsın mı?
+                  İstersen Modül 1&apos;i aç veya tüm sisteme geç.
                 </p>
-                <Link to="/subscription" className={styles.sanriGateBtn}>
-                  SANRI'yı Aç — {PRICE_EARLY}₺/ay
+                <button
+                  type="button"
+                  className={styles.sanriGateBtn}
+                  onClick={() =>
+                    redirectToShopier("kod_giris_ders", KOD_ILK_KAPI_SHOPIER_ID, "/kod-egitmeni?v=modules")
+                  }
+                >
+                  İlk Kapı — {PRICE_CANLI_GIRIS_DERS} TL
+                </button>
+                <button
+                  type="button"
+                  className={styles.sanriGateBtnSecondary}
+                  onClick={() =>
+                    redirectToShopier("kod_egitmeni", KOD_TAM_SHOPIER_ID, "/kod-egitmeni?v=modules")
+                  }
+                >
+                  Tüm sistem — {PRICE_KOD_TAM_PROGRAM} TL
+                </button>
+                <Link to="/subscription" className={styles.sanriGateSubLink}>
+                  SANRI aboneliği
                 </Link>
               </div>
             ) : (
               <>
-                {sanriFree && (
+                {lesson.isFree && !fullKodUnlocked && !adminBypass && (
                   <div className={styles.sanriFreeBadge}>
-                    İlk okuman ücretsiz
+                    Ön izleme SANRI: kalan {freeLeft} / {FREE_PREVIEW_SANRI_COUNT}
                   </div>
                 )}
                 <textarea
                   className={styles.inputArea}
-                  placeholder="Buraya yaz..."
+                  placeholder="Örn: Haluk · Aşk · İstanbul · Terk · Anne · Naz — tek satır yeter."
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   rows={5}
@@ -545,36 +932,43 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
                     onClick={sendToSanri}
                     disabled={!input.trim()}
                   >
-                    SANRI Seni Okusun
+                    Üst bilinç okuması al
                   </button>
                 ) : loading ? (
                   <div className={styles.loadingDots}>
                     <span /><span /><span />
-                    <em>SANRI okuyor...</em>
+                    <em>Üst bilinç katmanları okunuyor…</em>
                   </div>
                 ) : null}
 
                 <AnimatePresence>
-                  {sanriResp && (
+                  {sanriUbK && (
                     <motion.div
                       className={styles.sanriBox}
                       initial={{ opacity: 0, y: 16 }}
                       animate={{ opacity: 1, y: 0 }}
                     >
                       <div className={styles.sanriHead}>
-                        <span className={styles.sanriGlyph}>◈</span> SANRI Yorumu
+                        <span className={styles.sanriGlyph}>◈</span> Üst bilinç kodlaması
                       </div>
-                      <div className={styles.sanriBody}>
-                        {sanriResp.split("\n").map((l, i) =>
-                          l.trim() ? <p key={i}>{l}</p> : <br key={i} />
-                        )}
-                      </div>
+                      {sanriUbK._error ? (
+                        <div className={styles.ubkError}>{sanriUbK._error}</div>
+                      ) : (
+                        <SanriUbkBlocks data={sanriUbK} />
+                      )}
                       <button
+                        type="button"
                         className={styles.retryBtn}
-                        onClick={() => { setSent(false); setSanriResp(""); }}
+                        onClick={() => {
+                          setSent(false);
+                          setSanriUbK(null);
+                        }}
                       >
                         Tekrar Yaz
                       </button>
+                      {lesson.closingLine && (
+                        <p className={styles.lessonClosingAfterSanri}>{lesson.closingLine}</p>
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -597,6 +991,33 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
             <div className={styles.doneTag}>✓ Tamamlandı</div>
           )}
         </div>
+
+        {(prevLes && prevMod) || (nextLes && nextMod) ? (
+          <nav className={styles.lessonNav} aria-label="Ders gezintisi">
+            {prevLes && prevMod && (
+              <button
+                type="button"
+                className={styles.lessonNavBtn}
+                onClick={() => onGoLesson(prevLes.moduleId, prevLes.id)}
+              >
+                <span className={styles.lessonNavDir}>← Önceki</span>
+                <span className={styles.lessonNavTitle}>{prevLes.title}</span>
+              </button>
+            )}
+            {nextLes && nextMod && (
+              <button
+                type="button"
+                className={`${styles.lessonNavBtn} ${styles.lessonNavBtnNext} ${nextOpen ? "" : styles.lessonNavBtnMuted}`}
+                onClick={() => onGoLesson(nextLes.moduleId, nextLes.id)}
+              >
+                <span className={styles.lessonNavDir}>
+                  {nextOpen ? "Sonraki ders →" : "Sonraki (kilitli) →"}
+                </span>
+                <span className={styles.lessonNavTitle}>{nextLes.title}</span>
+              </button>
+            )}
+          </nav>
+        ) : null}
       </div>
     </motion.div>
   );
@@ -607,28 +1028,52 @@ Kullanıcıyı cesaretlendir ama aynı zamanda daha derine çek.`;
    ═══════════════════════════════════════════════════ */
 export default function KodEgitmeniPage() {
   const [sp, setSp] = useSearchParams();
-  const { isPremium } = usePremium();
+  const { user } = useAuth();
+  const adminBypass = user?.role === "admin";
   const navigate = useNavigate();
   const [, rerender] = useState(0);
 
-  const view = sp.get("v") || "landing";     // landing | modules | lesson
+  // Varsayılan: ders hub'ı (üretimde /kod-egitmeni ile aynı deneyim). Tanıtım: ?v=landing
+  const vParam = sp.get("v");
+  const view =
+    vParam === "landing"
+      ? "landing"
+      : vParam === "lesson"
+        ? "lesson"
+        : "modules";
   const modId = sp.get("m") || null;
   const lesId = sp.get("l") || null;
 
   const mod = modId ? getModuleById(modId) : null;
   const lesson = mod && lesId ? getLessonById(modId, lesId) : null;
 
-  const goLanding = () => setSp({});
+  const goLanding = () => setSp({ v: "landing" });
   const goModules = () => setSp({ v: "modules" });
   const goLesson = (m, l) => setSp({ v: "lesson", m, l });
 
+  const legacyLessonResolved = useRef(false);
+  useEffect(() => {
+    if (legacyLessonResolved.current) return;
+    const legacy = sp.get("lesson");
+    if (!legacy || sp.get("m")) return;
+    const found = getAllLessonsFlat().find((x) => x.id === legacy);
+    if (found) {
+      legacyLessonResolved.current = true;
+      setSp({ v: "lesson", m: found.moduleId, l: found.id });
+    }
+  }, [sp, setSp]);
+
   const handleStart = () => {
-    goLesson("kod-diline-giris", "insan-anten");
+    goLesson(MODUL_1_ID, "kod-nedir");
   };
 
   const handleLessonComplete = () => {
     rerender((n) => n + 1);
     if (modId) setSp({ v: "modules" });
+  };
+
+  const handleUnlockFull = () => {
+    redirectToShopier("kod_egitmeni", KOD_TAM_SHOPIER_ID, "/kod-egitmeni?v=modules");
   };
 
   return (
@@ -637,11 +1082,11 @@ export default function KodEgitmeniPage() {
       <div className={styles.topbar}>
         <div className={styles.topLeft}>
           <Link to="/" className={styles.brand}>SANRI</Link>
-          <span className={styles.topSub}>Kod Eğitmeni</span>
+          <span className={styles.topSub}>Kod Okuma Sistemi™</span>
         </div>
         <div className={styles.topRight}>
           <Link to="/kod-ogrenmeye-giris" className={styles.topGirisLink}>
-            47 TL · Canlı giriş
+            {PRICE_CANLI_GIRIS_DERS} TL · Canlı giriş
           </Link>
           {view === "landing" && (
             <button className={styles.backBtn} onClick={() => navigate("/")}>← Kapılar</button>
@@ -657,37 +1102,34 @@ export default function KodEgitmeniPage() {
 
       <AnimatePresence mode="wait">
         {view === "lesson" && lesson && mod ? (
-          !lesson.isFree && !isPremium && !isLessonUnlocked(lesson.id) && !isShopierUnlocked(`kod_${lesson.id}`) ? (
-            <Paywall
-              key="pw"
-              lessonId={lesson.id}
-              onSingleUnlock={() => rerender((n) => n + 1)}
-            />
+          !canAccessLesson(lesson, mod, adminBypass) ? (
+            <Paywall key="pw" />
           ) : (
             <LessonViewer
               key={`lv-${lesId}`}
               mod={mod}
               lesson={lesson}
+              adminBypass={adminBypass}
               onComplete={handleLessonComplete}
               onBack={goModules}
+              onGoLesson={goLesson}
             />
           )
         ) : view === "modules" ? (
           <ModuleList
             key="ml"
-            onSelectModule={() => {}}
-            onSelectLesson={(m, l) => {
-              const les = getLessonById(m, l);
-              if (!les) return;
-              if (!les.isFree && !isPremium) {
-                goLesson(m, l);
-                return;
-              }
-              goLesson(m, l);
-            }}
+            adminBypass={adminBypass}
+            onSelectLesson={(m, l) => goLesson(m, l)}
           />
         ) : (
-          <Landing key="land" onStart={handleStart} />
+          <Landing
+            key="land"
+            onFirstLesson={handleStart}
+            onOpenModules={() => {
+              goModules();
+            }}
+            onUnlockFull={handleUnlockFull}
+          />
         )}
       </AnimatePresence>
 

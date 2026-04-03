@@ -362,10 +362,13 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  contain: layout style;
+  contain: layout paint;
+  isolation: isolate;
+  z-index: 0;
 }
 
 .gate:hover {
+  z-index: 2;
   transform: translateY(-4px);
   box-shadow: 0 6px 36px rgba(170,120,255,0.4);
 }
@@ -396,6 +399,9 @@
   position: relative;
   z-index: 2;
   padding: 20px;
+  min-width: 0;
+  align-self: stretch;
+  overflow: hidden;
 }
 
 .gateTitle {
@@ -409,6 +415,10 @@
   opacity: 0.72;
   line-height: 1.5;
   margin-bottom: 10px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
 }
 
 .gateHint {

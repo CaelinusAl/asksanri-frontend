@@ -158,21 +158,11 @@ export default function HomePage() {
         img: "/assets/gates/okuma-alani.jpg",
       },
       {
-        key: "kod-giris",
-        title: isTR ? "Kod Öğrenmeye Giriş" : "Code Thinking Intro",
-        desc: isTR
-          ? "47 TL canlı ders — zihni aç, sistemi kur; syntax değil bakış açısı"
-          : "47 TL live intro — open the mind, build the lens; not syntax, perspective",
-        hint: isTR ? "İlk ders →" : "First lesson →",
-        path: "/kod-ogrenmeye-giris",
-        img: "/assets/gates/kod-egitimi.jpg",
-      },
-      {
         key: "kod-egitmeni",
         title: isTR ? "Kod Eğitmeni" : "Code Teacher",
         desc: isTR
-          ? "Sembol okuma, frekans çözme, sistem analizi — kodları öğren"
-          : "Symbol reading, frequency decoding, system analysis — learn the codes",
+          ? "Kod Okuma Sistemi — sembol, frekans, olay; ön izleme, canlı giriş ve tam program burada"
+          : "Code Reading System — symbol, frequency, events; preview, live intro and full program here",
         hint: isTR ? "Eğitime Başla →" : "Start Learning →",
         path: "/kod-egitmeni",
         img: "/assets/gates/kod-egitimi.jpg",
