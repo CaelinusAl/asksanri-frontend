@@ -19,10 +19,14 @@ const API =
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
-/** Shopier’da 47 TL “Kod Öğrenmeye Giriş” ödeme linki — yoksa geçici fallback */
+/**
+ * 47 TL “SANRI Kod Eğitmeni — Giriş Katmanı” (Shopier ürün kodu 45786456).
+ * 9,90 TL ile karıştırma: 45786803 = okuma devamı / haftalık akış vb.
+ */
+const DEFAULT_KOD_GIRIS_SHOPIER_PATH = "45786456";
 const KOD_GIRIS_SHOPIER_URL = String(
   import.meta.env?.VITE_SHOPIER_KOD_GIRIS_URL || ""
-).trim() || "https://shopier.com/asksanri/45786803";
+).trim() || `https://shopier.com/asksanri/${DEFAULT_KOD_GIRIS_SHOPIER_PATH}`;
 
 export const SHOPIER_PRODUCTS = {
   okuma_devami: {

@@ -72,6 +72,20 @@ export const fetchAccounting = (params = {}) => {
 export const fetchAccountingCustomer = (email) =>
   adminFetch(`/admin/accounting/customer?email=${encodeURIComponent(email)}`);
 
+// ── Havale / EFT (bank_transfer_requests) ──
+export const fetchBankTransfers = (status) => {
+  const q = status ? `?status=${encodeURIComponent(status)}` : "";
+  return adminFetch(`/admin/bank-transfers${q}`);
+};
+export const fetchBankTransferDetail = (id) => adminFetch(`/admin/bank-transfers/${id}`);
+export const approveBankTransfer = (id) =>
+  adminFetch(`/admin/bank-transfers/${id}/approve`, { method: "POST", body: {} });
+export const rejectBankTransfer = (id, note = "") =>
+  adminFetch(`/admin/bank-transfers/${id}/reject`, {
+    method: "POST",
+    body: { note: note || "" },
+  });
+
 export async function downloadAccountingCsv(params = {}) {
   const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
   const token = localStorage.getItem("sanri_token");

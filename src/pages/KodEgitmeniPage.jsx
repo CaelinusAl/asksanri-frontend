@@ -17,6 +17,7 @@ import {
 } from "../data/kodEgitmeniData";
 import { useAuth } from "../contexts/AuthContext";
 import { redirectToShopier, isShopierProductUnlocked } from "../data/shopierConfig";
+import BankTransferLink from "../components/BankTransferLink";
 
 /** Shopier tam sistem */
 const KOD_TAM_SHOPIER_ID = "kod_egitmeni";
@@ -588,8 +589,15 @@ function Paywall() {
             <p className={styles.paywallProductTitle}>SANRI Kod Okuma Sistemi™ — 21 ders</p>
           </div>
           <button type="button" className={styles.shopierBtn} onClick={openTamSistem}>
-            Sistemi Aç
+            Kartla Anında Öde — Sistemi Aç
           </button>
+          <BankTransferLink
+            contentId="kod_egitmeni"
+            returnTo="/kod-egitmeni?v=modules"
+            className={styles.havaleLink}
+          >
+            Havale / EFT ile öde
+          </BankTransferLink>
           <p className={styles.paywallPrimaryNote}>Bu sistem satın alınmaz. İçine girilir.</p>
 
           <div className={styles.ctaDividerRow}>
@@ -599,10 +607,17 @@ function Paywall() {
           </div>
 
           <button type="button" className={styles.paywallGateBtn} onClick={openIlkKapi}>
-            <span className={styles.paywallGateLabel}>İlk Kapı — Modül 1</span>
+            <span className={styles.paywallGateLabel}>Kartla Anında Öde — İlk Kapı</span>
             <span className={styles.paywallGatePrice}>{PRICE_CANLI_GIRIS_DERS} TL</span>
             <span className={styles.paywallGateHint}>Yalnız Modül 1 · ders 3–7 (21 dersin tamamı değil)</span>
           </button>
+          <BankTransferLink
+            contentId="kod_giris_ders"
+            returnTo="/kod-egitmeni?v=modules"
+            className={styles.havaleLinkGate}
+          >
+            Havale / EFT ile öde (İlk Kapı)
+          </BankTransferLink>
 
           <p className={styles.paywallAltLine}>
             <Link to="/kod-ogrenmeye-giris" className={styles.paywallAltLink}>Önce canlı tanıtımı izle →</Link>

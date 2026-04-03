@@ -12,6 +12,7 @@ import {
 } from "../data/kodEgitmeniData";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import { trackEvent } from "../data/analytics";
+import BankTransferLink from "../components/BankTransferLink";
 import styles from "./KodGirisDersPage.module.css";
 
 export const KOD_GIRIS_CONTENT_ID = "kod_giris_ders";
@@ -138,8 +139,15 @@ export default function KodGirisDersPage() {
           </div>
 
           <button type="button" className={styles.cta} onClick={onCheckout}>
-            Yerini ayır — {PRICE_CANLI_GIRIS_DERS} TL
+            Kartla Anında Öde — {PRICE_CANLI_GIRIS_DERS} TL
           </button>
+          <BankTransferLink
+            contentId={KOD_GIRIS_CONTENT_ID}
+            returnTo="/kod-ogrenmeye-giris"
+            className={styles.havaleLink}
+          >
+            Havale / EFT ile öde
+          </BankTransferLink>
           <p className={styles.ctaHint}>Bu sadece başlangıç.</p>
 
           <p className={styles.bonusQuote}>{BONUS_CLOSING}</p>

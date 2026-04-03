@@ -40,6 +40,8 @@ import AdminGrowthPage from "./pages/admin/AdminGrowthPage";
 import AdminBillingPage from "./pages/admin/AdminBillingPage";
 import AdminFunnelPage from "./pages/admin/AdminFunnelPage";
 import AdminMuhasebePage from "./pages/admin/AdminMuhasebePage";
+import AdminBankTransferPage from "./pages/admin/AdminBankTransferPage";
+import HavaleOdemePage from "./pages/HavaleOdemePage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentCancelPage from "./pages/PaymentCancelPage";
 import IyzicoCallbackPage from "./pages/IyzicoCallbackPage";
@@ -114,6 +116,7 @@ export default function App() {
       <Route path="/payment/cancel" element={<PaymentCancelPage />} />
       <Route path="/payment/iyzico-callback" element={<IyzicoCallbackPage />} />
       <Route path="/odeme-basarili" element={<OdemeBasariliPage />} />
+      <Route path="/havale-odeme" element={<HavaleOdemePage />} />
 
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/:bookId" element={<BookReader />} />
@@ -134,6 +137,7 @@ export default function App() {
         <Route path="revenue" element={<AdminRevenuePage />} />
         <Route path="funnel" element={<AdminFunnelPage />} />
         <Route path="muhasebe" element={<AdminMuhasebePage />} />
+        <Route path="banka-odemeleri" element={<AdminBankTransferPage />} />
         <Route path="billing" element={<AdminBillingPage />} />
         <Route path="notifications" element={<AdminNotificationsPage />} />
         <Route path="system" element={<AdminSystemPage />} />

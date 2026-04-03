@@ -5,6 +5,7 @@ import { redirectToShopier, isShopierUnlocked, checkServerUnlock } from "../data
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
+import BankTransferLink from "../components/BankTransferLink";
 import SanriSharePanel from "../components/SanriSharePanel";
 import {
   buildMatrixRolReading,
@@ -79,8 +80,15 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
             redirectToShopier(productId, contentId, "/rol-okuma");
           }}
         >
-          Kapıyı Aç
+          Kartla Anında Öde
         </button>
+        <BankTransferLink
+          contentId={contentId || "role_unlock"}
+          returnTo="/rol-okuma"
+          className={styles.modalHavale}
+        >
+          Havale / EFT ile öde
+        </BankTransferLink>
         <button className={styles.modalClose} onClick={onClose}>
           Şimdilik kal
         </button>

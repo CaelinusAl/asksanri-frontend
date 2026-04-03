@@ -5,6 +5,7 @@ import { redirectToShopier, checkServerUnlock, SHOPIER_PRODUCTS } from "../data/
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
+import BankTransferLink from "../components/BankTransferLink";
 import {
   ANKOD_CATEGORIES,
   ANKOD_COMPLETED_KEY,
@@ -664,8 +665,15 @@ export default function AnKodPage() {
                   redirectToShopier("ankod", "ankod_unlock", "/an-kod");
                 }}
               >
-                Shopier ile Devam Et
+                Kartla Anında Öde
               </button>
+              <BankTransferLink
+                contentId="ankod_unlock"
+                returnTo="/an-kod"
+                className={styles.modalHavale}
+              >
+                Havale / EFT ile öde
+              </BankTransferLink>
               <button type="button" className={styles.modalClose} onClick={() => setModal(false)}>
                 Şimdilik kal
               </button>

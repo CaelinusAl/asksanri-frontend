@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { to: "/admin/premium", icon: "✦", label: "Premium" },
   { to: "/admin/revenue", icon: "⊞", label: "Gelir" },
   { to: "/admin/muhasebe", icon: "≡", label: "Muhasebe" },
+  { to: "/admin/banka-odemeleri", icon: "⌁", label: "Banka ödemeleri" },
   { to: "/admin/funnel", icon: "⊳", label: "Funnel" },
   { to: "/admin/billing", icon: "₺", label: "Billing" },
   { to: "/admin/notifications", icon: "⊙", label: "Bildirimler" },

@@ -1,0 +1,189 @@
+.page {
+  max-width: 1100px;
+}
+
+.h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 6px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 22px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(140, 120, 200, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.filterBtnActive {
+  border-color: rgba(180, 140, 255, 0.55);
+  background: rgba(120, 80, 200, 0.25);
+  color: #fff;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid rgba(120, 100, 180, 0.25);
+  border-radius: 12px;
+  background: rgba(10, 8, 20, 0.6);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.th,
+.td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.th {
+  color: rgba(200, 180, 255, 0.65);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 10px;
+}
+
+.td {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.rowBtn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(160, 140, 220, 0.35);
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.rowBtn:hover {
+  border-color: rgba(200, 180, 255, 0.5);
+}
+
+.statusP {
+  text-transform: capitalize;
+}
+
+.statusPending {
+  color: #fcd34d;
+}
+
+.statusApproved {
+  color: #86efac;
+}
+
+.statusRejected {
+  color: #fca5a5;
+}
+
+.detailBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.detailCard {
+  background: #120e1c;
+  border: 1px solid rgba(140, 110, 220, 0.35);
+  border-radius: 16px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 20px;
+}
+
+.detailTitle {
+  font-size: 1.1rem;
+  margin: 0 0 14px;
+}
+
+.receiptImg {
+  max-width: 100%;
+  border-radius: 10px;
+  margin: 12px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.approveBtn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: linear-gradient(135deg, #16a34a, #15803d);
+  color: #fff;
+}
+
+.rejectBtn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  cursor: pointer;
+  font-weight: 600;
+  background: transparent;
+  color: #fecaca;
+}
+
+.closeBtn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.noteInput {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.error {
+  color: #fecaca;
+  font-size: 13px;
+  margin-bottom: 12px;
+}

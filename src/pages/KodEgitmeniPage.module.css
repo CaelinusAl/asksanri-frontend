@@ -2255,3 +2255,39 @@
   .inputArea { font-size: 0.9rem; min-height: 100px; }
   .sanriBox { padding: 18px; }
 }
+
+/* Havale / EFT */
+.havaleLink {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(210, 190, 255, 0.95);
+  text-decoration: none;
+  padding: 10px 14px;
+  border: 1px solid rgba(140, 110, 200, 0.4);
+  border-radius: 12px;
+  background: rgba(30, 22, 48, 0.5);
+}
+.havaleLink:hover {
+  border-color: rgba(200, 170, 255, 0.55);
+  color: #fff;
+}
+.havaleLinkGate {
+  display: block;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(200, 180, 255, 0.9);
+  text-decoration: none;
+  padding: 10px 14px;
+  border: 1px solid rgba(120, 100, 180, 0.35);
+  border-radius: 12px;
+  background: rgba(20, 16, 36, 0.45);
+}
+.havaleLinkGate:hover {
+  border-color: rgba(190, 160, 255, 0.5);
+  color: #fff;
+}
