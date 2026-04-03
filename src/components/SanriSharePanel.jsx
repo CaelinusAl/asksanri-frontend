@@ -4,6 +4,7 @@ import {
   buildSanriShareText,
   SANRI_SHARE_URL,
   truncateForTwitter,
+  parseReflectionShareLine,
 } from "../data/sanriShare";
 import { trackEvent } from "../data/analytics";
 import styles from "./SanriSharePanel.module.css";
@@ -25,7 +26,7 @@ function wrapCanvasLines(ctx, text, maxWidth) {
   return lines;
 }
 
-function drawShareCard(canvas, anaTema) {
+function drawShareCard(canvas, bodyText, titleLine) {
   const w = 1080;
   const h = 1350;
   const dpr = typeof window !== "undefined" ? Math.min(2, window.devicePixelRatio || 1) : 2;
@@ -55,18 +56,18 @@ function drawShareCard(canvas, anaTema) {
   ctx.fillText("SANRI", w / 2, 120);
 
   ctx.fillStyle = "rgba(200, 160, 255, 0.95)";
-  ctx.font = "600 52px system-ui, -apple-system, Segoe UI, sans-serif";
-  ctx.fillText("Rolünü Hatırla", w / 2, 200);
+  ctx.font = "600 48px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.fillText(titleLine, w / 2, 200);
 
-  const body = String(anaTema || "").trim() || "Matrix Rol";
+  const body = String(bodyText || "").trim() || "—";
   ctx.fillStyle = "rgba(232, 228, 244, 0.92)";
-  ctx.font = "400 34px system-ui, -apple-system, Segoe UI, sans-serif";
+  ctx.font = "400 32px system-ui, -apple-system, Segoe UI, sans-serif";
   const maxW = w - 160;
   const lines = wrapCanvasLines(ctx, body, maxW).slice(0, 12);
-  let y = 340;
+  let y = 320;
   for (const ln of lines) {
     ctx.fillText(ln, w / 2, y);
-    y += 48;
+    y += 46;
   }
 
   ctx.fillStyle = "rgba(200, 160, 255, 0.35)";
@@ -78,15 +79,53 @@ function drawShareCard(canvas, anaTema) {
   ctx.fillText("asksanri.com", w / 2, h - 140);
 }
 
-export default function SanriSharePanel({ anaTema, className = "" }) {
-  const shareText = useMemo(() => buildSanriShareText(anaTema), [anaTema]);
+/**
+ * @param {object} props
+ * @param {string} [props.anaTema] — Matrix ana tema (reflectionText yoksa)
+ * @param {string} [props.reflectionText] — Sanrı yansıması ham metni (varsa öncelik)
+ * @param {string} [props.shareUrl] — paylaşım linki (Yankı / yönlendirme)
+ * @param {"full"|"compact"} [props.variant]
+ * @param {"rol"|"yanki"} [props.cardKind] — PNG başlığı
+ * @param {boolean} [props.isTR]
+ */
+export default function SanriSharePanel({
+  anaTema = "",
+  reflectionText = null,
+  shareUrl = null,
+  variant = "full",
+  cardKind = "rol",
+  className = "",
+  isTR = true,
+}) {
+  const pageUrl = useMemo(
+    () => String(shareUrl || "").trim() || SANRI_SHARE_URL,
+    [shareUrl]
+  );
+
+  const summaryLine = useMemo(() => {
+    if (reflectionText && String(reflectionText).trim()) {
+      return parseReflectionShareLine(reflectionText);
+    }
+    return String(anaTema || "").trim() || (isTR ? "Matrix Rol okumamı denedim." : "I tried Matrix Rol on Sanrı.");
+  }, [reflectionText, anaTema, isTR]);
+
+  const shareText = useMemo(
+    () => buildSanriShareText(summaryLine, pageUrl),
+    [summaryLine, pageUrl]
+  );
+
+  const canvasTitle = cardKind === "yanki"
+    ? (isTR ? "Yankı Yanıtı" : "Echo Reply")
+    : (isTR ? "Rolünü Hatırla" : "Remember Your Role");
+
   const [igOpen, setIgOpen] = useState(false);
   const [tiktokNote, setTiktokNote] = useState(false);
   const [copied, setCopied] = useState(false);
   const canvasRef = useRef(null);
+  const compact = variant === "compact";
 
   const copyShareText = useCallback(async () => {
-    trackEvent("share_click", { platform: "copy" });
+    trackEvent("share_click", { platform: "copy", context: cardKind });
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(shareText);
@@ -96,12 +135,12 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
     } catch {
       /* ignore */
     }
-  }, [shareText]);
+  }, [shareText, cardKind]);
 
   const openUrl = useCallback((url, platform) => {
-    trackEvent("share_click", { platform });
+    trackEvent("share_click", { platform, context: cardKind });
     window.open(url, "_blank", "noopener,noreferrer");
-  }, []);
+  }, [cardKind]);
 
   const whatsapp = useCallback(() => {
     openUrl(`https://wa.me/?text=${encodeURIComponent(shareText)}`, "whatsapp");
@@ -116,16 +155,16 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
   }, [openUrl, shareText]);
 
   const facebook = useCallback(() => {
-    const u = encodeURIComponent(SANRI_SHARE_URL);
+    const u = encodeURIComponent(pageUrl);
     const q = encodeURIComponent(shareText);
     openUrl(
       `https://www.facebook.com/sharer/sharer.php?u=${u}&quote=${q}`,
       "facebook"
     );
-  }, [openUrl, shareText]);
+  }, [openUrl, shareText, pageUrl]);
 
   const instagram = useCallback(async () => {
-    trackEvent("share_click", { platform: "instagram" });
+    trackEvent("share_click", { platform: "instagram", context: cardKind });
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(shareText);
@@ -134,40 +173,57 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
       /* ignore */
     }
     setIgOpen(true);
-  }, [shareText]);
+  }, [shareText, cardKind]);
 
   const tiktok = useCallback(async () => {
-    trackEvent("share_click", { platform: "tiktok" });
+    trackEvent("share_click", { platform: "tiktok", context: cardKind });
     try {
       if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(`${shareText}\n\n${SANRI_SHARE_URL}`);
+        await navigator.clipboard.writeText(`${shareText}\n\n${pageUrl}`);
       }
     } catch {
       /* ignore */
     }
     setTiktokNote(true);
     window.setTimeout(() => setTiktokNote(false), 6000);
-  }, [shareText]);
+  }, [shareText, pageUrl, cardKind]);
 
   const downloadCard = useCallback(() => {
-    trackEvent("share_click", { platform: "share_card_download" });
+    trackEvent("share_click", { platform: "share_card_download", context: cardKind });
     const canvas = canvasRef.current;
     if (!canvas) return;
-    drawShareCard(canvas, anaTema);
+    drawShareCard(canvas, summaryLine, canvasTitle);
     canvas.toBlob((blob) => {
       if (!blob) return;
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "sanri-rol-karti.png";
+      a.download = cardKind === "yanki" ? "sanri-yanki-karti.png" : "sanri-rol-karti.png";
       a.click();
       URL.revokeObjectURL(url);
     }, "image/png");
-  }, [anaTema]);
+  }, [summaryLine, canvasTitle, cardKind]);
+
+  const t = {
+    trigger1: isTR ? "Bu sana dokunduysa…" : "If this moved you…",
+    trigger2: isTR ? "bir kişiyle paylaş." : "share it with someone.",
+    cardBtn: isTR ? "Paylaşım kartı indir (PNG)" : "Download share card (PNG)",
+    preview: isTR ? "Paylaşım özeti" : "Share preview",
+    copied: isTR ? "Kopyalandı" : "Copied",
+    copy: isTR ? "Kopyala" : "Copy",
+    tiktokBtn: isTR ? "TikTok (metin kopyala)" : "TikTok (copy text)",
+    igHint: isTR
+      ? <>Metni panoya kopyaladık. Instagram’da <strong>Hikaye</strong> veya <strong>Gönderi</strong> açıp yapıştırarak paylaşabilirsin.</>
+      : <>We copied the text. Paste it in an Instagram <strong>Story</strong> or <strong>Post</strong>.</>,
+    igOk: isTR ? "Tamam" : "OK",
+    tiktokHint: isTR
+      ? "TikTok’ta paylaşmak için metni kopyaladık; uygulamada açıklamaya yapıştırıp linki ekleyebilirsin."
+      : "Text copied — paste it in TikTok’s caption and add the link.",
+  };
 
   return (
     <motion.div
-      className={`${styles.panel} ${className}`}
+      className={`${styles.panel} ${compact ? styles.panelCompact : ""} ${className}`}
       initial={{ opacity: 0, y: 14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
@@ -175,9 +231,9 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
       <canvas ref={canvasRef} className={styles.hiddenCanvas} aria-hidden />
 
       <p className={styles.triggerLine}>
-        Bu sana dokunduysa…
+        {t.trigger1}
         <br />
-        bir kişiyle paylaş.
+        {t.trigger2}
       </p>
 
       <div className={styles.btnGrid}>
@@ -199,17 +255,19 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
         </button>
         <button type="button" className={styles.shareBtn} onClick={copyShareText}>
           <span className={styles.shareIcon} aria-hidden>📋</span>
-          {copied ? "Kopyalandı" : "Kopyala"}
+          {copied ? t.copied : t.copy}
         </button>
         <button type="button" className={styles.shareBtnGhost} onClick={tiktok}>
           <span className={styles.shareIcon} aria-hidden>♪</span>
-          TikTok (metin kopyala)
+          {t.tiktokBtn}
         </button>
       </div>
 
-      <button type="button" className={styles.cardBtn} onClick={downloadCard}>
-        Paylaşım kartı indir (PNG)
-      </button>
+      {!compact && (
+        <button type="button" className={styles.cardBtn} onClick={downloadCard}>
+          {t.cardBtn}
+        </button>
+      )}
 
       <AnimatePresence>
         {igOpen && (
@@ -220,12 +278,9 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
           >
-            <p className={styles.hintText}>
-              Metni panoya kopyaladık. Instagram’da <strong>Hikaye</strong> veya{" "}
-              <strong>Gönderi</strong> açıp yapıştırarak paylaşabilirsin.
-            </p>
+            <p className={styles.hintText}>{t.igHint}</p>
             <button type="button" className={styles.hintClose} onClick={() => setIgOpen(false)}>
-              Tamam
+              {t.igOk}
             </button>
           </motion.div>
         )}
@@ -233,12 +288,16 @@ export default function SanriSharePanel({ anaTema, className = "" }) {
 
       {tiktokNote ? (
         <p className={styles.tiktokHint} role="status">
-          TikTok’ta paylaşmak için metni kopyaladık; uygulamada açıklamaya yapıştırıp linki ekleyebilirsin.
+          {t.tiktokHint}
         </p>
       ) : null}
 
-      <p className={styles.previewLabel}>Paylaşım özeti</p>
-      <pre className={styles.previewText}>{shareText}</pre>
+      {!compact && (
+        <>
+          <p className={styles.previewLabel}>{t.preview}</p>
+          <pre className={styles.previewText}>{shareText}</pre>
+        </>
+      )}
     </motion.div>
   );
 }

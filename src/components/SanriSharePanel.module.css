@@ -6,6 +6,43 @@
   background: linear-gradient(165deg, rgba(200, 160, 255, 0.06), color-mix(in srgb, var(--bg-primary) 70%, transparent));
 }
 
+.panelCompact {
+  margin: 14px 0 8px;
+  padding: 16px 14px 18px;
+  border-radius: 14px;
+}
+
+.panelCompact .triggerLine {
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.panelCompact .btnGrid {
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.panelCompact .shareBtn,
+.panelCompact .shareBtnGhost {
+  padding: 10px 10px;
+  font-size: 12px;
+}
+
+.panelCompact .shareIcon {
+  font-size: 13px;
+}
+
+.panelCompact .hintCard {
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+.panelCompact .tiktokHint {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 12px;
+}
+
 .triggerLine {
   text-align: center;
   font-size: 16px;

@@ -17,6 +17,7 @@ import {
   isLoggedIn,
 } from "../data/yankiApi";
 import { extractMentions, renderWithMentions } from "../data/mentionUtils";
+import SanriSharePanel from "../components/SanriSharePanel";
 import styles from "./YankiPostDetail.module.css";
 
 const REPORT_REASONS = [
@@ -516,6 +517,15 @@ export default function YankiPostDetail() {
             </div>
           )}
         </motion.div>
+      )}
+
+      {sanriReflection && !sanriLoading && (
+        <SanriSharePanel
+          reflectionText={sanriReflection}
+          shareUrl={`${typeof window !== "undefined" ? window.location.origin : ""}/yanki/${id}${user?.id ? `?ref=${user.id}` : ""}`}
+          cardKind="yanki"
+          isTR={isTR}
+        />
       )}
 
       {/* ── Report Modal ── */}

@@ -7,6 +7,7 @@ import { POST_TYPES, getPostTypeById, timeAgo } from "../data/yankiData";
 import { fetchPosts, fetchFeaturedPost, reactToPost, fetchMyReactions, askSanriReflection, addComment, reportPost, isLoggedIn, fetchNotifications, markAllNotificationsRead, markNotificationRead } from "../data/yankiApi";
 import SEED_POSTS from "../data/seedYankilar";
 import { getDailyQuestion } from "../data/dailyQuestions";
+import SanriSharePanel from "../components/SanriSharePanel";
 import styles from "./YankiAlaniPage.module.css";
 
 const REPORT_REASONS = [
@@ -244,6 +245,8 @@ export default function YankiAlaniPage() {
 
   const handleReact = async (e, postId, type) => {
     e.stopPropagation();
+    const targetPost = displayPosts.find((p) => p.id === postId);
+    if (targetPost?.is_seed) return;
     if (!isLoggedIn()) { navigate("/giris", { state: { from: location.pathname + location.search } }); return; }
     const wasActive = myReactions[postId]?.has(type);
     const delta = wasActive ? -1 : 1;
@@ -383,6 +386,8 @@ export default function YankiAlaniPage() {
   // ─── Quick reply for daily flow ───
   const [quickReply, setQuickReply] = useState({});
   const handleQuickReply = async (postId) => {
+    const targetPost = displayPosts.find((p) => p.id === postId);
+    if (targetPost?.is_seed) return;
     const text = (quickReply[postId] || "").trim();
     if (!text) return;
     if (!isLoggedIn()) {
@@ -623,29 +628,46 @@ export default function YankiAlaniPage() {
                         {post.content}
                       </p>
                       <div className={styles.dailyActions}>
-                        <button className={styles.dailyAction} onClick={(e) => handleReact(e, post.id, "kalbime_dokundu")}>
+                        <button
+                          type="button"
+                          className={styles.dailyAction}
+                          disabled={post.is_seed}
+                          onClick={(e) => handleReact(e, post.id, "kalbime_dokundu")}
+                        >
                           ♡ {isTR ? "Yankı" : "Echo"} {post.reaction_heart > 0 && post.reaction_heart}
                         </button>
-                        <button className={styles.dailyAction} onClick={(e) => handleReact(e, post.id, "ben_de_hissettim")}>
+                        <button
+                          type="button"
+                          className={styles.dailyAction}
+                          disabled={post.is_seed}
+                          onClick={(e) => handleReact(e, post.id, "ben_de_hissettim")}
+                        >
                           ◈ {isTR ? "Açıldı" : "Felt"} {post.reaction_felt > 0 && post.reaction_felt}
                         </button>
-                        <button className={styles.dailyAction} onClick={(e) => handleReact(e, post.id, "sessizce_aldim")}>
+                        <button
+                          type="button"
+                          className={styles.dailyAction}
+                          disabled={post.is_seed}
+                          onClick={(e) => handleReact(e, post.id, "sessizce_aldim")}
+                        >
                           ◇ {isTR ? "Sessiz" : "Silent"} {post.reaction_sessizce > 0 && post.reaction_sessizce}
                         </button>
                       </div>
-                      {/* Quick reply */}
+                      {/* Quick reply — yalnızca gerçek gönderiler (API) */}
                       <div className={styles.quickReply}>
                         <input
                           type="text"
                           className={styles.quickReplyInput}
-                          placeholder={isTR ? "Hızlı yankı..." : "Quick echo..."}
+                          placeholder={post.is_seed ? (isTR ? "Örnek yankı (yorum kapalı)" : "Sample (comments off)") : (isTR ? "Hızlı yankı..." : "Quick echo...")}
                           value={quickReply[post.id] || ""}
+                          disabled={post.is_seed}
                           onChange={(e) => setQuickReply((prev) => ({ ...prev, [post.id]: e.target.value }))}
-                          onKeyDown={(e) => e.key === "Enter" && handleQuickReply(post.id)}
+                          onKeyDown={(e) => e.key === "Enter" && !post.is_seed && handleQuickReply(post.id)}
                         />
                         <button
+                          type="button"
                           className={styles.quickReplySend}
-                          disabled={!(quickReply[post.id] || "").trim()}
+                          disabled={post.is_seed || !(quickReply[post.id] || "").trim()}
                           onClick={() => handleQuickReply(post.id)}
                         >
                           →
@@ -742,6 +764,7 @@ export default function YankiAlaniPage() {
                     {/* Inline Sanrı reflection */}
                     {reflections[post.id] && (() => {
                       const rp = parseStructuredReflection(reflections[post.id]);
+                      const shareU = `${window.location.origin}/yanki/${post.id}${user?.id ? `?ref=${user.id}` : ""}`;
                       return (
                         <div className={styles.inlineReflection} onClick={(e) => e.stopPropagation()}>
                           <div className={styles.inlineReflHeader}>
@@ -762,6 +785,13 @@ export default function YankiAlaniPage() {
                           ) : (
                             <p className={styles.inlineReflText}>{reflections[post.id]}</p>
                           )}
+                          <SanriSharePanel
+                            variant="compact"
+                            reflectionText={reflections[post.id]}
+                            shareUrl={shareU}
+                            cardKind="yanki"
+                            isTR={isTR}
+                          />
                         </div>
                       );
                     })()}

@@ -328,7 +328,7 @@ export default function RolOkumaPage() {
 
             <NarrativeLead s={result.narrative.sections} />
 
-            <SanriSharePanel anaTema={result.narrative.sections.ana_tema} />
+            <SanriSharePanel anaTema={result.narrative.sections.ana_tema} isTR={isTR} cardKind="rol" />
 
             {unlocked ? (
               <>
