@@ -116,6 +116,23 @@ export function trackPaywallView(contentId) {
   trackEvent("paywall_view", { content_id: contentId });
 }
 
+/**
+ * Göz Açık Güneş — hero “Sırrı aç” (Instagram vb. kapı trafiği).
+ * Meta: custom event + ViewContent (özel dönüşüm / kitle için).
+ */
+export function trackGunesSirriAc(contentId) {
+  const cid = String(contentId || "okuma_goz_acik_gunes");
+  trackEvent("gunes_sirri_ac", {
+    content_id: cid,
+    gate: "goz_acik_gunes",
+  });
+  fbq("track", "ViewContent", {
+    content_ids: [cid],
+    content_type: "product",
+    content_name: "Göz Açık Güneş — Sırrı aç",
+  });
+}
+
 export function trackShopierRedirect(contentId, value) {
   trackAddToCart(contentId, value);
   trackEvent("shopier_redirect", { content_id: contentId, value: Number(value) || 0 });

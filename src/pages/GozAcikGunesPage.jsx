@@ -10,7 +10,7 @@ import {
 } from "../data/shopierConfig";
 import { useLanguage } from "../contexts/LanguageContext";
 import { trackFunnelEvent } from "../data/funnelTracker";
-import { trackAddToCart } from "../data/analytics";
+import { trackAddToCart, trackGunesSirriAc } from "../data/analytics";
 import {
   GOZ_CONTENT_ID,
   GOZ_RETURN_PATH,
@@ -95,6 +95,7 @@ export default function GozAcikGunesPage() {
   const openDeep = useCallback(() => {
     setDeepOpen(true);
     trackFunnelEvent("goz_sirri_ac_click");
+    trackGunesSirriAc(GOZ_CONTENT_ID);
     window.requestAnimationFrame(() => {
       deepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
