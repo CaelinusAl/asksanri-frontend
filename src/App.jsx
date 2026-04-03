@@ -48,6 +48,7 @@ import SubscriptionPage from "./pages/SubscriptionPage";
 import GizlilikPage from "./pages/GizlilikPage";
 import { HakkimizdaPage, GizlilikPolitikasiPage, MesafeliSatisPage, IadeKosullariPage } from "./pages/LegalPages";
 import KodEgitmeniPage from "./pages/KodEgitmeniPage";
+import KodGirisDersPage from "./pages/KodGirisDersPage";
 import BenimAlanimPage from "./pages/BenimAlanimPage";
 import RolOkumaPage from "./pages/RolOkumaPage";
 import AnKodPage from "./pages/AnKodPage";
@@ -97,6 +98,7 @@ export default function App() {
       <Route path="/1999" element={<Navigate to="/okuma-alani/1999-kapanmayan-frekans" replace />} />
 
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
+      <Route path="/kod-ogrenmeye-giris" element={<KodGirisDersPage />} />
       <Route path="/rol-okuma" element={<RolOkumaPage />} />
       <Route path="/an-kod" element={<AnKodPage />} />
       <Route path="/goz-acik-gunes" element={<GozAcikGunesPage />} />

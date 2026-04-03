@@ -581,6 +581,11 @@ export function getAllLessonsFlat() {
   return out;
 }
 
+/** Canlı giriş dersi (düşük bilet) — satış sayfası */
+export const PRICE_CANLI_GIRIS_DERS = 47;
+/** Tam program upsell metni (Shopier fiyatı ayrı) */
+export const PRICE_KOD_TAM_PROGRAM = 999;
+
 export const PRICE_MONTHLY = 99;
 export const PRICE_EARLY = 49;
 export const EARLY_LIMIT = 100;

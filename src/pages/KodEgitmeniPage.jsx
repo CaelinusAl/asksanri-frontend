@@ -640,6 +640,9 @@ export default function KodEgitmeniPage() {
           <span className={styles.topSub}>Kod Eğitmeni</span>
         </div>
         <div className={styles.topRight}>
+          <Link to="/kod-ogrenmeye-giris" className={styles.topGirisLink}>
+            47 TL · Canlı giriş
+          </Link>
           {view === "landing" && (
             <button className={styles.backBtn} onClick={() => navigate("/")}>← Kapılar</button>
           )}

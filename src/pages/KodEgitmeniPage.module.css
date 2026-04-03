@@ -46,6 +46,23 @@
   align-items: center;
   gap: 10px;
 }
+.topGirisLink {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(120, 247, 216, 0.85);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(120, 247, 216, 0.25);
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.topGirisLink:hover {
+  background: rgba(120, 247, 216, 0.08);
+  border-color: rgba(120, 247, 216, 0.45);
+  color: #9cf5dc;
+}
 .backBtn {
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.12);

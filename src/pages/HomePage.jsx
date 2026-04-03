@@ -158,6 +158,16 @@ export default function HomePage() {
         img: "/assets/gates/okuma-alani.jpg",
       },
       {
+        key: "kod-giris",
+        title: isTR ? "Kod Öğrenmeye Giriş" : "Code Thinking Intro",
+        desc: isTR
+          ? "47 TL canlı ders — zihni aç, sistemi kur; syntax değil bakış açısı"
+          : "47 TL live intro — open the mind, build the lens; not syntax, perspective",
+        hint: isTR ? "İlk ders →" : "First lesson →",
+        path: "/kod-ogrenmeye-giris",
+        img: "/assets/gates/kod-egitimi.jpg",
+      },
+      {
         key: "kod-egitmeni",
         title: isTR ? "Kod Eğitmeni" : "Code Teacher",
         desc: isTR

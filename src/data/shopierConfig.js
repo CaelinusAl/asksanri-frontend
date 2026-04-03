@@ -19,6 +19,11 @@ const API =
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
+/** Shopier’da 47 TL “Kod Öğrenmeye Giriş” ödeme linki — yoksa geçici fallback */
+const KOD_GIRIS_SHOPIER_URL = String(
+  import.meta.env?.VITE_SHOPIER_KOD_GIRIS_URL || ""
+).trim() || "https://shopier.com/asksanri/45786803";
+
 export const SHOPIER_PRODUCTS = {
   okuma_devami: {
     id: "okuma_devami",
@@ -31,6 +36,12 @@ export const SHOPIER_PRODUCTS = {
     label: "Kod Eğitmeni — Tam Erişim",
     price: "49",
     url: "https://shopier.com/asksanri/45786456",
+  },
+  kod_giris_ders: {
+    id: "kod_giris_ders",
+    label: "Kod Öğrenmeye Giriş — Canlı Ders",
+    price: "47",
+    url: KOD_GIRIS_SHOPIER_URL,
   },
   kitap_112: {
     id: "kitap_112",
@@ -115,6 +126,7 @@ export function resolveShopierPurchaseMeta(contentId, pendingProductId) {
     if (c === "ankod_unlock" || productKey === "ankod") return "ankod_unlock";
     if (productKey === "matrix_code") return "book_matrix";
     if (productKey === "kitap_112") return "book_112";
+    if (productKey === "kod_giris_ders" || c === "kod_giris_ders") return "kod_giris_ders";
     if (productKey === "kod_egitmeni") return "kod_egitmeni";
     return productKey || "other";
   };
