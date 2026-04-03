@@ -5,6 +5,7 @@ import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
+import SanriSharePanel from "../components/SanriSharePanel";
 import {
   buildMatrixRolReading,
   narrativeToSectionTexts,
@@ -326,6 +327,8 @@ export default function RolOkumaPage() {
             </div>
 
             <NarrativeLead s={result.narrative.sections} />
+
+            <SanriSharePanel anaTema={result.narrative.sections.ana_tema} />
 
             {unlocked ? (
               <>
