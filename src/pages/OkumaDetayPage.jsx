@@ -23,7 +23,9 @@ export default function OkumaDetayPage() {
 
   const location = useLocation();
   const post = useMemo(() => getPostBySlug(slug), [slug]);
-  const singleUnlocked = post ? isContentUnlocked(post.id) : false;
+  const singleUnlocked = post
+    ? isContentUnlocked(post.id) || isContentUnlocked(`okuma_${post.id}`)
+    : false;
   const shopierOk = post ? isShopierUnlocked(`okuma_${post.id}`) : false;
   const isLocked = post?.isPremium && !isPremium && !singleUnlocked && !shopierOk;
 
@@ -292,7 +294,7 @@ export default function OkumaDetayPage() {
                   </div>
                 )}
 
-                {sr && (
+                {sr && typeof sr === "object" && (
                   <motion.div
                     className={styles.sanriWrap}
                     initial={{ opacity: 0, y: 12 }}
@@ -310,6 +312,63 @@ export default function OkumaDetayPage() {
                     <p className={styles.sanriQuestion}>{sr.question}</p>
                   </motion.div>
                 )}
+                {sr && typeof sr === "string" && (
+                  <motion.div
+                    className={styles.sanriWrap}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                  >
+                    <div className={styles.sanriHeader}>
+                      <span className={styles.sanriGlyph}>✦</span>
+                      <span className={styles.sanriLabel}>
+                        {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
+                      </span>
+                    </div>
+                    <p className={styles.sanriAnalysis} style={{ whiteSpace: "pre-wrap" }}>
+                      {sr}
+                    </p>
+                  </motion.div>
+                )}
+              </>
+            );
+          }
+
+          const preview = typeof post.previewContent === "string" ? post.previewContent.trim() : "";
+          if (preview) {
+            return (
+              <>
+                <div className={styles.content}>{post.previewContent}</div>
+                <div className={`${styles.lockZone} ${styles.lockZoneStandalone}`}>
+                  <div className={styles.lockZoneGradient} />
+                  <div className={styles.lockZoneOverlay}>
+                    <div className={styles.lockZoneIcon}>🔒</div>
+                    <p className={styles.lockZoneLine1}>
+                      {isTR ? "Buraya kadar gördün." : "You've seen this far."}
+                    </p>
+                    <p className={styles.lockZoneLine2}>
+                      {isTR
+                        ? "Ama asıl katman burada başlar."
+                        : "But the real layer begins here."}
+                    </p>
+                    <button
+                      className={styles.lockZoneBtn}
+                      onClick={() =>
+                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
+                      }
+                    >
+                      {isTR ? "Devamını Aç — 9.90₺" : "Unlock — ₺9.90"}
+                    </button>
+                    <button
+                      className={styles.lockZoneAlt}
+                      onClick={() =>
+                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
+                      }
+                    >
+                      {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
+                    </button>
+                  </div>
+                </div>
               </>
             );
           }
@@ -468,7 +527,7 @@ export default function OkumaDetayPage() {
         )}
 
         {/* ── Sanrı CTA (after everything) ── */}
-        {!isLocked && sr && (
+        {!isLocked && sr && typeof sr === "object" && sr.question && (
           <div className={styles.sanriCta}>
             <p className={styles.sanriCtaText}>
               {isTR

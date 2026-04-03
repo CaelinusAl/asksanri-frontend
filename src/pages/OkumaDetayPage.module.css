@@ -380,6 +380,10 @@
   border-radius: 16px;
   overflow: hidden;
 }
+/* previewContent kilidi: blur bloğu yok; absolute çocuklar parent yüksekliğini 0 yapıp overflow ile CTA'yı kesiyordu */
+.lockZoneStandalone {
+  min-height: 260px;
+}
 .lockZoneBlur {
   filter: blur(6px);
   pointer-events: none;
@@ -400,6 +404,7 @@
     rgba(10, 10, 16, 0.95) 70%
   );
   pointer-events: none;
+  z-index: 1;
 }
 .lockZoneOverlay {
   position: absolute;
@@ -411,6 +416,7 @@
   align-items: center;
   padding: 32px 20px 36px;
   z-index: 2;
+  pointer-events: auto;
 }
 .lockZoneIcon {
   width: 52px;
