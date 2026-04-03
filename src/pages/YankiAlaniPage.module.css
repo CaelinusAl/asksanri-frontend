@@ -763,6 +763,11 @@
   transition: color 0.2s;
 }
 .dailyAction:hover { color: #c8a0ff; }
+.dailyAction:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 
 /* Quick reply */
 .quickReply {
@@ -782,6 +787,10 @@
 }
 .quickReplyInput::placeholder { color: #4a4565; }
 .quickReplyInput:focus { border-color: rgba(200, 160, 255, 0.3); }
+.quickReplyInput:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 .quickReplySend {
   width: 28px;
   height: 28px;
@@ -795,7 +804,7 @@
   align-items: center;
   justify-content: center;
 }
-.quickReplySend:disabled { opacity: 0.3; cursor: default; }
+.quickReplySend:disabled { opacity: 0.35; cursor: not-allowed; }
 
 /* ── Error / Retry ── */
 .errorWrap {
