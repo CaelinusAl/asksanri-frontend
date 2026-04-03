@@ -7,6 +7,12 @@ const SITE_URL =
   (typeof window !== "undefined" && window.location.origin) ||
   "https://asksanri.com";
 
+/** Shopier ödeme sonrası yönlendirme — her zaman canlı domain (preview/local origin değil) */
+const SHOPIER_SUCCESS_ORIGIN =
+  (import.meta?.env?.VITE_SITE_URL &&
+    String(import.meta.env.VITE_SITE_URL).replace(/\/$/, "")) ||
+  "https://asksanri.com";
+
 const API =
   (typeof window !== "undefined" &&
     import.meta?.env?.VITE_BACKEND_URL &&
@@ -372,7 +378,7 @@ export function redirectToShopier(productId, contentId, returnPath) {
   } catch {}
 
   const key = setPendingPurchase(productId, contentId, returnPath);
-  const returnUrl = `${SITE_URL}/odeme-basarili?key=${key}&content=${encodeURIComponent(
+  const returnUrl = `${SHOPIER_SUCCESS_ORIGIN}/odeme-basarili?key=${key}&content=${encodeURIComponent(
     contentId || ""
   )}&ref=${encodeURIComponent(returnPath || "/")}`;
 

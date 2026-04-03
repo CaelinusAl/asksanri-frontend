@@ -12,11 +12,12 @@ import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
 
 /** Meta Pixel — ödeme başarı: script gecikmesine karşı kısa retry */
-function fireMetaPurchase(actualPrice) {
-  const payload = { value: actualPrice, currency: "TRY" };
+function fireMetaPurchase(value) {
+  const payload = { value, currency: "TRY" };
   const tryOnce = () => {
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "Purchase", payload);
+      console.log("PURCHASE FIRED");
       return true;
     }
     return false;
@@ -55,18 +56,17 @@ export default function OdemeBasariliPage() {
 
     const meta = resolveShopierPurchaseMeta(target, pendingSnap?.productId);
     const { pixelContentId, productTitle, actualPrice } = meta;
+    /** Meta Purchase her zaman: bilinen ürün fiyatı; yoksa 9.90 TRY (pixel sessiz kalmaz) */
+    const purchaseValue = actualPrice > 0 ? actualPrice : 9.9;
 
-    if (actualPrice > 0) {
-      console.log("PURCHASE FIRED", actualPrice);
-      fireMetaPurchase(actualPrice);
-      trackPurchase({
-        contentId: pixelContentId,
-        value: actualPrice,
-        currency: "TRY",
-        productTitle,
-        skipMetaPixel: true,
-      });
-    }
+    fireMetaPurchase(purchaseValue);
+    trackPurchase({
+      contentId: pixelContentId,
+      value: purchaseValue,
+      currency: "TRY",
+      productTitle,
+      skipMetaPixel: true,
+    });
 
     unlockViaShopier(target);
 
