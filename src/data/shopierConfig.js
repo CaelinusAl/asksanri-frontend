@@ -59,13 +59,13 @@ export const SHOPIER_PRODUCTS = {
   ankod: {
     id: "ankod",
     label: "AN_KOD — Anın Kodları Tam Analiz",
-    price: "247",
+    price: "99",
     url: "https://shopier.com/asksanri/45813111",
   },
   bilinc_alti: {
     id: "bilinc_alti",
     label: "Bilinçaltın Ne Diyor? — Derin Okuma",
-    price: "247",
+    price: "99",
     url: "https://shopier.com/asksanri/45813111",
   },
   kariyer_acilimi: {
