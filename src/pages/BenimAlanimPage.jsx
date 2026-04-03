@@ -1005,6 +1005,51 @@ function Defterim({ isTR, yankiPosts, navigate }) {
   );
 }
 
+/** Satın alınan her ürün kartında: ders / ilerleme Benim Alanım’da takibi */
+function resolveBenimAlanProgressNote(contentId, isTR) {
+  const id = String(contentId || "");
+  if (id === "kod_giris_ders" || id === "kod_egitmeni") {
+    return isTR
+      ? "Tamamladığın kod dersleri ve müfredat ilerlemen Benim Alanım’da kayıtlıdır. Öğrendiklerim ve Kod haritam bölümlerinden takip edebilirsin; sayfayı yenilesen de bu cihazda saklı kalır."
+      : "Your code lessons and curriculum progress are saved in My Space. Track them under My Learnings and My Code Map; they persist on this device after refresh.";
+  }
+  if (id === "premium") {
+    return isTR
+      ? "Premium erişimin üstteki kimlik kartında görünür. Günlük ritmin Günlük Frekans’ta, notların Defterim’de — hepsi bu alanda bir arada."
+      : "Premium status appears on your identity card above. Daily rhythm in Daily Frequency, notes in My Notebook — together in this space.";
+  }
+  if (id === "ankod_unlock" || id === "subconscious_unlock") {
+    return isTR
+      ? "AN_KOD okumaların ve seçim geçmişin bu hesapta tutulur. Derin içeriğe ürün sayfasından dönebilirsin; kişisel notların Defterim’de kalır."
+      : "Your AN_KOD readings and choices stay on this account. Return to deep content from the product page; personal notes live in My Notebook.";
+  }
+  if (
+    id === "role_unlock" ||
+    id === "iliski_acilimi" ||
+    id === "para_akisi" ||
+    id === "kariyer_acilimi" ||
+    id === "haftalik_akis" ||
+    id === "saglik_enerji"
+  ) {
+    return isTR
+      ? "Rol okuma ve açılım gezintin bu hesaba bağlıdır. Sonuçlarına ürün sayfasından ulaşırsın; önemli satırları Defterim’e yazarak Benim Alanım’da tutabilirsin."
+      : "Your role reading journey is tied to this account. Open results from the product page; keep important lines in My Notebook within My Space.";
+  }
+  if (id.startsWith("okuma_")) {
+    return isTR
+      ? "Bu okuma serisindeki ilerlemen satın alımla hesabına tanımlıdır. Okuma sayfasından devam et; kısa notların Defterim’de toplanabilir."
+      : "Progress in this reading series is tied to your purchase on this account. Continue from the reading page; quick notes can live in My Notebook.";
+  }
+  if (id.startsWith("book_")) {
+    return isTR
+      ? "Kitap okuma ilerlemen Kütüphane ile bağlantılıdır; bu alanda özet paneller ve Defterim ile takip edebilirsin."
+      : "Book reading progress links to the Library; track summaries here with My Notebook.";
+  }
+  return isTR
+    ? "Bu ürüne ait kullanımın Benim Alanım panellerinde özetlenir. Tamamladığın içerikleri ve notlarını aşağıdaki bölümlerden izleyebilirsin."
+    : "Usage for this product is summarized in My Space. Track completed content and notes in the sections below.";
+}
+
 /* ═══════════════════════════════════════════════
    SATIN ALINAN AÇILIMLAR
    ═══════════════════════════════════════════════ */
@@ -1136,8 +1181,8 @@ function SatinAlinanAcilimlar({ isTR, navigate, accessRevision }) {
       </div>
       <p className={styles.sectionKicker}>
         {isTR
-          ? "Shopier ve havale ile açılan tüm içerikler burada listelenir; sayfayı yenilesen de sunucudan yenilenir."
-          : "Everything unlocked via Shopier or bank transfer is listed here and refreshed from the server when you reload."}
+          ? "Satın aldığın her ürün burada listelenir (yenilemede sunucudan güncellenir). Kod derslerin ve diğer ilerlemen Benim Alanım’da kayıtlıdır — aşağıdaki Öğrendiklerim, Kod haritam ve Defterim panelleriyle birlikte takip et."
+          : "Every purchase appears here (refreshed from the server on reload). Code lessons and other progress are saved in My Space — use My Learnings, My Code Map, and My Notebook below."}
       </p>
       <div className={styles.glass}>
         {unlockedItems.length > 0 ? (
@@ -1167,6 +1212,9 @@ function SatinAlinanAcilimlar({ isTR, navigate, accessRevision }) {
                           {formatDate(item.at)}
                         </div>
                       )}
+                      <p className={styles.acilimCardProgress} role="note">
+                        {resolveBenimAlanProgressNote(item.id, isTR)}
+                      </p>
                     </div>
                     <button
                       className={styles.acilimCardBtn}

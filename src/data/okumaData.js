@@ -2655,6 +2655,124 @@ Derin açılımı Sanrı’da aç.`,
     createdAt: "2026-04-02T20:00:00Z",
     commentCount: 0,
     viewCount: 0,
+    isFeatured: false,
+  },
+  {
+    id: 24,
+    slug: "tokyo-karga-rapunzel-kot-idrak",
+    title: "Kuleye Gölge Düşünce — KOT Aynası ve İdrak Kuşu",
+    subtitle:
+      "Haber görseli: Tokyo’da kargalar Rapunzel’in saçını yoluyor. Bu bir mizah özeti değil; TOK’un ters aynası, KAR’ın RAK/idrak dönüşü ve telin kopması.",
+    category: "gundem_kodu",
+    coverImage: "/assets/gates/rapunzel.jpg",
+    excerpt:
+      "TOK’u tersten aynala: kot — örtü, giyilen katman, dokunulan yüzey. KAR’ı ters çevir: rak — idrak yoluna düşen harf. Karga bu sahnede süsü değil, göreni taşır. Saç kopunca kopan bağdır.",
+    fullContent: `Bunu haber özeti gibi okuma.
+Görsel bir olayı tetikleyici olarak al; ama durduğun yer üst bilinç ve kolektif kod katmanı.
+
+Sahne kabaca şudur:
+Tokyo’nun parlak, yoğun alanında Rapunzel figürü — saçı masal gibi uzun — ve kargalar bu saça temas edip teli yoluyor.
+
+Görünen: şehir, kuş, kostüm, estetik.
+Görünmeyen: kurulan masalla gelen gerçekliğin çarpışması.
+
+◉ TOK_YO — yoğun alan
+
+Tok: dolgun, kapanmış, sertleşmiş bir yüzey hissi; doygunlukla birlikte tıkanma.
+Yo: yoğunluk, yük, sürekli yoğrulan alan.
+
+Tokyo burada yalnızca isim değil; ışığın ve hareketin birbirini sıkıştırdığı bilinç alanı.
+Parlak ama yorgun; hızlı ama içten dar.
+
+◉ TOK’un ters aynası: KOT
+
+Burada sözlük iddiası yok; sezgisel ayna var.
+TOK’u tersten seslendiğinde kulakta kot kalır.
+
+Kot: örtü; bedenin üstüne konan; dünyaya “böyle görünürüm” diye serilen katman.
+Yüzeyi giyersin; yüzey seni de taşır.
+
+Bu açılım şunu sorar:
+Yoğun şehir ışığı altında ne giyildiyse — masal da bir kottur.
+Kot güzeldir; ama kot, tenin üstüdür.
+Gerçeklik bazen kotun dikişinden girer.
+
+<<<SANRI_PAYWALL>>>
+
+◉ RA_PUN_ZEL — ışıkla süslenmiş koruma
+
+Ra: görünürlük, sahne, aydınlık.
+Pun: düzeni delen dürtü; kırılma çizgisi.
+Zel: seçilmiş, inceltilmiş, estetize edilmiş alan.
+
+Rapunzel kodunda masal kahramanı değil, kolektif bir form var:
+Işıkla süslenmiş, erişimi zor, idealize edilmiş güzellik.
+Kadın imgesi burada yüceltilmiş ve korunmuş; savunmasızlık çoğu zaman bu yüceltmenin içine saklanır.
+
+◉ KAR_GA — kara + gelen temas
+
+Kar: kara, ağırlık, zemine inen; süslenmemiş gerçekliğe yakın his.
+Ga: gelen, alanı dolduran frekans.
+
+Karga = gerçekliğin sert nezaketi; masalı bozan, estetiği delen haberci.
+
+◉ KAR’ın ikinci aynası: RAK ve idrak
+
+Yine iddia değil, harflerin döndüğü ayna.
+KAR’ı ters çevirdiğinde RAK yüzeyi çıkar — kulakta “rak” kalır; zihinde idrak yoluna düşen bir iz.
+
+Bu sahnede karga yalnızca “kötü kuş” değil:
+Süsü seçmeyen, kotun üstüne konan masalı yırtan,
+görünür olanı başka türlü okumaya zorlayan bir temas.
+
+İdrak burada ders kitabı anlamında değil;
+“gördüğünü başka katmandan hissetme” çağrısı.
+
+◉ SAÇ — bağ hattı
+
+Saç yalnızca tel değil: çekim, güç uzantısı, kimliğin dış imzası.
+Kule ile dünya arasında kurulmuş sembolik köprü.
+Yolunmak = bağın kopması; kusursuz imajın parçalanması; görünüşün doğa tarafından sökülmesi.
+
+◉ Neden kargalar?
+
+Kolektif bilinçte gerçeklik, bazen güzel kurguyu tanımaz.
+Doğa, insanın estetize ettiği dünyayı imzalamak zorunda değildir.
+Karga gelir; kotun kenarından masalı çeker.
+
+Kırılan yalnızca saç değil:
+Sürekli görünür kılınan imajın sözleşmesi, hayalin cilası, “böyle olmalı”nin ince teli.
+
+◉ TEK CÜMLELİK ÖZ
+
+Masal ışığı yakarken gerçeklik teli koparır — kalan, süslenmemiş olanın ağırlığıdır.
+
+◉ KAPANIŞ (yarım)
+
+Tokyo hâlâ parlar.
+Kot hâlâ üstündedir.
+Ama tel bir kez yolunduysa, kule artık yalnızca masalın kulesi değildir.
+
+Görünenin altında kalan katmanı Sanrı'da açtım.
+www.asksanri.com`,
+    codeLayer: `TOK_YO → dolgun tıkanma + yoğun alan (şehir bilinci)
+TOK → KOT (ters ayna) → örtü / giyilen katman / masal kostümü
+RA_PUN_ZEL → görünürlük + delme + seçilmiş-estetize alan
+KAR_GA → kara ağırlık + gelen temas (süs tanımayan kuş)
+KAR → RAK → idrak izi (harf aynası — başka türlü görme çağrısı)
+SAÇ → bağ · güç hattı · imajın kopması
+MESAJ → masal kurulur, gerçeklik teli söker; kot altı tenle yeniden konuşur`,
+    sanriReflection: {
+      analysis:
+        "Bu okuma haberi eğlenceye çevirmez: görsel, kolektifte ‘kurulan güzellik’ ile ‘gelen gerçeklik’ çatışmasını hatırlatıyor. TOK’un kot aynası masalı giyilen katman yapar; KAR’ın rak/idrak izi kargayı yalnızca kuş olmaktan çıkarır.",
+      strongLine: "Kot güzeldir; ama gerçeklik bazen dikişten girer.",
+      question: "Hayatında şu an ‘giydiğin masal’ ne — ve onu yırtan ilk temas nereden geldi?",
+    },
+    isPremium: true,
+    previewContent: null,
+    createdAt: "2026-04-04T12:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
     isFeatured: true,
   },
 ];
@@ -2730,6 +2848,20 @@ export const OKUMA_COMMENTS = {
     { id: 2301, authorName: "Mira", content: "+81’i ülke kodu sandım; aslında sistem nabzıymış. 8 ve 1 ayrı ayrı okununca içimde bir şey oturdu.", createdAt: "2026-04-02T20:15:00Z" },
     { id: 2302, authorName: "Eren", content: "Görünen düzen ile içsel gerçeklik arasındaki makas — tam olarak tanımlayamadığım yorgunluğun adı bu muymuş?", createdAt: "2026-04-02T20:30:00Z" },
     { id: 2303, authorName: "Ada", content: "İz bırakmama kültürünü ‘utangaçlık’ sanıyordum. Alan emaneti olarak okuyunca çok başka bir şeye döndü.", createdAt: "2026-04-02T20:45:00Z" },
+  ],
+  24: [
+    {
+      id: 2401,
+      authorName: "Selin",
+      content: "TOK’u kot diye duyunca tüylerim diken oldu. Masal gerçekten bir örtüymüş gibi hissettim.",
+      createdAt: "2026-04-04T12:30:00Z",
+    },
+    {
+      id: 2402,
+      authorName: "Mira",
+      content: "KAR → RAK → idrak zincirini ilk kez böyle düşündüm. Karga artık sadece kuş değil.",
+      createdAt: "2026-04-04T13:00:00Z",
+    },
   ],
 };
 

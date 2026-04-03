@@ -312,7 +312,7 @@ export default function AdminMuhasebePage() {
                 </thead>
                 <tbody>
                   {(data.orders || []).map((o) => (
-                    <tr key={o.id}>
+                    <tr key={`${o.ledger_source || "shopier"}-${o.id}`}>
                       <td className={pageStyles.mono}>{o.order_id || "—"}</td>
                       <td>{o.email || "—"}</td>
                       <td>{o.product_name || "—"}</td>
@@ -352,6 +352,46 @@ export default function AdminMuhasebePage() {
               </button>
             </div>
           </section>
+
+          {(data.havale_orders || []).length > 0 && (
+            <section className={pageStyles.section}>
+              <h2 className={pageStyles.sectionTitle}>Havale / EFT talepleri (aynı tarih filtresi)</h2>
+              <p className={pageStyles.hint}>
+                Shopier dışı ödemeler; e-posta burada kayıtlıdır. Müşteri listesi artık Shopier + havale +
+                lead birleşimidir.
+              </p>
+              <div className={pageStyles.tableWrap}>
+                <table className={pageStyles.table}>
+                  <thead>
+                    <tr>
+                      <th>Talep</th>
+                      <th>E-posta</th>
+                      <th>Ürün</th>
+                      <th>content_id</th>
+                      <th>Tutar</th>
+                      <th>Durum</th>
+                      <th>Tarih</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(data.havale_orders || []).map((o) => (
+                      <tr key={`havale-${o.id}`}>
+                        <td className={pageStyles.mono}>{o.order_id || "—"}</td>
+                        <td>{o.email || "—"}</td>
+                        <td>{o.product_name || "—"}</td>
+                        <td className={pageStyles.mono}>{o.content_id}</td>
+                        <td>
+                          {formatTry(o.amount)} {o.currency}
+                        </td>
+                        <td>{o.payment_status || "—"}</td>
+                        <td className={pageStyles.mono}>{o.created_at?.slice(0, 19) || "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
 
           <section className={pageStyles.section}>
             <h2 className={pageStyles.sectionTitle}>Ürün bazlı gelir (seçili tarih aralığı)</h2>

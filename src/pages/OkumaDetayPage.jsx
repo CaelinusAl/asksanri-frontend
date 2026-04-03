@@ -5,6 +5,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { PremiumGate } from "../components/premium/PremiumGate";
 import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
+import { markOkumaSeen, OKUMA_EARLY_PAYWALL_MARKER } from "../data/okumaSeen";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
 import { EmailCaptureInline } from "../components/EmailCaptureModal";
@@ -98,6 +99,11 @@ export default function OkumaDetayPage() {
       const ld = document.getElementById("sanri-article-ld");
       if (ld) ld.remove();
     };
+  }, [post]);
+
+  useEffect(() => {
+    if (!post) return;
+    markOkumaSeen(post.slug);
   }, [post]);
 
   useEffect(() => {
@@ -277,11 +283,16 @@ export default function OkumaDetayPage() {
           const paragraphs = (post.fullContent || "").split(/\n\n+/);
           const FREE_PARAGRAPHS = 2;
           const showFull = !isLocked;
+          const rawFull = post.fullContent || "";
+          const hasEarlyPaywall = rawFull.includes(OKUMA_EARLY_PAYWALL_MARKER);
+          const fullTextForDisplay = hasEarlyPaywall
+            ? rawFull.split(OKUMA_EARLY_PAYWALL_MARKER).join("\n\n").trim()
+            : rawFull;
 
           if (showFull) {
             return (
               <>
-                <div className={styles.content}>{post.fullContent}</div>
+                <div className={styles.content}>{fullTextForDisplay}</div>
 
                 {post.codeLayer && (
                   <div className={styles.codeLayerWrap}>
@@ -331,6 +342,52 @@ export default function OkumaDetayPage() {
                     </p>
                   </motion.div>
                 )}
+              </>
+            );
+          }
+
+          if (hasEarlyPaywall) {
+            const teaser = rawFull.split(OKUMA_EARLY_PAYWALL_MARKER)[0]?.trim() || "";
+            return (
+              <>
+                <div className={styles.content}>{teaser}</div>
+                <div className={`${styles.lockZone} ${styles.lockZoneStandalone}`}>
+                  <div className={styles.lockZoneGradient} />
+                  <div className={styles.lockZoneOverlay}>
+                    <div className={styles.lockZoneIcon}>🔒</div>
+                    <p className={styles.lockZoneLine1}>
+                      {isTR ? "Açılım burada kesiliyor." : "The opening cuts here."}
+                    </p>
+                    <p className={styles.lockZoneLine2}>
+                      {isTR
+                        ? "RA_PUN_ZEL, KAR_GA, idrak, saç ve kolektif katman — 9,90 ₺ ile devam."
+                        : "RA_PUN_ZEL, KAR_GA, insight, hair, collective layer — continue for ₺9.90."}
+                    </p>
+                    <button
+                      className={styles.lockZoneBtn}
+                      onClick={() =>
+                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
+                      }
+                    >
+                      {isTR ? "Devamını Aç — 9,90 ₺" : "Unlock — ₺9.90"}
+                    </button>
+                    <button
+                      className={styles.lockZoneAlt}
+                      onClick={() =>
+                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
+                      }
+                    >
+                      {isTR ? "Ödeme ekranına git" : "Go to checkout"}
+                    </button>
+                    <BankTransferLink
+                      contentId={`okuma_${post.id}`}
+                      returnTo={`${location.pathname}${location.search}`}
+                      className={styles.lockZoneHavale}
+                    >
+                      {isTR ? "Havale / EFT ile öde (9,90 ₺)" : "Pay via bank transfer (₺9.90)"}
+                    </BankTransferLink>
+                  </div>
+                </div>
               </>
             );
           }

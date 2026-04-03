@@ -1,12 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   fetchBankTransferPreview,
   submitBankTransferRequest,
   fetchBankTransferStatus,
+  verifyBankTransferInstant,
 } from "../data/bankTransferApi";
 import { resolveBankDisplay } from "../data/bankTransferDisplayEnv";
-import { syncPurchasesFromServer } from "../data/shopierConfig";
+import {
+  applyVerifiedShopierUnlock,
+  fetchShopierPurchaseCheck,
+  getDeviceFingerprint,
+  syncPurchasesFromServer,
+} from "../data/shopierConfig";
 import styles from "./HavaleOdemePage.module.css";
 
 export default function HavaleOdemePage() {
@@ -26,8 +32,12 @@ export default function HavaleOdemePage() {
 
   const [submittedEmail, setSubmittedEmail] = useState("");
   const [submittedCode, setSubmittedCode] = useState("");
+  const [submittedAmount, setSubmittedAmount] = useState(null);
   const [statusMsg, setStatusMsg] = useState("");
   const [statusLoading, setStatusLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [verifyMsg, setVerifyMsg] = useState("");
+  const [benimAlanimMsg, setBenimAlanimMsg] = useState("");
 
   useEffect(() => {
     if (!contentId) {
@@ -78,6 +88,9 @@ export default function HavaleOdemePage() {
         });
         setSubmittedEmail(email.trim().toLowerCase());
         setSubmittedCode(preview.transfer_code);
+        setSubmittedAmount(
+          typeof preview.amount === "number" ? preview.amount : parseFloat(preview.amount),
+        );
         setPhase("submitted");
       } catch (err) {
         setError(err.message || "Gönderilemedi.");
@@ -98,6 +111,9 @@ export default function HavaleOdemePage() {
         setStatusMsg(s.message_tr || s.status);
         if (s.status === "approved") {
           await syncPurchasesFromServer();
+          setBenimAlanimMsg(
+            "Ders ve ilerlemen Benim Alanım’da: Öğrendiklerim ve Satın aldıklarım bölümlerinden takip edebilirsin.",
+          );
         }
       } else {
         setStatusMsg("Kayıt bulunamadı — e-posta ve kodu kontrol et.");
@@ -108,6 +124,43 @@ export default function HavaleOdemePage() {
       setStatusLoading(false);
     }
   }, [submittedEmail, submittedCode]);
+
+  const instantVerify = useCallback(async () => {
+    if (!submittedEmail || !submittedCode || submittedAmount == null || Number.isNaN(submittedAmount)) {
+      return;
+    }
+    setVerifyLoading(true);
+    setVerifyMsg("");
+    try {
+      const fp = getDeviceFingerprint();
+      const v = await verifyBankTransferInstant({
+        transferCode: submittedCode,
+        amount: submittedAmount,
+        email: submittedEmail,
+        deviceFp: fp && fp !== "anon" ? fp : undefined,
+      });
+      const tr =
+        v.message_tr ||
+        (v.approved ? "Ödeme onaylandı." : v.temp_unlock ? "Geçici erişim verildi." : "");
+      setVerifyMsg(tr);
+      const benim = v.benim_alanim_message_tr || "";
+      if (benim) setBenimAlanimMsg(benim);
+      if (v.approved || v.temp_unlock) {
+        const chk = await fetchShopierPurchaseCheck(contentId, submittedEmail);
+        if (chk.unlocked) {
+          applyVerifiedShopierUnlock(
+            contentId,
+            chk.purchased_at || chk.purchase?.purchased_at,
+          );
+        }
+        await syncPurchasesFromServer();
+      }
+    } catch (err) {
+      setVerifyMsg(err.message || "Doğrulama başarısız.");
+    } finally {
+      setVerifyLoading(false);
+    }
+  }, [submittedEmail, submittedCode, submittedAmount, contentId]);
 
   if (phase === "loading") {
     return (
@@ -196,6 +249,21 @@ Alıcı: ${bank.accountName || "—"}`}
                         Bu kod benzersizdir — yalnızca senin işlemin için geçerlidir; başka kod kullanma.
                       </p>
                     </div>
+                    {preview.qr_png_base64 ? (
+                      <div className={styles.qrBlock}>
+                        <p className={styles.qrTitle}>QR ile ödeme</p>
+                        <img
+                          className={styles.qrImg}
+                          src={`data:image/png;base64,${preview.qr_png_base64}`}
+                          alt="Ödeme QR kodu"
+                          width={220}
+                          height={220}
+                        />
+                        {preview.qr_hint_tr ? (
+                          <p className={styles.qrHint}>{preview.qr_hint_tr}</p>
+                        ) : null}
+                      </div>
+                    ) : null}
                   </>
                 );
               })()}
@@ -233,6 +301,7 @@ Alıcı: ${bank.accountName || "—"}`}
                   <input
                     className={styles.input}
                     type="email"
+                    name="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -277,10 +346,20 @@ Alıcı: ${bank.accountName || "—"}`}
             <div className={styles.card}>
               <p className={styles.cardTitle}>Durum</p>
               <p className={styles.note}>
-                Onay genelde kısa sürer. Aşağıdan durumu yenileyebilirsin; onaylandıktan sonra ilgili
-                sayfaya dönüp yenile.
+                Ödemeyi yaptıysan aşağıdan anında doğrulamayı dene (banka sinyali eşleşirse erişim hemen
+                açılır). Aksi halde 15 dakikalık geçici erişim verilebilir; kalıcı onay için dekont
+                kontrolü sürer.
               </p>
               <div className={styles.statusBox}>
+                <button
+                  type="button"
+                  className={styles.verifyBtn}
+                  onClick={instantVerify}
+                  disabled={verifyLoading}
+                >
+                  {verifyLoading ? "Doğrulanıyor…" : "Ödedim / Anında doğrula"}
+                </button>
+                {verifyMsg ? <p className={styles.note}>{verifyMsg}</p> : null}
                 <button
                   type="button"
                   className={styles.secondaryBtn}
@@ -291,6 +370,14 @@ Alıcı: ${bank.accountName || "—"}`}
                 </button>
                 {statusMsg ? <p className={styles.note}>{statusMsg}</p> : null}
               </div>
+              {benimAlanimMsg ? (
+                <p className={styles.benimAlanim}>
+                  {benimAlanimMsg}{" "}
+                  <Link className={styles.benimLink} to="/benim-alanim">
+                    Benim Alanım’a git
+                  </Link>
+                </p>
+              ) : null}
             </div>
           </>
         )}

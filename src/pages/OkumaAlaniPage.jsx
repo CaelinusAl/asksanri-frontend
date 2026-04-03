@@ -5,6 +5,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { LockBadge } from "../components/premium/PremiumGate";
 import { OKUMA_POSTS, OKUMA_CATEGORIES, getCategoryById, timeAgoOkuma } from "../data/okumaData";
+import { isOkumaSeen } from "../data/okumaSeen";
 import styles from "./OkumaAlaniPage.module.css";
 
 const API =
@@ -38,7 +39,14 @@ export default function OkumaAlaniPage() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [liveStats, setLiveStats] = useState({});
   const [gozCoverErr, setGozCoverErr] = useState(false);
+  const [, setSeenBump] = useState(0);
   const activeReaders = useActiveReaders();
+
+  useEffect(() => {
+    const onSeen = () => setSeenBump((n) => n + 1);
+    window.addEventListener("sanri-okuma-seen", onSeen);
+    return () => window.removeEventListener("sanri-okuma-seen", onSeen);
+  }, []);
 
   useEffect(() => {
     fetch(`${API}/okuma/all-stats`)
@@ -190,6 +198,9 @@ export default function OkumaAlaniPage() {
                 <span>💬 {mergeCount(liveStats[featured.slug]?.comments, featured.commentCount)}</span>
                 <span>👁 {mergeCount(liveStats[featured.slug]?.views, featured.viewCount)}</span>
                 <span>{timeAgoOkuma(featured.createdAt)}</span>
+                {isOkumaSeen(featured.slug) ? (
+                  <span className={styles.seenBadge}>{isTR ? "Görüldü" : "Seen"}</span>
+                ) : null}
               </div>
             </div>
           </motion.div>
@@ -244,6 +255,9 @@ export default function OkumaAlaniPage() {
                       <span>💬 {mergeCount(liveStats[post.slug]?.comments, post.commentCount)}</span>
                       <span>👁 {mergeCount(liveStats[post.slug]?.views, post.viewCount)}</span>
                       <span>{timeAgoOkuma(post.createdAt)}</span>
+                      {isOkumaSeen(post.slug) ? (
+                        <span className={styles.seenBadge}>{isTR ? "Görüldü" : "Seen"}</span>
+                      ) : null}
                     </div>
                   </div>
                 </motion.div>

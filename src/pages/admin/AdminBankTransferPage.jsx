@@ -4,6 +4,7 @@ import {
   fetchBankTransferDetail,
   approveBankTransfer,
   rejectBankTransfer,
+  recordBankIncomingSignal,
 } from "../../data/adminApi";
 import styles from "./AdminBankTransferPage.module.css";
 
@@ -56,6 +57,10 @@ export default function AdminBankTransferPage() {
   const [detail, setDetail] = useState(null);
   const [rejectNote, setRejectNote] = useState("");
   const [busy, setBusy] = useState(false);
+  const [incCode, setIncCode] = useState("");
+  const [incAmount, setIncAmount] = useState("");
+  const [incBusy, setIncBusy] = useState(false);
+  const [incMsg, setIncMsg] = useState("");
 
   const pendingCount = useMemo(
     () => items.filter((r) => r.status === "pending").length,
@@ -119,6 +124,28 @@ export default function AdminBankTransferPage() {
     }
   };
 
+  const onRecordIncoming = async (e) => {
+    e.preventDefault();
+    setIncMsg("");
+    const code = incCode.trim().toUpperCase();
+    const amt = incAmount.trim().replace(",", ".");
+    if (!code || !amt) {
+      setIncMsg("Kod ve tutar gerekli.");
+      return;
+    }
+    setIncBusy(true);
+    try {
+      await recordBankIncomingSignal({ transfer_code: code, amount: amt });
+      setIncMsg("Kaydedildi — kullanıcı ‘Anında doğrula’ ile eşleştirebilir (10 dk).");
+      setIncCode("");
+      setIncAmount("");
+    } catch (err) {
+      setIncMsg(err.message || "Kaydedilemedi");
+    } finally {
+      setIncBusy(false);
+    }
+  };
+
   const statusClass = (s) => {
     if (s === "pending") return styles.statusPending;
     if (s === "approved") return styles.statusApproved;
@@ -140,6 +167,41 @@ export default function AdminBankTransferPage() {
         Durumlar: <strong>pending</strong> (beklemede) → <strong>approved</strong> (onaylı, içerik kilidi
         açılır) → <strong>rejected</strong> (red). Onayda <code>shopier_purchases</code> kaydı oluşturulur.
       </p>
+
+      <form className={styles.incomingCard} onSubmit={onRecordIncoming}>
+        <h2 className={styles.incomingTitle}>Gelen ödeme sinyali (otomatik doğrulama)</h2>
+        <p className={styles.sub}>
+          Banka / entegrasyondan gelen <strong>tutar</strong> ve EFT <strong>açıklama kodu</strong>nu
+          girin. Son 10 dakika içinde kullanıcı &quot;Ödedim / Anında doğrula&quot; dediğinde eşleşirse
+          talep otomatik onaylanır.
+        </p>
+        <div className={styles.incomingRow}>
+          <label className={styles.incomingLabel}>
+            Açıklama kodu
+            <input
+              className={styles.incomingInput}
+              value={incCode}
+              onChange={(ev) => setIncCode(ev.target.value)}
+              placeholder="Örn. KOD-0421"
+              autoComplete="off"
+            />
+          </label>
+          <label className={styles.incomingLabel}>
+            Tutar (TL)
+            <input
+              className={styles.incomingInput}
+              value={incAmount}
+              onChange={(ev) => setIncAmount(ev.target.value)}
+              placeholder="999.00"
+              inputMode="decimal"
+            />
+          </label>
+        </div>
+        <button type="submit" className={styles.incomingBtn} disabled={incBusy}>
+          {incBusy ? "Kaydediliyor…" : "Sinyali kaydet"}
+        </button>
+        {incMsg ? <p className={styles.incomingMsg}>{incMsg}</p> : null}
+      </form>
 
       {error ? <div className={styles.error}>{error}</div> : null}
 

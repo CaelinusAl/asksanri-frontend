@@ -375,3 +375,69 @@
     width: 100%;
   }
 }
+
+.incomingCard {
+  margin-bottom: 28px;
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.22);
+  background: rgba(200, 160, 255, 0.06);
+}
+
+.incomingTitle {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  color: var(--text-primary, rgba(255, 255, 255, 0.92));
+}
+
+.incomingRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.incomingLabel {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted, rgba(255, 255, 255, 0.55));
+}
+
+.incomingInput {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.28);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-size: 14px;
+  font-family: ui-monospace, monospace;
+}
+
+.incomingBtn {
+  margin-top: 14px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  background: linear-gradient(135deg, #8b6bff, #5c3dc4);
+  color: #f4f0ff;
+}
+
+.incomingBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.incomingMsg {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: rgba(180, 255, 200, 0.9);
+}

@@ -95,6 +95,17 @@ export const rejectBankTransfer = (id, note = "") =>
     body: { note: note || "" },
   });
 
+/** Otomatik verify için banka/entegrasyon sinyali (tutar + açıklama kodu). */
+export const recordBankIncomingSignal = (payload) =>
+  adminFetch("/admin/bank-transfers/incoming-signal", {
+    method: "POST",
+    body: {
+      transfer_code: String(payload.transfer_code || "").trim(),
+      amount: payload.amount,
+      meta: payload.meta && typeof payload.meta === "object" ? payload.meta : undefined,
+    },
+  });
+
 export async function downloadAccountingCsv(params = {}) {
   const API = import.meta.env.VITE_BACKEND_URL || "https://sanri-api-production-4a7b.up.railway.app";
   const token = localStorage.getItem("sanri_token");

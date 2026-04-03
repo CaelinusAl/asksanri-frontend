@@ -80,3 +80,29 @@ export async function fetchBankTransferStatus(email, transferCode) {
   }
   return data;
 }
+
+/** Banka sinyali veya 15 dk geçici erişim — amount talepteki tutar ile aynı olmalı. */
+export async function verifyBankTransferInstant({
+  transferCode,
+  amount,
+  email,
+  deviceFp,
+}) {
+  const res = await fetch(`${API}/bank-transfer/verify`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      transfer_code: String(transferCode || "").trim().toUpperCase(),
+      amount,
+      email: String(email || "").trim().toLowerCase(),
+      device_fp: deviceFp || undefined,
+    }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(
+      formatApiDetail(data.detail) || data.message_tr || `Hata: ${res.status}`,
+    );
+  }
+  return data;
+}

@@ -24,6 +24,7 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
+  const [fieldError, setFieldError] = useState("");
   const shownRef = useRef(false);
 
   useEffect(() => {
@@ -51,23 +52,45 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
   }, [trigger]);
 
   const handleSubmit = async () => {
-    if (!email.trim() || !email.includes("@")) return;
+    setFieldError("");
+    const em = email.trim().toLowerCase();
+    if (!em) {
+      setFieldError("E-posta zorunludur.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      setFieldError("Geçerli bir e-posta gir.");
+      return;
+    }
     setStatus("sending");
     try {
       const token = localStorage.getItem("sanri_token");
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      await fetch(`${API}/shopier/collect-email`, {
+      const res = await fetch(`${API}/shopier/collect-email`, {
         method: "POST",
         headers,
         body: JSON.stringify({
-          email: email.trim(),
+          email: em,
           source: trigger,
           page,
           device_fp: getDeviceFingerprint(),
         }),
       });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        const d = errBody.detail;
+        const msg =
+          typeof d === "string"
+            ? d
+            : d && typeof d === "object"
+              ? d.message || d.message_tr || JSON.stringify(d)
+              : `Hata ${res.status}`;
+        setFieldError(msg);
+        setStatus("idle");
+        return;
+      }
       localStorage.setItem(COLLECTED_KEY, "1");
       trackLead(page || trigger);
       setStatus("done");
@@ -111,12 +134,20 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
                 <input
                   style={S.input}
                   type="email"
+                  name="email"
+                  autoComplete="email"
                   placeholder="E-posta adresin"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setFieldError("");
+                  }}
                   onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                   autoFocus
                 />
+                {fieldError ? (
+                  <p style={{ color: "#ff6b6b", fontSize: 12, marginTop: 6 }}>{fieldError}</p>
+                ) : null}
                 <button
                   style={{
                     ...S.btn,
@@ -147,6 +178,7 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
 export function EmailCaptureInline({ page = "", label }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
+  const [fieldError, setFieldError] = useState("");
 
   if (typeof window !== "undefined") {
     try {
@@ -155,23 +187,45 @@ export function EmailCaptureInline({ page = "", label }) {
   }
 
   const handleSubmit = async () => {
-    if (!email.trim() || !email.includes("@")) return;
+    setFieldError("");
+    const em = email.trim().toLowerCase();
+    if (!em) {
+      setFieldError("E-posta zorunludur.");
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      setFieldError("Geçerli bir e-posta gir.");
+      return;
+    }
     setStatus("sending");
     try {
       const token = localStorage.getItem("sanri_token");
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      await fetch(`${API}/shopier/collect-email`, {
+      const res = await fetch(`${API}/shopier/collect-email`, {
         method: "POST",
         headers,
         body: JSON.stringify({
-          email: email.trim(),
+          email: em,
           source: "inline",
           page,
           device_fp: getDeviceFingerprint(),
         }),
       });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        const d = errBody.detail;
+        const msg =
+          typeof d === "string"
+            ? d
+            : d && typeof d === "object"
+              ? d.message || d.message_tr || JSON.stringify(d)
+              : `Hata ${res.status}`;
+        setFieldError(msg);
+        setStatus("idle");
+        return;
+      }
       localStorage.setItem(COLLECTED_KEY, "1");
       trackLead(page);
       setStatus("done");
@@ -199,9 +253,14 @@ export function EmailCaptureInline({ page = "", label }) {
         <input
           style={S.inlineInput}
           type="email"
+          name="email"
+          autoComplete="email"
           placeholder="E-posta adresin"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setFieldError("");
+          }}
           onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
         />
         <button
@@ -212,6 +271,9 @@ export function EmailCaptureInline({ page = "", label }) {
           {status === "sending" ? "..." : "Gönder"}
         </button>
       </div>
+      {fieldError ? (
+        <p style={{ color: "#ff6b6b", fontSize: 12, marginTop: 8 }}>{fieldError}</p>
+      ) : null}
     </div>
   );
 }

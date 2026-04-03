@@ -977,7 +977,7 @@
 }
 .acilimCard {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
   padding: 16px 14px;
   border-radius: 14px;
@@ -995,6 +995,7 @@
   flex-shrink: 0;
   width: 40px;
   text-align: center;
+  margin-top: 2px;
 }
 .acilimCardBody {
   flex: 1;
@@ -1016,8 +1017,19 @@
   color: rgba(200,160,255,.25);
   margin-top: 4px;
 }
+.acilimCardProgress {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 11px;
+  line-height: 1.55;
+  color: rgba(200, 220, 255, 0.72);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(120, 200, 255, 0.12);
+}
 .acilimCardBtn {
   flex-shrink: 0;
+  align-self: center;
   padding: 8px 16px;
   border-radius: 10px;
   border: 1px solid rgba(120,247,216,.2);
