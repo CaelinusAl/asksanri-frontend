@@ -21,6 +21,8 @@ import {
   paywallCta,
   sirUnlocked,
   heroHypnoticLine,
+  closingReading,
+  bridgeToSeal,
 } from "../data/gozAcikGunesContent";
 import styles from "./GozAcikGunesPage.module.css";
 
@@ -104,7 +106,7 @@ export default function GozAcikGunesPage() {
           ← {isTR ? "Kapılar" : "Gates"}
         </button>
         <span className={styles.badge}>
-          {isTR ? "Derin okuma" : "Deep read"}
+          {isTR ? "Üst bilinç okuma" : "Deep read"}
         </span>
       </header>
 
@@ -141,6 +143,34 @@ export default function GozAcikGunesPage() {
                 ))}
               </section>
             ))}
+
+            <section className={styles.block}>
+              <p className={styles.kicker}>{closingReading.kicker}</p>
+              <h2 className={styles.blockTitle}>{closingReading.title}</h2>
+              {closingReading.paras.map((t, j) => (
+                <p key={j} className={styles.para}>
+                  {rich(t)}
+                </p>
+              ))}
+              <div className={styles.sanriCtaBox}>
+                <a
+                  className={styles.sanriCtaLink}
+                  href={closingReading.ctaHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  👉 {closingReading.ctaLabel}
+                </a>
+              </div>
+            </section>
+
+            <section className={styles.bridgeBlock}>
+              {bridgeToSeal.paras.map((t, j) => (
+                <p key={j} className={styles.bridgePara}>
+                  {rich(t)}
+                </p>
+              ))}
+            </section>
 
             <div className={styles.cliff}>
               <p className={styles.cliffText}>{cliffVisibleLine}</p>

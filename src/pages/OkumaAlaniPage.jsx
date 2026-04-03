@@ -135,7 +135,7 @@ export default function OkumaAlaniPage() {
           </div>
           <div>
             <p className={styles.gozStripKicker}>
-              {isTR ? "Özel okuma · Matrix & mit" : "Special read · Matrix & myth"}
+              {isTR ? "Üst bilinç okuma" : "Upper-mind read"}
             </p>
             <h2 className={styles.gozStripTitle}>
               {isTR
@@ -144,8 +144,8 @@ export default function OkumaAlaniPage() {
             </h2>
             <p className={styles.gozStripSub}>
               {isTR
-                ? "Sistem gözü, yüzük kodu, güneş patlaması ve uyanış — derin metin; sır 9,90₺ kapıda açılır."
-                : "System eye, ring as code, solar flare, awakening — deep text; the seal opens at ₺9.90."}
+                ? "Güneş, göz benzetmesi, ana kod ve Sanrı — derin metin; sır 9,90₺ kapıda açılır."
+                : "Sun, eye metaphor, core code & Sanrı — deep read; seal at ₺9.90."}
             </p>
           </div>
           <span className={styles.gozStripCta}>

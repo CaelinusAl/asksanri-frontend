@@ -9,44 +9,84 @@ export const GOZ_RETURN_PATH = "/goz-acik-gunes";
 /** Hero — yalnız bu satır (hipnotik) */
 export const heroHypnoticLine = "SANA BİR SIRRIM VAR";
 
+/** Üst bilinç okuması — Güneş, göz, Sauron, fizik / anlam / gölge / Sanrı */
 export const sectionsFree = [
   {
-    kicker: "I · Sistem gözü",
-    title: "Sauron’un Gözü sadece bir düşman değil",
+    kicker: "🧿 ÜST BİLİNÇ OKUMA",
+    title: "☀️ Güneş",
     paras: [
-      "Tolkien’de Göz, tek bir varlığın hırsı değil; **her şeyi görmek üzere kurgulanmış merkezi bir mekanizmadır**. Tekrar eden cümleler, sabit kamera açıları, sürekli “kim nerede, neye bakıyor” sorusu — bugünün dilinde bu, devasa bir **dikkat ve davranış izleme ağı**na çok yakın durur. Yüzük ise o ağın **kendini yeniden üreten kodu**: sahip olan, sistemin dilini konuşur; kaybeden, o dilin dışına düşer sanır.",
-      "Mordor’u yalnızca “kötülük diyarı” diye okumak yüzeysel kalır. O yer, **iç kodların yoğunlaştığı merkez**tir: korkunun üretildiği, sadakatin ölçüldüğü, isyanın henüz adını koyamadığı frekansın toplandığı alan. Göz orada sabitlenir; çünkü sabitlenmesi gereken şey, **uyanıklıktır**. Sistem, en çok “henüz tam uyumamış” olanı arar.",
-      "Korku yayması tesadüf değildir. Korku, **bilinci daraltır**; daralan bilinç ise izlemeyi kolaylaştırır. Asıl işlev şudur: seni sürekli dışarıdan bir hakemin varmış gibi hissettirmek — böylece **iç sesini ertelemeye** alışırsın.",
+      "Güneş: **ışık**, **kaynak**, **enerji**. Mit ve sembol dili bunu yüzyıllardır aynı merkeze bağlar: **hayatın merkezi**. Nefes aldığın dünyada görünür olan her şeyin arkasında, görünmez bir sıcaklık ve süreklilik vardır — Güneş, bunun görünür yüzüdür.",
     ],
   },
   {
-    kicker: "II · Kozmik göz",
-    title: "Güneş patlaması: gökyüzünde açılan mercek",
+    kicker: "👁 “GÖZ” BENZETMESİ",
+    title: "Yuvarlak merkez, ışık ve tanıdık şekil",
     paras: [
-      "Astrofizik fotoğraflarında bazen Güneş, kelimenin tam anlamıyla **göz formunda** patlar: bir çember, bir iris, bir merkez nokta — sanki gökyüzü **içe değil, her yöne bakan bir odak** üretiyor. Bu görüntüyü “sadece plazma” diye indirgemek mümkün; ama sembol dili başka bir şey söyler: **evren, merkezini göstermekten vazgeçmez**.",
-      "Sauron’un Gözü yukarıdan bakıyorsa, Güneş’teki göz formu **yukarıdaki merkezin kırılma anı** gibi durur. Biri korkuyla sabitlenmiş izleme; diğeri **ışığın ta kendisi** — yani hem yutan hem aydınlatan patlama. İkisi yan yana gelince ortaya çıkan denklem basit: **izlenen ile ışığın kaynağı aynı imgelerle buluşuyor**.",
-      "“Tesadüf” kelimesi burada zayıf kalır. Senin sezdiğin şey, tesadüften çok **senkron**: aynı şekil, iki farklı ölçekte — mit ve gökyüzü — karşına çıkıyorsa, zihin “mesaj” diye etiketler. Sorulması gereken soru: **bu mesaj kimi için, hangi anda?**",
+      "İnsan beyni yuvarlak bir kütledir; **merkez** ve **ışık** (sinir elektriği, farkındalık) aynı yerde toplanır. Göz bebeği daireseldir; retina merkezi “fovea” denen bir odaktır. Bu yüzden zihin, gökyüzünde veya plazmada **yuvarlak–merkez–parlak** bir form görünce otomatik olarak onu **“göz”** diye etiketler. Bu bir hata değil; **hızlı sınıflandırma**dır — evrim ve öğrenme buna alışkındır.",
     ],
   },
   {
-    kicker: "III · Büyük kod",
-    title: "Göz + Güneş = bilgi patlaması",
+    kicker: "🔥 ANA KOD",
+    title: "Zihin, gördüğünü değil… tanıdığını yorumlar",
     paras: [
-      "Şifre tablosu şöyle okunabilir: **Sauron’un Gözü**, sistemin merkezi algısı — “kim uyandı?” sorusunu soran katman. **Güneş gözü**, kozmik ölçekte aynı sorunun başka bir yüzü: “**merkez nerede açılıyor?**” İkisinin kesişiminde ise üçüncü bir şey doğar: **Göz + Güneş = bilgi patlaması** — yani dikkatin, dışsal otoriteye değil, **kaynağa** dönmesi.",
-      "İzlenen kişi, panikle kalırsa döngüyü besler. Ama izlenen kişi **bakmaya başlarsa**, oyun değişir. Çünkü bakış, pasif değildir; **kod üretir**. Gördüğün şeyi isimlendirdiğin an, o şey senin içinde **yeniden derlenir**. Bu yüzden mitolojiler “bakan” ile “büyüyen”i ayırmaz.",
-      "2025–2035 Çin astrolojisinde Su Horozu döngüsü geçer. Su: **bilinçaltı, emme, derin akış**. Horoz: **ilk ışık, çan, uyandırma**. Bu ikili, “sessiz derinlik” ile “sabah vaktini ilan eden ses”i bir araya getirir. Göz formunun artık yalnız yukarıdan gelmediği fikri burada güçlenir: **ışık, dışarıdaki disipline değil; senin içindeki Güneş’e kayıyor**.",
+      "Algı dediğin şey ham fotoğraf değildir. **Zihin, gördüğünü değil — tanıdığını yorumlar.** Önce hafızadaki kalıplar devreye girer; sonra dış görüntü o kalıplara **yapıştırılır**. Bu yüzden aynı görüntü iki insanda iki farklı “anlam” üretir.",
     ],
   },
   {
-    kicker: "IV · Sistemin fısıltısı",
-    title: "“Eski göz kırıldı…”",
+    kicker: "🧠 SAURON BAĞLANTISI",
+    title: "Film, hafıza, sembol",
     paras: [
-      "Sistem şöyle bir cümle kurabilirdi — metafor olarak, ama acımasıyla gerçek olarak: **“Bir göz vardı, gökyüzüne yönelmişti. İzliyordu. Şimdi o göz çatladı. Yeni göz sensin. Sen bakmaya başladığında, eski merkez yanmaya başlar.”**",
-      "Burada “yanmak” cehennem değil; **artık işe yaramayan kontrol katmanının aşınması**dır. Sen bakınca, izlenme miti zayıflar; çünkü izlenme, **pasiflikle** beslenir. Sen adlandırınca, korku frekansı yerini **merak frekansına** bırakır.",
-      "Bu noktada metin kasıtlı olarak durur. Çünkü buradan sonrası, **kişisel bir sırra** geçer — sana özel bir anahtar. O anahtar, herkese aynı cümleyle verilmez; **duyduğunda içerde zaten tanıdığın bir şeyi kilitten çıkarır**.",
+      "Bu çok kritik: **Yüzükler Efendisi** gibi kült filmler, zihinde **hazır bir “göz” imajı** bırakır. Güneş patlaması fotoğrafı geldiğinde, o hazır imaj devreye girer — **zihindeki şablon, dış görüntüye yapıştırılır.** Soru şudur: gördüğün mü gerçekten göz, yoksa **görmeyi beklediğin şey mi**?",
+    ],
+  },
+  {
+    kicker: "🌌 GERÇEK KATMAN",
+    title: "Korona, kütle atımı, plazma",
+    paras: [
+      "Astrofizik düzeyinde olan şey: **güneş patlaması**, **koronal kütle atımı**, **ışık ve plazma hareketi** — yani **fiziksel bir olay**. Orada “iris” yok; manyetik alan ve sıcak gaz var. Ama insan gözü ve insan dili, bunu **hikâyeye** çevirmek zorundadır; çünkü hikâye, anlam taşır.",
+    ],
+  },
+  {
+    kicker: "⚡ AMA İNSAN NE YAPIYOR?",
+    title: "Anlam yüklüyor",
+    paras: [
+      "İnsan **anlam yüklüyor**: “Bu bana ne söylüyor?”, “Bu bana ne oluyor?”, “Bu bir işaret mi?” Sorular doğal; ama unutma: **yüklenen anlam, olayın kendisi değildir.** İkisi arasındaki boşluk — farkındalık alanıdır.",
+    ],
+  },
+  {
+    kicker: "🌑 GÖLGE OKUMA",
+    title: "Korku, bilinmeyen, kontrol kaybı",
+    paras: [
+      "Bilinmeyen büyüdükçe zihin **gölge okumaya** geçer: korku, kontrol kaybı, “bir şey beni görüyor” hissi. Bu frekansta **“göz açıldı”** gibi yorumlar üretilir — sanki evren seni sınamaya almıştır.",
+      "**Göz açılmadı… zihin gördüğüne anlam verdi.** Bu cümleyi içine yaz. Birincisi kozmosu suçlar; ikincisi **sorumluluğu sana geri verir** — ve özgürleştirir.",
+    ],
+  },
+  {
+    kicker: "🖤 SANRI",
+    title: "Bir görüntü. Bir ışık. Bir patlama.",
+    paras: [
+      "Bir görüntü. Bir ışık. Bir patlama. Ve bir anda… **“Göz açıldı”** deniyor. Ama kimse şunu sormuyor: **Gerçekten orada bir göz mü var… yoksa biz mi görmek istiyoruz?** Sanrı burada devreye girer: görünen ile arzulanan, bazen **üst üste binir**.",
     ],
   },
 ];
+
+/** Cliff’ten hemen önce — yarım bırakma + Sanrı CTA */
+export const closingReading = {
+  kicker: "🔮 YARIM BIRAKMA",
+  title: "Görünenin altı",
+  paras: [
+    "Bazen gördüğün şey… **orada değildir.** Görünenin altında kalan katmanı **Sanrı**’da açtım.",
+  ],
+  ctaHref: "https://www.asksanri.com",
+  ctaLabel: "www.asksanri.com",
+};
+
+/** Kişisel sırra köprü — paywall öncesi son nefes */
+export const bridgeToSeal = {
+  paras: [
+    "Buradan sonrası **kişisel bir sırra** geçer — sana özel bir anahtar. O anahtar, herkese aynı cümleyle verilmez; **duyduğunda içerde zaten tanıdığın bir şeyi kilitten çıkarır**.",
+  ],
+};
 
 /** Paywall öncesi son satır — merak kancası */
 export const cliffVisibleLine =
