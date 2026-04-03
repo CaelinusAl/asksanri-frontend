@@ -144,8 +144,8 @@ export default function OkumaAlaniPage() {
             </h2>
             <p className={styles.gozStripSub}>
               {isTR
-                ? "Güneş, göz benzetmesi, ana kod ve Sanrı — derin metin; sır 9,90₺ kapıda açılır."
-                : "Sun, eye metaphor, core code & Sanrı — deep read; seal at ₺9.90."}
+                ? "Sembolik okuma — görünen ile hissettiğin arasındaki katman."
+                : "A symbolic read — the layer between what you see and what you sense."}
             </p>
           </div>
           <span className={styles.gozStripCta}>
