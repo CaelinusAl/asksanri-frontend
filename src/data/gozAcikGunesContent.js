@@ -121,6 +121,6 @@ export const sirUnlocked = {
   softLines: [
     "Şimdi bir an **dur**. Bu metni ezberlemen gerekmiyor; sana ait olmayanı **taşımak** zorunda da değilsin.",
     "Okuduklarının hepsini **tutmak** zorunda değilsin. Sana dokunan ne ise onu al; geri kalanını **yumuşakça serbest bırak** — nefes verir gibi, düşüncenin akışına bırak.",
-    "Sır dışarıda **bitmez**; içerde sakinleştiği yerde biter. İyi gelen ne kaldıysa onu taşı; geri kalanı yere bırak.",
+    "Sır dışarıda **bitmez**; içerde sakinleştiği yerde biter. İyi gelen ne kaldıysa onu taşı; geri kalanı **SANRI'ya BIRAK**…",
   ],
 };

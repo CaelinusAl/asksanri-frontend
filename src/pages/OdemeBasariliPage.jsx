@@ -1,23 +1,25 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   getPendingPurchase,
   clearPendingPurchase,
-  unlockViaShopier,
   syncPurchasesFromServer,
   resolveShopierPurchaseMeta,
+  applyVerifiedShopierUnlock,
+  fetchShopierPurchaseCheck,
+  bindShopierPurchaseEmail,
+  redirectToShopier,
+  SHOPIER_PRODUCTS,
 } from "../data/shopierConfig";
 import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
 
-/** Meta Pixel — ödeme başarı: script gecikmesine karşı kısa retry */
 function fireMetaPurchase(value) {
   const payload = { value, currency: "TRY" };
   const tryOnce = () => {
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "Purchase", payload);
-      console.log("PURCHASE FIRED");
       return true;
     }
     return false;
@@ -37,15 +39,56 @@ const CROSS_UNLOCK_MAP = {
   subconscious_unlock: ["role_unlock", "ankod_unlock"],
 };
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 export default function OdemeBasariliPage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const [phase, setPhase] = useState("void");
+  const [phase, setPhase] = useState("verifying");
+  const [verifyNote, setVerifyNote] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [bindError, setBindError] = useState("");
   const startedRef = useRef(false);
 
   const pending = getPendingPurchase();
   const contentId = params.get("content") || pending?.contentId || null;
   const returnPath = params.get("ref") || pending?.returnPath || "/";
+
+  const tryUnlockCross = useCallback(async (primaryId, purchasedAt) => {
+    const crossIds = CROSS_UNLOCK_MAP[primaryId] || [];
+    for (const cid of crossIds) {
+      const r = await fetchShopierPurchaseCheck(cid);
+      if (r.unlocked) {
+        applyVerifiedShopierUnlock(cid, r.purchased_at || r.purchase?.purchased_at || purchasedAt);
+      }
+    }
+  }, []);
+
+  const runVerifiedSuccess = useCallback(
+    async (target, purchasedAt, pendingSnap) => {
+      applyVerifiedShopierUnlock(target, purchasedAt);
+      await tryUnlockCross(target, purchasedAt);
+      await syncPurchasesFromServer();
+      clearPendingPurchase();
+
+      const meta = resolveShopierPurchaseMeta(target, pendingSnap?.productId);
+      const { pixelContentId, productTitle, actualPrice } = meta;
+      const purchaseValue = actualPrice > 0 ? actualPrice : 9.9;
+      fireMetaPurchase(purchaseValue);
+      trackPurchase({
+        contentId: pixelContentId,
+        value: purchaseValue,
+        currency: "TRY",
+        productTitle,
+        skipMetaPixel: true,
+      });
+
+      setPhase("glow");
+      setTimeout(() => setPhase("kapi"), 1000);
+      setTimeout(() => setPhase("devam"), 2200);
+    },
+    [tryUnlockCross]
+  );
 
   useEffect(() => {
     if (startedRef.current) return;
@@ -54,54 +97,84 @@ export default function OdemeBasariliPage() {
     const pendingSnap = getPendingPurchase();
     const target = contentId || "premium";
 
-    const meta = resolveShopierPurchaseMeta(target, pendingSnap?.productId);
-    const { pixelContentId, productTitle, actualPrice } = meta;
-    /** Meta Purchase her zaman: bilinen ürün fiyatı; yoksa 9.90 TRY (pixel sessiz kalmaz) */
-    const purchaseValue = actualPrice > 0 ? actualPrice : 9.9;
+    (async () => {
+      setPhase("verifying");
+      setVerifyNote("Ödeme kontrol ediliyor...");
 
-    fireMetaPurchase(purchaseValue);
-    trackPurchase({
-      contentId: pixelContentId,
-      value: purchaseValue,
-      currency: "TRY",
-      productTitle,
-      skipMetaPixel: true,
-    });
+      for (let i = 0; i < 24; i++) {
+        const r = await fetchShopierPurchaseCheck(target);
+        if (r.unlocked) {
+          const at = r.purchased_at || r.purchase?.purchased_at;
+          await runVerifiedSuccess(target, at, pendingSnap);
+          return;
+        }
+        await sleep(2500);
+        if (i === 8) {
+          setVerifyNote(
+            "Ödeme kaydı birkaç saniye gecikebilir. Giriş yaptıysan hesabındaki e-posta ile de aranıyor."
+          );
+        }
+      }
 
-    unlockViaShopier(target);
+      setPhase("need_email");
+      setVerifyNote(
+        "Ödeme doğrulanamadı. Eğer ödemeyi yeni yaptıysan kısa süre sonra tekrar dene. Ödeme kaydı bulunamadıysa Shopier’da kullandığın e-postayı girerek bu cihaza bağlayabilirsin."
+      );
+    })();
+  }, [contentId, runVerifiedSuccess]);
 
-    const crossIds = CROSS_UNLOCK_MAP[target] || [];
-    for (const cid of crossIds) {
-      unlockViaShopier(cid);
+  const finalPath =
+    returnPath && returnPath !== "/" ? decodeURIComponent(returnPath) : "/";
+
+  const handleBindEmail = async () => {
+    const target = contentId || "premium";
+    setBindError("");
+    const em = emailInput.trim();
+    if (!em.includes("@")) {
+      setBindError("Geçerli bir e-posta gir.");
+      return;
     }
+    const bind = await bindShopierPurchaseEmail(em, target);
+    if (!bind.ok) {
+      if (bind.error === "device_mismatch") {
+        setBindError("Bu satın alma başka bir cihaza bağlı görünüyor. Destek ile iletişime geç.");
+      } else {
+        setBindError("Bu e-posta ile eşleşen ödeme bulunamadı. E-postayı kontrol et veya birkaç dakika sonra tekrar dene.");
+      }
+      return;
+    }
+    const r = await fetchShopierPurchaseCheck(target);
+    if (r.unlocked) {
+      const pendingSnap = getPendingPurchase();
+      await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
+    } else {
+      setBindError("Bağlandı ama doğrulama yanıt vermedi. Sayfayı yenile.");
+    }
+  };
 
-    clearPendingPurchase();
-    syncPurchasesFromServer();
-
-    setPhase("glow");
-    const t1 = setTimeout(() => setPhase("kapi"), 1000);
-    const t2 = setTimeout(() => setPhase("devam"), 2200);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [contentId]);
-
-  const finalPath = returnPath && returnPath !== "/" ? decodeURIComponent(returnPath) : "/";
+  const handleRetryPayment = () => {
+    const pendingSnap = getPendingPurchase();
+    const pid = pendingSnap?.productId;
+    const cid = contentId || pendingSnap?.contentId;
+    if (pid && SHOPIER_PRODUCTS[pid]) {
+      redirectToShopier(pid, cid, returnPath || "/");
+      return;
+    }
+    window.location.href = "https://shopier.com/asksanri";
+  };
 
   return (
     <div className={styles.ritualPage}>
       <div
         className={`${styles.ritualGlow} ${
-          phase !== "void" ? styles.ritualGlowActive : ""
+          phase !== "verifying" && phase !== "need_email" ? styles.ritualGlowActive : ""
         }`}
       />
 
       <AnimatePresence mode="wait">
-        {phase === "void" && (
+        {phase === "verifying" && (
           <motion.div
-            key="void"
+            key="verifying"
             className={styles.ritualCenter}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -111,7 +184,84 @@ export default function OdemeBasariliPage() {
             <div className={styles.voidPulse}>
               <span className={styles.voidGlyph}>◈</span>
             </div>
-            <p className={styles.voidText}>Doğrulanıyor...</p>
+            <p className={styles.voidText}>{verifyNote || "Ödeme kontrol ediliyor..."}</p>
+          </motion.div>
+        )}
+
+        {phase === "need_email" && (
+          <motion.div
+            key="need_email"
+            className={styles.ritualCenter}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{ maxWidth: 420, padding: "0 20px" }}
+          >
+            <h1 className={styles.ritualTitle} style={{ fontSize: "clamp(20px,4vw,26px)" }}>
+              Ödeme henüz doğrulanamadı
+            </h1>
+            <p
+              style={{
+                marginTop: 14,
+                color: "rgba(200,160,255,0.55)",
+                fontSize: 14,
+                lineHeight: 1.6,
+              }}
+            >
+              {verifyNote}
+            </p>
+            <input
+              type="email"
+              placeholder="Shopier ödeme e-postası"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
+              style={{
+                width: "100%",
+                marginTop: 20,
+                padding: "14px 16px",
+                borderRadius: 12,
+                border: "1px solid rgba(200,160,255,0.2)",
+                background: "rgba(255,255,255,0.04)",
+                color: "#e8e4f4",
+                fontSize: 15,
+                boxSizing: "border-box",
+              }}
+            />
+            {bindError && (
+              <p style={{ color: "#f6ad55", fontSize: 13, marginTop: 10 }}>{bindError}</p>
+            )}
+            <button
+              type="button"
+              onClick={handleBindEmail}
+              style={{
+                marginTop: 16,
+                width: "100%",
+                padding: "14px 20px",
+                borderRadius: 12,
+                border: "none",
+                background: "linear-gradient(135deg, #c8a0ff, #a07aff)",
+                color: "#07080d",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              E-postayı doğrula
+            </button>
+            <button
+              type="button"
+              onClick={handleRetryPayment}
+              style={{
+                marginTop: 12,
+                width: "100%",
+                padding: "12px 20px",
+                borderRadius: 12,
+                border: "1px solid rgba(200,160,255,0.25)",
+                background: "transparent",
+                color: "rgba(200,160,255,0.75)",
+                cursor: "pointer",
+              }}
+            >
+              Tekrar ödeme yap
+            </button>
           </motion.div>
         )}
 
@@ -147,7 +297,7 @@ export default function OdemeBasariliPage() {
                 fontStyle: "italic",
               }}
             >
-              Ama artık geri dönüş yok.
+              Ödemen doğrulandı. İçeriğin açıldı.
             </p>
           </motion.div>
         )}
@@ -207,16 +357,6 @@ export default function OdemeBasariliPage() {
                 cursor: "pointer",
                 transition: "all 0.3s",
                 letterSpacing: "0.03em",
-              }}
-              onMouseOver={(e) => {
-                e.target.style.background = "rgba(200,160,255,0.16)";
-                e.target.style.borderColor = "rgba(200,160,255,0.4)";
-                e.target.style.boxShadow = "0 0 40px rgba(200,160,255,0.12)";
-              }}
-              onMouseOut={(e) => {
-                e.target.style.background = "rgba(200,160,255,0.08)";
-                e.target.style.borderColor = "rgba(200,160,255,0.25)";
-                e.target.style.boxShadow = "none";
               }}
             >
               {finalPath.includes("rol-okuma") ? "Rolünü Gör" : "Devam Et"}

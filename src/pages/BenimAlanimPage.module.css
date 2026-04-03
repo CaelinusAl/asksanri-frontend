@@ -1097,6 +1097,91 @@
   border-color: rgba(200,160,255,.25);
 }
 
+/* ── Kod Okuma panel ── */
+.kodPanelGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 4px 2px 8px;
+}
+.kodPanelCard {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+.kodPanelWide {
+  grid-column: 1 / -1;
+}
+.kodPanelLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.45);
+  margin-bottom: 6px;
+}
+.kodPanelValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+}
+.kodPanelValueSmall {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.kodPanelBar {
+  margin-top: 10px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+.kodPanelFill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #c8a0ff, #7cf7d8);
+  transition: width 0.4s ease;
+}
+.kodPanelLink {
+  margin-top: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #7cf7d8;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.kodPanelSanri {
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+}
+.kodPanelBadges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.kodPanelBadge {
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  color: rgba(212, 175, 55, 0.85);
+  background: rgba(212, 175, 55, 0.06);
+}
+.kodPanelHint {
+  margin: 10px 0 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .visionBlock { margin: 12px 10px 0; padding: 18px 16px; }
@@ -1106,6 +1191,7 @@
   .milestone { width: 28px; height: 28px; font-size: 11px; }
   .statsRow { grid-template-columns: repeat(2, 1fr); }
   .haritaGrid { grid-template-columns: 1fr; }
+  .kodPanelGrid { grid-template-columns: 1fr; }
   .badgeGrid { grid-template-columns: repeat(2, 1fr); }
   .avatarGrid { grid-template-columns: repeat(3, 1fr); }
   .identityCard { margin: 12px 10px 0; padding: 22px 18px 20px; }

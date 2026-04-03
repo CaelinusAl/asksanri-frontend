@@ -33,9 +33,9 @@ export const SHOPIER_PRODUCTS = {
   },
   kod_egitmeni: {
     id: "kod_egitmeni",
-    label: "Kod Eğitmeni — Tam Erişim",
-    price: "49",
-    url: "https://shopier.com/asksanri/45786456",
+    label: "SANRI Kod Okuma Sistemi™ — Tam Erişim",
+    price: "999",
+    url: "https://shopier.com/asksanri/45833965",
   },
   kod_giris_ders: {
     id: "kod_giris_ders",
@@ -228,10 +228,26 @@ function saveShopierAccess(data) {
   } catch {}
 }
 
+function accessRowTrusted(row) {
+  if (!row || row === true) return false;
+  return Boolean(row.unlocked && row.serverVerified);
+}
+
 export function isShopierUnlocked(contentId) {
   const access = getShopierAccess();
-  if (access.premium) return true;
-  return Boolean(access[contentId]);
+  if (access.premium && access.premiumServerVerified) return true;
+  return accessRowTrusted(access[contentId]);
+}
+
+/**
+ * Yalnızca bu contentId için Shopier kaydı var mı?
+ * `premium` global bayrağı sayılmaz — SANRI Kod Okuma™ gibi ayrı ürünlerde
+ * genel premium / başka satın alımların tüm müfredatı açmaması için kullanılır.
+ */
+export function isShopierProductUnlocked(contentId) {
+  const cid = String(contentId || "").trim();
+  if (!cid) return false;
+  return accessRowTrusted(getShopierAccess()[cid]);
 }
 
 // ── Server-side purchase recording ──
@@ -244,39 +260,32 @@ function _getAuthHeaders() {
   return h;
 }
 
-export function unlockViaShopier(contentId) {
+/**
+ * Yalnızca GET /shopier/check doğrulandıktan sonra çağrılmalı.
+ * İstemci tek başına erişim açamaz (güvenlik).
+ */
+export function applyVerifiedShopierUnlock(contentId, purchasedAt) {
   const access = getShopierAccess();
+  const at = purchasedAt || new Date().toISOString();
   if (contentId === "premium") {
     access.premium = true;
-    access.premium_at = new Date().toISOString();
+    access.premium_at = at;
+    access.premiumServerVerified = true;
   } else {
-    access[contentId] = { unlocked: true, at: new Date().toISOString() };
+    access[contentId] = { unlocked: true, serverVerified: true, at };
   }
   saveShopierAccess(access);
-  recordPurchaseToServer(contentId);
 }
 
-export function recordPurchaseToServer(contentId) {
-  const cid = String(contentId || "");
-  let productKey = CONTENT_TO_PRODUCT[cid] || cid;
-  if (cid.startsWith("okuma_")) productKey = "okuma_devami";
-  if (cid.startsWith("book_")) {
-    const suf = cid.slice("book_".length);
-    if (SHOPIER_PRODUCTS[suf]) productKey = suf;
+/** @deprecated Güvensiz — kullanmayın. */
+export function unlockViaShopier(_contentId) {
+  if (typeof console !== "undefined" && console.warn) {
+    console.warn("[SANRI] unlockViaShopier kaldırıldı; erişim sunucu doğrulaması gerektirir.");
   }
-  if (cid.startsWith("kod_")) productKey = "kod_egitmeni";
-  const product = SHOPIER_PRODUCTS[productKey];
-  return fetch(`${API}/shopier/record`, {
-    method: "POST",
-    headers: _getAuthHeaders(),
-    body: JSON.stringify({
-      content_id: contentId,
-      product_id: product?.id || productKey,
-      device_fp: getDeviceFingerprint(),
-      amount: product ? parseFloat(product.price) : 0,
-      timestamp: new Date().toISOString(),
-    }),
-  }).catch(() => {});
+}
+
+export function recordPurchaseToServer(_contentId) {
+  return Promise.resolve();
 }
 
 export async function syncPurchasesFromServer() {
@@ -291,8 +300,13 @@ export async function syncPurchasesFromServer() {
     const access = getShopierAccess();
     let changed = 0;
     for (const p of data.purchases) {
-      if (!access[p.content_id]) {
-        access[p.content_id] = { unlocked: true, at: p.purchased_at };
+      const cur = access[p.content_id];
+      if (!cur || !cur.serverVerified) {
+        access[p.content_id] = {
+          unlocked: true,
+          serverVerified: true,
+          at: p.purchased_at || cur?.at,
+        };
         changed++;
       }
     }
@@ -303,34 +317,67 @@ export async function syncPurchasesFromServer() {
   }
 }
 
-export async function checkServerUnlock(contentId) {
+export async function fetchShopierPurchaseCheck(contentId, email = "") {
   try {
     const fp = getDeviceFingerprint();
+    const qs = new URLSearchParams();
+    if (fp && fp !== "anon") qs.set("device_fp", fp);
+    if (email && String(email).includes("@")) {
+      qs.set("email", String(email).trim().toLowerCase());
+    }
+    const q = qs.toString();
+    const cid = encodeURIComponent(String(contentId || ""));
     const res = await fetch(
-      `${API}/shopier/check/${contentId}?device_fp=${fp}`,
+      `${API}/shopier/check/${cid}${q ? `?${q}` : ""}`,
       { headers: _getAuthHeaders() }
     );
+    if (!res.ok) return { unlocked: false, purchased_at: null, purchase: null };
     const data = await res.json();
-    if (data.unlocked) {
-      const access = getShopierAccess();
-      if (!access[contentId]) {
-        access[contentId] = { unlocked: true, at: data.purchased_at || new Date().toISOString() };
-        saveShopierAccess(access);
-      }
-    }
-    return data.unlocked;
+    const purchase = data.purchase && typeof data.purchase === "object" ? data.purchase : null;
+    const purchased_at =
+      purchase?.purchased_at ?? data.purchased_at ?? null;
+    return {
+      unlocked: Boolean(data.unlocked),
+      purchased_at,
+      purchase,
+    };
   } catch {
-    return false;
+    return { unlocked: false, purchased_at: null, purchase: null };
   }
+}
+
+export async function bindShopierPurchaseEmail(email, contentId) {
+  try {
+    const res = await fetch(`${API}/shopier/bind-device`, {
+      method: "POST",
+      headers: { ..._getAuthHeaders(), "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: String(email || "").trim(),
+        content_id: String(contentId || ""),
+        device_fp: getDeviceFingerprint(),
+      }),
+    });
+    return await res.json();
+  } catch {
+    return { ok: false, error: "network" };
+  }
+}
+
+export async function checkServerUnlock(contentId) {
+  const data = await fetchShopierPurchaseCheck(contentId);
+  if (data.unlocked) {
+    applyVerifiedShopierUnlock(contentId, data.purchased_at || data.purchase?.purchased_at);
+  }
+  return Boolean(data.unlocked);
 }
 
 export function getUnlockedItems() {
   const access = getShopierAccess();
   const items = [];
   for (const [key, val] of Object.entries(access)) {
-    if (key === "premium" && val) {
+    if (key === "premium" && val && access.premiumServerVerified) {
       items.push({ id: "premium", label: "Premium Erişim", at: access.premium_at });
-    } else if (val?.unlocked) {
+    } else if (val?.unlocked && val?.serverVerified) {
       const pKey = CONTENT_TO_PRODUCT[key] || key;
       const product = SHOPIER_PRODUCTS[pKey];
       items.push({
@@ -399,5 +446,6 @@ export function redirectToShopier(productId, contentId, returnPath) {
 }
 
 export function hasAnyShopierPremium() {
-  return Boolean(getShopierAccess().premium);
+  const a = getShopierAccess();
+  return Boolean(a.premium && a.premiumServerVerified);
 }

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import usePageView from "./hooks/usePageView";
+import { syncPurchasesFromServer } from "./data/shopierConfig";
 
 import HomePage from "./pages/HomePage";
 import SanriyaSorPage from "./pages/SanriyaSorPage";
@@ -38,6 +39,7 @@ import AdminCalendarPage from "./pages/admin/AdminCalendarPage";
 import AdminGrowthPage from "./pages/admin/AdminGrowthPage";
 import AdminBillingPage from "./pages/admin/AdminBillingPage";
 import AdminFunnelPage from "./pages/admin/AdminFunnelPage";
+import AdminMuhasebePage from "./pages/admin/AdminMuhasebePage";
 import PaymentSuccessPage from "./pages/PaymentSuccessPage";
 import PaymentCancelPage from "./pages/PaymentCancelPage";
 import IyzicoCallbackPage from "./pages/IyzicoCallbackPage";
@@ -59,6 +61,9 @@ import EmailCaptureModal from "./components/EmailCaptureModal";
 
 export default function App() {
   usePageView();
+  useEffect(() => {
+    syncPurchasesFromServer();
+  }, []);
   return (
     <>
     <PendingPurchaseRecovery />
@@ -98,6 +103,7 @@ export default function App() {
       <Route path="/1999" element={<Navigate to="/okuma-alani/1999-kapanmayan-frekans" replace />} />
 
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
+      <Route path="/kod-okuma-sistemi" element={<KodEgitmeniPage />} />
       <Route path="/kod-ogrenmeye-giris" element={<KodGirisDersPage />} />
       <Route path="/rol-okuma" element={<RolOkumaPage />} />
       <Route path="/an-kod" element={<AnKodPage />} />
@@ -127,6 +133,7 @@ export default function App() {
         <Route path="premium" element={<AdminPremiumPage />} />
         <Route path="revenue" element={<AdminRevenuePage />} />
         <Route path="funnel" element={<AdminFunnelPage />} />
+        <Route path="muhasebe" element={<AdminMuhasebePage />} />
         <Route path="billing" element={<AdminBillingPage />} />
         <Route path="notifications" element={<AdminNotificationsPage />} />
         <Route path="system" element={<AdminSystemPage />} />

@@ -150,6 +150,982 @@
 .heroCta:hover {
   box-shadow: 0 0 40px rgba(200, 160, 255, 0.35);
 }
+.heroKicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.55);
+  margin: 0 0 14px;
+  position: relative;
+}
+.heroTitleAccent {
+  background: linear-gradient(135deg, #fff, #c8a0ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.heroCtaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.heroCtaGhost {
+  padding: 16px 28px;
+  border-radius: 12px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: rgba(200, 160, 255, 0.06);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.heroCtaGhost:hover {
+  border-color: rgba(200, 160, 255, 0.55);
+  background: rgba(200, 160, 255, 0.1);
+}
+
+.heroPriceBand {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px 16px;
+  margin: 0 0 24px;
+  position: relative;
+}
+.heroPriceStrike {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.28);
+  text-decoration: line-through;
+}
+.heroPriceMain {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+.heroPriceNote {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.55);
+}
+.heroTrust {
+  margin: 16px 0 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.38);
+  position: relative;
+}
+.heroLinkBtn {
+  background: none;
+  border: none;
+  color: rgba(237, 137, 54, 0.9);
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0;
+}
+.heroLinkBtn:hover {
+  color: #f6ad55;
+}
+.landingLead {
+  text-align: center;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.65;
+  margin: -8px auto 28px;
+  max-width: 560px;
+}
+.landingLead strong {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+}
+.valueGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 720px;
+  margin: 0 auto 28px;
+}
+.valueCard {
+  padding: 20px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  text-align: left;
+}
+.valueIcon {
+  display: block;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #c8a0ff;
+}
+.valueTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.valueDesc {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.55;
+}
+.sanriLanding {
+  margin: 0 auto;
+  padding: 56px 20px;
+  max-width: 760px;
+}
+.sanriLandingInner {
+  padding: 32px 28px;
+  border-radius: 18px;
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  background: linear-gradient(145deg, rgba(200, 160, 255, 0.06), rgba(7, 8, 13, 0.5));
+}
+.sanriLanding .sectionTitle {
+  margin-bottom: 16px;
+}
+.sanriLandingLead {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.65;
+  margin: 0 0 20px;
+  text-align: center;
+}
+.sanriLandingQuote {
+  text-align: center;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.55;
+  margin: 0 0 20px;
+}
+.sanriLandingQuoteAccent {
+  color: #c8a0ff;
+  font-weight: 600;
+}
+.sanriLandingList {
+  margin: 0;
+  padding: 0 0 0 20px;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.48);
+  line-height: 1.65;
+}
+.sanriLandingList li {
+  margin-bottom: 8px;
+}
+.priceSectionPro {
+  padding: 48px 20px 56px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.priceProCard {
+  text-align: center;
+  padding: 36px 28px;
+  border-radius: 20px;
+  border: 1px solid rgba(200, 160, 255, 0.18);
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+.priceProTagline {
+  margin: 0;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.priceProTaglineStrong {
+  margin: 4px 0 16px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+}
+.priceProSub {
+  margin: 0 0 20px;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.55;
+}
+.priceProRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.priceProStrike {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.28);
+  text-decoration: line-through;
+}
+.priceProAmount {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+.priceProCta {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c8a0ff, #a07aff);
+  color: #07080d;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: box-shadow 0.2s;
+}
+.priceProCta:hover {
+  box-shadow: 0 0 36px rgba(200, 160, 255, 0.35);
+}
+.priceProFine {
+  margin: 20px 0 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.38);
+  line-height: 1.55;
+}
+.inlineLink {
+  background: none;
+  border: none;
+  color: #c8a0ff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  padding: 0;
+}
+.inlineLink:hover {
+  color: #e0ccff;
+}
+.inlineLinkA {
+  color: #7cf7d8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.inlineLinkA:hover {
+  color: #9cf5dc;
+}
+.testimonialPlaceholder {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.42);
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+}
+.faqList {
+  margin: 0;
+}
+.faqItem {
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.faqItem:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.faqQ {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+}
+.faqA {
+  margin: 0;
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.52);
+  line-height: 1.6;
+}
+.finalCta {
+  text-align: center;
+  padding: 48px 20px 64px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.finalCtaLine {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+.finalCtaBtn {
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c8a0ff, #a07aff);
+  color: #07080d;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+.finalCtaBtn:hover {
+  box-shadow: 0 0 32px rgba(200, 160, 255, 0.3);
+}
+.finalCtaGhost {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.finalCtaGhost:hover {
+  border-color: rgba(200, 160, 255, 0.25);
+  color: rgba(255, 255, 255, 0.75);
+}
+.landingLessonHint {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.landingModPreview {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+.landingModLead {
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: -8px auto 28px;
+  max-width: 520px;
+  line-height: 1.55;
+}
+.landingModGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+.landingModCard {
+  padding: 22px 20px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--mod-color, #c8a0ff) 28%, transparent);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  transition: box-shadow 0.25s, border-color 0.25s, transform 0.25s;
+}
+.landingModCard:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), 0 0 32px color-mix(in srgb, var(--mod-color) 15%, transparent);
+  border-color: color-mix(in srgb, var(--mod-color) 45%, transparent);
+}
+.landingModIcon {
+  font-size: 1.8rem;
+  display: block;
+  margin-bottom: 10px;
+}
+.landingModTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+.landingModAim {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(212, 175, 55, 0.75);
+  margin: 0 0 6px;
+  letter-spacing: 0.04em;
+}
+.landingModSub {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 14px;
+  line-height: 1.45;
+}
+.landingModLessonOl {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.55;
+}
+.landingModLessonOl li {
+  margin-bottom: 4px;
+}
+
+.globalProgressMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+.activeModulePill {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.72rem;
+}
+
+.continueCard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(124, 247, 216, 0.2);
+  background: linear-gradient(135deg, rgba(124, 247, 216, 0.06), rgba(200, 160, 255, 0.04));
+}
+.continueLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(124, 247, 216, 0.65);
+  display: block;
+  margin-bottom: 6px;
+}
+.continueTitle {
+  margin: 0 0 6px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #fff;
+}
+.continueSub {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.45;
+  max-width: 420px;
+}
+.continueBtn {
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #07080d;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+}
+
+.moduleHeroGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+.moduleHeroCard {
+  text-align: left;
+  padding: 18px 16px;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--mc, #c8a0ff) 30%, transparent);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition: box-shadow 0.25s, border-color 0.25s, transform 0.2s;
+}
+.moduleHeroCard:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 24px color-mix(in srgb, var(--mc) 12%, transparent);
+  border-color: color-mix(in srgb, var(--mc) 50%, transparent);
+}
+.moduleHeroIcon {
+  font-size: 1.6rem;
+  display: block;
+  margin-bottom: 8px;
+  color: var(--mc, #c8a0ff);
+}
+.moduleHeroTitle {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+.moduleHeroSub {
+  display: block;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.moduleHeroMeta {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.7);
+}
+
+.lessonCardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  padding: 16px 18px 22px;
+}
+.lessonCard {
+  padding: 16px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.lessonCard:hover {
+  border-color: rgba(200, 160, 255, 0.2);
+}
+.lessonCard_locked {
+  opacity: 0.72;
+}
+.lessonCard_done {
+  border-color: rgba(72, 187, 120, 0.25);
+}
+.lessonCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.lessonCardNo {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.lessonCardDur {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+.lessonCardTitle {
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.35;
+}
+.lessonCardDesc {
+  margin: 0 0 14px;
+  flex: 1;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+}
+.lessonCardFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+}
+.lessonCardStatus {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.lessonCardStatus[data-s="open"] {
+  color: #7cf7d8;
+}
+.lessonCardStatus[data-s="locked"] {
+  color: rgba(255, 255, 255, 0.35);
+}
+.lessonCardStatus[data-s="done"] {
+  color: #48BB78;
+}
+.lessonCardBtn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: rgba(200, 160, 255, 0.1);
+  color: #e8e0ff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+.lessonCardBtn:hover {
+  background: rgba(200, 160, 255, 0.18);
+}
+
+.lessonIntro {
+  margin: 0 0 24px;
+  padding: 18px 20px;
+  border-left: 3px solid rgba(200, 160, 255, 0.45);
+  border-radius: 0 12px 12px 0;
+  background: rgba(200, 160, 255, 0.05);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+}
+.lessonIntro p {
+  margin: 0 0 8px;
+}
+.lessonIntro p:last-child {
+  margin-bottom: 0;
+}
+.codeBox {
+  margin: 24px 0;
+  border-radius: 14px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  background: rgba(212, 175, 55, 0.05);
+  overflow: hidden;
+}
+.codeBoxLabel {
+  padding: 10px 16px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.85);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.12);
+}
+.codeBoxPre {
+  margin: 0;
+  padding: 16px 18px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+  white-space: pre-wrap;
+  font-family: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+}
+.lessonClosing {
+  margin: 20px 0 8px;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: rgba(200, 160, 255, 0.75);
+  line-height: 1.55;
+}
+.lessonClosingAfterSanri {
+  margin-top: 18px;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+}
+
+.paywallSoft {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.38);
+}
+.paywallTierHint {
+  margin: 0 0 22px;
+  padding: 14px 16px;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.52);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+.paywallTierHint strong {
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 600;
+}
+.paywallGateBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(124, 247, 216, 0.35);
+  background: rgba(124, 247, 216, 0.08);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.paywallGateBtn:hover {
+  border-color: rgba(124, 247, 216, 0.55);
+  background: rgba(124, 247, 216, 0.12);
+}
+.paywallGateLabel {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #9cf5dc;
+}
+.paywallGatePrice {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+}
+.paywallGateHint {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+}
+.paywallProductTitle {
+  margin: 8px 0 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.04em;
+}
+
+.sanriGateBtnSecondary {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 10px auto 0;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: transparent;
+  color: rgba(200, 160, 255, 0.9);
+  font-weight: 600;
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.sanriGateBtnSecondary:hover {
+  background: rgba(200, 160, 255, 0.08);
+}
+
+.heroPulse {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(237, 137, 54, 0.85);
+  margin: 0 0 12px;
+  position: relative;
+}
+.heroWow {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 28px;
+  position: relative;
+  line-height: 1.55;
+}
+.heroWowMuted {
+  font-weight: 500;
+  color: rgba(200, 160, 255, 0.75);
+}
+
+.roadmapLead {
+  text-align: center;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+.diffBlock {
+  text-align: center;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.65;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  margin: 0;
+}
+.diffHighlight {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #c8a0ff;
+}
+
+.roadmapModule {
+  max-width: 640px;
+  margin: 0 auto 28px;
+  padding: 0 20px;
+}
+.roadmapModuleHead {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+.roadmapModNum {
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.roadmapModTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+.roadmapModHint {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+.roadmapList {
+  margin: 0;
+  padding: 0 0 0 22px;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.65;
+}
+.roadmapList li {
+  margin-bottom: 8px;
+}
+
+.formatSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.formatStep {
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+}
+.formatStep strong {
+  display: block;
+  color: #c8a0ff;
+  font-size: 0.88rem;
+  margin-bottom: 6px;
+}
+.formatStep p {
+  margin: 0;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.55;
+}
+
+.salesTiers {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.salesTier {
+  padding: 18px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+.salesTier[data-tier="free"] {
+  border-color: rgba(72, 187, 120, 0.25);
+}
+.salesTier[data-tier="giris"] {
+  border-color: rgba(120, 247, 216, 0.25);
+}
+.salesTier[data-tier="tam"] {
+  border-color: rgba(200, 160, 255, 0.3);
+}
+.salesLabel {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 8px;
+}
+.salesTier p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.55;
+}
+.salesLink {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #7cf7d8;
+  text-decoration: none;
+}
+.salesLink:hover {
+  text-decoration: underline;
+}
+
+.goldBox {
+  max-width: 560px;
+  margin: 0 auto 8px;
+  padding: 28px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(237, 137, 54, 0.08), rgba(200, 160, 255, 0.06));
+  border: 1px solid rgba(237, 137, 54, 0.25);
+  border-radius: 16px;
+}
+.goldTitle {
+  margin: 0 0 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ED8936;
+}
+.goldText {
+  margin: 0;
+  font-size: 1.02rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.55;
+}
+.goldSub {
+  margin: 14px 0 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.closingQuote {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 32px 24px 8px;
+  text-align: center;
+}
+.closingQuote p {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-style: italic;
+  color: rgba(200, 160, 255, 0.9);
+  line-height: 1.5;
+}
+
+.priceFine {
+  position: relative;
+  margin: 20px 0 0;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.5;
+}
 
 /* ── sections ── */
 .section {
@@ -589,6 +1565,23 @@
   flex-direction: column;
   gap: 0;
 }
+.paywallPrimaryKicker {
+  margin: 0 0 8px;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.65);
+}
+.paywallPrimaryNote {
+  margin: 12px 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.45);
+  font-style: italic;
+  line-height: 1.5;
+}
 .singleBtn {
   width: 100%;
   display: flex;
@@ -682,6 +1675,19 @@
   color: rgba(237, 137, 54, 0.7);
   margin-top: 8px;
 }
+.paywallAltLine {
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0 0 4px;
+}
+.paywallAltLink {
+  color: #7cf7d8;
+  font-weight: 600;
+  text-decoration: none;
+}
+.paywallAltLink:hover {
+  text-decoration: underline;
+}
 
 /* ═══════════════════════════════════════
    LESSON VIEWER
@@ -753,6 +1759,28 @@
   letter-spacing: 0.12em;
   color: #c8a0ff;
 }
+.sanriSolveLead {
+  text-align: center;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+.sanriSolveAccent {
+  color: #c8a0ff;
+  font-weight: 600;
+}
+.inputDividerSub {
+  text-align: center;
+  margin: 8px 0 14px;
+}
+.inputDividerSub span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
 .inputHook {
   font-size: 1.15rem;
   font-weight: 700;
@@ -817,19 +1845,36 @@
   margin: 0 0 18px;
 }
 .sanriGateBtn {
-  display: inline-block;
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto;
   padding: 12px 28px;
   background: linear-gradient(135deg, #c8a0ff, #a07aff);
   color: #07080d;
   text-decoration: none;
+  border: none;
   border-radius: 10px;
   font-weight: 700;
   font-size: 0.88rem;
+  font-family: inherit;
+  cursor: pointer;
   transition: all 0.2s;
 }
 .sanriGateBtn:hover {
   box-shadow: 0 0 24px rgba(200, 160, 255, 0.3);
   transform: translateY(-1px);
+}
+.sanriGateSubLink {
+  display: block;
+  margin-top: 14px;
+  font-size: 0.8rem;
+  color: rgba(200, 160, 255, 0.75);
+  text-decoration: none;
+}
+.sanriGateSubLink:hover {
+  color: #c8a0ff;
+  text-decoration: underline;
 }
 .sanriFreeBadge {
   text-align: center;
@@ -937,6 +1982,103 @@
   color: rgba(255, 255, 255, 0.75);
 }
 .sanriBody p { margin: 0 0 10px; }
+
+/* Üst bilinç kodlama — yapılandırılmış yanıt */
+.ubkRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ubkBlock {
+  padding: 16px 18px;
+  border-radius: 12px;
+  background: rgba(12, 10, 22, 0.85);
+  border: 1px solid rgba(200, 160, 255, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.ubkBlockGold {
+  border-color: rgba(212, 175, 55, 0.28);
+  background: linear-gradient(165deg, rgba(212, 175, 55, 0.07), rgba(12, 10, 22, 0.92));
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.06);
+}
+.ubkBlockQuestion {
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(200, 160, 255, 0.06);
+}
+.ubkBlockTitle {
+  margin: 0 0 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: rgba(200, 160, 255, 0.85);
+  text-transform: uppercase;
+}
+.ubkBlockGold .ubkBlockTitle {
+  color: rgba(230, 200, 120, 0.9);
+}
+.ubkBaslik {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: rgba(255, 248, 235, 0.92);
+  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.ubkList {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: rgba(230, 224, 255, 0.82);
+  line-height: 1.65;
+  font-size: 0.92rem;
+}
+.ubkList li { margin-bottom: 4px; }
+.ubkParca {
+  margin-bottom: 14px;
+}
+.ubkParca:last-child { margin-bottom: 0; }
+.ubkParcaAd {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #c8a0ff;
+  margin-bottom: 6px;
+}
+.ubkListDense {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+.ubkListDense li { margin-bottom: 2px; }
+.ubkUst {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: rgba(255, 236, 200, 0.88);
+}
+.ubkSoru {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: rgba(220, 200, 255, 0.95);
+  font-weight: 500;
+}
+.ubkMuted {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.35);
+}
+.ubkError {
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(255, 100, 100, 0.08);
+  border: 1px solid rgba(255, 120, 120, 0.2);
+  color: #f0b8a8;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
 .retryBtn {
   margin-top: 14px;
   padding: 7px 16px;
@@ -1015,6 +2157,53 @@
   font-weight: 600;
 }
 
+.lessonNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.lessonNavBtn {
+  flex: 1;
+  min-width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s;
+}
+.lessonNavBtn:hover {
+  border-color: rgba(200, 160, 255, 0.25);
+  background: rgba(200, 160, 255, 0.04);
+}
+.lessonNavBtnMuted {
+  opacity: 0.8;
+  border-style: dashed;
+}
+.lessonNavDir {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #c8a0ff;
+}
+.lessonNavTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.35;
+}
+
 /* ═══════════════════════════════════════
    MOBILE
    ═══════════════════════════════════════ */
@@ -1025,6 +2214,13 @@
   .heroTitle { font-size: 1.8rem; }
   .heroSub { font-size: 0.95rem; }
   .heroCta { padding: 14px 32px; font-size: 0.95rem; }
+  .heroCtaRow { flex-direction: column; width: 100%; }
+  .heroCtaGhost { width: 100%; }
+  .heroPriceMain { font-size: 1.65rem; }
+  .valueGrid { grid-template-columns: 1fr; }
+
+  .landingModGrid { grid-template-columns: 1fr; }
+  .moduleHeroGrid { grid-template-columns: 1fr; }
 
   .section { padding: 32px 16px; }
   .sectionTitle { font-size: 1.1rem; }

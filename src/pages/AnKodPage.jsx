@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { redirectToShopier, unlockViaShopier, SHOPIER_PRODUCTS } from "../data/shopierConfig";
+import { redirectToShopier, checkServerUnlock, SHOPIER_PRODUCTS } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
@@ -499,12 +499,17 @@ export default function AnKodPage() {
                   <button
                     type="button"
                     className={styles.lockRecovery}
-                    onClick={() => {
-                      unlockViaShopier("ankod_unlock");
-                      window.location.reload();
+                    onClick={async () => {
+                      const ok = await checkServerUnlock("ankod_unlock");
+                      if (ok) window.location.reload();
+                      else {
+                        window.alert(
+                          "Sunucuda aktif satın alım bulunamadı. /odeme-basarili üzerinden doğrula veya giriş yaptığın e-posta ile dene."
+                        );
+                      }
                     }}
                   >
-                    Zaten satın aldım
+                    Satın alımı doğrula
                   </button>
                 </div>
               </motion.div>

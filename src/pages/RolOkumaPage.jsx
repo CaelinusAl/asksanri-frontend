@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { redirectToShopier, isShopierUnlocked, unlockViaShopier } from "../data/shopierConfig";
+import { redirectToShopier, isShopierUnlocked, checkServerUnlock } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
@@ -382,13 +382,19 @@ export default function RolOkumaPage() {
                     </button>
                     <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
                     <button
+                      type="button"
                       className={styles.lockZoneRecovery}
-                      onClick={() => {
-                        unlockViaShopier("role_unlock");
-                        window.location.reload();
+                      onClick={async () => {
+                        const ok = await checkServerUnlock("role_unlock");
+                        if (ok) window.location.reload();
+                        else {
+                          window.alert(
+                            "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
+                          );
+                        }
                       }}
                     >
-                      Zaten satın aldım
+                      Satın alımı doğrula
                     </button>
                   </div>
                 </div>

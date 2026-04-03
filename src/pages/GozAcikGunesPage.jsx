@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   redirectToShopier,
   isShopierUnlocked,
-  unlockViaShopier,
+  checkServerUnlock,
   syncPurchasesFromServer,
   SHOPIER_PRODUCTS,
 } from "../data/shopierConfig";
@@ -84,12 +84,15 @@ export default function GozAcikGunesPage() {
     redirectToShopier("okuma_devami", GOZ_CONTENT_ID, GOZ_RETURN_PATH);
   }, [price]);
 
-  const onRecovery = useCallback(() => {
-    unlockViaShopier(GOZ_CONTENT_ID);
-    syncPurchasesFromServer().then(() => {
-      if (isShopierUnlocked(GOZ_CONTENT_ID)) setUnlocked(true);
-      else window.location.reload();
-    });
+  const onRecovery = useCallback(async () => {
+    const ok = await checkServerUnlock(GOZ_CONTENT_ID);
+    await syncPurchasesFromServer();
+    if (ok || isShopierUnlocked(GOZ_CONTENT_ID)) {
+      setUnlocked(true);
+      window.location.reload();
+    } else {
+      window.alert("Sunucuda bu içerik için ödeme bulunamadı. /odeme-basarili sayfasından doğrula.");
+    }
   }, []);
 
   const openDeep = useCallback(() => {

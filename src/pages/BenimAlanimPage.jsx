@@ -147,7 +147,8 @@ const BADGES = [
   { id: "ilk_kapi", tr: "İlk Kapı", en: "First Door", icon: "🚪", descTr: "Alana adım attın", descEn: "You stepped into the field" },
   { id: "yanki_birakici", tr: "Yankı Bırakıcı", en: "Echo Maker", icon: "🔔", descTr: "İlk yankını bıraktın", descEn: "You left your first echo" },
   { id: "kod_tasiyici", tr: "Kod Taşıyıcısı", en: "Code Bearer", icon: "📜", descTr: "İlk dersi tamamladın", descEn: "You completed your first lesson" },
-  { id: "ayna_tutan", tr: "Ayna Tutan", en: "Mirror Holder", icon: "🪞", descTr: "SANRI'ya ilk sorunu sordun", descEn: "You asked SANRI your first question" },
+  { id: "hatirlayan", tr: "Hatırlayan", en: "The Rememberer", icon: "✨", descTr: "21 dersi tamamladın", descEn: "You completed all 21 lessons" },
+  { id: "ayna_tutan", tr: "Ayna Tutan", en: "Mirror Holder", icon: "🪞", descTr: "SANRI kod yorumu aldın", descEn: "You received a SANRI code reading" },
   { id: "frekans_bekcisi", tr: "Frekans Bekçisi", en: "Frequency Guardian", icon: "📡", descTr: "Premium erişim açıldı", descEn: "Premium access unlocked" },
   { id: "rituel_yolcusu", tr: "Ritüel Yolcusu", en: "Ritual Traveler", icon: "🕯️", descTr: "İlk ritüeli tamamladın", descEn: "You completed your first ritual" },
   { id: "derin_okuyucu", tr: "Derin Okuyucu", en: "Deep Reader", icon: "📖", descTr: "7 gün üst üste giriş", descEn: "7 consecutive days of entry" },
@@ -195,7 +196,7 @@ function getKodProgress() {
     for (const lesson of mod.lessons) {
       if (!completedIds.has(lesson.id)) {
         activeModule = mod;
-        nextLesson = lesson;
+        nextLesson = { ...lesson, moduleId: mod.id };
         break;
       }
     }
@@ -540,6 +541,89 @@ function KodHaritam({ avatarId, kodProgress, isTR }) {
 }
 
 /* ═══════════════════════════════════════════════
+   KOD OKUMA SİSTEMİ — özet panel
+   ═══════════════════════════════════════════════ */
+
+function KodOkumaPanel({ kodProgress, isTR, navigate }) {
+  const { done, total, percent, activeModule, nextLesson } = kodProgress;
+  const lastSanri = useMemo(() => {
+    try {
+      const raw = localStorage.getItem("sanri_kod_last_yorum");
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const lessonPath =
+    nextLesson?.moduleId &&
+    `/kod-egitmeni?v=lesson&m=${encodeURIComponent(nextLesson.moduleId)}&l=${encodeURIComponent(nextLesson.id)}`;
+
+  return (
+    <div className={styles.section}>
+      <div className={styles.sectionHeader}>
+        <div className={styles.sectionTitle}>
+          <span className={styles.sectionIcon}>◈</span>
+          {isTR ? "SANRI Kod Okuma Sistemi™" : "SANRI Code Reading System™"}
+        </div>
+        <button type="button" className={styles.sectionAction} onClick={() => navigate("/kod-egitmeni?v=modules")}>
+          {isTR ? "Panele git →" : "Open panel →"}
+        </button>
+      </div>
+      <div className={styles.glass}>
+        <div className={styles.kodPanelGrid}>
+          <div className={styles.kodPanelCard}>
+            <div className={styles.kodPanelLabel}>{isTR ? "Aktif modül" : "Active module"}</div>
+            <div className={styles.kodPanelValue}>
+              {activeModule
+                ? activeModule.title.replace(/^MODÜL \d+ — /, "")
+                : isTR ? "—" : "—"}
+            </div>
+          </div>
+          <div className={styles.kodPanelCard}>
+            <div className={styles.kodPanelLabel}>{isTR ? "Tamamlanan" : "Completed"}</div>
+            <div className={styles.kodPanelValue}>{total ? `${done} / ${total}` : "0 / 21"}</div>
+            <div className={styles.kodPanelBar}>
+              <div className={styles.kodPanelFill} style={{ width: `${percent}%` }} />
+            </div>
+          </div>
+          <div className={styles.kodPanelCard}>
+            <div className={styles.kodPanelLabel}>{isTR ? "Bugünkü ders" : "Today's lesson"}</div>
+            <div className={styles.kodPanelValueSmall}>{nextLesson?.title || (isTR ? "Hepsi tamam" : "All done")}</div>
+            {lessonPath && (
+              <button type="button" className={styles.kodPanelLink} onClick={() => navigate(lessonPath)}>
+                {isTR ? "Derse gir →" : "Open lesson →"}
+              </button>
+            )}
+          </div>
+          <div className={`${styles.kodPanelCard} ${styles.kodPanelWide}`}>
+            <div className={styles.kodPanelLabel}>{isTR ? "Son SANRI yorumu" : "Latest SANRI reading"}</div>
+            <div className={styles.kodPanelSanri}>
+              {lastSanri?.text
+                ? String(lastSanri.text).slice(0, 220) + (String(lastSanri.text).length > 220 ? "…" : "")
+                : isTR ? "Henüz yorum yok — ilk yazını bırak." : "No reading yet — leave your first note."}
+            </div>
+          </div>
+          <div className={styles.kodPanelCard}>
+            <div className={styles.kodPanelLabel}>{isTR ? "Açılan kapılar" : "Doors opened"}</div>
+            <div className={styles.kodPanelValue}>{done}</div>
+          </div>
+          <div className={`${styles.kodPanelCard} ${styles.kodPanelWide}`}>
+            <div className={styles.kodPanelLabel}>{isTR ? "Rozet izleri" : "Badge trail"}</div>
+            <div className={styles.kodPanelBadges}>
+              {["İlk Kapı", "Kod Taşıyıcısı", "Frekans Bekçisi", "Derin Okuyucu", "Hatırlayan"].map((label) => (
+                <span key={label} className={styles.kodPanelBadge}>{label}</span>
+              ))}
+            </div>
+            <p className={styles.kodPanelHint}>{isTR ? "Rozetler aşağıda otomatik açılır." : "Badges unlock below as you progress."}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    GÜNLÜK FREKANS
    ═══════════════════════════════════════════════ */
 
@@ -659,7 +743,7 @@ function Ogrendiklerim({ kodProgress, isTR, navigate }) {
           <span className={styles.sectionIcon}>📚</span>
           {isTR ? "Öğrendiklerim" : "My Learnings"}
         </div>
-        <button className={styles.sectionAction} onClick={() => navigate("/kod-egitmeni")}>
+        <button className={styles.sectionAction} onClick={() => navigate("/kod-egitmeni?v=modules")}>
           {isTR ? "Tümünü Gör →" : "See All →"}
         </button>
       </div>
@@ -689,7 +773,12 @@ function Ogrendiklerim({ kodProgress, isTR, navigate }) {
                 </div>
                 <button
                   className={styles.continueBtn}
-                  onClick={() => navigate(nextLesson ? `/kod-egitmeni?lesson=${nextLesson.id}` : "/kod-egitmeni")}
+                  onClick={() =>
+                    navigate(
+                      nextLesson?.moduleId
+                        ? `/kod-egitmeni?v=lesson&m=${encodeURIComponent(nextLesson.moduleId)}&l=${encodeURIComponent(nextLesson.id)}`
+                        : "/kod-egitmeni?v=modules"
+                    )}
                 >
                   {isTR ? "Devam Et →" : "Continue →"}
                 </button>
@@ -796,7 +885,10 @@ function Defterim({ isTR, yankiPosts, navigate }) {
                       {suggested && (
                         <div
                           className={styles.suggestion}
-                          onClick={() => navigate(`/kod-egitmeni?lesson=${suggested.id}`)}
+                          onClick={() =>
+                            navigate(
+                              `/kod-egitmeni?v=lesson&m=${encodeURIComponent(suggested.moduleId)}&l=${encodeURIComponent(suggested.id)}`
+                            )}
                         >
                           <span className={styles.suggestionIcon}>📖</span>
                           <div className={styles.suggestionBody}>
@@ -882,7 +974,10 @@ function Defterim({ isTR, yankiPosts, navigate }) {
                       {suggested && (
                         <div
                           className={styles.suggestion}
-                          onClick={() => navigate(`/kod-egitmeni?lesson=${suggested.id}`)}
+                          onClick={() =>
+                            navigate(
+                              `/kod-egitmeni?v=lesson&m=${encodeURIComponent(suggested.moduleId)}&l=${encodeURIComponent(suggested.id)}`
+                            )}
                         >
                           <span className={styles.suggestionIcon}>📖</span>
                           <div className={styles.suggestionBody}>
@@ -1169,11 +1264,17 @@ export default function BenimAlanimPage() {
       ilk_kapi: isAuthenticated,
       yanki_birakici: yankiPosts.length > 0,
       kod_tasiyici: kodProgress.done > 0,
-      ayna_tutan: !!localStorage.getItem("sanri_kod_read_used"),
+      hatirlayan: kodProgress.percent >= 100,
+      ayna_tutan: (() => {
+        try {
+          const c = parseInt(localStorage.getItem("sanri_kod_free_sanri_count") || "0", 10);
+          return c > 0 || !!localStorage.getItem("sanri_kod_last_yorum");
+        } catch { return false; }
+      })(),
       frekans_bekcisi: isPremium,
       rituel_yolcusu: false,
       derin_okuyucu: longestStreak >= 7,
-      matrix_cozucu: kodProgress.percent >= 100,
+      matrix_cozucu: isShopierUnlocked("kod_egitmeni") || isPremium,
       hafiza_tasiyici: longestStreak >= 21,
     };
   }, [isAuthenticated, yankiPosts, kodProgress, isPremium, profile]);
@@ -1221,6 +1322,8 @@ export default function BenimAlanimPage() {
       <SatinAlinanAcilimlar isTR={isTR} navigate={navigate} />
 
       <KodHaritam avatarId={avatarId} kodProgress={kodProgress} isTR={isTR} />
+
+      <KodOkumaPanel kodProgress={kodProgress} isTR={isTR} navigate={navigate} />
 
       <GunlukFrekans isTR={isTR} />
 

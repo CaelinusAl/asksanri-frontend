@@ -1,12 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  getPendingPurchase,
-  clearPendingPurchase,
-  unlockViaShopier,
-  syncPurchasesFromServer,
-} from "../data/shopierConfig";
+import { getPendingPurchase, clearPendingPurchase } from "../data/shopierConfig";
 
 const STYLE = {
   backdrop: {
@@ -52,9 +47,11 @@ const STYLE = {
     display: "flex",
     gap: 10,
     justifyContent: "center",
+    flexWrap: "wrap",
   },
-  confirmBtn: {
+  primaryBtn: {
     flex: 1,
+    minWidth: 160,
     padding: "14px 20px",
     borderRadius: 12,
     border: "1px solid rgba(120,247,216,0.3)",
@@ -67,6 +64,7 @@ const STYLE = {
   },
   cancelBtn: {
     flex: 1,
+    minWidth: 120,
     padding: "14px 20px",
     borderRadius: 12,
     border: "1px solid rgba(200,160,255,0.15)",
@@ -86,8 +84,6 @@ export default function PendingPurchaseRecovery() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    syncPurchasesFromServer();
-
     if (location.pathname === "/odeme-basarili") return;
 
     const p = getPendingPurchase();
@@ -98,15 +94,12 @@ export default function PendingPurchaseRecovery() {
     }
   }, [location.pathname]);
 
-  const handleConfirm = useCallback(() => {
+  const goVerify = useCallback(() => {
     if (!pending) return;
-    unlockViaShopier(pending.contentId);
-    clearPendingPurchase();
-    setVisible(false);
-    setPending(null);
-
-    const returnPath = pending.returnPath || "/";
-    navigate(returnPath, { replace: true });
+    const ref = encodeURIComponent(pending.returnPath || "/");
+    navigate(
+      `/odeme-basarili?content=${encodeURIComponent(pending.contentId)}&ref=${ref}`
+    );
   }, [pending, navigate]);
 
   const handleCancel = useCallback(() => {
@@ -127,36 +120,17 @@ export default function PendingPurchaseRecovery() {
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
             <div style={STYLE.glyph}>✦</div>
-            <p style={STYLE.title}>Bekleyen bir satın alımın var</p>
+            <p style={STYLE.title}>Yarım kalan ödeme</p>
             <p style={STYLE.desc}>
-              Ödemen tamamlandı mı? Tamamlandıysa içeriğini hemen açalım.
+              Erişim yalnızca ödeme sunucuda doğrulandıktan sonra açılır. Ödeme sayfasından döndüysen doğrulama
+              ekranına git.
             </p>
             <div style={STYLE.btnRow}>
-              <button
-                style={STYLE.confirmBtn}
-                onClick={handleConfirm}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(120,247,216,0.18)";
-                  e.target.style.boxShadow = "0 0 30px rgba(120,247,216,0.15)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(120,247,216,0.1)";
-                  e.target.style.boxShadow = "none";
-                }}
-              >
-                Evet, satın aldım
+              <button type="button" style={STYLE.primaryBtn} onClick={goVerify}>
+                Erişimi doğrula
               </button>
-              <button
-                style={STYLE.cancelBtn}
-                onClick={handleCancel}
-                onMouseOver={(e) => {
-                  e.target.style.background = "rgba(200,160,255,0.08)";
-                }}
-                onMouseOut={(e) => {
-                  e.target.style.background = "rgba(200,160,255,0.04)";
-                }}
-              >
-                Hayır
+              <button type="button" style={STYLE.cancelBtn} onClick={handleCancel}>
+                Kapat
               </button>
             </div>
           </motion.div>
