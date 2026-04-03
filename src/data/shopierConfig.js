@@ -95,6 +95,76 @@ export const CONTENT_TO_PRODUCT = {
   subconscious_unlock: "ankod",
 };
 
+/**
+ * Ödeme başarı sayfası: URL contentId + pending.productId ile Shopier ürünü, fiyat ve pixel id.
+ * okuma_*, book_*, kod_* dinamik id'ler pending.productId veya prefix ile çözülür.
+ */
+export function resolveShopierPurchaseMeta(contentId, pendingProductId) {
+  const cid = String(contentId || "").trim();
+  const pid = String(pendingProductId || "").trim();
+
+  const inferPurchaseKind = (c, productKey) => {
+    if (c === "role_unlock" || productKey === "rol_okuma") return "role_unlock";
+    if (c.startsWith("okuma_") || productKey === "okuma_devami") return "okuma_unlock";
+    if (c === "ankod_unlock" || productKey === "ankod") return "ankod_unlock";
+    if (productKey === "matrix_code") return "book_matrix";
+    if (productKey === "kitap_112") return "book_112";
+    if (productKey === "kod_egitmeni") return "kod_egitmeni";
+    return productKey || "other";
+  };
+
+  const build = (productKey, pixelContentId) => {
+    const p = SHOPIER_PRODUCTS[productKey];
+    if (!p) return null;
+    const raw = parseFloat(p.price);
+    const actualPrice = Number.isFinite(raw) ? raw : 0;
+    return {
+      productKey,
+      productTitle: p.label,
+      actualPrice,
+      pixelContentId: pixelContentId || cid || productKey,
+      purchaseKind: inferPurchaseKind(cid, productKey),
+    };
+  };
+
+  if (pid && SHOPIER_PRODUCTS[pid]) {
+    const m = build(pid, cid || pid);
+    if (m) return m;
+  }
+  if (cid && SHOPIER_PRODUCTS[cid]) {
+    const m = build(cid, cid);
+    if (m) return m;
+  }
+  const mapped = CONTENT_TO_PRODUCT[cid];
+  if (mapped && SHOPIER_PRODUCTS[mapped]) {
+    const m = build(mapped, cid);
+    if (m) return m;
+  }
+  if (cid.startsWith("okuma_")) {
+    const m = build("okuma_devami", cid);
+    if (m) return m;
+  }
+  if (cid.startsWith("book_")) {
+    const suffix = cid.slice("book_".length);
+    if (suffix && SHOPIER_PRODUCTS[suffix]) {
+      const m = build(suffix, cid);
+      if (m) return m;
+    }
+  }
+  if (cid.startsWith("kod_")) {
+    const m = build("kod_egitmeni", cid);
+    if (m) return m;
+  }
+
+  return {
+    productKey: null,
+    productTitle: cid || "purchase",
+    actualPrice: 0,
+    pixelContentId: cid || pid || "unknown",
+    purchaseKind: "unknown",
+  };
+}
+
 // ── Device fingerprint (stable per browser) ──
 const FP_KEY = "sanri_device_fp";
 
@@ -169,7 +239,14 @@ export function unlockViaShopier(contentId) {
 }
 
 export function recordPurchaseToServer(contentId) {
-  const productKey = CONTENT_TO_PRODUCT[contentId] || contentId;
+  const cid = String(contentId || "");
+  let productKey = CONTENT_TO_PRODUCT[cid] || cid;
+  if (cid.startsWith("okuma_")) productKey = "okuma_devami";
+  if (cid.startsWith("book_")) {
+    const suf = cid.slice("book_".length);
+    if (SHOPIER_PRODUCTS[suf]) productKey = suf;
+  }
+  if (cid.startsWith("kod_")) productKey = "kod_egitmeni";
   const product = SHOPIER_PRODUCTS[productKey];
   return fetch(`${API}/shopier/record`, {
     method: "POST",

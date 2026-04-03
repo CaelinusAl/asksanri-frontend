@@ -51,6 +51,7 @@ import KodEgitmeniPage from "./pages/KodEgitmeniPage";
 import BenimAlanimPage from "./pages/BenimAlanimPage";
 import RolOkumaPage from "./pages/RolOkumaPage";
 import AnKodPage from "./pages/AnKodPage";
+import GozAcikGunesPage from "./pages/GozAcikGunesPage";
 import AuthCallback from "./components/AuthCallback";
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
@@ -98,6 +99,7 @@ export default function App() {
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
       <Route path="/rol-okuma" element={<RolOkumaPage />} />
       <Route path="/an-kod" element={<AnKodPage />} />
+      <Route path="/goz-acik-gunes" element={<GozAcikGunesPage />} />
       <Route path="/benim-alanim" element={<BenimAlanimPage />} />
 
       <Route path="/payment/success" element={<PaymentSuccessPage />} />

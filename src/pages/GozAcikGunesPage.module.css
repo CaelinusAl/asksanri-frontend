@@ -1,0 +1,311 @@
+.page {
+  min-height: 100vh;
+  background: var(--gradient-page);
+  color: var(--text-primary);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.orb {
+  position: fixed;
+  top: -20%;
+  right: -25%;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 180, 50, 0.07) 0%,
+    rgba(200, 60, 40, 0.04) 35%,
+    transparent 65%
+  );
+  pointer-events: none;
+  animation: drift 22s ease-in-out infinite alternate;
+}
+.orb2 {
+  position: fixed;
+  bottom: -35%;
+  left: -20%;
+  width: 55vmax;
+  height: 55vmax;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(120, 247, 216, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  animation: drift 28s ease-in-out infinite alternate-reverse;
+}
+@keyframes drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-24px, 18px);
+  }
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  background: color-mix(in srgb, var(--bg-primary) 90%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.backBtn {
+  background: none;
+  border: none;
+  color: rgba(255, 200, 120, 0.55);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.backBtn:hover {
+  color: #ffc878;
+}
+.badge {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.35);
+}
+
+.article {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 28px 22px 120px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.heroGlyph {
+  font-size: 52px;
+  line-height: 1;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 0 24px rgba(255, 160, 60, 0.35));
+}
+.heroTitle {
+  font-size: clamp(26px, 6vw, 38px);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  margin: 0 0 12px;
+  background: linear-gradient(120deg, #ffe4b5, #ff9a56, #e8b4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.heroSub {
+  font-size: 14px;
+  color: rgba(200, 160, 255, 0.42);
+  margin: 0;
+  line-height: 1.65;
+  max-width: 400px;
+  margin-inline: auto;
+}
+
+.block {
+  margin-bottom: 42px;
+}
+.kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 140, 80, 0.45);
+  margin: 0 0 10px;
+}
+.blockTitle {
+  font-size: clamp(20px, 4.2vw, 26px);
+  font-weight: 500;
+  margin: 0 0 18px;
+  color: color-mix(in srgb, var(--text-primary) 92%, transparent);
+  line-height: 1.35;
+}
+.para {
+  font-size: 16px;
+  line-height: 1.85;
+  color: color-mix(in srgb, var(--text-primary) 78%, transparent);
+  margin: 0 0 16px;
+  font-weight: 300;
+}
+.para strong {
+  color: color-mix(in srgb, var(--text-primary) 88%, transparent);
+  font-weight: 600;
+}
+
+.cliff {
+  padding: 28px 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 160, 80, 0.2);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 120, 60, 0.06),
+    rgba(200, 160, 255, 0.04)
+  );
+  margin-bottom: 28px;
+}
+.cliffText {
+  font-size: 17px;
+  line-height: 1.8;
+  font-style: italic;
+  color: rgba(255, 210, 160, 0.75);
+  margin: 0;
+}
+
+/* Kilitli alan */
+.lockZone {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+}
+.lockFake {
+  filter: blur(9px);
+  user-select: none;
+  pointer-events: none;
+  opacity: 0.35;
+  padding: 24px;
+  min-height: 140px;
+}
+.lockFake p {
+  margin: 0 0 12px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+.lockOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--bg-primary) 20%, transparent) 0%,
+    color-mix(in srgb, var(--bg-primary) 88%, transparent) 45%,
+    color-mix(in srgb, var(--bg-primary) 96%, transparent) 100%
+  );
+  text-align: center;
+}
+.lockTitle {
+  font-size: clamp(22px, 5vw, 30px);
+  font-weight: 400;
+  margin: 0 0 14px;
+  letter-spacing: 0.03em;
+  color: #ffe8c8;
+}
+.lockSub {
+  font-size: 15px;
+  line-height: 1.75;
+  color: rgba(200, 160, 255, 0.55);
+  margin: 0 0 10px;
+  max-width: 420px;
+}
+.lockHint {
+  font-size: 12px;
+  color: rgba(255, 200, 120, 0.35);
+  margin: 0 0 22px;
+  max-width: 380px;
+  line-height: 1.6;
+}
+.ctaBtn {
+  padding: 16px 36px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 180, 100, 0.45);
+  background: linear-gradient(135deg, rgba(255, 160, 80, 0.22), rgba(200, 100, 255, 0.12));
+  color: #fff5e6;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: all 0.3s;
+}
+.ctaBtn:hover {
+  box-shadow: 0 0 40px rgba(255, 160, 80, 0.25);
+  transform: translateY(-2px);
+}
+.recoveryBtn {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: rgba(200, 160, 255, 0.3);
+  font-size: 12px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.recoveryBtn:hover {
+  color: rgba(200, 160, 255, 0.5);
+}
+
+/* Açılmış sırrın alanı */
+.sirZone {
+  padding: 36px 26px 44px;
+  border-radius: 22px;
+  border: 1px solid rgba(120, 247, 216, 0.22);
+  background: linear-gradient(
+    165deg,
+    rgba(120, 247, 216, 0.08),
+    rgba(200, 160, 255, 0.05),
+    color-mix(in srgb, var(--bg-primary) 40%, transparent)
+  );
+  margin-bottom: 40px;
+  animation: sirIn 0.9s ease-out;
+}
+@keyframes sirIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.sirLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(120, 247, 216, 0.55);
+  margin: 0 0 16px;
+}
+.sirTitle {
+  font-size: clamp(22px, 4.8vw, 28px);
+  font-weight: 500;
+  margin: 0 0 22px;
+  color: var(--text-primary);
+}
+.sirPara {
+  font-size: 16px;
+  line-height: 1.88;
+  color: color-mix(in srgb, var(--text-primary) 82%, transparent);
+  margin: 0 0 18px;
+  font-weight: 300;
+}
+.sirSeal {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(120, 247, 216, 0.15);
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: rgba(120, 247, 216, 0.65);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .article {
+    padding: 22px 16px 100px;
+  }
+  .lockOverlay {
+    padding: 24px 14px;
+  }
+}

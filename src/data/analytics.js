@@ -4,7 +4,7 @@
  * Usage:
  *   import { trackEvent, trackPurchase } from "../data/analytics";
  *   trackEvent("quiz_start", { quiz: "ankod" });
- *   trackPurchase("rol_okuma", 369);
+ *   trackPurchase({ contentId: "okuma_1", value: 9.9, productTitle: "Okuma Devamı" });
  */
 
 function gtag(...args) {
@@ -43,26 +43,36 @@ export function trackPageView(path, opts = {}) {
   }
 }
 
-export function trackPurchase(contentId, value, currency = "TRY") {
+/**
+ * @param {{ contentId: string, value: number, currency?: string, productTitle?: string, skipMetaPixel?: boolean }} opts
+ */
+export function trackPurchase(opts) {
+  const {
+    contentId,
+    value,
+    currency = "TRY",
+    productTitle,
+    skipMetaPixel = false,
+  } = opts || {};
   const cid = String(contentId ?? "purchase");
   const v = Number(value);
-  const validValue = Number.isFinite(v) && v > 0;
+  const title = String(productTitle || cid);
+  if (!Number.isFinite(v) || v <= 0) return;
 
   gtag("event", "purchase", {
     transaction_id: `${cid}_${Date.now()}`,
-    value: validValue ? v : 0,
+    value: v,
     currency,
-    items: [{ item_id: cid, item_name: cid, price: validValue ? v : 0 }],
+    items: [{ item_id: cid, item_name: title, price: v }],
   });
 
-  // Meta Pixel standard Purchase (ödeme başarı — Shopier dönüşü)
-  if (validValue) {
+  if (!skipMetaPixel) {
     fbq("track", "Purchase", {
       value: v,
       currency,
+      content_name: title,
       content_ids: [cid],
       content_type: "product",
-      num_items: 1,
     });
   }
 }

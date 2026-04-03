@@ -5,13 +5,30 @@ import {
   getPendingPurchase,
   clearPendingPurchase,
   unlockViaShopier,
-  recordPurchaseToServer,
   syncPurchasesFromServer,
-  SHOPIER_PRODUCTS,
-  CONTENT_TO_PRODUCT,
+  resolveShopierPurchaseMeta,
 } from "../data/shopierConfig";
 import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
+
+/** Meta Pixel — ödeme başarı: script gecikmesine karşı kısa retry */
+function fireMetaPurchase(actualPrice) {
+  const payload = { value: actualPrice, currency: "TRY" };
+  const tryOnce = () => {
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "Purchase", payload);
+      return true;
+    }
+    return false;
+  };
+  if (tryOnce()) return;
+  let attempts = 0;
+  const id = window.setInterval(() => {
+    if (tryOnce() || ++attempts >= 30) {
+      window.clearInterval(id);
+    }
+  }, 100);
+}
 
 const CROSS_UNLOCK_MAP = {
   role_unlock: ["ankod_unlock", "subconscious_unlock"],
@@ -33,7 +50,23 @@ export default function OdemeBasariliPage() {
     if (startedRef.current) return;
     startedRef.current = true;
 
+    const pendingSnap = getPendingPurchase();
     const target = contentId || "premium";
+
+    const meta = resolveShopierPurchaseMeta(target, pendingSnap?.productId);
+    const { pixelContentId, productTitle, actualPrice } = meta;
+
+    if (actualPrice > 0) {
+      console.log("PURCHASE FIRED", actualPrice);
+      fireMetaPurchase(actualPrice);
+      trackPurchase({
+        contentId: pixelContentId,
+        value: actualPrice,
+        currency: "TRY",
+        productTitle,
+        skipMetaPixel: true,
+      });
+    }
 
     unlockViaShopier(target);
 
@@ -44,13 +77,6 @@ export default function OdemeBasariliPage() {
 
     clearPendingPurchase();
     syncPurchasesFromServer();
-
-    const productKey = CONTENT_TO_PRODUCT[target] || target;
-    const product =
-      SHOPIER_PRODUCTS[target] ||
-      SHOPIER_PRODUCTS[productKey] ||
-      SHOPIER_PRODUCTS[pending?.productId];
-    trackPurchase(target, product ? parseFloat(product.price) : 0);
 
     setPhase("glow");
     const t1 = setTimeout(() => setPhase("kapi"), 1000);
