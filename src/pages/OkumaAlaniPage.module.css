@@ -107,6 +107,118 @@
   font-weight: 600;
 }
 
+/* ── Göz Açık Güneş / Sauron şeridi (özel okuma) ── */
+.gozStrip {
+  max-width: 1120px;
+  margin: 28px auto 0;
+  padding: 0 20px;
+}
+.gozStripInner {
+  display: grid;
+  grid-template-columns: minmax(0, 140px) 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 120, 60, 0.28);
+  background: linear-gradient(
+    125deg,
+    rgba(80, 20, 20, 0.35) 0%,
+    rgba(40, 12, 28, 0.5) 40%,
+    rgba(255, 140, 40, 0.12) 100%
+  );
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.25s;
+  width: 100%;
+  color: inherit;
+  font: inherit;
+}
+.gozStripInner:hover {
+  border-color: rgba(255, 180, 100, 0.45);
+  box-shadow: 0 0 40px rgba(255, 100, 40, 0.15);
+  transform: translateY(-2px);
+}
+.gozStripImgWrap {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 160, 80, 0.25);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 200, 100, 0.2), transparent 60%);
+}
+.gozStripImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gozStripGlyph {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  filter: drop-shadow(0 0 12px rgba(255, 80, 40, 0.5));
+}
+.gozStripKicker {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 160, 100, 0.75);
+  margin: 0 0 6px;
+}
+.gozStripTitle {
+  font-size: clamp(17px, 3.5vw, 22px);
+  font-weight: 800;
+  margin: 0 0 8px;
+  line-height: 1.25;
+  background: linear-gradient(100deg, #ffd4a8, #ff7a4a, #e8b4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.gozStripSub {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--text-secondary) 88%, #ffb080);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 560px;
+}
+.gozStripCta {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffc090;
+  white-space: nowrap;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 160, 80, 0.35);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 720px) {
+  .gozStripInner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .gozStripImgWrap {
+    width: 100%;
+    height: 160px;
+    margin: 0 auto;
+    max-width: 220px;
+  }
+  .gozStripSub {
+    margin-inline: auto;
+  }
+  .gozStripCta {
+    justify-self: center;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* ── Featured ── */
 .featuredWrap {
   max-width: 1120px;

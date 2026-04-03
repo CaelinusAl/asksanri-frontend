@@ -37,6 +37,7 @@ export default function OkumaAlaniPage() {
   const isTR = language === "tr";
   const [activeFilter, setActiveFilter] = useState("all");
   const [liveStats, setLiveStats] = useState({});
+  const [gozCoverErr, setGozCoverErr] = useState(false);
   const activeReaders = useActiveReaders();
 
   useEffect(() => {
@@ -109,6 +110,48 @@ export default function OkumaAlaniPage() {
             {isTR ? cat.label.tr : cat.label.en}
           </button>
         ))}
+      </div>
+
+      {/* ── Göz Açık Güneş / Sauron — özel derin okuma ── */}
+      <div className={styles.gozStrip}>
+        <button
+          type="button"
+          className={styles.gozStripInner}
+          onClick={() => navigate("/goz-acik-gunes")}
+        >
+          <div className={styles.gozStripImgWrap}>
+            {!gozCoverErr ? (
+              <img
+                className={styles.gozStripImg}
+                src="/assets/gates/goz-acildi.jpg"
+                alt={isTR ? "Göz Açık Güneş görseli" : "Eye-Open Sun"}
+                onError={() => setGozCoverErr(true)}
+              />
+            ) : (
+              <div className={styles.gozStripGlyph} aria-hidden>
+                👁
+              </div>
+            )}
+          </div>
+          <div>
+            <p className={styles.gozStripKicker}>
+              {isTR ? "Özel okuma · Matrix & mit" : "Special read · Matrix & myth"}
+            </p>
+            <h2 className={styles.gozStripTitle}>
+              {isTR
+                ? "Sauron’un Gözü × Göz Açık Güneş"
+                : "Sauron's Eye × Eye-Open Sun"}
+            </h2>
+            <p className={styles.gozStripSub}>
+              {isTR
+                ? "Sistem gözü, yüzük kodu, güneş patlaması ve uyanış — derin metin; sır 9,90₺ kapıda açılır."
+                : "System eye, ring as code, solar flare, awakening — deep text; the seal opens at ₺9.90."}
+            </p>
+          </div>
+          <span className={styles.gozStripCta}>
+            {isTR ? "Metne gir →" : "Enter →"}
+          </span>
+        </button>
       </div>
 
       {/* ── Featured Post ── */}
