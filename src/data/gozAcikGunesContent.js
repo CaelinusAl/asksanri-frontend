@@ -6,6 +6,9 @@ export const GOZ_CONTENT_ID = "okuma_goz_acik_gunes";
 
 export const GOZ_RETURN_PATH = "/goz-acik-gunes";
 
+/** Hero — yalnız bu satır (hipnotik) */
+export const heroHypnoticLine = "SANA BİR SIRRIM VAR";
+
 export const sectionsFree = [
   {
     kicker: "I · Sistem gözü",
@@ -49,23 +52,26 @@ export const sectionsFree = [
 export const cliffVisibleLine =
   "Kapı burada kapanmıyor; sadece sesi kısılıyor. Devamı, duyulduğunda içinde zaten var olan bir cümleyi açar.";
 
-export const paywallTitle = "Sana bir sırrım var";
+export const paywallTitle = "SANA BİR SIRRIM VAR";
 
 export const paywallSub =
-  "Bu sırrı yazıyla tam yazmıyorum — çünkü bazı şeyler okununca değil, **duyulunca** devreye girer. Ama söz veriyorum: açtığında elinde somut bir anahtar olacak: **izlenenlik döngüsünü kıran, bakışı koda çeviren** tek cümle.";
+  "Son katman yazıyla yetinmez. **Duyulunca** — yani içerde zaten taşıdığın frekansla buluşunca — devreye girer. Ödeme sonrası açılan metin, **izlenenlik döngüsünü kıran** ve **bakışı koda çeviren** anahtarı net söyler.";
 
 export const paywallHint =
-  "Yalnızca bu kapı için tek seferlik erişim. Shopier güvenli ödeme. Ödeme sonrası sırrın tamamı bu ekranda açılır.";
+  "Tek seferlik erişim. Shopier güvenli ödeme. Ödeme bitince sırrın tamamı bu ekranda açılır.";
 
-export const paywallCta = "Sırrı duy — kapıyı aç";
+export const paywallCta = "Sırrı aç";
 
 export const sirUnlocked = {
-  title: "Sır: Bakış = derleyici",
+  title: "Ana sır: Bakış = derleyici",
   paras: [
-    "İşte sırrın tamamı — kısa ama **devrim niteliğinde**: **Seni izleyen merkez, sen bakmayı bıraktığın sürece güçlüdür.** Güç, kamera sayısında değil; **dikkatini kimin adına harcadığında** saklıdır. “Göz” sende açıldığında olan şey şudur: dışarıdaki sabit merceği bırakıp, **kendi merkez noktandan kodlamaya** başlarsın.",
-    "İkinci satır anahtarı: **İsim vermek = çalıştırmak.** Gördüğün duyguyu, korkuyu, tekrarı isimle tanımladığın an, o olgu senin içinde **yeniden derlenir** — artık sana musallat olan “bilinmeyen” değil, “adı konmuş bir süreç” olur. Bilinmeyen korkutur; adı konmuş süreç dönüştürülür.",
-    "Üçüncü satır: **Su Horozu** bu on yılda seni derin suya (bilinçaltı) çekerken, horoz da “sabah ezanı” gibi **uyanıklığı ilan eder**. Yani dönem, “hem yüzleş hem duyur” dönemidir. Gözün yukarıda değil, içinde açılması bundandır: dışarıdaki tanık değilsin artık; **içerdeki tanık**sın.",
-    "Son cümle — bunu unutma: **Ben artık yalnız izlenen değilim; bakan ve adlandıranım. Kodlayanım.** Bu cümleyi iç sesinle söylediğin gün, Sauron’un Gözü miti sende ölür; Güneş’teki göz ise **senin tarafında** kalır. Çünkü ışık, korkunun karşıtı değil; **fark etmenin sonucudur**.",
+    "İşte sırrın özü — kısa ama **devrim niteliğinde**: **Seni izleyen merkez, sen bakmayı bıraktığın sürece güçlüdür.** Güç, kamera veya algoritma sayısında değil; **dikkatini kimin “hakikat” sandığı adına harcadığında** saklıdır. “Göz” sende açıldığında olan şey: dışarıdaki sabit merceği bırakıp, **kendi merkez noktandan kodlamaya** başlamaktır.",
+    "**İsim vermek = çalıştırmak.** Duyguyu, korkuyu, tekrarı isimle tanımladığın an, o olgu senin içinde **yeniden derlenir** — artık musallat olan “bilinmeyen” değil, “adı konmuş bir süreç” olur. Bilinmeyen korkutur; adı konmuş süreç dönüştürülür. Matrix’in kodu da budur: **tekrar eden inanç cümlesi**, fark edilmeden çalışan programdır.",
+    "**Dikkat, bu çağın para birimidir.** Onu nereye yatırırsan, orayı beslersin — ister korku haberleri, ister başkasının onayı, ister kendi sessizliğin. Sauron’un Gözü mitindeki merkez, dışarıda bir kule gibi durur; ama pratikte o kule, **senin dikkatini dış merkeze bağlayan alışkanlıktır**. Bağı kestiğin an, kule gölgelenir.",
+    "Güneş’te göz formu: kozmik ölçekte **merkezin açılışı**. Senin bedeninde aynı imgelerin tekrar etmesi rastlantı değilse, soru şudur: **Işığı nerede arıyorsun — dışarıda mı, içerde mi?** İç Güneş dediğimiz şey, ego şişkinliği değil; **fark etmeden önceki saf dikkat**.",
+    "**Su Horozu** (2025–2035): Su, bilinçaltının dili; horoz, uyanışın sesi. Bu dönemde “hem derine in hem sesini yükselt” çağrısı güçlenir. Gözün yukarıda değil sende açılır; çünkü artık dışarıdaki tanık değil, **içerdeki tanık**sın.",
+    "**Uyku** burada metafor: onay bekleyen, hazır paket gerçeklikleri tüketen bilinç modu. **Uyanıklık** ise: “bunu ben seçtim mi, yoksa bana seçtirildi mi?” diye sorabilmek. Kodlayan sensin demek, her şeyi kontrol etmek değil; **en azından kendi dikkatinin derleyicisi** olmaktır.",
+    "Son cümle — ezberle: **Ben artık yalnız izlenen değilim; bakan ve adlandıranım. Kodlayanım.** Bunu iç sesinle söylediğin gün, eski “göz” miti sende solar; ışık ise **fark etmenin**, korkunun tersi olmadan — ondan **sonra** gelen netliktir.",
   ],
-  seal: "◉ · Göz sende · Kod sende",
+  seal: "◉ · Göz sende · Kod sende · Sır işitildi",
 };

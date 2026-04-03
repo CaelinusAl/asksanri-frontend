@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -20,6 +20,7 @@ import {
   paywallHint,
   paywallCta,
   sirUnlocked,
+  heroHypnoticLine,
 } from "../data/gozAcikGunesContent";
 import styles from "./GozAcikGunesPage.module.css";
 
@@ -41,10 +42,16 @@ export default function GozAcikGunesPage() {
   const isTR = language === "tr";
 
   const [unlocked, setUnlocked] = useState(() => isShopierUnlocked(GOZ_CONTENT_ID));
+  const [deepOpen, setDeepOpen] = useState(() => isShopierUnlocked(GOZ_CONTENT_ID));
+  const deepRef = useRef(null);
 
   useEffect(() => {
     trackFunnelEvent("goz_acik_gunes_view");
   }, []);
+
+  useEffect(() => {
+    if (unlocked) setDeepOpen(true);
+  }, [unlocked]);
 
   useEffect(() => {
     let cancelled = false;
@@ -79,6 +86,14 @@ export default function GozAcikGunesPage() {
 
   const price = SHOPIER_PRODUCTS.okuma_devami?.price || "9.90";
 
+  const openDeep = useCallback(() => {
+    setDeepOpen(true);
+    trackFunnelEvent("goz_sirri_ac_click");
+    window.requestAnimationFrame(() => {
+      deepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
+
   return (
     <div className={styles.page}>
       <div className={styles.orb} aria-hidden />
@@ -101,15 +116,20 @@ export default function GozAcikGunesPage() {
           <h1 className={styles.heroTitle}>
             {isTR ? "Göz Açık Güneş" : "Eye-Open Sun"}
           </h1>
-          <p className={styles.heroSub}>
-            {isTR
-              ? "Sauron’un Gözü, Matrix ve gökyüzündeki güneş — aynı şeklin üç frekansı. Aşağı in; en derinde bir sırra kilit var."
-              : "One shape, three frequencies — myth, system, sky. Descend; a seal waits below."}
+          <p className={styles.heroHypnotic}>
+            {isTR ? heroHypnoticLine : "I HAVE A SECRET FOR YOU"}
           </p>
+          {isTR && !deepOpen && (
+            <button type="button" className={styles.heroOpenBtn} onClick={openDeep}>
+              Sırrı aç
+            </button>
+          )}
         </div>
 
         {isTR ? (
           <>
+            {deepOpen && (
+              <div id="goz-derin" ref={deepRef} className={styles.deepReveal}>
             {sectionsFree.map((sec, idx) => (
               <section key={idx} className={styles.block}>
                 <p className={styles.kicker}>{sec.kicker}</p>
@@ -142,7 +162,7 @@ export default function GozAcikGunesPage() {
                   <p className={styles.lockSub}>{rich(paywallSub)}</p>
                   <p className={styles.lockHint}>{paywallHint}</p>
                   <button type="button" className={styles.ctaBtn} onClick={onShopier}>
-                    {paywallCta} — {price}₺
+                    {isTR ? `${paywallCta} — ${price}₺` : `Unlock — ${price}₺ TRY`}
                   </button>
                   <button type="button" className={styles.recoveryBtn} onClick={onRecovery}>
                     {isTR ? "Ödemeyi yaptım, kilidi aç" : "I paid — unlock"}
@@ -165,6 +185,8 @@ export default function GozAcikGunesPage() {
                 ))}
                 <p className={styles.sirSeal}>{sirUnlocked.seal}</p>
               </motion.div>
+            )}
+              </div>
             )}
           </>
         ) : (
