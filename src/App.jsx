@@ -63,6 +63,46 @@ import AuthCallback from "./components/AuthCallback";
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
 
+const okumaAreaErrorStyle = {
+  minHeight: "100vh",
+  background: "#07080d",
+  color: "#e8e4f0",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 24,
+  textAlign: "center",
+  fontFamily: "system-ui, sans-serif",
+};
+
+function renderOkumaAreaError(err) {
+  console.error("[Okuma alanı] error boundary:", err);
+  return (
+    <div style={okumaAreaErrorStyle}>
+      <p style={{ margin: "0 0 20px", maxWidth: 420, lineHeight: 1.55 }}>
+        Okuma alanında beklenmeyen bir hata oluştu. Listeye dönüp tekrar deneyebilir veya sayfayı
+        yenileyebilirsin.
+      </p>
+      <button
+        type="button"
+        style={{
+          padding: "12px 24px",
+          borderRadius: 12,
+          border: "1px solid rgba(200,160,255,0.35)",
+          background: "rgba(200,160,255,0.15)",
+          color: "#fff",
+          fontWeight: 700,
+          cursor: "pointer",
+        }}
+        onClick={() => window.location.assign("/okuma-alani")}
+      >
+        Okuma alanına dön
+      </button>
+    </div>
+  );
+}
+
 export default function App() {
   usePageView();
   useEffect(() => {
@@ -102,8 +142,22 @@ export default function App() {
       <Route path="/yanki-alani/profil/:userId" element={<YankiProfilPage />} />
       <Route path="/yanki-alani/:id" element={<YankiPostDetail />} />
 
-      <Route path="/okuma-alani" element={<OkumaAlaniPage />} />
-      <Route path="/okuma-alani/:slug" element={<OkumaDetayPage />} />
+      <Route
+        path="/okuma-alani"
+        element={
+          <ErrorBoundary renderError={renderOkumaAreaError}>
+            <OkumaAlaniPage />
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path="/okuma-alani/:slug"
+        element={
+          <ErrorBoundary renderError={renderOkumaAreaError}>
+            <OkumaDetayPage />
+          </ErrorBoundary>
+        }
+      />
       <Route path="/1999" element={<Navigate to="/okuma-alani/1999-kapanmayan-frekans" replace />} />
 
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />

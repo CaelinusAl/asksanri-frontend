@@ -106,6 +106,7 @@ export default function OkumaAlaniPage() {
 
   /** Birden fazla `isFeatured: true` varsa ilki değil, en yeni tarihli öne çıkan (güncel haber) seçilir. */
   const featured = useMemo(() => {
+    if (!OKUMA_POSTS?.length) return null;
     const candidates = OKUMA_POSTS.filter((p) => p.isFeatured);
     if (candidates.length === 0) return OKUMA_POSTS[0];
     return candidates.reduce((best, p) => {
@@ -122,10 +123,11 @@ export default function OkumaAlaniPage() {
    */
   const filteredPosts = useMemo(() => {
     if (activeFilter === "all") {
+      if (!featured) return [...OKUMA_POSTS];
       return OKUMA_POSTS.filter((p) => p.id !== featured.id);
     }
     return OKUMA_POSTS.filter((p) => p.category === activeFilter);
-  }, [activeFilter, featured.id]);
+  }, [activeFilter, featured]);
 
   const renderCategoryBadge = (categoryId, extraStyle) => {
     const cat = getCategoryById(categoryId);

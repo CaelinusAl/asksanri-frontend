@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
@@ -15,6 +14,19 @@ const API =
   (import.meta?.env?.VITE_BACKEND_URL &&
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
+
+function normalizeOkumaComments(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((c, i) => {
+    const name = String(c?.authorName ?? c?.author_name ?? "").trim() || "Anonim";
+    return {
+      id: c?.id ?? `c-${i}`,
+      authorName: name,
+      content: String(c?.content ?? ""),
+      createdAt: c?.createdAt ?? c?.created_at ?? "",
+    };
+  });
+}
 
 export default function OkumaDetayPage() {
   const { slug } = useParams();
@@ -96,7 +108,13 @@ export default function OkumaDetayPage() {
     return () => {
       document.title = "SANRI";
       const ld = document.getElementById("sanri-article-ld");
-      if (ld) ld.remove();
+      if (ld?.isConnected) {
+        try {
+          ld.remove();
+        } catch {
+          /* eklenti / çeviri DOM'u oynattıysa removeChild patlamasın */
+        }
+      }
     };
   }, [post]);
 
@@ -106,12 +124,19 @@ export default function OkumaDetayPage() {
   }, [post]);
 
   useEffect(() => {
+    loadedRef.current = false;
+    setComments([]);
+  }, [slug]);
+
+  useEffect(() => {
     if (!post || loadedRef.current) return;
     loadedRef.current = true;
 
     fetch(`${API}/okuma/comments/${post.slug}`)
       .then((r) => r.json())
-      .then((data) => { if (data.comments) setComments(data.comments); })
+      .then((data) => {
+        if (data.comments) setComments(normalizeOkumaComments(data.comments));
+      })
       .catch(() => {});
 
     fetch(`${API}/okuma/likes/${post.slug}`)
@@ -222,12 +247,7 @@ export default function OkumaDetayPage() {
       </div>
 
       {/* ── Article ── */}
-      <motion.article
-        className={styles.article}
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-      >
+      <article className={styles.article}>
         <span
           className={styles.catBadge}
           style={{
@@ -250,51 +270,16 @@ export default function OkumaDetayPage() {
         </div>
 
         <div className={styles.meta}>
-          <motion.button
+          <button
             type="button"
             className={`${styles.likeBtn} ${liked ? styles.likeBtnActive : ""}`}
             onClick={handleLike}
-            whileTap={{ scale: 0.9 }}
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 420, damping: 18 }}
           >
-            <motion.span
-              key={liked ? "heart-on" : "heart-off"}
-              className={styles.likeEmoji}
-              initial={{ scale: 0.45, rotate: liked ? 0 : -18 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", stiffness: 500, damping: 15 }}
-            >
-              {liked ? "❤️" : "🤍"}
-            </motion.span>
-            <motion.span
-              key={`lc-${likesCount}-${liked}`}
-              className={styles.likeNum}
-              initial={{ y: -5, opacity: 0.65, scale: 1.12 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 22 }}
-            >
-              {likesCount + (post.likeCount || 0)}
-            </motion.span>
-          </motion.button>
-          <motion.span
-            key={`cc-${comments.length}`}
-            className={styles.metaStat}
-            initial={{ scale: 1.06 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            💬 {comments.length}
-          </motion.span>
-          <motion.span
-            key={`vc-${viewsCount}`}
-            className={styles.metaStat}
-            initial={{ scale: 1.06 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-          >
-            👁 {viewsCount + (post.viewCount || 0)}
-          </motion.span>
+            <span className={styles.likeEmoji}>{liked ? "❤️" : "🤍"}</span>
+            <span className={styles.likeNum}>{likesCount + (post.likeCount || 0)}</span>
+          </button>
+          <span className={styles.metaStat}>💬 {comments.length}</span>
+          <span className={styles.metaStat}>👁 {viewsCount + (post.viewCount || 0)}</span>
           <span>{timeAgoOkuma(post.createdAt)}</span>
           <button
             className={styles.shareBtn}
@@ -343,12 +328,7 @@ export default function OkumaDetayPage() {
                 )}
 
                 {sr && typeof sr === "object" && (
-                  <motion.div
-                    className={styles.sanriWrap}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                  >
+                  <div className={styles.sanriWrap}>
                     <div className={styles.sanriHeader}>
                       <span className={styles.sanriGlyph}>✦</span>
                       <span className={styles.sanriLabel}>
@@ -358,15 +338,10 @@ export default function OkumaDetayPage() {
                     <p className={styles.sanriAnalysis}>{sr.analysis}</p>
                     <p className={styles.sanriStrong}>{sr.strongLine}</p>
                     <p className={styles.sanriQuestion}>{sr.question}</p>
-                  </motion.div>
+                  </div>
                 )}
                 {sr && typeof sr === "string" && (
-                  <motion.div
-                    className={styles.sanriWrap}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: 0.2 }}
-                  >
+                  <div className={styles.sanriWrap}>
                     <div className={styles.sanriHeader}>
                       <span className={styles.sanriGlyph}>✦</span>
                       <span className={styles.sanriLabel}>
@@ -376,7 +351,7 @@ export default function OkumaDetayPage() {
                     <p className={styles.sanriAnalysis} style={{ whiteSpace: "pre-wrap" }}>
                       {sr}
                     </p>
-                  </motion.div>
+                  </div>
                 )}
               </>
             );
@@ -529,13 +504,8 @@ export default function OkumaDetayPage() {
 
         {/* ── Auto CTA (locked users) ── */}
         {isLocked && autoCta && (
-          <motion.div
-            className={styles.autoCta}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-          >
-            <p className={styles.autoCtaText}>{autoCta.text}</p>
+          <div className={styles.autoCta}>
+            <p className={styles.autoCtaText}>{autoCta?.text ?? ""}</p>
             <div className={styles.autoCtaActions}>
               <button
                 className={styles.microPayBtn}
@@ -561,14 +531,14 @@ export default function OkumaDetayPage() {
                 {isTR ? "Havale / EFT ile öde" : "Bank transfer (EFT)"}
               </BankTransferLink>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* ── Deeper CTA (unlocked users) ── */}
         {!isLocked && (
           <div className={styles.deeperCta}>
             {autoCta && (
-              <p className={styles.autoCtaHint}>{autoCta.text}</p>
+              <p className={styles.autoCtaHint}>{autoCta?.text ?? ""}</p>
             )}
             <p className={styles.deeperText}>
               {isTR
@@ -602,7 +572,7 @@ export default function OkumaDetayPage() {
             <div key={c.id} className={styles.commentCard}>
               <div className={styles.commentHeader}>
                 <div className={styles.commentAvatar}>
-                  {c.authorName.charAt(0).toUpperCase()}
+                  {(c.authorName || "?").charAt(0).toUpperCase()}
                 </div>
                 <span className={styles.commentAuthor}>{c.authorName}</span>
                 <span className={styles.commentTime}>{timeAgoOkuma(c.createdAt)}</span>
@@ -659,7 +629,7 @@ export default function OkumaDetayPage() {
             </Link>
           </div>
         )}
-      </motion.article>
+      </article>
     </div>
   );
 }
