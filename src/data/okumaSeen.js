@@ -9,10 +9,15 @@ export function markOkumaSeen(slug) {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const list = raw ? JSON.parse(raw) : [];
     const set = new Set(Array.isArray(list) ? list : []);
-    if (set.has(slug)) return;
-    set.add(slug);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
-    window.dispatchEvent(new CustomEvent("sanri-okuma-seen", { detail: { slug } }));
+    const wasNew = !set.has(slug);
+    if (wasNew) {
+      set.add(slug);
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify([...set]));
+    }
+    /* Her açılışta tetiklenir — liste “canlı” görünsün (Görüldü animasyonu vb.) */
+    window.dispatchEvent(
+      new CustomEvent("sanri-okuma-seen", { detail: { slug, wasNew } })
+    );
   } catch {
     /* ignore */
   }

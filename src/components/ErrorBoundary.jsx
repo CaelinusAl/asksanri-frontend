@@ -13,6 +13,11 @@ export default class ErrorBoundary extends React.Component {
   }
   render() {
     if (this.state.error) {
+      if (typeof this.props.renderError === "function") {
+        return this.props.renderError(this.state.error, () =>
+          this.setState({ error: null })
+        );
+      }
       return (
         <div style={{ padding: 16, fontFamily: "monospace" }}>
           <h2>App Crash</h2>

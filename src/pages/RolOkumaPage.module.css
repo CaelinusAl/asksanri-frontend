@@ -277,6 +277,51 @@
   padding: 40px 24px 100px;
 }
 
+.resultErrorCard {
+  max-width: 420px;
+  margin: 48px auto;
+  padding: 36px 28px;
+  text-align: center;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(200, 160, 255, 0.08), rgba(6, 18, 24, 0.85));
+  border: 1px solid rgba(200, 160, 255, 0.2);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+}
+.resultErrorGlyph {
+  font-size: 28px;
+  color: rgba(120, 247, 216, 0.55);
+  margin-bottom: 16px;
+}
+.resultErrorTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 12px;
+  letter-spacing: 0.02em;
+}
+.resultErrorText {
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(200, 160, 255, 0.75);
+  margin: 0 0 24px;
+}
+.resultErrorBtn {
+  padding: 12px 28px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: rgba(200, 160, 255, 0.15);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.resultErrorBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(200, 160, 255, 0.15);
+}
+
 .resultHeader {
   text-align: center;
   margin-bottom: 40px;

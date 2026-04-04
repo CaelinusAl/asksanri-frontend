@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { LockBadge } from "../components/premium/PremiumGate";
@@ -31,6 +31,49 @@ function mergeCount(liveVal, staticVal) {
   return (liveVal || 0) + (staticVal || 0);
 }
 
+/** Sunucu / poll ile sayı değişince hafif “canlı” nabız */
+function OkumaLiveStat({ icon, liveVal, staticVal }) {
+  const total = mergeCount(liveVal, staticVal);
+  const prevRef = useRef(null);
+  const [pulse, setPulse] = useState(false);
+  useEffect(() => {
+    if (prevRef.current === null) {
+      prevRef.current = total;
+      return;
+    }
+    if (prevRef.current !== total) {
+      prevRef.current = total;
+      setPulse(true);
+      const t = window.setTimeout(() => setPulse(false), 480);
+      return () => window.clearTimeout(t);
+    }
+  }, [total]);
+  return (
+    <motion.span
+      className={styles.liveStat}
+      animate={pulse ? { scale: [1, 1.12, 1] } : { scale: 1 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {icon} {total}
+    </motion.span>
+  );
+}
+
+function OkumaSeenBadge({ isTR }) {
+  return (
+    <motion.span
+      layout
+      className={styles.seenBadge}
+      initial={{ opacity: 0, scale: 0.62, y: 6 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.85, transition: { duration: 0.2 } }}
+      transition={{ type: "spring", stiffness: 440, damping: 22 }}
+    >
+      {isTR ? "Görüldü" : "Seen"}
+    </motion.span>
+  );
+}
+
 export default function OkumaAlaniPage() {
   const navigate = useNavigate();
   const { language } = useLanguage();
@@ -49,18 +92,39 @@ export default function OkumaAlaniPage() {
   }, []);
 
   useEffect(() => {
-    fetch(`${API}/okuma/all-stats`)
-      .then((r) => r.json())
-      .then((data) => { if (data.stats) setLiveStats(data.stats); })
-      .catch(() => {});
+    const load = () =>
+      fetch(`${API}/okuma/all-stats`)
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.stats) setLiveStats(data.stats);
+        })
+        .catch(() => {});
+    load();
+    const poll = window.setInterval(load, 42000);
+    return () => window.clearInterval(poll);
   }, []);
 
-  const featured = useMemo(() => OKUMA_POSTS.find((p) => p.isFeatured) || OKUMA_POSTS[0], []);
+  /** Birden fazla `isFeatured: true` varsa ilki değil, en yeni tarihli öne çıkan (güncel haber) seçilir. */
+  const featured = useMemo(() => {
+    const candidates = OKUMA_POSTS.filter((p) => p.isFeatured);
+    if (candidates.length === 0) return OKUMA_POSTS[0];
+    return candidates.reduce((best, p) => {
+      const t = new Date(p.createdAt || 0).getTime() || 0;
+      const bt = new Date(best.createdAt || 0).getTime() || 0;
+      return t >= bt ? p : best;
+    });
+  }, []);
 
+  /**
+   * "Tümü"nde öne çıkan kartta gösterilen yazı grid’de tekrarlanmasın.
+   * Kategori filtresi seçiliyken öne çıkan satırı gizlediğimiz için (yalnızca Tümü’nde var),
+   * aynı yazı grid’e dahil edilmeli — yoksa örn. Hopa/koyun haberi "Gündem Kodu"nda tamamen kaybolurdu.
+   */
   const filteredPosts = useMemo(() => {
-    const nonFeatured = OKUMA_POSTS.filter((p) => p.id !== featured.id);
-    if (activeFilter === "all") return nonFeatured;
-    return nonFeatured.filter((p) => p.category === activeFilter);
+    if (activeFilter === "all") {
+      return OKUMA_POSTS.filter((p) => p.id !== featured.id);
+    }
+    return OKUMA_POSTS.filter((p) => p.category === activeFilter);
   }, [activeFilter, featured.id]);
 
   const renderCategoryBadge = (categoryId, extraStyle) => {
@@ -170,6 +234,7 @@ export default function OkumaAlaniPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            whileHover={{ y: -2 }}
             onClick={() => navigate(`/okuma-alani/${featured.slug}`)}
           >
             <div className={styles.featuredImgWrap}>
@@ -195,12 +260,22 @@ export default function OkumaAlaniPage() {
                 {featured.excerpt}
               </p>
               <div className={styles.featuredMeta}>
-                <span>💬 {mergeCount(liveStats[featured.slug]?.comments, featured.commentCount)}</span>
-                <span>👁 {mergeCount(liveStats[featured.slug]?.views, featured.viewCount)}</span>
-                <span>{timeAgoOkuma(featured.createdAt)}</span>
-                {isOkumaSeen(featured.slug) ? (
-                  <span className={styles.seenBadge}>{isTR ? "Görüldü" : "Seen"}</span>
-                ) : null}
+                <OkumaLiveStat
+                  icon="💬"
+                  liveVal={liveStats[featured.slug]?.comments}
+                  staticVal={featured.commentCount}
+                />
+                <OkumaLiveStat
+                  icon="👁"
+                  liveVal={liveStats[featured.slug]?.views}
+                  staticVal={featured.viewCount}
+                />
+                <span className={styles.metaTime}>{timeAgoOkuma(featured.createdAt)}</span>
+                <AnimatePresence mode="popLayout">
+                  {isOkumaSeen(featured.slug) ? (
+                    <OkumaSeenBadge key={`seen-f-${featured.slug}`} isTR={isTR} />
+                  ) : null}
+                </AnimatePresence>
               </div>
             </div>
           </motion.div>
@@ -252,12 +327,22 @@ export default function OkumaAlaniPage() {
                     <h3 className={styles.cardTitle}>{post.title}</h3>
                     <p className={styles.cardExcerpt}>{post.excerpt}</p>
                     <div className={styles.cardMeta}>
-                      <span>💬 {mergeCount(liveStats[post.slug]?.comments, post.commentCount)}</span>
-                      <span>👁 {mergeCount(liveStats[post.slug]?.views, post.viewCount)}</span>
-                      <span>{timeAgoOkuma(post.createdAt)}</span>
-                      {isOkumaSeen(post.slug) ? (
-                        <span className={styles.seenBadge}>{isTR ? "Görüldü" : "Seen"}</span>
-                      ) : null}
+                      <OkumaLiveStat
+                        icon="💬"
+                        liveVal={liveStats[post.slug]?.comments}
+                        staticVal={post.commentCount}
+                      />
+                      <OkumaLiveStat
+                        icon="👁"
+                        liveVal={liveStats[post.slug]?.views}
+                        staticVal={post.viewCount}
+                      />
+                      <span className={styles.metaTime}>{timeAgoOkuma(post.createdAt)}</span>
+                      <AnimatePresence mode="popLayout">
+                        {isOkumaSeen(post.slug) ? (
+                          <OkumaSeenBadge key={`seen-${post.slug}`} isTR={isTR} />
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </motion.div>

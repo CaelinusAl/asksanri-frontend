@@ -8,6 +8,7 @@ import { KOD_MODULLERI, getAllLessonsFlat } from "../data/kodEgitmeniData";
 import {
   getUnlockedItems,
   isShopierUnlocked,
+  isShopierProductUnlocked,
   syncPurchasesFromServer,
 } from "../data/shopierConfig";
 import { getAllKatmanlar } from "../data/katmanEngine";
@@ -1051,6 +1052,163 @@ function resolveBenimAlanProgressNote(contentId, isTR) {
 }
 
 /* ═══════════════════════════════════════════════
+   KİŞİSEL TESLİMATLAR (sunucu — Matrix Rol metni vb.)
+   ═══════════════════════════════════════════════ */
+
+function PersonalDeliverablesSection({ isTR, accessRevision }) {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [openId, setOpenId] = useState(null);
+  /** Production API henüz /deliverables yayınlamıyorsa 404 — müşteri boş ekran görmesin */
+  const [apiDeliverablesMissing, setApiDeliverablesMissing] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        setLoading(true);
+        setApiDeliverablesMissing(false);
+        const token = localStorage.getItem("sanri_token");
+        if (!token) {
+          if (!cancelled) {
+            setItems([]);
+            setLoading(false);
+          }
+          return;
+        }
+        const res = await fetch(`${API_URL}/deliverables/my`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.status === 404) {
+          if (!cancelled) {
+            setItems([]);
+            setApiDeliverablesMissing(true);
+          }
+          return;
+        }
+        if (!res.ok) {
+          if (!cancelled) setItems([]);
+          return;
+        }
+        const data = await res.json().catch(() => ({}));
+        if (!cancelled) setItems(Array.isArray(data.items) ? data.items : []);
+      } catch {
+        if (!cancelled) setItems([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [accessRevision]);
+
+  if (loading) return null;
+
+  const mayExpectMatrixRol =
+    isShopierUnlocked("role_unlock") ||
+    isShopierProductUnlocked("role_unlock") ||
+    getUnlockedItems().some((u) => u.id === "role_unlock");
+  const showDeliverablesFallback = apiDeliverablesMissing && mayExpectMatrixRol;
+
+  if (items.length === 0 && !showDeliverablesFallback) return null;
+
+  return (
+    <div className={styles.section}>
+      <div className={styles.sectionHeader}>
+        <div className={styles.sectionTitle}>
+          <span className={styles.sectionIcon}>✧</span>
+          {isTR ? "Sana özel okumalar" : "Personal readings"}
+        </div>
+      </div>
+      <p className={styles.sectionKicker}>
+        {isTR
+          ? "Satın aldığın kişisel ürünlerin tam metni burada saklanır. Sadece bu hesapla giriş yaptığında görürsün."
+          : "Full text of personal purchases you own is stored here. Visible only when signed in to this account."}
+      </p>
+      <div className={styles.glass}>
+        {showDeliverablesFallback && items.length === 0 && (
+          <div className={styles.deliverableApiMissing}>
+            <p className={styles.deliverableApiMissingTitle}>
+              {isTR ? "Matrix Rol metni burada henüz bağlanamıyor" : "Your Matrix Rol text can’t load here yet"}
+            </p>
+            <p className={styles.deliverableApiMissingText}>
+              {isTR
+                ? "Sunucu tarafında kişisel teslimat uçları henüz canlı ortamda yok (404). Metnin e-postana veya PDF ile iletilmesi için selin@asksanri.com adresine yazabilirsin; altyapı güncellenince aynı metin bu alanda da görünecek."
+                : "The personal-deliverables API isn’t live on production yet. Email selin@asksanri.com to receive your reading; it will appear here after the backend update."}
+            </p>
+          </div>
+        )}
+        <div className={styles.deliverableList}>
+          {items.map((row) => {
+            const p = row.payload || {};
+            const sections = Array.isArray(p.sections) ? p.sections : [];
+            const summaryLines = Array.isArray(p.summary_lines) ? p.summary_lines : [];
+            const expanded = openId === row.id;
+            return (
+              <div key={row.id} className={styles.deliverableCard}>
+                <button
+                  type="button"
+                  className={styles.deliverableCardHead}
+                  onClick={() => setOpenId(expanded ? null : row.id)}
+                >
+                  <span className={styles.deliverableCardIcon}>◈</span>
+                  <div className={styles.deliverableCardMain}>
+                    <div className={styles.deliverableProduct}>{row.product_name || "Teslimat"}</div>
+                    <div className={styles.deliverableCardTitle}>
+                      {row.card_title || row.title || (isTR ? "Kişisel okuma" : "Personal reading")}
+                    </div>
+                    {(row.preview_text || p.preview_text) && (
+                      <p className={styles.deliverablePreview}>{row.preview_text || p.preview_text}</p>
+                    )}
+                  </div>
+                  <span className={styles.deliverableChevron}>{expanded ? "▲" : "▼"}</span>
+                </button>
+                {row.updated_at && (
+                  <div className={styles.deliverableMeta}>
+                    {isTR ? "Güncellendi: " : "Updated: "}
+                    {formatDate(row.updated_at)}
+                  </div>
+                )}
+                {expanded && (
+                  <div className={styles.deliverableExpand}>
+                    {summaryLines.length > 0 && (
+                      <div className={styles.deliverableSummary}>
+                        <div className={styles.deliverableSummaryLabel}>
+                          {isTR ? "Kısa özet" : "Summary"}
+                        </div>
+                        {summaryLines.map((line, i) => (
+                          <p key={i} className={styles.deliverableSummaryLine}>
+                            {line}
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                    {sections.map((s, i) => (
+                      <div key={i} className={styles.deliverableSection}>
+                        <h3 className={styles.deliverableSectionTitle}>{s.heading}</h3>
+                        <div className={styles.deliverableSectionBody}>
+                          {String(s.body || "")
+                            .split("\n")
+                            .filter((line) => line.length > 0)
+                            .map((line, j) => (
+                              <p key={j}>{line}</p>
+                            ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    SATIN ALINAN AÇILIMLAR
    ═══════════════════════════════════════════════ */
 
@@ -1422,6 +1580,8 @@ export default function BenimAlanimPage() {
         navigate={navigate}
         accessRevision={shopierAccessRevision}
       />
+
+      <PersonalDeliverablesSection isTR={isTR} accessRevision={shopierAccessRevision} />
 
       <KodHaritam avatarId={avatarId} kodProgress={kodProgress} isTR={isTR} />
 

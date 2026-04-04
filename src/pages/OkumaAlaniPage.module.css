@@ -286,6 +286,15 @@
   margin-top: 8px;
 }
 
+.liveStat {
+  display: inline-flex;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+.metaTime {
+  opacity: 0.85;
+}
+
 .seenBadge {
   margin-left: auto;
   font-size: 10px;
@@ -297,6 +306,11 @@
   background: rgba(108, 245, 194, 0.12);
   color: rgba(140, 255, 210, 0.95);
   border: 1px solid rgba(108, 245, 194, 0.35);
+  animation: seenBadgeShine 3s ease-in-out infinite;
+}
+@keyframes seenBadgeShine {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.12); }
 }
 
 .featuredLabel {

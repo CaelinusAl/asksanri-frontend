@@ -1,6 +1,7 @@
-import React, { useState, useCallback, useRef, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "../contexts/LanguageContext";
 import { redirectToShopier, isShopierUnlocked, checkServerUnlock } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
@@ -18,7 +19,13 @@ const API =
     String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
   "https://sanri-api-production-4a7b.up.railway.app";
 
-const PHASES = { FORM: "form", LOADING: "loading", RESULT: "result" };
+const PHASES = { FORM: "form", LOADING: "loading", RESULT: "result", ERROR: "error" };
+
+const debugRol = (...args) => {
+  if (import.meta.env.DEV || import.meta.env.VITE_DEBUG_ROL === "1") {
+    console.log("[Matrix Rol]", ...args);
+  }
+};
 
 const LOADING_LINES = [
   "Sanrı seni okuyor...",
@@ -97,14 +104,72 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
   );
 }
 
+/** Sonuç ağacındaki beklenmeyen render hatalarını yakalar (ör. eksik prop). */
+class RolOkumaResultBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { error };
+  }
+
+  componentDidCatch(error, info) {
+    console.error("[Matrix Rol] Sonuç ekranı render hatası:", error?.message, info?.componentStack);
+  }
+
+  render() {
+    if (this.state.error) {
+      const { onReset, isTR } = this.props;
+      return (
+        <motion.div
+          className={styles.resultWrap}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45 }}
+        >
+          <div className={styles.resultErrorCard}>
+            <div className={styles.resultErrorGlyph}>◈</div>
+            <h2 className={styles.resultErrorTitle}>
+              {isTR ? "Sonuç gösterilemedi" : "Could not show result"}
+            </h2>
+            <p className={styles.resultErrorText}>
+              {isTR
+                ? "Teknik bir sorun oluştu. Bilgilerini kontrol edip tekrar deneyebilirsin."
+                : "Something went wrong. Check your details and try again."}
+            </p>
+            <button
+              type="button"
+              className={styles.resultErrorBtn}
+              onClick={() => {
+                this.setState({ error: null });
+                onReset?.();
+              }}
+            >
+              {isTR ? "Forma dön" : "Back to form"}
+            </button>
+          </div>
+        </motion.div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function RolOkumaPage() {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const isTR = language === "tr";
+
   const [phase, setPhase] = useState(PHASES.FORM);
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [result, setResult] = useState(null);
+  const [resultSessionId, setResultSessionId] = useState(0);
   const [error, setError] = useState("");
+  const [flowError, setFlowError] = useState("");
   const [loadingLine, setLoadingLine] = useState(0);
   const intervalRef = useRef(null);
 
@@ -140,36 +205,101 @@ export default function RolOkumaPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name.trim() || !birthDate.trim()) return;
+    const first = name.trim();
+    const last = surname.trim();
+    const bd = birthDate.trim();
+
+    if (!first) {
+      setError(isTR ? "Lütfen adını gir." : "Please enter your first name.");
+      return;
+    }
+    if (!bd) {
+      setError(isTR ? "Lütfen doğum tarihini seç." : "Please select your birth date.");
+      return;
+    }
+
     trackFunnelEvent("role_form_submit");
     setError("");
+    setFlowError("");
+
+    const fullName = last ? `${first} ${last}` : first;
+    const targetUrl = `${API}/matrix-rol`;
+    const payload = { name: fullName, birth_date: bd };
+
+    debugRol("form submit values", { ad: first, soyad: last || "(boş)", fullName, birth_date: bd });
+    debugRol("POST target URL", targetUrl, "current route", typeof window !== "undefined" ? window.location.pathname : "");
+
     setPhase(PHASES.LOADING);
     startLoading();
 
     try {
-      const fullName = surname.trim()
-        ? `${name.trim()} ${surname.trim()}`
-        : name.trim();
-
-      const res = await fetch(`${API}/matrix-rol`, {
+      const res = await fetch(targetUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: fullName, birth_date: birthDate }),
+        body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("API error");
-      const data = await res.json();
+      const raw = await res.text();
+      debugRol("response", { status: res.status, bodyLength: raw?.length ?? 0 });
 
-      const narrative = buildMatrixRolReading(data, fullName, birthDate);
-      setResult({ data, fullName, narrative });
+      if (!res.ok) {
+        console.error("[Matrix Rol] API HTTP error", res.status, raw?.slice(0, 500));
+        const msg =
+          res.status === 429
+            ? (isTR ? "Çok fazla istek. Kısa süre sonra tekrar dene." : "Too many requests. Try again shortly.")
+            : res.status >= 500
+              ? (isTR ? "Sunucu geçici olarak yanıt vermiyor. Daha sonra tekrar dene." : "Server error. Please try again later.")
+              : (isTR ? "İstek reddedildi. Bilgilerini kontrol edip tekrar dene." : "Request failed. Check your details and try again.");
+        throw new Error(msg);
+      }
+
+      let data;
+      try {
+        data = raw ? JSON.parse(raw) : {};
+      } catch (parseErr) {
+        console.error("[Matrix Rol] JSON parse failed", parseErr, raw?.slice(0, 200));
+        throw new Error(
+          isTR ? "Sunucu yanıtı okunamadı. Tekrar dene." : "Could not read server response. Try again."
+        );
+      }
+
+      debugRol("parsed API payload summary", {
+        keys: data && typeof data === "object" ? Object.keys(data) : [],
+        matrix_role: data?.matrix_role,
+        life_path: data?.life_path,
+      });
+
+      let narrative;
+      try {
+        narrative = buildMatrixRolReading(data, fullName, bd);
+      } catch (buildErr) {
+        console.error("[Matrix Rol] buildMatrixRolReading error", buildErr);
+        throw new Error(
+          isTR ? "Okuma metni oluşturulamadı. Tekrar dene." : "Could not build reading. Try again."
+        );
+      }
+
+      setResultSessionId((k) => k + 1);
+      setResult({ data: data && typeof data === "object" ? data : {}, fullName, narrative });
       stopLoading();
       setPhase(PHASES.RESULT);
+      debugRol("result phase OK", { fullName, sessionIdTick: true });
       trackFunnelEvent("role_free_result_view");
       if (!unlocked) trackFunnelEvent("role_lock_view");
-    } catch {
+    } catch (err) {
       stopLoading();
-      setError("Bir hata oluştu. Lütfen tekrar dene.");
-      setPhase(PHASES.FORM);
+      console.error("[Matrix Rol] submit failed", err);
+      const fallback = isTR
+        ? "Bağlantı hatası veya ağ kesildi. İnternetini kontrol edip tekrar dene."
+        : "Connection error. Check your network and try again.";
+      let message = fallback;
+      if (err instanceof Error && err.message) {
+        const m = err.message;
+        const isNetworkNoise = /failed to fetch|networkerror|load failed|abort/i.test(m);
+        if (!isNetworkNoise) message = m;
+      }
+      setFlowError(message);
+      setPhase(PHASES.ERROR);
     }
   };
 
@@ -317,114 +447,166 @@ export default function RolOkumaPage() {
           </motion.div>
         )}
 
+        {/* ═══ SUBMIT / API ERROR (siyah ekran yerine kart) ═══ */}
+        {phase === PHASES.ERROR && (
+          <motion.div
+            key="flow-error"
+            className={styles.formWrap}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.45 }}
+          >
+            <div className={styles.resultErrorCard}>
+              <div className={styles.resultErrorGlyph}>◈</div>
+              <h2 className={styles.resultErrorTitle}>
+                {isTR ? "Okuma tamamlanamadı" : "Reading could not complete"}
+              </h2>
+              <p className={styles.resultErrorText}>{flowError}</p>
+              <button
+                type="button"
+                className={styles.resultErrorBtn}
+                onClick={() => {
+                  setPhase(PHASES.FORM);
+                  setFlowError("");
+                }}
+              >
+                {isTR ? "Tekrar dene" : "Try again"}
+              </button>
+            </div>
+          </motion.div>
+        )}
+
         {/* ═══ RESULT ═══ */}
         {phase === PHASES.RESULT && result && (
-          <motion.div
-            key="result"
-            className={styles.resultWrap}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+          <RolOkumaResultBoundary
+            key={resultSessionId}
+            isTR={isTR}
+            onReset={() => {
+              setPhase(PHASES.FORM);
+              setResult(null);
+              setError("");
+              setFlowError("");
+              setResultSessionId((k) => k + 1);
+            }}
           >
-            <div className={styles.resultHeader}>
-              <div className={styles.resultGlyph}>✦</div>
-              <h2 className={styles.resultName}>{result.fullName}</h2>
-              {result.data.matrix_role && (
-                <div className={styles.roleBadge}>{result.data.matrix_role}</div>
-              )}
-            </div>
+            <motion.div
+              key="result"
+              className={styles.resultWrap}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className={styles.resultHeader}>
+                <div className={styles.resultGlyph}>✦</div>
+                <h2 className={styles.resultName}>{result.fullName || "—"}</h2>
+                {result.data?.matrix_role ? (
+                  <div className={styles.roleBadge}>{result.data.matrix_role}</div>
+                ) : null}
+              </div>
 
-            <NarrativeLead s={result.narrative.sections} />
+              <NarrativeLead s={result.narrative?.sections} />
 
-            <SanriSharePanel anaTema={result.narrative.sections.ana_tema} isTR={isTR} cardKind="rol" />
+              <SanriSharePanel
+                anaTema={result.narrative?.sections?.ana_tema ?? ""}
+                isTR={isTR}
+                cardKind="rol"
+              />
 
-            {unlocked ? (
-              <>
-                <NarrativeDeep narrative={result.narrative} />
+              {unlocked ? (
+                <>
+                  <NarrativeDeep narrative={result.narrative} />
 
-                {result.data.teaser && (
-                  <div className={styles.teaserCard}>
-                    <p className={styles.teaserText}>{result.data.teaser}</p>
-                  </div>
-                )}
+                  {result.data?.teaser ? (
+                    <div className={styles.teaserCard}>
+                      <p className={styles.teaserText}>{result.data.teaser}</p>
+                    </div>
+                  ) : null}
 
-                <KatmanliAcilim
-                  analysisData={{
-                    ...result.data,
-                    sectionTexts: narrativeToSectionTexts(result.narrative),
-                  }}
-                  returnPath="/rol-okuma"
-                />
-              </>
-            ) : (
-              <>
-                <div className={styles.lockZone}>
-                  <div className={styles.lockZoneBlur}>
-                    <div className={styles.sections}>
-                      <div className={styles.section}>
-                        <p className={styles.sectionText}>
-                          {result.narrative.sections.derin_iliski}
-                        </p>
-                      </div>
-                      <div className={styles.section}>
-                        <p className={styles.sectionText}>
-                          {result.narrative.sections.derin_para}
-                        </p>
+                  <KatmanliAcilim
+                    analysisData={{
+                      ...(result.data && typeof result.data === "object" ? result.data : {}),
+                      sectionTexts: narrativeToSectionTexts(result.narrative),
+                    }}
+                    returnPath="/rol-okuma"
+                  />
+                </>
+              ) : (
+                <>
+                  <div className={styles.lockZone}>
+                    <div className={styles.lockZoneBlur}>
+                      <div className={styles.sections}>
+                        <div className={styles.section}>
+                          <p className={styles.sectionText}>
+                            {result.narrative?.sections?.derin_iliski ?? ""}
+                          </p>
+                        </div>
+                        <div className={styles.section}>
+                          <p className={styles.sectionText}>
+                            {result.narrative?.sections?.derin_para ?? ""}
+                          </p>
+                        </div>
                       </div>
                     </div>
+                    <div className={styles.lockZoneGradient} />
+                    <div className={styles.lockZoneOverlay}>
+                      <p className={styles.lockZoneLine1}>Sen yaşamıyorsun.</p>
+                      <p className={styles.lockZoneLine2}>Bir şeyi tekrar ediyorsun.</p>
+                      <div className={styles.lockZoneDivider} />
+                      <p className={styles.lockZonePersonal}>
+                        Sorun çözmek değil. Görmek.
+                      </p>
+                      <p className={styles.lockZonePersonalSoft}>Bu sana özel.</p>
+                      <button
+                        className={styles.lockZoneBtn}
+                        onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
+                      >
+                        Hatırla
+                      </button>
+                      <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
+                      <button
+                        type="button"
+                        className={styles.lockZoneRecovery}
+                        onClick={async () => {
+                          const ok = await checkServerUnlock("role_unlock");
+                          if (ok) window.location.reload();
+                          else {
+                            window.alert(
+                              "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
+                            );
+                          }
+                        }}
+                      >
+                        Satın alımı doğrula
+                      </button>
+                    </div>
                   </div>
-                  <div className={styles.lockZoneGradient} />
-                  <div className={styles.lockZoneOverlay}>
-                    <p className={styles.lockZoneLine1}>Sen yaşamıyorsun.</p>
-                    <p className={styles.lockZoneLine2}>Bir şeyi tekrar ediyorsun.</p>
-                    <div className={styles.lockZoneDivider} />
-                    <p className={styles.lockZonePersonal}>
-                      Sorun çözmek değil. Görmek.
-                    </p>
-                    <p className={styles.lockZonePersonalSoft}>Bu sana özel.</p>
-                    <button
-                      className={styles.lockZoneBtn}
-                      onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
-                    >
-                      Hatırla
-                    </button>
-                    <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
-                    <button
-                      type="button"
-                      className={styles.lockZoneRecovery}
-                      onClick={async () => {
-                        const ok = await checkServerUnlock("role_unlock");
-                        if (ok) window.location.reload();
-                        else {
-                          window.alert(
-                            "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
-                          );
-                        }
-                      }}
-                    >
-                      Satın alımı doğrula
-                    </button>
-                  </div>
-                </div>
 
-                {/* ── Katmanlı Açılım (locked teaser) ── */}
-                <KatmanliAcilim
-                  analysisData={{
-                    ...result.data,
-                    sectionTexts: narrativeToSectionTexts(result.narrative),
-                  }}
-                  returnPath="/rol-okuma"
-                />
-              </>
-            )}
+                  <KatmanliAcilim
+                    analysisData={{
+                      ...(result.data && typeof result.data === "object" ? result.data : {}),
+                      sectionTexts: narrativeToSectionTexts(result.narrative),
+                    }}
+                    returnPath="/rol-okuma"
+                  />
+                </>
+              )}
 
-            <button
-              className={styles.againBtn}
-              onClick={() => { setPhase(PHASES.FORM); setResult(null); }}
-            >
-              Tekrar Oku
-            </button>
-          </motion.div>
+              <button
+                type="button"
+                className={styles.againBtn}
+                onClick={() => {
+                  setPhase(PHASES.FORM);
+                  setResult(null);
+                  setError("");
+                  setFlowError("");
+                  setResultSessionId((k) => k + 1);
+                }}
+              >
+                Tekrar Oku
+              </button>
+            </motion.div>
+          </RolOkumaResultBoundary>
         )}
       </AnimatePresence>
 
@@ -446,6 +628,8 @@ export default function RolOkumaPage() {
 }
 
 function NarrativeLead({ s }) {
+  const opening = s?.opening ?? "";
+  const anaTema = s?.ana_tema ?? "";
   return (
     <div className={styles.narrativeLeadWrap}>
       <motion.p
@@ -454,7 +638,7 @@ function NarrativeLead({ s }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45 }}
       >
-        {s.opening}
+        {opening}
       </motion.p>
       <motion.p
         className={styles.narrativeAnaTema}
@@ -462,13 +646,15 @@ function NarrativeLead({ s }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.08, duration: 0.45 }}
       >
-        {s.ana_tema}
+        {anaTema}
       </motion.p>
     </div>
   );
 }
 
 function NarrativeBlock({ label, text, delay }) {
+  const body = String(text ?? "");
+  if (!body.trim() && !label) return null;
   return (
     <motion.div
       className={styles.narrativeBlock}
@@ -477,27 +663,29 @@ function NarrativeBlock({ label, text, delay }) {
       transition={{ delay, duration: 0.4 }}
     >
       {label ? <span className={styles.narrativeLabel}>{label}</span> : null}
-      <p className={styles.narrativeBody}>{text}</p>
+      <p className={styles.narrativeBody}>{body || "—"}</p>
     </motion.div>
   );
 }
 
 function NarrativeDeep({ narrative }) {
-  const { sections, share_trigger: shareTrigger, full_narrative: fullNarrative } = narrative;
+  const sections = narrative?.sections ?? {};
+  const shareTrigger = narrative?.share_trigger;
+  const fullNarrative = narrative?.full_narrative ?? "";
 
   const copyJson = () => {
     const payload = {
       share_trigger: shareTrigger,
       sections: {
-        derin_iliski: sections.derin_iliski,
-        derin_para: sections.derin_para,
-        derin_icsel: sections.derin_icsel,
-        derin_davranis: sections.derin_davranis,
-        kor_nokta: sections.kor_nokta,
-        dongu_aciklamasi: sections.dongu_aciklamasi,
-        kirilma_noktasi: sections.kirilma_noktasi,
-        sanri_imza: sections.sanri_imza,
-        paylasim_tetikleyici: sections.paylasim_tetikleyici,
+        derin_iliski: sections.derin_iliski ?? "",
+        derin_para: sections.derin_para ?? "",
+        derin_icsel: sections.derin_icsel ?? "",
+        derin_davranis: sections.derin_davranis ?? "",
+        kor_nokta: sections.kor_nokta ?? "",
+        dongu_aciklamasi: sections.dongu_aciklamasi ?? "",
+        kirilma_noktasi: sections.kirilma_noktasi ?? "",
+        sanri_imza: sections.sanri_imza ?? "",
+        paylasim_tetikleyici: sections.paylasim_tetikleyici ?? "",
       },
     };
     if (navigator.clipboard?.writeText) {
@@ -533,7 +721,7 @@ function NarrativeDeep({ narrative }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: d(), duration: 0.45 }}
       >
-        <p className={styles.shareStripText}>{sections.paylasim_tetikleyici}</p>
+        <p className={styles.shareStripText}>{sections.paylasim_tetikleyici ?? ""}</p>
         {shareTrigger ? (
           <div className={styles.copyNarrativeRow}>
             <button type="button" className={styles.copyNarrativeBtn} onClick={copyPlain}>

@@ -43,7 +43,7 @@ export function HakkimizdaPage() {
             <tr><td>Mersis No</td><td>—</td></tr>
             <tr><td>Vergi Dairesi</td><td>Kadıköy Rasimpaşa Vergi Dairesi</td></tr>
             <tr><td>Adres</td><td>Kadıköy, İstanbul, Türkiye</td></tr>
-            <tr><td>E-posta</td><td><a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a></td></tr>
+            <tr><td>E-posta</td><td><a href="mailto:selin@asksanri.com">selin@asksanri.com</a></td></tr>
             <tr><td>Web Sitesi</td><td><a href="https://asksanri.com">asksanri.com</a></td></tr>
           </tbody>
         </table>
@@ -85,7 +85,7 @@ export function GizlilikPolitikasiPage() {
         <h2>1. Veri Sorumlusu</h2>
         <p>
           CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ. ("Şirket"), CAELINUS AI / SANRI platformunun
-          veri sorumlusudur. İletişim: <a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a>
+          veri sorumlusudur. İletişim: <a href="mailto:selin@asksanri.com">selin@asksanri.com</a>
         </p>
       </section>
 
@@ -122,7 +122,7 @@ export function GizlilikPolitikasiPage() {
           <li>Münhasıran otomatik sistemlerle analiz sonucu aleyhinize bir sonuç çıkmasına itiraz etme</li>
           <li>Kanuna aykırı işlenmesi sebebiyle zarara uğramanız halinde tazminat talep etme</li>
         </ul>
-        <p>Başvuru: <a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a></p>
+        <p>Başvuru: <a href="mailto:selin@asksanri.com">selin@asksanri.com</a></p>
       </section>
 
       <section className={styles.section}>
@@ -160,7 +160,7 @@ export function MesafeliSatisPage() {
           <tbody>
             <tr><td>Ticari Unvan</td><td>CR YAPIM TEKNOLOJİLERİ REKLAM AJANSI TİC.LTD.ŞTİ.</td></tr>
             <tr><td>Adres</td><td>Kadıköy, İstanbul, Türkiye</td></tr>
-            <tr><td>E-posta</td><td><a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a></td></tr>
+            <tr><td>E-posta</td><td><a href="mailto:selin@asksanri.com">selin@asksanri.com</a></td></tr>
           </tbody>
         </table>
         <p style={{ marginTop: 12 }}>
@@ -276,7 +276,7 @@ export function IadeKosullariPage() {
           <li>Satın alınan ürünün açıklamasıyla uyuşmaması</li>
         </ul>
         <p>
-          Bu durumlar için <a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a> adresine
+          Bu durumlar için <a href="mailto:selin@asksanri.com">selin@asksanri.com</a> adresine
           başvurabilirsiniz. Talepler 7 iş günü içinde değerlendirilir.
         </p>
       </section>
@@ -293,7 +293,7 @@ export function IadeKosullariPage() {
       <section className={styles.section}>
         <h2>İletişim</h2>
         <p>
-          İade ve iptal talepleriniz için: <a href="mailto:caelinus@caelinus.co">caelinus@caelinus.co</a>
+          İade ve iptal talepleriniz için: <a href="mailto:selin@asksanri.com">selin@asksanri.com</a>
         </p>
       </section>
     </LegalLayout>

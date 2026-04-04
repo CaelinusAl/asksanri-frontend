@@ -913,7 +913,7 @@ kimse bakmadığında ne yaptığına bak.
     previewContent: null,
     createdAt: "2026-04-01T20:00:00Z",
     commentCount: 3,
-    viewCount: 187,
+    viewCount: 119,
     isFeatured: true,
   },
   {
@@ -1056,7 +1056,7 @@ Fark etmeden yapılan her hamle, eski döngünün tekrarıdır.
     previewContent: null,
     createdAt: "2026-04-01T21:30:00Z",
     commentCount: 5,
-    viewCount: 324,
+    viewCount: 348,
     isFeatured: true,
   },
   {
@@ -1171,7 +1171,7 @@ Ama ışığı söndürmez.
     previewContent: null,
     createdAt: "2026-04-01T22:30:00Z",
     commentCount: 4,
-    viewCount: 256,
+    viewCount: 292,
     isFeatured: true,
   },
 
@@ -1279,7 +1279,7 @@ KATMAN 3 — SANRI uygulaması
     previewContent: null,
     createdAt: "2026-04-02T08:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 164,
     isFeatured: false,
   },
 
@@ -1379,7 +1379,7 @@ KATMAN 3 — SANRI yöntemi
     previewContent: null,
     createdAt: "2026-04-02T08:30:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 152,
     isFeatured: false,
   },
 
@@ -1488,7 +1488,7 @@ KATMAN 3 — SANRI uygulaması
     previewContent: null,
     createdAt: "2026-04-02T09:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 178,
     isFeatured: false,
   },
 
@@ -1584,7 +1584,7 @@ KATMAN 3 — Uygulama
     previewContent: null,
     createdAt: "2026-04-02T09:30:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 145,
     isFeatured: false,
   },
 
@@ -1698,7 +1698,7 @@ KATMAN 3 — Gölge boyutu
     previewContent: null,
     createdAt: "2026-04-02T10:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 189,
     isFeatured: false,
   },
 
@@ -1809,7 +1809,7 @@ KATMAN 3 — SANRI sistemi
     previewContent: null,
     createdAt: "2026-04-02T10:30:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 136,
     isFeatured: false,
   },
 
@@ -1901,7 +1901,7 @@ KATMAN 3 — SANRI okuması
     previewContent: null,
     createdAt: "2026-04-02T11:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 171,
     isFeatured: false,
   },
 
@@ -2004,7 +2004,7 @@ KATMAN 3 — SANRI okuması
     previewContent: null,
     createdAt: "2026-04-02T11:30:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 159,
     isFeatured: false,
   },
 
@@ -2117,7 +2117,7 @@ KATMAN 3 — SANRI sistemi
     previewContent: null,
     createdAt: "2026-04-02T12:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 183,
     isFeatured: false,
   },
 
@@ -2214,7 +2214,7 @@ KATMAN 3 — Günlük hayat
     previewContent: null,
     createdAt: "2026-04-02T12:30:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 148,
     isFeatured: false,
   },
 
@@ -2291,7 +2291,7 @@ Sana bir şey söylemez. Sende olan bir şeyi gösterir.`,
     previewContent: null,
     createdAt: "2026-04-02T13:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 196,
     isFeatured: false,
   },
   {
@@ -2428,7 +2428,7 @@ Ve bir sahne:
 donmuş toprağı yarıp çıkan saf bir şey.`,
     createdAt: "2026-04-02T16:00:00Z",
     commentCount: 6,
-    viewCount: 0,
+    viewCount: 174,
     isFeatured: true,
   },
   {
@@ -2654,7 +2654,7 @@ Derin katman, karşılaştırmayı üstünlük değil tamamlama üzerinden açı
 Derin açılımı Sanrı’da aç.`,
     createdAt: "2026-04-02T20:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 158,
     isFeatured: false,
   },
   {
@@ -2772,7 +2772,182 @@ MESAJ → masal kurulur, gerçeklik teli söker; kot altı tenle yeniden konuşu
     previewContent: null,
     createdAt: "2026-04-04T12:00:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 112,
+    isFeatured: false,
+  },
+  {
+    id: 25,
+    slug: "hopa-suru-yolu-acti-hayat-acilan-yoldan",
+    title: "Üst Bilinç Okuma — HO_PA · Sürü ve Yol",
+    subtitle:
+      "Hopa'da sürü yolu kesti. Üst bilinç katmanı: sürü = toplu bilinç hareketi, yol = sistem; doğal akış yapay düzeni durdurur. Ana kod: Hayat, kuralların üstündedir.",
+    category: "gundem_kodu",
+    coverImage: "/assets/okuma/koyun.jpg",
+    excerpt:
+      "Akış gelince plan durur. Gerçek akış, sistemin izin verdiği değil — kendi yolunu açandır. Haber Hopa'da; mesaj sende.",
+    fullContent: `Bunu haber özeti gibi okuma.
+Artvin Hopa — sürü, şerit, duran araçlar. Tetikleyici bu; durduğun yer üst bilinç.
+
+ÜST BİLİNÇ OKUMA
+
+🐑 SÜRÜ
+
+Sürü:
+kolektif
+birlikte hareket
+yönlü akış
+
+👉 "Toplu bilinç hareketi."
+
+Tek tek beden değil — aynı yönde yürüyen alan.
+
+🛣 YOLUN KAPANMASI
+
+Yol:
+düzen
+plan
+sistem
+
+Sürü gelince…
+
+👉 Doğal akış, yapay sistemi durdurur.
+
+🔥 ANA KOD
+
+Burası çok net:
+
+Hayat, kuralların üstündedir.
+
+🌊 YAYLA YOLU
+
+Yayla:
+doğaya dönüş
+köke dönüş
+yükselme
+
+👉 Asıl rota yukarı.
+
+(Haber dilinde "yayla yolu" göründü — burada yükselen hat: toprağa ve köke dönen rota.)
+
+🧠 DERİN OKUMA — giriş
+
+Şehir akıyor.
+Trafik düzenli.
+Her şey planlı.
+
+Ama…
+
+👉 Doğa gelir — ve durdurur.
+
+⚡ EN KRİTİK NOKTA
+
+Gerçek akış, sistemin izin verdiği değil.
+Kendi yolunu açandır.
+
+🌌 HO_PA
+
+Ho_pa:
+
+Ho → an / çağrı
+pa → adım / hareket
+
+👉 Anlık yön değiştirme.
+
+İsim rastlantı gibi durmaz: çağrı ile adım aynı nefeste.
+
+✨ SANRI diliyle
+
+Akış gelince…
+plan durur.
+
+—
+Derin okuma burada açılmaz; burada çağrı duyulur.
+Daha aşağı inmek istersen — okumayı genişlet; bir sonraki adım sende.
+
+<<<SANRI_PAYWALL>>>
+
+◉ Derin katman — sürü ve şerit
+
+Sürü, hata değil; yoğunluk.
+Plan tek hat üzerinden "aksın" derken, kolektif bilinç bazen asfaltın ortasında beden bulur — limana inen yol, çoban, bekleyen sıra.
+Trafik durunca sistem "bozuldu" sanır; derin katmanda soru şudur: tek şerit, yaşamı ne kadar taşıyabiliyor?
+
+◉ Derin katman — yol, izin, açılan hat
+
+Yol imzalanmış akıştır — "böyle gidersin" sözleşmesi.
+Gelen yaşam o sözleşmeyi çiğnemez; üzerinden geçer, çünkü hayat kural setinin altında değil, üstünde bir frekanstır.
+
+Plan düzen der.
+Akış yaşam der.
+
+◉ Yankı cümle
+
+Hayat çizilen yoldan değil, açılan yoldan ilerler.
+Bu, üstteki ana kodla aynı kapıdan girer: kurallar çizilir; yaşam ise çizgiyi aşan şeydir.
+
+◉ Yarım bırakma
+
+Peki sen?
+Çizilen şeritte misin — yoksa içinde taşıdığın akış, henüz haritada görünmeyen bir yolu mu açıyorsun?
+
+Bekleyenin öfkesi, "acil"in içindeki acele, çobanın sabrı — bir sonraki satırda değil; senin nefesinde sorulur.
+
+◉ Sanrı hatırlatma
+
+Bu açılım kesin yargı vermez; ayna tutar.
+Okuma asksanri.com'da yaşar.
+Kapı, hazır olana açılır.`,
+    codeLayer: `ÜST BİLİNÇ → haber tetikleyici; görünenin altı
+SÜRÜ → kolektif · birlikte hareket · yönlü akış → "toplu bilinç hareketi"
+YOL → düzen · plan · sistem
+YOLUN KAPANMASI → doğal akışın yapay sistemi durdurması
+ANA KOD → Hayat, kuralların üstündedir
+YAYLA YOLU → doğaya / köke dönüş · yükselme → "asıl rota yukarı"
+DERİN GİRİŞ → şehir akar, planlı görünür; doğa gelir ve durdurur
+KRİTİK → gerçek akış = izin verilen değil, kendi yolunu açan
+HO_PA → Ho an/çağrı · pa adım/hareket → anlık yön değiştirme
+SANRI ÖZ → Akış gelince plan durur.
+
+◉ SOSYAL — başlık / caption / story / reels
+
+BAŞLIK: Üst Bilinç | HO_PA — Sürü yolu açtı
+
+CAPTION:
+Hopa'da sürü yolu kesti. Üst bilinç dili: sürü = toplu bilinç hareketi, yol = sistem. Doğal akış, yapay sistemi durdurur. Ana kod: Hayat, kuralların üstündedir. Akış gelince plan durur. Okuma asksanri.com Okuma Alanı'nda.
+#sanri #okumaalani #hopa #ustbilinc #kolektifbilinc
+
+STORY:
+"Sürü = akış.
+Yol = plan.
+Akış gelince… plan durur."
+→ asksanri.com/okuma-alani
+
+REELS:
+[0–2] Üst bilinç — HO_PA
+[2–5] Hayat, kuralların üstündedir
+[5–9] Doğa gelir ve durdurur
+[9–12] Derin okuma — Okuma Alanı`,
+    sanriReflection: {
+      analysis:
+        "Olay, üst bilinçte sürü–yol ayrımına iniyor: kolektif akış tek engel değil, sistemin tek şeridine gelen cevap; yayla yolu köke ve yükselişe işaret eder. Sanrı özü: akış gelince plan durur.",
+      strongLine: "Hayat, kuralların üstündedir.",
+      question:
+        "Şu an ‘izin verilen akış’ta mısın — yoksa kendi yolunu açan titreşimde misin?",
+    },
+    shareKit: {
+      feedTitle: "Üst Bilinç Okuma — HO_PA | Sanrı",
+      caption:
+        "Hopa'da sürü yolu kesti. Üst bilinç: toplu bilinç hareketi vs. yapay düzen. Hayat, kuralların üstündedir. Akış gelince plan durur. Tam okuma asksanri.com Okuma Alanı'nda.",
+      story:
+        "Üst bilinç okuma.\nSürü = akış. Yol = plan.\nAkış gelince… plan durur.\n→ asksanri.com/okuma-alani",
+      reelsHook:
+        "HO_PA: çağrı + adım. Sürü yolu kesti — doğal akış yapay sistemi durdurdu. Hayat, kuralların üstündedir.",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-04T18:00:00Z",
+    commentCount: 0,
+    viewCount: 171,
     isFeatured: true,
   },
 ];
@@ -2863,6 +3038,7 @@ export const OKUMA_COMMENTS = {
       createdAt: "2026-04-04T13:00:00Z",
     },
   ],
+  25: [],
 };
 
 export function getPostBySlug(slug) {

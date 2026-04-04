@@ -127,6 +127,15 @@ export async function downloadAccountingCsv(params = {}) {
   URL.revokeObjectURL(url);
 }
 
+// ── Kişisel teslimatlar (Matrix Rol vb.) ──
+export const fetchAdminDeliverables = (params = {}) => {
+  const q = new URLSearchParams();
+  if (params.email) q.set("email", params.email);
+  if (params.limit) q.set("limit", String(params.limit));
+  const s = q.toString();
+  return adminFetch(`/admin/deliverables${s ? `?${s}` : ""}`);
+};
+
 // ── Okuma Stats ──
 export const fetchOkumaAllStats = () =>
   fetch(

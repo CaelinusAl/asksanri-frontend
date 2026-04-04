@@ -407,6 +407,91 @@
 }
 
 /* ═══════════════════════
+   ERROR / İNZİVADA
+   ═══════════════════════ */
+.errorScreen {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 56px 24px 100px;
+  text-align: center;
+}
+.errorScreenGlyph {
+  font-size: 32px;
+  color: rgba(120, 247, 216, 0.45);
+  margin-bottom: 20px;
+}
+.errorScreenBrand {
+  margin: 0 0 16px;
+  font-size: clamp(1.15rem, 4vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.95);
+  line-height: 1.35;
+}
+.errorScreenLead {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: rgba(200, 160, 255, 0.55);
+  font-weight: 300;
+}
+.errorScreenDetail {
+  margin: 0 0 28px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(232, 228, 244, 0.72);
+}
+.errorScreenBtn {
+  padding: 14px 32px;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: rgba(200, 160, 255, 0.12);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.errorScreenBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(200, 160, 255, 0.12);
+}
+
+.inzivadaBanner,
+.inzivadaBannerDeep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0 auto 20px;
+  padding: 16px 20px;
+  max-width: 100%;
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(200, 160, 255, 0.08), rgba(6, 18, 24, 0.5));
+  border: 1px solid rgba(200, 160, 255, 0.18);
+}
+.inzivadaBannerDeep {
+  margin-bottom: 16px;
+  text-align: center;
+}
+.inzivadaBrand {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.85);
+}
+.inzivadaHint {
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(200, 160, 255, 0.45);
+  font-weight: 400;
+  max-width: 34em;
+}
+
+/* ═══════════════════════
    RESULT
    ═══════════════════════ */
 .resultWrap {

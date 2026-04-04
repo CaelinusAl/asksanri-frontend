@@ -1202,6 +1202,139 @@
   color: rgba(255, 255, 255, 0.35);
 }
 
+/* ── Kişisel teslimatlar (Matrix Rol vb.) ── */
+.deliverableList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.deliverableCard {
+  border-radius: 16px;
+  border: 1px solid rgba(200, 160, 255, 0.14);
+  background: rgba(20, 12, 40, 0.25);
+  overflow: hidden;
+}
+.deliverableCardHead {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.deliverableCardHead:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.deliverableCardIcon {
+  font-size: 22px;
+  line-height: 1;
+}
+.deliverableCardMain {
+  flex: 1;
+  min-width: 0;
+}
+.deliverableCardTitle {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.92);
+}
+.deliverableProduct {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.65);
+  margin-bottom: 8px;
+}
+.deliverablePreview {
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+}
+.deliverableChevron {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  padding-top: 4px;
+}
+.deliverableSummary {
+  margin: 0 16px 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.deliverableSummaryLabel {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(124, 247, 216, 0.65);
+  margin-bottom: 8px;
+}
+.deliverableSummaryLine {
+  margin: 0 0 8px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+.deliverableSummaryLine:last-child {
+  margin-bottom: 0;
+}
+.deliverableExpand {
+  padding: 0 16px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.deliverableSection {
+  margin-top: 16px;
+}
+.deliverableSectionTitle {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(200, 160, 255, 0.9);
+  letter-spacing: 0.03em;
+}
+.deliverableSectionBody {
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.68);
+}
+.deliverableSectionBody p {
+  margin: 0 0 10px;
+}
+.deliverableSectionBody p:last-child {
+  margin-bottom: 0;
+}
+.deliverableMeta {
+  margin: 8px 16px 0;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.deliverableApiMissing {
+  padding: 16px 18px 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.deliverableApiMissingTitle {
+  margin: 0 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 200, 160, 0.95);
+}
+.deliverableApiMissingText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.62);
+}
+.deliverableApiMissingText a {
+  color: #7cf7d8;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .visionBlock { margin: 12px 10px 0; padding: 18px 16px; }

@@ -3,7 +3,6 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
-import { PremiumGate } from "../components/premium/PremiumGate";
 import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { markOkumaSeen, OKUMA_EARLY_PAYWALL_MARKER } from "../data/okumaSeen";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
@@ -251,14 +250,51 @@ export default function OkumaDetayPage() {
         </div>
 
         <div className={styles.meta}>
-          <button
+          <motion.button
+            type="button"
             className={`${styles.likeBtn} ${liked ? styles.likeBtnActive : ""}`}
             onClick={handleLike}
+            whileTap={{ scale: 0.9 }}
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 420, damping: 18 }}
           >
-            {liked ? "❤️" : "🤍"} {likesCount + (post.likeCount || 0)}
-          </button>
-          <span>💬 {comments.length}</span>
-          <span>👁 {viewsCount + (post.viewCount || 0)}</span>
+            <motion.span
+              key={liked ? "heart-on" : "heart-off"}
+              className={styles.likeEmoji}
+              initial={{ scale: 0.45, rotate: liked ? 0 : -18 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 500, damping: 15 }}
+            >
+              {liked ? "❤️" : "🤍"}
+            </motion.span>
+            <motion.span
+              key={`lc-${likesCount}-${liked}`}
+              className={styles.likeNum}
+              initial={{ y: -5, opacity: 0.65, scale: 1.12 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              transition={{ type: "spring", stiffness: 400, damping: 22 }}
+            >
+              {likesCount + (post.likeCount || 0)}
+            </motion.span>
+          </motion.button>
+          <motion.span
+            key={`cc-${comments.length}`}
+            className={styles.metaStat}
+            initial={{ scale: 1.06 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            💬 {comments.length}
+          </motion.span>
+          <motion.span
+            key={`vc-${viewsCount}`}
+            className={styles.metaStat}
+            initial={{ scale: 1.06 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+          >
+            👁 {viewsCount + (post.viewCount || 0)}
+          </motion.span>
           <span>{timeAgoOkuma(post.createdAt)}</span>
           <button
             className={styles.shareBtn}
@@ -356,12 +392,14 @@ export default function OkumaDetayPage() {
                   <div className={styles.lockZoneOverlay}>
                     <div className={styles.lockZoneIcon}>🔒</div>
                     <p className={styles.lockZoneLine1}>
-                      {isTR ? "Açılım burada kesiliyor." : "The opening cuts here."}
+                      {isTR
+                        ? "Derin okumaya inmek istersen — buradan sonra açılım genişler."
+                        : "If you want to go deeper — the reading opens from here."}
                     </p>
                     <p className={styles.lockZoneLine2}>
                       {isTR
-                        ? "RA_PUN_ZEL, KAR_GA, idrak, saç ve kolektif katman — 9,90 ₺ ile devam."
-                        : "RA_PUN_ZEL, KAR_GA, insight, hair, collective layer — continue for ₺9.90."}
+                        ? "Kod çözümü ve tam metin; devam, 9,90 ₺ enerji karşılığında."
+                        : "Code layer and full text; continue with a ₺9.90 energy exchange."}
                     </p>
                     <button
                       className={styles.lockZoneBtn}
@@ -369,7 +407,7 @@ export default function OkumaDetayPage() {
                         redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
                       }
                     >
-                      {isTR ? "Devamını Aç — 9,90 ₺" : "Unlock — ₺9.90"}
+                      {isTR ? "Derin okumayı aç — 9,90 ₺" : "Open deep reading — ₺9.90"}
                     </button>
                     <button
                       className={styles.lockZoneAlt}
@@ -377,7 +415,7 @@ export default function OkumaDetayPage() {
                         redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
                       }
                     >
-                      {isTR ? "Ödeme ekranına git" : "Go to checkout"}
+                      {isTR ? "İlerle" : "Continue"}
                     </button>
                     <BankTransferLink
                       contentId={`okuma_${post.id}`}
@@ -505,13 +543,16 @@ export default function OkumaDetayPage() {
               >
                 {isTR ? "Satın Al ve Kapıyı Aç" : "Purchase & Unlock"}
               </button>
-              <Link
-                to="/subscription"
+              <button
+                type="button"
                 className={styles.autoCtaBtn}
-                onClick={handleCtaClick}
+                onClick={() => {
+                  handleCtaClick();
+                  redirectToShopier("kod_egitmeni", "kod_egitmeni", location.pathname);
+                }}
               >
-                {isTR ? "Tüm İçerikler İçin Premium" : "Full Premium Access"}
-              </Link>
+                {isTR ? "Tüm İçerikleri Satın Al (999 ₺)" : "Buy all content (₺999)"}
+              </button>
               <BankTransferLink
                 contentId={`okuma_${post.id}`}
                 returnTo={`${location.pathname}${location.search}`}

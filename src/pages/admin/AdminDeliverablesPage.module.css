@@ -1,0 +1,232 @@
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.sub {
+  margin: 0 0 16px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+}
+
+.sub code {
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  min-width: 200px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-size: 14px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: rgba(200, 160, 255, 0.12);
+  color: #e8d4ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.error {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(220, 80, 80, 0.12);
+  border: 1px solid rgba(220, 80, 80, 0.35);
+  color: #ffb4b4;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.empty {
+  padding: 32px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 14px;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  overflow: hidden;
+}
+
+.cardHead {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.cardHead:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.cardIcon {
+  font-size: 20px;
+  opacity: 0.85;
+}
+
+.cardMeta {
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+
+.cardLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.uid {
+  color: rgba(124, 247, 216, 0.75);
+}
+
+.cid {
+  font-family: ui-monospace, monospace;
+  color: rgba(200, 160, 255, 0.8);
+}
+
+.cardWhen {
+  margin-top: 6px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.chevron {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  padding-top: 4px;
+}
+
+.preview {
+  margin: 0 16px 10px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid rgba(200, 160, 255, 0.35);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.price {
+  margin: 0 16px 12px;
+  font-size: 12px;
+  color: rgba(212, 175, 55, 0.85);
+}
+
+.body {
+  padding: 0 16px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.summary {
+  margin: 16px 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.summaryLabel {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(200, 160, 255, 0.7);
+  margin-bottom: 8px;
+}
+
+.summaryLine {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.summaryLine:last-child {
+  margin-bottom: 0;
+}
+
+.section {
+  margin-top: 18px;
+}
+
+.sectionH {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(124, 247, 216, 0.85);
+  letter-spacing: 0.02em;
+}
+
+.sectionBody {
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.sectionBody p {
+  margin: 0 0 10px;
+}
+
+.sectionBody p:last-child {
+  margin-bottom: 0;
+}

@@ -23,7 +23,7 @@ export function Footer() {
           <span style={sepStyle}>·</span>
           <Link to="/iade-kosullari" style={linkStyle}>İade Koşulları</Link>
           <span style={sepStyle}>·</span>
-          <a href="mailto:caelinus@caelinus.co" style={linkStyle}>İletişim</a>
+          <a href="mailto:selin@asksanri.com" style={linkStyle}>İletişim</a>
         </nav>
 
         {/* Company */}

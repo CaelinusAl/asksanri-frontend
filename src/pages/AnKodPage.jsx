@@ -130,6 +130,7 @@ const PHASES = {
   QUESTIONS: "questions",
   READING_LOAD: "reading_load",
   RESULT: "result",
+  ERROR: "error",
 };
 
 export default function AnKodPage() {
@@ -143,6 +144,9 @@ export default function AnKodPage() {
   const [deepSections, setDeepSections] = useState([]);
   const [modal, setModal] = useState(false);
   const [deepSanriLoading, setDeepSanriLoading] = useState(false);
+  const [flowError, setFlowError] = useState("");
+  const [teaserInzivada, setTeaserInzivada] = useState(false);
+  const [deepInzivada, setDeepInzivada] = useState(false);
   const [completedIds, setCompletedIds] = useState(() => readCompletedFromStorage());
 
   const lastDeepFetchKey = useRef("");
@@ -172,6 +176,9 @@ export default function AnKodPage() {
     setReading("");
     setDeepSections([]);
     setDeepSanriLoading(false);
+    setFlowError("");
+    setTeaserInzivada(false);
+    setDeepInzivada(false);
     setSelectingId(null);
     lastDeepFetchKey.current = "";
     setCompletedIds(readCompletedFromStorage());
@@ -208,42 +215,56 @@ export default function AnKodPage() {
         const t0 = Date.now();
 
         (async () => {
-          let bodyText = teaser;
           try {
-            const data = await fetchAnkodSanri(lines, "teaser");
-            const parts = [];
-            if (data?.an_kod) parts.push(String(data.an_kod).trim());
-            if (data?.yansitma) parts.push(String(data.yansitma).trim());
-            if (parts.length) bodyText = parts.join("\n\n");
-          } catch {
-            /* API yok — yerel teaser */
-          }
+            let bodyText = teaser;
+            let teaserRemoteOk = false;
+            try {
+              const data = await fetchAnkodSanri(lines, "teaser");
+              const parts = [];
+              if (data?.an_kod) parts.push(String(data.an_kod).trim());
+              if (data?.yansitma) parts.push(String(data.yansitma).trim());
+              if (parts.length) {
+                bodyText = parts.join("\n\n");
+                teaserRemoteOk = true;
+              }
+            } catch (e) {
+              console.error("[AN-KOD] teaser API (yerel ön okumaya düşüldü)", e);
+              /* Sunucu inzivada — yerel teaser */
+            }
 
-          const elapsed = Date.now() - t0;
-          await new Promise((r) => setTimeout(r, Math.max(0, minMs - elapsed)));
+            const elapsed = Date.now() - t0;
+            await new Promise((r) => setTimeout(r, Math.max(0, minMs - elapsed)));
 
-          markQuizCompletedStorage(activeCategory);
-          setCompletedIds(readCompletedFromStorage());
+            markQuizCompletedStorage(activeCategory);
+            setCompletedIds(readCompletedFromStorage());
 
-          try {
-            localStorage.setItem(
-              SNAPSHOT_KEY,
-              JSON.stringify({
-                categoryId: activeCategory,
-                answers: next,
-                lines,
-                reading: bodyText,
-                ts: Date.now(),
-              })
+            try {
+              localStorage.setItem(
+                SNAPSHOT_KEY,
+                JSON.stringify({
+                  categoryId: activeCategory,
+                  answers: next,
+                  lines,
+                  reading: bodyText,
+                  ts: Date.now(),
+                })
+              );
+            } catch {
+              /* noop */
+            }
+
+            setTeaserInzivada(!teaserRemoteOk);
+            setReading(bodyText);
+            setDeepSections(generateDeepReading(activeCategory, next));
+            setPhase(PHASES.RESULT);
+            if (!unlocked) trackFunnelEvent("ankod_lock_view");
+          } catch (e) {
+            console.error("[AN-KOD] sonuç akışı", e);
+            setFlowError(
+              "Okuma oluşturulurken bir sorun oluştu. Kategorilere dönüp tekrar deneyebilirsin."
             );
-          } catch {
-            /* noop */
+            setPhase(PHASES.ERROR);
           }
-
-          setReading(bodyText);
-          setDeepSections(generateDeepReading(activeCategory, next));
-          setPhase(PHASES.RESULT);
-          if (!unlocked) trackFunnelEvent("ankod_lock_view");
         })();
       }
     },
@@ -267,13 +288,28 @@ export default function AnKodPage() {
     lastDeepFetchKey.current = key;
     let cancelled = false;
     setDeepSanriLoading(true);
+    setDeepInzivada(false);
     fetchAnkodSanri(lines, "deep")
       .then((data) => {
-        if (cancelled || !data?.sections) return;
+        if (cancelled) return;
+        if (!data?.sections) {
+          setDeepInzivada(true);
+          return;
+        }
         const mapped = mapDeepFromApi(data.sections);
-        if (mapped) setDeepSections(mapped);
+        if (mapped) {
+          setDeepSections(mapped);
+          setDeepInzivada(false);
+        } else {
+          setDeepInzivada(true);
+        }
       })
-      .catch(() => {})
+      .catch((e) => {
+        if (!cancelled) {
+          console.error("[AN-KOD] deep API", e);
+          setDeepInzivada(true);
+        }
+      })
       .finally(() => {
         if (!cancelled) setDeepSanriLoading(false);
       });
@@ -293,6 +329,8 @@ export default function AnKodPage() {
     setReading("");
     setDeepSections([]);
     setDeepSanriLoading(false);
+    setTeaserInzivada(false);
+    setDeepInzivada(false);
     pickCategory(catId);
   }, [pickCategory]);
 
@@ -313,7 +351,7 @@ export default function AnKodPage() {
       goToCategories();
       return;
     }
-    if (phase === PHASES.RESULT || phase === PHASES.READING_LOAD) {
+    if (phase === PHASES.RESULT || phase === PHASES.READING_LOAD || phase === PHASES.ERROR) {
       goToCategories();
     }
   }, [phase, step, questions, answers, navigate, goToCategories]);
@@ -328,11 +366,13 @@ export default function AnKodPage() {
           ←{" "}
           {phase === PHASES.CATEGORIES
             ? "Kapılar"
-            : phase === PHASES.QUESTIONS && step === 0
+            : phase === PHASES.ERROR
               ? "Kategoriler"
-              : phase === PHASES.QUESTIONS
-                ? "Önceki soru"
-                : "Kategoriler"}
+              : phase === PHASES.QUESTIONS && step === 0
+                ? "Kategoriler"
+                : phase === PHASES.QUESTIONS
+                  ? "Önceki soru"
+                  : "Kategoriler"}
         </button>
         <span className={styles.topTitle}>AN_KOD</span>
         <span className={styles.topStep}>
@@ -454,6 +494,34 @@ export default function AnKodPage() {
           </motion.div>
         )}
 
+        {phase === PHASES.ERROR && (
+          <motion.div
+            key="flow-error"
+            className={styles.errorScreen}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.45 }}
+          >
+            <div className={styles.errorScreenGlyph}>◈</div>
+            <h1 className={styles.errorScreenBrand}>SANRI İNZİVADA</h1>
+            <p className={styles.errorScreenLead}>
+              Bu kapı şu an dış sesle konuşmuyor. Sessizlik de bir cevaptır.
+            </p>
+            {flowError ? <p className={styles.errorScreenDetail}>{flowError}</p> : null}
+            <button
+              type="button"
+              className={styles.errorScreenBtn}
+              onClick={() => {
+                setFlowError("");
+                goToCategories();
+              }}
+            >
+              Kategorilere dön
+            </button>
+          </motion.div>
+        )}
+
         {phase === PHASES.RESULT && categoryMeta && (
           <motion.div
             key="result"
@@ -463,6 +531,14 @@ export default function AnKodPage() {
             transition={{ duration: 0.7 }}
           >
             <div className={styles.resultGlyph}>✦</div>
+            {teaserInzivada ? (
+              <div className={styles.inzivadaBanner} role="status">
+                <span className={styles.inzivadaBrand}>SANRI İNZİVADA</span>
+                <span className={styles.inzivadaHint}>
+                  Sunucu yorumu şimdilik gelmedi; aşağıdaki ön okuma yerelde üretildi.
+                </span>
+              </div>
+            ) : null}
             <div className={styles.resultSanriTag}>
               SANRI · {categoryMeta.title} · ön okuma
             </div>
@@ -552,6 +628,14 @@ export default function AnKodPage() {
               >
                 <div className={styles.lockDivider} />
                 <p className={styles.deepIntro}>Derin Okuma</p>
+                {deepInzivada && !deepSanriLoading ? (
+                  <div className={styles.inzivadaBannerDeep} role="status">
+                    <span className={styles.inzivadaBrand}>SANRI İNZİVADA</span>
+                    <span className={styles.inzivadaHint}>
+                      Derin sunucu katmanı şu an ulaşılamıyor; aşağıdaki bloklar yerel derin okumadır.
+                    </span>
+                  </div>
+                ) : null}
                 {deepSanriLoading && (
                   <p className={styles.deepSanriLoading}>
                     SANRI derin katmanını seçimlerine göre yazıyor…

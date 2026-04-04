@@ -226,10 +226,25 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: border-color 0.25s, background 0.25s, color 0.25s;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+}
+.likeEmoji {
+  display: inline-flex;
+  line-height: 1;
+  transform-origin: center;
+}
+.likeNum {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  min-width: 1.2em;
+}
+.metaStat {
+  display: inline-flex;
+  align-items: center;
+  font-variant-numeric: tabular-nums;
 }
 .likeBtn:hover {
   background: rgba(200, 160, 255, 0.12);
@@ -316,7 +331,9 @@
   color: var(--text-primary);
   font-size: 14px;
   font-weight: 700;
+  font-family: inherit;
   text-decoration: none;
+  cursor: pointer;
   transition: all 0.25s;
 }
 
