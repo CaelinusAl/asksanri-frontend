@@ -225,6 +225,16 @@
   margin: 40px auto 0;
   padding: 0 20px;
 }
+@keyframes okumaFeaturedIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .featuredCard {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -235,6 +245,7 @@
   border: 1px solid rgba(200, 160, 255, 0.15);
   cursor: pointer;
   transition: border-color 0.3s, transform 0.3s;
+  animation: okumaFeaturedIn 0.5s ease-out both;
 }
 .featuredCard:hover {
   border-color: rgba(200, 160, 255, 0.35);
@@ -291,6 +302,18 @@
   align-items: center;
   font-variant-numeric: tabular-nums;
 }
+@keyframes liveStatBump {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+.liveStatPulse {
+  animation: liveStatBump 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
 .metaTime {
   opacity: 0.85;
 }
@@ -345,6 +368,16 @@
 }
 
 /* ── Card ── */
+@keyframes okumaCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .card {
   border-radius: 14px;
   overflow: hidden;
@@ -352,6 +385,7 @@
   border: 1px solid var(--border);
   cursor: pointer;
   transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  animation: okumaCardIn 0.35s ease-out both;
 }
 .card:hover {
   background: var(--bg-card-hover);
