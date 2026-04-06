@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getPendingPurchase, clearPendingPurchase } from "../data/shopierConfig";
+import { isAdminPath } from "../utils/adminPath";
 
 const STYLE = {
   backdrop: {
@@ -84,6 +85,7 @@ export default function PendingPurchaseRecovery() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (isAdminPath(location.pathname)) return;
     if (location.pathname === "/odeme-basarili") return;
 
     const p = getPendingPurchase();

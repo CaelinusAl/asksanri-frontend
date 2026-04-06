@@ -14,8 +14,11 @@ import {
   askSanriReflection,
   reportPost,
   fetchKindredSpirits,
+  fetchFieldEchoes,
+  postFieldEcho,
   isLoggedIn,
 } from "../data/yankiApi";
+import { getAnlasilmaSessionId } from "../data/anlasilmaApi";
 import { extractMentions, renderWithMentions } from "../data/mentionUtils";
 import SanriSharePanel from "../components/SanriSharePanel";
 import styles from "./YankiPostDetail.module.css";
@@ -44,6 +47,10 @@ function normalizePost(p) {
     reaction_sessizce: p.reaction_sessizce ?? 0,
     comment_count: p.comment_count ?? 0,
     created_at: p.created_at || null,
+    frequency_hz: p.frequency_hz ?? null,
+    energy_feel: p.energy_feel ?? null,
+    post_source: p.post_source || "classic",
+    field_echo_count: p.field_echo_count ?? 0,
   };
 }
 
@@ -77,7 +84,12 @@ export default function YankiPostDetail() {
 
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  const [echoes, setEchoes] = useState([]);
   const [newComment, setNewComment] = useState("");
+  const [echoDraft, setEchoDraft] = useState("");
+  const [echoBusy, setEchoBusy] = useState(false);
+  const [echoErr, setEchoErr] = useState(null);
+  const [echoCooldown, setEchoCooldown] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [commentSubmitting, setCommentSubmitting] = useState(false);
@@ -109,19 +121,33 @@ export default function YankiPostDetail() {
     setLoading(true);
     setError(null);
     try {
-      const [postData, commentsData] = await Promise.all([
-        fetchPostById(id),
-        fetchComments(id).catch(() => ({ comments: [], total: 0 })),
-      ]);
-      setPost(normalizePost(postData));
-      setComments(commentsData.comments || []);
+      const postData = await fetchPostById(id);
+      const normalized = normalizePost(postData);
+      setPost(normalized);
 
-      try {
-        const reflData = await fetchReflections(id);
-        if (reflData.reflections && reflData.reflections.length > 0) {
-          setSanriReflection(reflData.reflections[0].response);
+      const isField = normalized.post_source === "anlasilma_field";
+      if (isField) {
+        setComments([]);
+        try {
+          const ed = await fetchFieldEchoes(id);
+          setEchoes(ed.echoes || []);
+        } catch {
+          setEchoes([]);
         }
-      } catch { /* no cached reflection */ }
+      } else {
+        setEchoes([]);
+        const commentsData = await fetchComments(id).catch(() => ({ comments: [], total: 0 }));
+        setComments(commentsData.comments || []);
+      }
+
+      if (!isField) {
+        try {
+          const reflData = await fetchReflections(id);
+          if (reflData.reflections && reflData.reflections.length > 0) {
+            setSanriReflection(reflData.reflections[0].response);
+          }
+        } catch { /* no cached reflection */ }
+      }
 
       if (isLoggedIn()) {
         try {
@@ -141,6 +167,10 @@ export default function YankiPostDetail() {
   useEffect(() => { load(); }, [load]);
 
   useEffect(() => {
+    if (!post || post.post_source === "anlasilma_field") {
+      setKindred([]);
+      return;
+    }
     fetchKindredSpirits(id)
       .then((data) => setKindred(data.kindred || []))
       .catch(() => {
@@ -150,7 +180,7 @@ export default function YankiPostDetail() {
           { id: "u3", name: "Ay Işığı", avatar: "A", shared_reactions: 2, shared_posts: 3 },
         ]);
       });
-  }, [id]);
+  }, [id, post]);
 
   useEffect(() => {
     if (searchParams.get("sanri") === "1" && post && !sanriReflection && !sanriLoading) {
@@ -215,6 +245,33 @@ export default function YankiPostDetail() {
       else setSanriReflection(isTR ? "Yansıma alınamadı." : "Reflection unavailable.");
     }
     setSanriLoading(false);
+  };
+
+  useEffect(() => {
+    if (echoCooldown <= 0) return undefined;
+    const t = setTimeout(() => setEchoCooldown((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    return () => clearTimeout(t);
+  }, [echoCooldown]);
+
+  const submitFieldEcho = async () => {
+    const text = echoDraft.trim();
+    if (!text || !post || echoBusy || echoCooldown > 0) return;
+    setEchoErr(null);
+    setEchoBusy(true);
+    try {
+      const sid = getAnlasilmaSessionId();
+      await postFieldEcho(post.id, sid, text);
+      setEchoDraft("");
+      const ed = await fetchFieldEchoes(post.id);
+      setEchoes(ed.echoes || []);
+      setPost((p) => (p ? { ...p, field_echo_count: (ed.total ?? ed.echoes?.length ?? 0) } : p));
+    } catch (err) {
+      const d = err?.message || err?.body?.detail || "";
+      const m = typeof d === "string" && d.match(/yavas_mod_(\d+)s/i);
+      if (err.status === 429 && m) setEchoCooldown(parseInt(m[1], 10));
+      else setEchoErr(typeof d === "string" ? d : isTR ? "Gönderilemedi." : "Could not send.");
+    }
+    setEchoBusy(false);
   };
 
   const submitComment = async () => {
@@ -344,7 +401,7 @@ export default function YankiPostDetail() {
     return (
       <div className={styles.page}>
         <p className={styles.notFound}>{isTR ? "Yankı bulunamadı." : "Echo not found."}</p>
-        <button className={styles.backLink} onClick={() => navigate("/yanki-alani")}>
+        <button className={styles.backLink} onClick={() => navigate("/yanki")}>
           ← {isTR ? "Akışa Dön" : "Back to Feed"}
         </button>
       </div>
@@ -353,12 +410,22 @@ export default function YankiPostDetail() {
 
   const pt = getPostTypeById(post.category);
   const reflParsed = parseStructuredReflection(sanriReflection);
+  const isFieldPost = post.post_source === "anlasilma_field";
 
   return (
     <div className={styles.page}>
       <header className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate("/yanki-alani")}>
-          ← {isTR ? "Akış" : "Feed"}
+        <button
+          className={styles.backBtn}
+          onClick={() =>
+            navigate(
+              isFieldPost
+                ? { pathname: "/yanki", search: "?tab=hisset" }
+                : { pathname: "/yanki", search: "" }
+            )
+          }
+        >
+          ← {isFieldPost ? (isTR ? "Hissel akış" : "Felt stream") : (isTR ? "Akış" : "Feed")}
         </button>
       </header>
 
@@ -370,27 +437,40 @@ export default function YankiPostDetail() {
         transition={{ duration: 0.5 }}
       >
         <div className={styles.authorRow}>
-          <span className={styles.avatar} style={{ background: pt.color + "33", color: pt.color }}>
-            {post.author_mode === "anonymous" ? "?" : (post.author_name || "?")[0]}
+          <span
+            className={styles.avatar}
+            style={{
+              background: isFieldPost ? "rgba(100,200,255,0.15)" : pt.color + "33",
+              color: isFieldPost ? "#8ecfff" : pt.color,
+            }}
+          >
+            {isFieldPost ? "〰" : post.author_mode === "anonymous" ? "?" : (post.author_name || "?")[0]}
           </span>
           <div className={styles.authorInfo}>
-            {post.author_mode === "anonymous" ? (
+            {isFieldPost ? (
+              <span className={styles.authorName}>{isTR ? "İsimsiz titreşim" : "Nameless resonance"}</span>
+            ) : post.author_mode === "anonymous" ? (
               <span className={styles.authorName}>{isTR ? "Anonim" : "Anonymous"}</span>
             ) : (
               <button
                 className={styles.authorLink}
-                onClick={(e) => { e.stopPropagation(); navigate(`/yanki-alani/profil/${post.author_id || "me"}`); }}
+                onClick={(e) => { e.stopPropagation(); navigate(`/yanki/profil/${post.author_id || "me"}`); }}
               >
                 {post.author_name || (isTR ? "Anonim" : "Anonymous")}
               </button>
             )}
           </div>
           <span className={styles.typeBadge} style={{ background: pt.color + "22", color: pt.color, borderColor: pt.color + "44" }}>
-            {pt.icon} {isTR ? pt.label.tr : pt.label.en}
+            {isFieldPost && post.frequency_hz
+              ? `${post.frequency_hz} Hz`
+              : `${pt.icon} ${isTR ? pt.label.tr : pt.label.en}`}
           </span>
         </div>
 
         <span className={styles.time}>{timeAgo(post.created_at, isTR)}</span>
+        {isFieldPost && post.energy_feel && (
+          <p className={styles.fieldEnergyLine}>✦ {post.energy_feel}</p>
+        )}
 
         {post.title && <h2 className={styles.postTitle}>{post.title}</h2>}
         <p className={styles.postContent}>{post.content}</p>
@@ -407,7 +487,7 @@ export default function YankiPostDetail() {
 
         {/* Actions */}
         <div className={styles.actions}>
-          {[
+          {!isFieldPost && [
             { type: "kalbime_dokundu", icon: "♡", iconActive: "♥", col: "reaction_heart", tr: "Yankı Ver", en: "Echo", cls: "heart" },
             { type: "ben_de_hissettim", icon: "◈", iconActive: "◆", col: "reaction_felt", tr: "Bende Açıldı", en: "Felt it", cls: "felt" },
             { type: "sessizce_aldim", icon: "◇", iconActive: "◆", col: "reaction_sessizce", tr: "Sessizce Aldım", en: "Received Silently", cls: "silent" },
@@ -447,22 +527,24 @@ export default function YankiPostDetail() {
           <button className={styles.reportBtn} onClick={() => setShowReport(true)}>
             ⚑
           </button>
-          <button
-            className={`${styles.sanriBtn} ${sanriReflection ? styles.sanriBtnDone : ""}`}
-            onClick={handleSanri}
-            disabled={sanriLoading}
-          >
-            {sanriLoading
-              ? (isTR ? "✦ Yansıtılıyor..." : "✦ Reflecting...")
-              : sanriReflection
-                ? (isTR ? "✦ Yansıma Hazır" : "✦ Reflection Ready")
-                : (isTR ? "✦ Sanrı'ya Taşı" : "✦ Send to Sanri")}
-          </button>
+          {!isFieldPost && (
+            <button
+              className={`${styles.sanriBtn} ${sanriReflection ? styles.sanriBtnDone : ""}`}
+              onClick={handleSanri}
+              disabled={sanriLoading}
+            >
+              {sanriLoading
+                ? (isTR ? "✦ Yansıtılıyor..." : "✦ Reflecting...")
+                : sanriReflection
+                  ? (isTR ? "✦ Yansıma Hazır" : "✦ Reflection Ready")
+                  : (isTR ? "✦ Sanrı'ya Taşı" : "✦ Send to Sanri")}
+            </button>
+          )}
         </div>
       </motion.article>
 
       {/* ── Sanrı Yansıması (structured) ── */}
-      {(sanriReflection || sanriLoading) && (
+      {!isFieldPost && (sanriReflection || sanriLoading) && (
         <motion.div
           className={styles.reflectionCard}
           initial={{ opacity: 0, y: 20, scale: 0.97 }}
@@ -519,7 +601,7 @@ export default function YankiPostDetail() {
         </motion.div>
       )}
 
-      {sanriReflection && !sanriLoading && (
+      {!isFieldPost && sanriReflection && !sanriLoading && (
         <SanriSharePanel
           reflectionText={sanriReflection}
           shareUrl={`${typeof window !== "undefined" ? window.location.origin : ""}/yanki/${id}${user?.id ? `?ref=${user.id}` : ""}`}
@@ -613,7 +695,7 @@ export default function YankiPostDetail() {
               <button
                 key={k.id}
                 className={styles.kindredCard}
-                onClick={() => navigate(`/yanki-alani/profil/${k.id}`)}
+                onClick={() => navigate(`/yanki/profil/${k.id}`)}
               >
                 <span className={styles.kindredAvatar}>{k.avatar || k.name?.[0] || "?"}</span>
                 <span className={styles.kindredName}>{k.name}</span>
@@ -626,82 +708,134 @@ export default function YankiPostDetail() {
         </motion.section>
       )}
 
-      {/* Comments */}
-      <section className={styles.commentsSection}>
-        <h3 className={styles.commentsTitle}>
-          💬 {isTR ? "Yorumlar" : "Comments"} ({comments.length})
-        </h3>
-
-        <div className={styles.commentsList}>
-          {threadedComments.topLevel.map((c, i) => {
-            const replies = threadedComments.childMap[c.id] || [];
-            return (
-              <div key={c.id}>
-                <CommentItem
-                  c={c}
-                  i={i}
-                  isTR={isTR}
-                  onReply={handleReplyClick}
-                  isReplyTarget={replyTo?.id === c.id}
-                  navigate={navigate}
-                />
-                {replies.length > 0 && (
-                  <div className={styles.replyThread}>
-                    {replies.map((r, ri) => (
-                      <CommentItem
-                        key={r.id}
-                        c={r}
-                        i={ri}
-                        isTR={isTR}
-                        onReply={handleReplyClick}
-                        isReplyTarget={replyTo?.id === r.id}
-                        isReply
-                        navigate={navigate}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-
-          {comments.length === 0 && (
-            <p className={styles.noComments}>
-              {isTR ? "İlk yorumu sen yaz." : "Be the first to comment."}
-            </p>
-          )}
-        </div>
-
-        {replyTo && (
-          <div className={styles.replyBar}>
-            <span className={styles.replyBarText}>
-              ↩ {isTR ? "Cevap:" : "Reply:"} <strong>{replyTo.author_name || replyTo.author?.name || "?"}</strong>
-            </span>
-            <button className={styles.replyBarClose} onClick={() => { setReplyTo(null); setNewComment(""); }}>✕</button>
+      {/* Yankılar (alan) veya klasik yorumlar */}
+      {isFieldPost ? (
+        <section className={styles.commentsSection}>
+          <h3 className={styles.commentsTitle}>
+            〰 {isTR ? "Yankılar" : "Echoes"} ({echoes.length})
+          </h3>
+          <p className={styles.echoHint}>
+            {isTR
+              ? "Kısa, derin bir his bırak. İsim yok; aynı anonim oturumla sınırlısın. Yavaş mod aktif."
+              : "Leave a short, deep felt note. No names; tied to your anonymous session. Slow mode on."}
+          </p>
+          {echoErr && <p className={styles.echoErr}>{echoErr}</p>}
+          <div className={styles.echoList}>
+            {echoes.map((e, i) => (
+              <motion.div
+                key={e.id}
+                className={styles.echoItem}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: Math.min(i * 0.04, 0.6) }}
+              >
+                <p className={styles.echoBody}>{e.body}</p>
+                <span className={styles.echoTime}>{timeAgo(e.created_at, isTR)}</span>
+              </motion.div>
+            ))}
+            {echoes.length === 0 && (
+              <p className={styles.noComments}>
+                {isTR ? "İlk yankıyı sen bırak." : "Be the first to leave an echo."}
+              </p>
+            )}
           </div>
-        )}
+          <div className={styles.commentInput}>
+            <input
+              type="text"
+              className={styles.commentField}
+              placeholder={isTR ? "Yankı bırak… (max birkaç cümle)" : "Leave an echo…"}
+              value={echoDraft}
+              onChange={(e) => setEchoDraft(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && submitFieldEcho()}
+              disabled={echoBusy || echoCooldown > 0}
+              maxLength={240}
+            />
+            <button
+              className={styles.commentSubmit}
+              disabled={!echoDraft.trim() || echoBusy || echoCooldown > 0}
+              onClick={submitFieldEcho}
+            >
+              {echoCooldown > 0 ? `${echoCooldown}s` : echoBusy ? "…" : "→"}
+            </button>
+          </div>
+        </section>
+      ) : (
+        <section className={styles.commentsSection}>
+          <h3 className={styles.commentsTitle}>
+            💬 {isTR ? "Yorumlar" : "Comments"} ({comments.length})
+          </h3>
 
-        <div className={styles.commentInput}>
-          <input
-            type="text"
-            className={styles.commentField}
-            placeholder={replyTo
-              ? (isTR ? "Cevabını yaz..." : "Write your reply...")
-              : (isTR ? "Yankını bırak... (@isim ile etiketle)" : "Leave your echo... (tag with @name)")}
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && submitComment()}
-            disabled={commentSubmitting}
-          />
-          <button
-            className={styles.commentSubmit}
-            disabled={!newComment.trim() || commentSubmitting}
-            onClick={submitComment}
-          >
-            {commentSubmitting ? "..." : "→"}
-          </button>
-        </div>
-      </section>
+          <div className={styles.commentsList}>
+            {threadedComments.topLevel.map((c, i) => {
+              const replies = threadedComments.childMap[c.id] || [];
+              return (
+                <div key={c.id}>
+                  <CommentItem
+                    c={c}
+                    i={i}
+                    isTR={isTR}
+                    onReply={handleReplyClick}
+                    isReplyTarget={replyTo?.id === c.id}
+                    navigate={navigate}
+                  />
+                  {replies.length > 0 && (
+                    <div className={styles.replyThread}>
+                      {replies.map((r, ri) => (
+                        <CommentItem
+                          key={r.id}
+                          c={r}
+                          i={ri}
+                          isTR={isTR}
+                          onReply={handleReplyClick}
+                          isReplyTarget={replyTo?.id === r.id}
+                          isReply
+                          navigate={navigate}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            {comments.length === 0 && (
+              <p className={styles.noComments}>
+                {isTR ? "İlk yorumu sen yaz." : "Be the first to comment."}
+              </p>
+            )}
+          </div>
+
+          {replyTo && (
+            <div className={styles.replyBar}>
+              <span className={styles.replyBarText}>
+                ↩ {isTR ? "Cevap:" : "Reply:"} <strong>{replyTo.author_name || replyTo.author?.name || "?"}</strong>
+              </span>
+              <button className={styles.replyBarClose} onClick={() => { setReplyTo(null); setNewComment(""); }}>✕</button>
+            </div>
+          )}
+
+          <div className={styles.commentInput}>
+            <input
+              type="text"
+              className={styles.commentField}
+              placeholder={replyTo
+                ? (isTR ? "Cevabını yaz..." : "Write your reply...")
+                : (isTR ? "Yankını bırak... (@isim ile etiketle)" : "Leave your echo... (tag with @name)")}
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && submitComment()}
+              disabled={commentSubmitting}
+            />
+            <button
+              className={styles.commentSubmit}
+              disabled={!newComment.trim() || commentSubmitting}
+              onClick={submitComment}
+            >
+              {commentSubmitting ? "..." : "→"}
+            </button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
@@ -720,7 +854,7 @@ function CommentItem({ c, i, isTR, onReply, isReplyTarget, isReply, navigate }) 
     >
       <button
         className={styles.commentAvatarBtn}
-        onClick={() => authorId && navigate(`/yanki-alani/profil/${authorId}`)}
+        onClick={() => authorId && navigate(`/yanki/profil/${authorId}`)}
         disabled={!authorId}
       >
         {name[0]}
@@ -728,7 +862,7 @@ function CommentItem({ c, i, isTR, onReply, isReplyTarget, isReply, navigate }) 
       <div className={styles.commentBody}>
         <div className={styles.commentMeta}>
           {authorId ? (
-            <button className={styles.commentAuthorLink} onClick={() => navigate(`/yanki-alani/profil/${authorId}`)}>
+            <button className={styles.commentAuthorLink} onClick={() => navigate(`/yanki/profil/${authorId}`)}>
               {name}
             </button>
           ) : (
@@ -742,7 +876,7 @@ function CommentItem({ c, i, isTR, onReply, isReplyTarget, isReply, navigate }) 
               <button
                 key={idx}
                 className={styles.mentionTag}
-                onClick={() => navigate(`/yanki-alani/profil/${p.value}`)}
+                onClick={() => navigate(`/yanki/profil/${p.value}`)}
               >
                 @{p.value}
               </button>

@@ -147,10 +147,10 @@ Beğeni yarışı yok.
 Sadece — yankı.
 
 Sen de bir yankı bırak.
-→ asksanri.com/yanki-alani`,
+→ asksanri.com/yanki`,
     cta: "Sen de bir yankı bırak.",
-    link: "asksanri.com/yanki-alani",
-    landingPage: "/yanki-alani",
+    link: "asksanri.com/yanki",
+    landingPage: "/yanki",
     hashtags: "#sanri #yanki #topluluk #paylasim #bilinc",
   },
   {

@@ -6,16 +6,17 @@ function LoadingScreen() {
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100dvh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         gap: "1rem",
         background: "#0a0a12",
-        color: "rgba(255, 255, 255, 0.72)",
-        fontSize: "0.875rem",
+        color: "rgba(255, 255, 255, 0.88)",
+        fontSize: "0.9375rem",
         letterSpacing: "0.06em",
+        colorScheme: "dark",
       }}
     >
       <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">

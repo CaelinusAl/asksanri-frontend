@@ -114,7 +114,7 @@ export default function HomePage() {
           ? "Enerji okuması — titreşim katmanının hisset"
           : "Energy reading — feel the vibration layer",
         hint: isTR ? "Frekansı Aç →" : "Open Frequency →",
-        path: "/frekans-alani",
+        path: "/frekans",
         img: "/assets/gates/frekans.jpg",
       },
       {
@@ -139,12 +139,12 @@ export default function HomePage() {
       },
       {
         key: "yanki",
-        title: isTR ? "Yankı Alanı" : "Echo Field",
+        title: isTR ? "Yankı" : "Echo",
         desc: isTR
-          ? "Kolektif bilinç akışı — paylaş, yankıla, dinle"
-          : "Collective consciousness — share, echo, listen",
-        hint: isTR ? "Akışa Gir →" : "Enter Flow →",
-        path: "/yanki-alani",
+          ? "Anlaşılma Alanı’nın alt modülü — akış, hissel yankı, günlük"
+          : "Submodule of Understanding — feed, felt stream, daily",
+        hint: isTR ? "Yankı’ya git →" : "Open echo →",
+        path: "/yanki",
         img: "/assets/gates/yanki-alani.jpg",
       },
       {
@@ -219,7 +219,7 @@ export default function HomePage() {
   const onOpenGates = () => {
     onUnlock();
     setIntroDone(true);
-    window.history.replaceState({}, "", "/");
+    navigate("/kapilar", { replace: true });
   };
 
   const handleGate = (g) => {
@@ -336,6 +336,18 @@ export default function HomePage() {
                 ? "Her kapı bir frekans, her alan bir ayna. Hangi katmana inmek istiyorsun?"
                 : "Each gate is a frequency, each field a mirror. Which layer do you want to enter?"}
             </p>
+            <div className={styles.yankiHomeRow}>
+              <button
+                type="button"
+                className={styles.yankiHomeBtn}
+                onClick={() => {
+                  onUnlock();
+                  navigate("/", { state: { skipIntro: true } });
+                }}
+              >
+                {isTR ? "⟲ Anlaşılma Alanı (ana giriş)" : "⟲ Understanding (home)"}
+              </button>
+            </div>
 
             {/* FEATURED — Anadolu Ruhu */}
             <div
@@ -371,10 +383,10 @@ export default function HomePage() {
                   className={styles.dailyQuestion}
                   role="button"
                   tabIndex={0}
-                  onClick={() => navigate("/yanki-alani/yeni", { state: { skipIntro: true } })}
+                  onClick={() => navigate("/yanki/yeni", { state: { skipIntro: true } })}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ")
-                      navigate("/yanki-alani/yeni", { state: { skipIntro: true } });
+                      navigate("/yanki/yeni", { state: { skipIntro: true } });
                   }}
                 >
                   <span className={styles.dqLabel}>{isTR ? "BUGÜNÜN SORUSU" : "TODAY'S QUESTION"}</span>

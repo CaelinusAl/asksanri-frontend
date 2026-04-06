@@ -21,9 +21,17 @@ export function AdminProvider({ children }) {
       return;
     }
     try {
-      const res = await fetch(`${API}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 12000);
+      let res;
+      try {
+        res = await fetch(`${API}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(t);
+      }
       if (!res.ok) throw new Error("unauthorized");
       const data = await res.json();
       if (data.role === "admin") {
@@ -36,8 +44,9 @@ export function AdminProvider({ children }) {
     } catch {
       setIsAdmin(false);
       setAdminUser(null);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, [getToken]);
 
   useEffect(() => {

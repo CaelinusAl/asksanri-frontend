@@ -3,6 +3,25 @@ import React, { createContext, useContext, useEffect, useMemo, useState, useCall
 const AuthContext = createContext(null);
 
 const TOKEN_KEY = "sanri_token";
+const USER_CACHE_KEY = "sanri_user_cache";
+
+function readCachedUser() {
+  try {
+    const raw = localStorage.getItem(USER_CACHE_KEY);
+    if (!raw) return null;
+    const u = JSON.parse(raw);
+    return u && typeof u === "object" ? u : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedUser(user) {
+  try {
+    if (user?.authenticated) localStorage.setItem(USER_CACHE_KEY, JSON.stringify(user));
+    else localStorage.removeItem(USER_CACHE_KEY);
+  } catch {}
+}
 
 function getStoredToken() {
   try { return localStorage.getItem(TOKEN_KEY); } catch { return null; }
@@ -48,9 +67,20 @@ export function AuthProvider({ children }) {
       const me = await meRes.json().catch(() => ({}));
 
       if (!meRes.ok) {
-        storeToken(null);
-        setToken(null);
-        setUser(null);
+        if (meRes.status === 401 || meRes.status === 403) {
+          storeToken(null);
+          setToken(null);
+          setUser(null);
+          writeCachedUser(null);
+          setLoading(false);
+          return;
+        }
+        const stale = readCachedUser();
+        if (stale && t) {
+          setUser({ ...stale, authenticated: true, offlineStale: true });
+        } else {
+          setUser(null);
+        }
         setLoading(false);
         return;
       }
@@ -77,10 +107,16 @@ export function AuthProvider({ children }) {
       };
 
       setUser(normalized);
+      writeCachedUser(normalized);
       setLoading(false);
     } catch {
       setError("Auth network error");
-      setUser(null);
+      const stale = readCachedUser();
+      if (t && stale) {
+        setUser({ ...stale, authenticated: true, offlineStale: true });
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     }
   }, [API]);
@@ -144,6 +180,7 @@ export function AuthProvider({ children }) {
     storeToken(null);
     setToken(null);
     setUser(null);
+    writeCachedUser(null);
   }, []);
 
   const value = useMemo(() => {

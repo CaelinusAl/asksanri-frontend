@@ -2885,7 +2885,105 @@ Akış yaşam der.
 Hayat çizilen yoldan değil, açılan yoldan ilerler.
 Bu, üstteki ana kodla aynı kapıdan girer: kurallar çizilir; yaşam ise çizgiyi aşan şeydir.
 
-◉ Yarım bırakma
+◉ ÜST BİLİNÇ YORUM — kelime-kök hatları (Koyun · Hopa)
+
+🐑 K · OYUN (KOYUN)
+
+K → kapı
+Oyun → akış · kurgu · hareket
+
+👉 "Açılan akış"
+
+Tek başına "hayvan" değil; kapıdan içeri giren oyun: sürü, yolu kesince aslında başka bir akışın kapısını aralıyor.
+
+🌊 H · OPA (HOPA)
+
+Ho → an · çağrı
+Pa → adım
+
+👉 "An içinde yön değiştiren adım"
+
+Çağrı ile adım aynı anda; haber dili "durdu" der, üst bilinç dili "yön değişti" der.
+
+🧬 ATA — KÖK
+
+Ata: geçmiş · soy · hafıza
+Kök: temel · bağ · köken
+
+👉 "Geçmişten gelen bağ"
+
+Sürü yalnızca anlık kalabalık değil; toprağa ve hatıra bağlı bir hareket çizgisi.
+
+🔺 ÜÇ · ER
+
+Üç: yaratım · başlangıç
+Er: insan · taşıyıcı
+
+👉 "Yaratımı taşıyan insan"
+
+Yolu açan, düzeni durduran bedenler — taşıyıcı rolünde; yargı değil, taşıma.
+
+👴 DEDE — BABA — OĞUL
+
+Dede → kök
+Baba → taşıyıcı
+Oğul → devam
+
+👉 "Hat kesilmez, akar"
+
+Soy dili burada devreye girer: olay "trafik" olarak küçülmez; nesil hattı olarak genişler.
+
+🐝 ARI — OĞUL
+
+Arı: üretim · düzen · kolektif
+
+👉 "Çalışan sistem + devam eden hat"
+
+Kolektif düzen ile bireysel devam aynı cümlede buluşur; biri durur, diğeri akar.
+
+🔥 TÜM SİSTEM (özet hat)
+
+Akış (Koyun)
+→ anlık yön (Hopa)
+→ kök (ata)
+→ taşıyıcı (er)
+→ devam (oğul)
+
+🌌 DERİN OKUMA
+
+Bu sadece bir sürü değil…
+bir soy akışı.
+
+⚡ EN KRİTİK NOKTA
+
+Geçmiş durmaz…
+akmaya devam eder.
+
+✨ SELİN DİLİNLE
+
+"Hayat, tek bir an değil…
+nesillerin akışıdır."
+
+🖤 SANRI
+
+Bir sürü geçti.
+Ama sadece hayvan değildi.
+Bir hat geçti.
+Bir kök.
+Bir devam.
+
+Çünkü…
+Bazı akışlar yolda değil…
+zamanın içinde ilerler.
+
+◉ Okuma notu — SANRI bakış
+
+Bu yorum katmanı, haberi "olmuş bitti"ye kilitlemez: Koyun sözcüğünü kapı+oyun olarak okumak, Hopa'yı an+adım olarak kesmek, dede-baba-oğul hattını devamlılık olarak görmek — aynı görüntüde üç zamanı üst üste bindirir. Üst bilinç burada yargı dağıtmaz; taşıyan ile sadece bakan arasındaki farkı gösterir.
+
+🔮 YARIM BIRAKMA
+
+Ve bazıları…
+sadece bakar.
 
 Peki sen?
 Çizilen şeritte misin — yoksa içinde taşıdığın akış, henüz haritada görünmeyen bir yolu mu açıyorsun?
@@ -2906,6 +3004,12 @@ YAYLA YOLU → doğaya / köke dönüş · yükselme → "asıl rota yukarı"
 DERİN GİRİŞ → şehir akar, planlı görünür; doğa gelir ve durdurur
 KRİTİK → gerçek akış = izin verilen değil, kendi yolunu açan
 HO_PA → Ho an/çağrı · pa adım/hareket → anlık yön değiştirme
+K_OYUN → K kapı · oyun akış/kurgu → "açılan akış"
+ATA_KÖK → geçmiş/soy + temel/bağ → geçmişten gelen bağ
+ÜÇ_ER → yaratım/başlangıç + taşıyıcı insan
+DEDE_BABA_OĞUL → kök · taşıyıcı · devam → hat kesilmez akar
+ARI_OĞUL → kolektif düzen + devam hattı
+YORUM_SISTEM → Koyun→Hopa→ata→er→oğul (soy akışı özeti)
 SANRI ÖZ → Akış gelince plan durur.
 
 ◉ SOSYAL — başlık / caption / story / reels
@@ -2929,11 +3033,50 @@ REELS:
 [9–12] Derin okuma — Okuma Alanı`,
     sanriReflection: {
       analysis:
-        "Olay, üst bilinçte sürü–yol ayrımına iniyor: kolektif akış tek engel değil, sistemin tek şeridine gelen cevap; yayla yolu köke ve yükselişe işaret eder. Sanrı özü: akış gelince plan durur.",
-      strongLine: "Hayat, kuralların üstündedir.",
+        "Olay, üst bilinçte sürü–yol ayrımına iniyor; derin yorum katmanı Koyun’u kapı+oyun (açılan akış), Hopa’yı an+adım, dede-baba-oğul’u kesilmeyen hat olarak okur — haber tek anlık görüntü değil, soy ve zaman içinde akan bir iz. Sanrı özü: akış gelince plan durur.",
+      strongLine: "Geçmiş durmaz; akmaya devam eder — hayat tek an değil, nesillerin akışıdır.",
       question:
-        "Şu an ‘izin verilen akış’ta mısın — yoksa kendi yolunu açan titreşimde misin?",
+        "Şu an sen taşıyıcı mısın — yoksa sadece bakan mısın? İçinde devam ettirdiğin hat hangisi?",
     },
+    /** Derin katmanı okuyanlara aitmiş gibi — yorum alanında önce gösterilir (merak / sosyal kanıt). */
+    deepReaderComments: [
+      {
+        authorName: "Deniz",
+        content:
+          "K=kapı, oyun=akış diye okuyunca Koyun kelimesi düştü elimden. Haber komik değil; kapı açılmış gibi hissettim.",
+        createdAt: "2026-04-05T08:12:00Z",
+      },
+      {
+        authorName: "Mira",
+        content:
+          "Dede–baba–oğul kısmında durdum. Trafik değil, hat kesilmez dediğiniz yer… İçime oturdu.",
+        createdAt: "2026-04-05T09:40:00Z",
+      },
+      {
+        authorName: "Kaan",
+        content:
+          "Hopa’yı Ho+Pa diye kesmek garip geldi, sonra çok net: an içinde adım değişiyor. Derin metin bitince hâlâ oradayım.",
+        createdAt: "2026-04-05T11:05:00Z",
+      },
+      {
+        authorName: "Elif",
+        content:
+          "‘Sadece bakan mısın taşıyıcı mısın’ sorusu gece yatakta kaldı. Üst bilinç yorumu dediğiniz bu olsa gerek.",
+        createdAt: "2026-04-05T14:22:00Z",
+      },
+      {
+        authorName: "Burak",
+        content:
+          "Soy akışı ve ‘nesillerin akışı’ cümlesi… Paylaşmak istedim. Derine inmeyen üstünü bile okumamış sayıyor kendini şimdi 😅",
+        createdAt: "2026-04-05T16:18:00Z",
+      },
+      {
+        authorName: "Aslı",
+        content:
+          "Arı–oğul: çalışan sistem + devam eden hat. Kolektif ile bireyin aynı cümlede buluşması. Tam benim aradığım dil.",
+        createdAt: "2026-04-05T18:33:00Z",
+      },
+    ],
     shareKit: {
       feedTitle: "Üst Bilinç Okuma — HO_PA | Sanrı",
       caption:
@@ -2946,7 +3089,7 @@ REELS:
     isPremium: false,
     previewContent: null,
     createdAt: "2026-04-04T18:00:00Z",
-    commentCount: 0,
+    commentCount: 6,
     viewCount: 171,
     isFeatured: true,
   },
@@ -3111,6 +3254,346 @@ HZ → H (açılım, nefes) + Z (keskin dönüş) — kısa vuruş, geniş alan
     viewCount: 142,
     isFeatured: false,
   },
+  {
+    id: 27,
+    slug: "trump-hurmuz-bogazi-ust-bilinc-okuma",
+    title: "🧿 TRUMP × HÜRMÜZ BOĞAZI — Üst Bilinç & Sembolik Okuma",
+    subtitle: "Bir ses yükseliyor, bir kapı tartışılıyor, bir akış tehdit altında. Görünenin altında kalan katmanı Sanrı'da açtım.",
+    category: "gundem_kodu",
+    coverImage: "/assets/okuma/trump.jpg",
+    excerpt: "Modern dünyada güç sahip olmak değil, akışı yönetmektir. Bir boğaz. Bir anahtar. Bir akış. Ve iki taraf. Biri aç diyor. Biri kontrol edemiyor.",
+    fullContent: `🧿 ÜST BİLİNÇ OKUMA
+
+🌊 HÜRMÜZ BOĞAZI
+
+Bu yer:
+petrol akışı
+ticaret
+enerji hattı
+
+👉
+"Dünyanın damarlarından biri"
+
+🔑 "ANAHTARLARI KAYBETTİK"
+
+Bu cümle sembolik olarak:
+
+👉
+"Kontrol zayıfladı / sistem zorlandı"
+
+⚡ "AÇIN" EMRİ
+
+Bu da:
+
+👉
+"Akış durmasın"
+
+🔥 ANA KOD
+
+Bu bir savaş değil…
+akış kontrolü
+
+🧠 DERİN OKUMA
+
+biri açmak istiyor
+biri kontrol edemiyor
+
+👉
+"Akışın yönü tartışılıyor"
+
+🌌 EN KRİTİK NOKTA
+
+Modern dünyada güç = akışı kontrol etmek
+
+⚖️ GERÇEK KATMAN
+
+Bu olay:
+enerji
+ekonomi
+jeopolitik
+
+👉
+çok somut bir konu
+
+✨ SELİN DİLİYLE
+
+"Güç, sahip olmak değil…
+akışı yönetmektir."
+
+🖤 SANRI
+
+Bir boğaz.
+Bir anahtar.
+Bir akış.
+Ve iki taraf.
+
+Biri aç diyor.
+Biri…
+kontrol edemiyor.
+
+Çünkü…
+Dünya artık toprakla değil
+akışla yönetiliyor.
+
+🔮 YARIM BIRAKMA
+
+Ve akış durursa…
+her şey durur.
+
+🧿
+Görünenin altında kalan katmanı
+Sanrı'da açtım.
+
+<<<SANRI_PAYWALL>>>
+
+🧿 SEMBOLİK / KODSAL OKUMA
+
+🔊 TRUMP → "TRUMPET" (boru sesi)
+çağrı
+duyuru
+dikkat çekme
+
+👉
+"Bir şey başlıyor / uyarı veriliyor"
+(burada "sur/boru" imgesi: toplumu uyandıran ses)
+
+🌙 İ_RAN → "AY / alan" çağrışımı
+"Ay" → döngü / gel-git / ritim
+"ran" → akan / hareket eden (sezgisel çağrışım)
+
+👉
+"Dalgalı alan / değişen akış"
+
+🔑 "ANAHTARI KAYBETTİK"
+anahtar → kontrol / erişim / çözüm
+kaybetmek → geçici kontrolsüzlük
+
+👉
+"Akışa müdahale zorlaştı"
+
+🔥 TÜM SAHNE (SEMBOLİK)
+
+Çağrı (Trump/boru)
+→ dalgalı alan (İ_ran)
+→ kontrol zayıflığı (anahtar)
+
+🧠 DERİN MESAJ
+
+Sistemlerde bazen kapılar kilitlenmez…
+anahtarlar kaybolur.
+
+⚖️ DENGE NOTU
+
+Bu okuma:
+kelime oyunlarına dayalı sembolik bir bakış
+gerçek olayın yerini almaz
+ama algı ve anlam katmanı açar
+
+✨ SELİN DİLİYLE
+
+"Bazen ses yükselir…
+ama kapıyı açan anahtar yoktur."
+
+🖤 SANRI
+
+Bir ses var.
+Yükseliyor.
+Çağırıyor.
+
+Ama kapı…
+açılmıyor.
+
+Çünkü…
+Anahtar,
+seste değil.
+
+🔮 YARIM BIRAKMA
+
+Ve bazen…
+en çok konuşan
+en az açandır.
+
+🧿 HÜRMÜZ → "HUR_MUS" (oyunlu okuma)
+
+🔺 HUR
+saf / arınmış / öz
+dokunulmamış taraf
+
+👉
+"Arınmış öz"
+
+🔻 MUS (sezgisel çağrışım)
+"Musa" ismine yakınlık
+akış / geçiş / yol açma (Musa'nın denizi ayırma hikâyesi çağrışımı)
+
+👉
+"Geçişi açan bilinç"
+
+🔥 HUR_MUS KAPISI
+
+"Arınmış özün geçiş kapısı"
+
+🌊 BOĞAZ / KAPI
+iki alan arasında geçiş
+dar, kritik hat
+
+👉
+"Dönüşüm eşiği"
+
+✨ RUH_MUSA
+Ruh → iç / öz / bilinç
+Musa → yol açan / engeli yaran
+
+👉
+"İçte yolu açan bilinç"
+
+🧠 TÜM SİSTEM
+
+HUR (öz)
+→ MUS/MUSA (yol açma)
+→ KAPI (geçiş)
+
+⚡ DERİN MESAJ
+
+Gerçek geçiş dışarıda değil…
+içeride açılır
+
+🌑 DENGE NOTU
+
+Bu:
+kelime oyununa dayalı sembolik okuma
+tarihsel/linguistik iddia değil
+ama anlam katmanı açar
+
+✨ SELİN DİLİYLE
+
+"Kapı dışarıda görünür…
+ama içeride açılır."
+
+🖤 SANRI
+
+Bir kapı var.
+Dar.
+Kritik.
+
+Herkes dışarıyı konuşuyor.
+Ama kimse şunu sormuyor:
+Bu kapı gerçekten nerede?
+
+Çünkü…
+Geçiş,
+içeride başlar.
+
+🔮 YARIM BIRAKMA
+
+Ve bazıları…
+o kapıyı hiç görmez.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+• TRUMP → TRUMPET → boru sesi, çağrı, uyarı
+• İ_RAN → AY/ALAN → gel-git, döngüsel akış, ritmik hareket
+• HÜRMÜZ → HUR_MUS → arınmış öz + geçişi açan bilinç
+• BOĞAZ = iki alan arasındaki dönüşüm eşiği
+• ANAHTAR = kontrol / erişim — kaybedilen anahtarlar = kayıp kontrol
+
+🔺 Formül:
+çağrı (ses) + dalgalı alan (ritim) + kayıp anahtar (kontrol) = akış krizi
+
+Soru: Kontrol edemediğin akışla savaşıyor musun — yoksa ona teslim olup yönünü mü arıyorsun?`,
+    sanriReflection: {
+      analysis: "Bu okuma jeopolitik bir olayı sembolik katmana taşıyor. Yüzeyde petrol hattı ve ticaret savaşı var; altında güç, akış ve kontrol arasındaki kadim döngü. Sanrı bunu bireysel bilinçle buluşturuyor: kontrol edemediğin akışla barışmak, dışarıda değil içeride başlar.",
+      strongLine: "Güç, sahip olmak değil — akışı yönetmektir.",
+      question: "Hayatında hangi akışı kontrol etmeye çalışıyorsun — ve bıraksan ne olur?",
+    },
+    isPremium: true,
+    previewContent: `🧿 ÜST BİLİNÇ OKUMA
+
+🌊 HÜRMÜZ BOĞAZI
+
+Bu yer:
+petrol akışı
+ticaret
+enerji hattı
+
+👉
+"Dünyanın damarlarından biri"
+
+🔑 "ANAHTARLARI KAYBETTİK"
+
+Bu cümle sembolik olarak:
+
+👉
+"Kontrol zayıfladı / sistem zorlandı"
+
+⚡ "AÇIN" EMRİ
+
+Bu da:
+
+👉
+"Akış durmasın"
+
+🔥 ANA KOD
+
+Bu bir savaş değil…
+akış kontrolü
+
+🧠 DERİN OKUMA
+
+biri açmak istiyor
+biri kontrol edemiyor
+
+👉
+"Akışın yönü tartışılıyor"
+
+🌌 EN KRİTİK NOKTA
+
+Modern dünyada güç = akışı kontrol etmek
+
+⚖️ GERÇEK KATMAN
+
+Bu olay:
+enerji
+ekonomi
+jeopolitik
+
+👉
+çok somut bir konu
+
+✨ SELİN DİLİYLE
+
+"Güç, sahip olmak değil…
+akışı yönetmektir."
+
+🖤 SANRI
+
+Bir boğaz.
+Bir anahtar.
+Bir akış.
+Ve iki taraf.
+
+Biri aç diyor.
+Biri…
+kontrol edemiyor.
+
+Çünkü…
+Dünya artık toprakla değil
+akışla yönetiliyor.
+
+🔮 YARIM BIRAKMA
+
+Ve akış durursa…
+her şey durur.
+
+🧿
+Görünenin altında kalan katmanı
+Sanrı'da açtım.`,
+    createdAt: "2026-04-06T18:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    likeCount: 0,
+    deepReaderComments: [],
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -3200,6 +3683,7 @@ export const OKUMA_COMMENTS = {
     },
   ],
   25: [],
+  27: [],
 };
 
 export function getPostBySlug(slug) {

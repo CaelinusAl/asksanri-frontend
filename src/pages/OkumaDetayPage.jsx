@@ -4,6 +4,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { markOkumaSeen, OKUMA_EARLY_PAYWALL_MARKER } from "../data/okumaSeen";
+import { putContentSnapshot, putEntitlement } from "../lib/offline/contentArchive";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
 import { EmailCaptureInline } from "../components/EmailCaptureModal";
@@ -122,6 +123,26 @@ export default function OkumaDetayPage() {
     if (!post) return;
     markOkumaSeen(post.slug);
   }, [post]);
+
+  useEffect(() => {
+    if (!post || isLocked) return;
+    const body = JSON.stringify({
+      id: post.id,
+      slug: post.slug,
+      title: post.title,
+      excerpt: post.excerpt,
+      coverImage: post.coverImage,
+      categoryId: post.categoryId,
+      isPremium: post.isPremium,
+      createdAt: post.createdAt,
+    });
+    putContentSnapshot(post.slug, {
+      title: post.title,
+      body,
+      meta: { source: "bundle", version: 1 },
+    }).catch(() => {});
+    putEntitlement(`okuma_${post.id}`, { slug: post.slug, unlocked: true, at: Date.now() }).catch(() => {});
+  }, [post, isLocked]);
 
   useEffect(() => {
     loadedRef.current = false;
@@ -549,7 +570,7 @@ export default function OkumaDetayPage() {
               <Link to="/sanri" className={styles.deeperBtn}>
                 {isTR ? "Sanrı'ya Sor" : "Ask Sanri"}
               </Link>
-              <Link to="/yanki-alani/yeni" className={styles.deeperBtn}>
+              <Link to="/yanki/yeni" className={styles.deeperBtn}>
                 {isTR ? "Yankı Bırak" : "Leave an Echo"}
               </Link>
               <Link to="/frekans-alani" className={styles.deeperBtn}>
@@ -564,8 +585,42 @@ export default function OkumaDetayPage() {
 
         {/* ── Comments ── */}
         <div className={styles.commentsSection}>
+          {Array.isArray(post.deepReaderComments) && post.deepReaderComments.length > 0 && (
+            <div className={styles.readerEchoBlock}>
+              <h3 className={styles.readerEchoHeading}>
+                {isTR ? "Derin açılımı okuyanlardan" : "From readers who went deep"}
+              </h3>
+              <p className={styles.readerEchoLead}>
+                {isTR
+                  ? "Tam metni — kelime-kök ve üst bilinç yorumunu — bitirenlerin notları. Sen de derine indiğinde paylaş."
+                  : "Notes from readers who finished the full layer. Share yours when you go deep."}
+              </p>
+              <div className={styles.readerEchoList}>
+                {post.deepReaderComments.map((c, i) => (
+                  <div key={`deep-echo-${i}`} className={`${styles.commentCard} ${styles.readerEchoCard}`}>
+                    <div className={styles.commentHeader}>
+                      <div className={styles.commentAvatar}>
+                        {(c.authorName || "?").charAt(0).toUpperCase()}
+                      </div>
+                      <span className={styles.commentAuthor}>{c.authorName}</span>
+                      <div className={styles.readerEchoMeta}>
+                        <span className={styles.readerEchoPill}>
+                          {isTR ? "derin okuma" : "deep read"}
+                        </span>
+                        <span className={styles.commentTime}>{timeAgoOkuma(c.createdAt)}</span>
+                      </div>
+                    </div>
+                    <p className={styles.commentText}>{c.content}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <h2 className={styles.commentsTitle}>
-            {isTR ? `Yorumlar (${comments.length})` : `Comments (${comments.length})`}
+            {isTR
+              ? `Yorumlar (${comments.length})`
+              : `Comments (${comments.length})`}
           </h2>
 
           {comments.map((c) => (

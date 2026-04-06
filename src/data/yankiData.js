@@ -9,6 +9,7 @@ export const POST_TYPES = [
   { id: "gunluk", label: { tr: "Günlük Akış", en: "Daily Flow" }, color: "#81c784", icon: "◯" },
   { id: "sesli", label: { tr: "Sesli Yankı", en: "Voice Echo" }, color: "#ce93d8", icon: "♪" },
   { id: "gorsel", label: { tr: "Görsel Yankı", en: "Visual Echo" }, color: "#4dd0e1", icon: "◻" },
+  { id: "frekans_alani", label: { tr: "Frekans Alanı", en: "Frequency field" }, color: "#5eb8ff", icon: "〰" },
 ];
 
 export function getPostTypeById(id) {

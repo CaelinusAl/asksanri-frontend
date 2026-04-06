@@ -4,7 +4,22 @@ import StatCard from "../../components/admin/StatCard";
 import styles from "./AdminDashboardPage.module.css";
 import adminStyles from "../../components/admin/AdminStyles.module.css";
 import { useAdmin } from "../../contexts/AdminContext";
-import { fetchDashboard, fetchMembership, fetchModerationStats, fetchVisitorStats } from "../../data/adminApi";
+import {
+  fetchDashboard,
+  fetchMembership,
+  fetchModerationStats,
+  fetchVisitorStats,
+  fetchAnalytics,
+  fetchFunnelStats,
+  fetchOkumaAllStats,
+} from "../../data/adminApi";
+import { OKUMA_POSTS } from "../../data/okumaData";
+import {
+  aggregateProductSurfaces,
+  pickTopOkumaPost,
+  buildSanriObservations,
+  formatRecentEventsForFeed,
+} from "../../data/adminOverviewEngine";
 import {
   getCtaEngineState,
   setCtaEngineState,
@@ -26,33 +41,6 @@ const MOCK_MEMBERSHIP = {
 const MOCK_MODERATION = {
   pending: 3,
 };
-
-const SANRI_INSIGHTS = [
-  {
-    tone: "hot",
-    text: "Bugün korku temalı içerikler diğer kategorilere göre 3 kat daha fazla yankı aldı. Kolektif bilinçte bir tetikleme var.",
-  },
-  {
-    tone: "top",
-    text: "\"1999 — Kapanmayan Frekans\" son 24 saatte 284 yeni görüntülenme aldı. Instagram'dan gelen trafik etkili çalışıyor.",
-  },
-  {
-    tone: "warn",
-    text: "Ritüel Alanı son 3 gündür düşük etkileşim alıyor. Bugünün ritüeli seçimi güncellenmemiş olabilir.",
-  },
-  {
-    tone: "convert",
-    text: "Premium'a geçen kullanıcıların %68'i önce Okuma Alanı'ndan geldi. İçerik hunisi çalışıyor — burayı besle.",
-  },
-  {
-    tone: "pattern",
-    text: "Gece 22:00–01:00 arası paylaşımlar en yüksek etkileşimi alıyor. Kullanıcılar geceleri daha derin yazıyor.",
-  },
-  {
-    tone: "user",
-    text: "Yeni kayıt olan kullanıcıların %42'si ilk 24 saat içinde hiç paylaşım yapmıyor. Onboarding akışı güçlendirilebilir.",
-  },
-];
 
 const CONTENT_OPPORTUNITIES = [
   {
@@ -364,15 +352,6 @@ const SUCCESS_PATTERNS = {
   formula: "MERAK TEMELİ İÇERİK + AÇIK UÇLU CTA + %60 KİLİT + GECE YAYINI = EN YÜKSEK DÖNÜŞÜM",
 };
 
-const MOCK_ACTIVITIES = [
-  { type: "register", text: "Yeni kullanıcı: deniz@mail.com", time: "2 dk önce" },
-  { type: "post", text: "Yeni yankı paylaşıldı", time: "5 dk önce" },
-  { type: "premium", text: "Premium aktivasyon: mira@mail.com", time: "12 dk önce" },
-  { type: "comment", text: "Yeni yorum: 1999 okumasına", time: "18 dk önce" },
-  { type: "ritual", text: "Ritüel tamamlandı: Kalp Yumuşatma", time: "25 dk önce" },
-  { type: "moderation", text: "Moderasyon bekliyor: 3 post", time: "1 sa önce" },
-];
-
 function pickNumber(obj, ...keys) {
   if (!obj || typeof obj !== "object") return undefined;
   for (const k of keys) {
@@ -478,7 +457,7 @@ export default function AdminDashboardPage() {
   const [dashboard, setDashboard] = useState(() => ({ ...MOCK_DASHBOARD }));
   const [membership, setMembership] = useState(() => ({ ...MOCK_MEMBERSHIP }));
   const [moderation, setModeration] = useState(() => ({ ...MOCK_MODERATION }));
-  const [activities, setActivities] = useState(() => [...MOCK_ACTIVITIES]);
+  const [activities, setActivities] = useState(() => []);
   const [expandedOpp, setExpandedOpp] = useState(null);
   const [expandedConv, setExpandedConv] = useState(null);
   const [ctaState, setCtaState] = useState(getCtaEngineState);
@@ -546,24 +525,42 @@ export default function AdminDashboardPage() {
   }, [navigate]);
 
   const [visitors, setVisitors] = useState(null);
+  const [dashRaw, setDashRaw] = useState(null);
+  const [funnel, setFunnel] = useState(null);
+  const [analyticsRaw, setAnalyticsRaw] = useState(null);
+  const [okumaStatsPayload, setOkumaStatsPayload] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
-      const dashResult = await fetchDashboard().catch(() => null);
-      const memResult = await fetchMembership().catch(() => null);
-      const modResult = await fetchModerationStats().catch(() => null);
-      const visitorResult = await fetchVisitorStats().catch(() => null);
+      const [dashResult, memResult, modResult, visitorResult, funResult, anResult, okResult] =
+        await Promise.all([
+          fetchDashboard().catch(() => null),
+          fetchMembership().catch(() => null),
+          fetchModerationStats().catch(() => null),
+          fetchVisitorStats().catch(() => null),
+          fetchFunnelStats(7).catch(() => null),
+          fetchAnalytics("7d").catch(() => null),
+          fetchOkumaAllStats().catch(() => null),
+        ]);
 
       if (cancelled) return;
 
       if (visitorResult != null) setVisitors(visitorResult);
+      if (funResult != null) setFunnel(funResult);
+      if (anResult != null) setAnalyticsRaw(anResult);
+      if (okResult?.stats && typeof okResult.stats === "object") setOkumaStatsPayload(okResult.stats);
 
       if (dashResult != null) {
+        setDashRaw(dashResult);
         setDashboard(normalizeDashboard(dashResult));
-        const fromApi = extractActivities(dashResult);
-        if (fromApi.length > 0) setActivities(fromApi);
+        const evFeed = formatRecentEventsForFeed(dashResult.recent_events);
+        if (evFeed.length > 0) setActivities(evFeed);
+        else {
+          const fromApi = extractActivities(dashResult);
+          setActivities(fromApi.length > 0 ? fromApi : []);
+        }
       }
 
       if (memResult != null) {
@@ -579,6 +576,17 @@ export default function AdminDashboardPage() {
       cancelled = true;
     };
   }, []);
+
+  const productSurfaces = aggregateProductSurfaces(visitors?.top_pages || []);
+  const okumaTop = pickTopOkumaPost(OKUMA_POSTS, okumaStatsPayload || {});
+  const sanriLines = buildSanriObservations({
+    dashboard: dashRaw,
+    visitors,
+    funnel,
+    analytics: analyticsRaw,
+    okumaTop,
+    modPending: moderation.pending,
+  });
 
   const totalUsers = dashboard.total_users ?? MOCK_DASHBOARD.total_users;
   const dailyActive = dashboard.daily_active ?? MOCK_DASHBOARD.daily_active;
@@ -680,41 +688,129 @@ export default function AdminDashboardPage() {
         </section>
       )}
 
-      <h2 className={adminStyles.sectionTitle}>En Çok</h2>
+      <section className={styles.productSection} aria-label="Ürün yüzeyleri">
+        <h2 className={adminStyles.sectionTitle}>SANRI ürün katmanları (7 gün · sayfa görüntülenme)</h2>
+        <p className={styles.realDataNote}>
+          Aşağıdaki dağılım, <code>page_views</code> üst 10 yolun ürün eşlemesinden türetilir; tek sayfa birden fazla
+          yüzeye düşmez (ilk eşleşen kazanır).
+        </p>
+        <div className={styles.productGrid}>
+          {productSurfaces.map((s) => (
+            <article key={s.id} className={styles.productTile}>
+              <div className={styles.productTileLabel}>{s.label}</div>
+              <div className={styles.productTileValue}>{s.views.toLocaleString("tr-TR")}</div>
+              <div className={styles.productTileHint}>{s.hint}</div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <h2 className={adminStyles.sectionTitle}>Öne çıkan metrikler (ölçülen)</h2>
       <div className={adminStyles.grid3}>
         <article className={styles.contentCard}>
-          <div className={styles.contentTitle}>En çok okunan</div>
-          <div className={styles.contentValue}>1284</div>
-          <div className={styles.contentSub}>1999 — Kapanmayan Frekans · görüntülenme</div>
+          <div className={styles.contentTitle}>Okuma — en çok görüntülenen</div>
+          <div className={styles.contentValue}>
+            {okumaTop?.views != null ? okumaTop.views.toLocaleString("tr-TR") : "—"}
+          </div>
+          <div className={styles.contentSub}>
+            {okumaTop?.title
+              ? `${okumaTop.title} · okuma_views`
+              : "okuma/all-stats veya içerik henüz veri üretmedi"}
+          </div>
         </article>
         <article className={styles.contentCard}>
-          <div className={styles.contentTitle}>En çok yankılanan</div>
-          <div className={styles.contentValue}>42</div>
-          <div className={styles.contentSub}>Bugün içimde bir sıkışma vardı · yankı</div>
+          <div className={styles.contentTitle}>Yankı — kolektif alan</div>
+          <div className={styles.contentValue}>
+            {(dashRaw?.yanki?.published ?? 0).toLocaleString("tr-TR")}
+          </div>
+          <div className={styles.contentSub}>
+            Yayında gönderi (DB) · Bekleyen moderasyon:{" "}
+            {(dashRaw?.yanki?.pending ?? pendingMod ?? 0).toLocaleString("tr-TR")}
+          </div>
         </article>
         <article className={styles.contentCard}>
-          <div className={styles.contentTitle}>En çok yapılan ritüel</div>
-          <div className={styles.contentValue}>156</div>
-          <div className={styles.contentSub}>47 Nefes · tamamlama</div>
+          <div className={styles.contentTitle}>Matrix Rol hunisi (7 gün)</div>
+          <div className={styles.contentValue}>
+            {funnel?.role_funnel?.page_view != null
+              ? funnel.role_funnel.page_view.toLocaleString("tr-TR")
+              : "—"}
+          </div>
+          <div className={styles.contentSub}>
+            Sayfa görüntüleme → tamamlanan ödeme:{" "}
+            {funnel?.role_funnel?.unlock_success != null
+              ? funnel.role_funnel.unlock_success.toLocaleString("tr-TR")
+              : "—"}{" "}
+            (funnel_events)
+          </div>
         </article>
       </div>
 
-      <h2 className={adminStyles.sectionTitle}>Sanrı Gözlemi</h2>
+      <h2 className={adminStyles.sectionTitle}>SANRI günlük gözlem</h2>
+      <p className={styles.realDataNote}>
+        Bu liste kurgu içermez: yalnızca dashboard, pageview, funnel ve okuma istatistiklerinden türetilmiş cümleler.
+      </p>
       <div className={styles.insightPanel}>
         <div className={styles.insightHeader}>
           <span className={styles.insightGlyph}>✦</span>
-          <span className={styles.insightLabel}>Platform Sezgisi</span>
+          <span className={styles.insightLabel}>Veriye bağlı özet</span>
         </div>
-        <ul className={styles.insightList}>
-          {SANRI_INSIGHTS.map((item, i) => (
-            <li key={i} className={styles.insightItem}>
-              <span className={`${styles.insightDot} ${styles[`insightDot_${item.tone}`] || ""}`} />
-              <span className={styles.insightText}>{item.text}</span>
-            </li>
-          ))}
-        </ul>
+        {sanriLines.length === 0 ? (
+          <p className={styles.insightEmpty}>
+            Henüz gösterilecek özet yok — API yanıtlarını veya events / page_views akışını kontrol edin.
+          </p>
+        ) : (
+          <ul className={styles.insightList}>
+            {sanriLines.map((item, i) => (
+              <li key={i} className={styles.insightItem}>
+                <span className={`${styles.insightDot} ${styles[`insightDot_${item.tone}`] || ""}`} />
+                <span className={styles.insightText}>{item.text}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
+      {funnel?.role_funnel && (
+        <section style={{ marginBottom: 24 }}>
+          <h2 className={adminStyles.sectionTitle}>Matrix Rol · huni adımları (7 gün, gerçek)</h2>
+          <div className={styles.funnelRealGrid}>
+            {[
+              ["Sayfa", funnel.role_funnel.page_view],
+              ["Form başlangıç", funnel.role_funnel.form_start],
+              ["Form gönderim", funnel.role_funnel.form_submit],
+              ["Ücretsiz sonuç", funnel.role_funnel.free_result],
+              ["Kilit görüntü", funnel.role_funnel.lock_view],
+              ["Kilit tık", funnel.role_funnel.unlock_click],
+              ["Shopier", funnel.role_funnel.shopier_redirect],
+              ["Başarı", funnel.role_funnel.unlock_success],
+            ].map(([label, n]) => (
+              <div key={label} className={styles.funnelRealCell}>
+                <span className={styles.funnelRealLabel}>{label}</span>
+                <span className={styles.funnelRealNum}>{Number(n || 0).toLocaleString("tr-TR")}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <details className={styles.scenarioDetails}>
+        <summary className={styles.scenarioSummary}>
+          <span className={styles.scenarioSummaryInner}>
+            <span className={styles.scenarioSummaryTitle}>Şablon ve senaryo alanı</span>
+            <span className={styles.scenarioSummaryHint}>
+              İçerik ve dönüşüm örnek panelleri — rakamlar canlı ölçüme bağlı değil; taslak yönlendirmeleri gerçek.
+            </span>
+          </span>
+        </summary>
+        <p className={styles.scenarioIntro}>
+          Bu alan <strong>ürün / editoryal iş akışı</strong> için hazırlanmış örnek metin ve kartlardır. Gerçek huni,
+          trafik ve özet için üstteki <em>SANRI ürün katmanları</em>, <em>Matrix Rol · huni adımları</em>,{" "}
+          <em>SANRI günlük gözlem</em> ve alttaki <em>Son aktiviteler</em> bölümlerini kullanın.
+        </p>
+
+        <div className={styles.scenarioZoneLabel} aria-hidden>
+          İçerik şablonları
+        </div>
       <h2 className={adminStyles.sectionTitle}>İçerik Fırsatları</h2>
       <div className={styles.opportunityPanel}>
         <div className={styles.opportunityHeader}>
@@ -801,6 +897,9 @@ export default function AdminDashboardPage() {
         </ul>
       </div>
 
+        <div className={styles.scenarioZoneLabel} aria-hidden>
+          Dönüşüm senaryoları
+        </div>
       <h2 className={adminStyles.sectionTitle}>Dönüşüm Analizi</h2>
       <div className={adminStyles.grid2}>
         {/* Premium Açtıran Postlar - Bar Chart */}
@@ -990,6 +1089,9 @@ export default function AdminDashboardPage() {
         </div>
       </div>
 
+        <div className={styles.scenarioZoneLabel} aria-hidden>
+          CTA ve paywall — yerel simülasyon
+        </div>
       {/* ── Auto CTA Engine ── */}
       <div className={styles.ctaPanel}>
         <div className={styles.ctaEngineHeader}>
@@ -1240,6 +1342,8 @@ export default function AdminDashboardPage() {
           <span className={styles.patternFormulaText}>{SUCCESS_PATTERNS.formula}</span>
         </div>
       </div>
+
+      </details>
 
       <h2 className={adminStyles.sectionTitle}>Son Aktiviteler</h2>
       <div className={`${styles.contentCard} ${styles.activitiesWrap}`}>

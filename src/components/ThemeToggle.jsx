@@ -1,9 +1,14 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
+import { isAdminPath } from "../utils/adminPath";
 
 export default function ThemeToggle() {
+  const { pathname } = useLocation();
   const { theme, toggle } = useTheme();
   const isLight = theme === "light";
+
+  if (isAdminPath(pathname)) return null;
 
   return (
     <button

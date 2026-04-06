@@ -1,6 +1,12 @@
 .shell {
   display: flex;
   min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  position: relative;
+  z-index: 20;
+  isolation: isolate;
+  color-scheme: dark;
   background: #0a0a12;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: #e0dce8;
@@ -117,6 +123,42 @@
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   border-left: 3px solid transparent;
   margin-left: 0;
+  position: relative;
+}
+
+.navLinkWithBadge {
+  padding-right: 36px;
+}
+
+.navBadge {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #e8556a, #c43d5a);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.navBadgeDot {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e8556a;
+  box-shadow: 0 0 0 2px #0e0e18;
 }
 
 .navLink:hover {
@@ -164,11 +206,11 @@
 }
 
 .main {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  min-height: 100vh;
+  min-height: 0;
 }
 
 .topbar {

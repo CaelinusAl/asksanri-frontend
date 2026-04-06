@@ -108,7 +108,7 @@ export default function YankiYeniPage() {
   return (
     <div className={styles.page}>
       <header className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate("/yanki-alani")}>
+        <button className={styles.backBtn} onClick={() => navigate("/yanki")}>
           ← {isTR ? "Akış" : "Feed"}
         </button>
         <h2 className={styles.pageTitle}>{isTR ? "Yeni Yankı" : "New Echo"}</h2>
@@ -166,14 +166,14 @@ export default function YankiYeniPage() {
             <div className={styles.postActions}>
               <button
                 className={styles.postActionBtn}
-                onClick={() => navigate(`/yanki-alani/${newPostId}`)}
+                onClick={() => navigate(`/yanki/post/${newPostId}`)}
               >
                 <span className={styles.postActionIcon}>💬</span>
                 <span>{isTR ? "Yorumları gör" : "See comments"}</span>
               </button>
               <button
                 className={`${styles.postActionBtn} ${styles.postActionSanri}`}
-                onClick={() => navigate(`/yanki-alani/${newPostId}?sanri=1`)}
+                onClick={() => navigate(`/yanki/post/${newPostId}?sanri=1`)}
               >
                 <span className={styles.postActionIcon}>✦</span>
                 <span>{isTR ? "Sanrı'ya taşı" : "Send to Sanri"}</span>

@@ -11,6 +11,14 @@ import {
   isShopierProductUnlocked,
   syncPurchasesFromServer,
 } from "../data/shopierConfig";
+import {
+  getUserNotesDoc,
+  putUserNotesDoc,
+  enqueuePendingAction,
+  mirrorShopierUnlockedToNomad,
+  listPurchasedContents,
+} from "../lib/offline/nomadData";
+import { useOfflineMesh } from "../contexts/OfflineMeshContext";
 import { getAllKatmanlar } from "../data/katmanEngine";
 import styles from "./BenimAlanimPage.module.css";
 
@@ -800,7 +808,25 @@ function Ogrendiklerim({ kodProgress, isTR, navigate }) {
    BENİM DEFTERİM
    ═══════════════════════════════════════════════ */
 
-function Defterim({ isTR, yankiPosts, navigate }) {
+function mergeNotesByLWW(localNotes, remoteNotes) {
+  const byId = new Map();
+  const touch = (n) => {
+    const t = n.updatedAt ?? (n.date ? new Date(n.date).getTime() : 0);
+    return { ...n, updatedAt: t };
+  };
+  for (const n of localNotes || []) {
+    const x = touch(n);
+    byId.set(x.id, x);
+  }
+  for (const n of remoteNotes || []) {
+    const x = touch(n);
+    const prev = byId.get(x.id);
+    if (!prev || x.updatedAt >= prev.updatedAt) byId.set(x.id, x);
+  }
+  return Array.from(byId.values()).sort((a, b) => b.updatedAt - a.updatedAt);
+}
+
+function Defterim({ isTR, yankiPosts, navigate, userKey }) {
   const TABS = [
     { id: "notlar", tr: "Notlarım", en: "My Notes" },
     { id: "kaydet", tr: "Kaydettiklerim", en: "Saved" },
@@ -814,18 +840,58 @@ function Defterim({ isTR, yankiPosts, navigate }) {
   const [newNote, setNewNote] = useState("");
   const allLessons = useMemo(() => getAllLessonsFlat(), []);
 
-  const addNote = () => {
-    if (!newNote.trim()) return;
-    const next = [{ id: Date.now(), text: newNote.trim(), date: new Date().toISOString() }, ...notes];
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const doc = await getUserNotesDoc(userKey);
+        if (cancelled || !doc?.notes?.length) return;
+        const local = loadJSON(NOTES_KEY, []);
+        const merged = mergeNotesByLWW(local, doc.notes);
+        const sig = (arr) =>
+          JSON.stringify((arr || []).map((x) => [x.id, x.text, x.updatedAt]));
+        if (sig(merged) !== sig(local)) {
+          setNotes(merged);
+          saveJSON(NOTES_KEY, merged);
+        }
+      } catch {
+        /* IndexedDB yok */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [userKey]);
+
+  const persistNotes = (next) => {
     setNotes(next);
     saveJSON(NOTES_KEY, next);
+    const now = Date.now();
+    putUserNotesDoc(userKey, { notes: next, updatedAt: now }).catch(() => {});
+    enqueuePendingAction({
+      type: "user_notes_sync",
+      payload: { notes: next, updatedAt: now },
+    }).catch(() => {});
+  };
+
+  const addNote = () => {
+    if (!newNote.trim()) return;
+    const next = [
+      {
+        id: Date.now(),
+        text: newNote.trim(),
+        date: new Date().toISOString(),
+        updatedAt: Date.now(),
+      },
+      ...notes,
+    ];
+    persistNotes(next);
     setNewNote("");
   };
 
-  const deleteNote = (id) => {
-    const next = notes.filter((n) => n.id !== id);
-    setNotes(next);
-    saveJSON(NOTES_KEY, next);
+  const deleteNote = (noteId) => {
+    const next = notes.filter((n) => n.id !== noteId);
+    persistNotes(next);
   };
 
   const questions = notes.filter((n) => n.text.includes("?"));
@@ -968,7 +1034,7 @@ function Defterim({ isTR, yankiPosts, navigate }) {
                   const suggested = suggestLesson(p.content, allLessons);
                   return (
                     <div key={p.id}>
-                      <div className={styles.yankiItem} onClick={() => navigate(`/yanki-alani/${p.id}`)}>
+                      <div className={styles.yankiItem} onClick={() => navigate(`/yanki/post/${p.id}`)}>
                         <div className={styles.yankiContent}>{p.content}</div>
                         <div className={styles.yankiMeta}>
                           <span>{p.category || "genel"}</span>
@@ -1213,14 +1279,63 @@ function PersonalDeliverablesSection({ isTR, accessRevision }) {
    ═══════════════════════════════════════════════ */
 
 function SatinAlinanAcilimlar({ isTR, navigate, accessRevision }) {
-  const unlockedItems = useMemo(() => {
-    const raw = getUnlockedItems();
-    return [...raw].sort((a, b) => {
-      const ta = a.at ? new Date(a.at).getTime() : 0;
-      const tb = b.at ? new Date(b.at).getTime() : 0;
-      return tb - ta;
-    });
+  const { online } = useOfflineMesh();
+  const [unlockedItems, setUnlockedItems] = useState(() => getUnlockedItems());
+
+  useEffect(() => {
+    let cancelled = false;
+    const fromLs = getUnlockedItems();
+    setUnlockedItems(fromLs);
+
+    (async () => {
+      let fromDb = [];
+      try {
+        fromDb = await listPurchasedContents();
+      } catch {
+        fromDb = [];
+      }
+      const map = new Map();
+      for (const row of fromDb) {
+        const id = String(row.contentId || row.id || "");
+        if (!id) continue;
+        const um = row.unlockMeta || {};
+        let at = um.at;
+        if (at == null && row.preview) {
+          const ts = Date.parse(row.preview);
+          if (!Number.isNaN(ts)) at = new Date(ts).toISOString();
+        }
+        if (at == null && row.updatedAt) at = new Date(row.updatedAt).toISOString();
+        map.set(id, {
+          id,
+          label: row.title || um.label || id,
+          at,
+        });
+      }
+      for (const item of fromLs) {
+        const existing = map.get(item.id);
+        if (!existing) map.set(item.id, { ...item });
+        else {
+          map.set(item.id, {
+            ...existing,
+            ...item,
+            label: item.label || existing.label,
+            at: item.at || existing.at,
+          });
+        }
+      }
+      const merged = [...map.values()].sort((a, b) => {
+        const ta = a.at ? new Date(a.at).getTime() : 0;
+        const tb = b.at ? new Date(b.at).getTime() : 0;
+        return tb - ta;
+      });
+      if (!cancelled) setUnlockedItems(merged);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [accessRevision]);
+
   const allKatmanlar = useMemo(() => getAllKatmanlar(), []);
 
   const CONTENT_MAP = {
@@ -1338,9 +1453,13 @@ function SatinAlinanAcilimlar({ isTR, navigate, accessRevision }) {
         </div>
       </div>
       <p className={styles.sectionKicker}>
-        {isTR
-          ? "Satın aldığın her ürün burada listelenir (yenilemede sunucudan güncellenir). Kod derslerin ve diğer ilerlemen Benim Alanım’da kayıtlıdır — aşağıdaki Öğrendiklerim, Kod haritam ve Defterim panelleriyle birlikte takip et."
-          : "Every purchase appears here (refreshed from the server on reload). Code lessons and other progress are saved in My Space — use My Learnings, My Code Map, and My Notebook below."}
+        {!online
+          ? isTR
+            ? "Çevrimdışısın — liste bu cihazdaki IndexedDB kaydından geliyor; bağlantı gelince sunucu ile eşitlenir."
+            : "You're offline — this list comes from IndexedDB on your device; it will sync when you're back online."
+          : isTR
+            ? "Satın aldığın her ürün burada listelenir (yenilemede sunucudan güncellenir). Çevrimdışıyken ek olarak cihaz önbelleği kullanılır. Kod derslerin ve diğer ilerlemen Benim Alanım’da kayıtlıdır."
+            : "Every purchase appears here (refreshed from the server on reload). While offline, your device cache is used too. Code lessons and other progress stay in My Space."}
       </p>
       <div className={styles.glass}>
         {unlockedItems.length > 0 ? (
@@ -1504,6 +1623,11 @@ export default function BenimAlanimPage() {
     };
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    mirrorShopierUnlockedToNomad(getUnlockedItems()).catch(() => {});
+  }, [isAuthenticated, shopierAccessRevision]);
+
   const handleAvatarSave = (id) => {
     setAvatarId(id);
     try { localStorage.setItem(AVATAR_KEY, id); } catch { /* noop */ }
@@ -1591,7 +1715,12 @@ export default function BenimAlanimPage() {
 
       <Ogrendiklerim kodProgress={kodProgress} isTR={isTR} navigate={navigate} />
 
-      <Defterim isTR={isTR} yankiPosts={yankiPosts} navigate={navigate} />
+      <Defterim
+        isTR={isTR}
+        yankiPosts={yankiPosts}
+        navigate={navigate}
+        userKey={String(user?.id ?? user?.email ?? "anon")}
+      />
 
       <Rozetler badgeData={badgeData} isTR={isTR} />
 

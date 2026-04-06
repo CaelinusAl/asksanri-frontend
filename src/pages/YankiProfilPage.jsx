@@ -166,7 +166,7 @@ export default function YankiProfilPage() {
   return (
     <div className={styles.page}>
       <header className={styles.topBar}>
-        <button className={styles.backBtn} onClick={() => navigate("/yanki-alani")}>
+        <button className={styles.backBtn} onClick={() => navigate("/yanki")}>
           ← {isTR ? "Akış" : "Feed"}
         </button>
       </header>
@@ -345,7 +345,7 @@ export default function YankiProfilPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: i * 0.04 }}
-                onClick={() => post.status === "published" ? navigate(`/yanki-alani/${post.id}`) : null}
+                onClick={() => post.status === "published" ? navigate(`/yanki/post/${post.id}`) : null}
                 style={post.status !== "published" ? { opacity: 0.55 } : {}}
               >
                 <div className={styles.cardTop}>

@@ -542,6 +542,53 @@
 }
 
 /* ── Comments ── */
+.readerEchoBlock {
+  margin-bottom: 28px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(200, 160, 255, 0.12);
+}
+.readerEchoHeading {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #e8e4f0;
+}
+.readerEchoLead {
+  margin: 0 0 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(200, 190, 220, 0.72);
+  max-width: 640px;
+}
+.readerEchoList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.readerEchoCard {
+  border-color: rgba(120, 247, 216, 0.18);
+  background: rgba(120, 247, 216, 0.04);
+}
+.readerEchoMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.readerEchoPill {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(120, 247, 216, 0.12);
+  color: rgba(140, 255, 220, 0.95);
+  border: 1px solid rgba(120, 247, 216, 0.25);
+}
+
 .commentsSection {
   margin-top: 40px;
 }

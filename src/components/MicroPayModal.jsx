@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePremium } from "../contexts/PremiumContext";
 import { useLanguage } from "../contexts/LanguageContext";
+import { isAdminPath } from "../utils/adminPath";
 import styles from "./MicroPayModal.module.css";
 
 const PRODUCT_KEY_MAP = {
@@ -20,6 +22,7 @@ const CONTENT_TYPE_FROM_MICRO = {
 };
 
 export default function MicroPayModal() {
+  const { pathname } = useLocation();
   const {
     microPayOpen,
     microPayContentId,
@@ -81,6 +84,8 @@ export default function MicroPayModal() {
     setError(null);
     setFreeSuccess(false);
   };
+
+  if (isAdminPath(pathname)) return null;
 
   return (
     <AnimatePresence>

@@ -5,6 +5,7 @@ import styles from "./RitualSessionPage.module.css";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 import { getRitualById, addRitualToHistory } from "../data/ritualData";
+import { putRitualState, enqueuePendingAction } from "../lib/offline/nomadData";
 
 const ENERGY_COLORS = {
   grounding: "#48BB78",
@@ -47,6 +48,7 @@ export default function RitualSessionPage() {
   const [moodSaved, setMoodSaved] = useState(false);
 
   const intervalRef = useRef(null);
+  const completionSyncedRef = useRef(false);
 
   const currentStep = steps[stepIndex] || null;
   const totalDuration = currentStep ? currentStep.duration : 1;
@@ -120,6 +122,7 @@ export default function RitualSessionPage() {
   }, [startTimer]);
 
   const handleRestart = useCallback(() => {
+    completionSyncedRef.current = false;
     clearTimer();
     setStepIndex(0);
     setSelectedMood(null);
@@ -148,6 +151,19 @@ export default function RitualSessionPage() {
     const fraction = elapsed / totalDuration;
     return RING_CIRCUMFERENCE * (1 - fraction);
   }, [remaining, totalDuration]);
+
+  useEffect(() => {
+    if (status !== "complete" || !ritual || completionSyncedRef.current) return;
+    completionSyncedRef.current = true;
+    const payload = {
+      ritualId: ritual.id,
+      completedAt: Date.now(),
+      mood: selectedMood ? (isTR ? selectedMood.tr : selectedMood.en) : null,
+      stepsTotal: steps.length,
+    };
+    putRitualState(ritual.id, payload).catch(() => {});
+    enqueuePendingAction({ type: "ritual_session_complete", payload }).catch(() => {});
+  }, [status, ritual, selectedMood, isTR, steps.length]);
 
   if (!ritual) {
     return (

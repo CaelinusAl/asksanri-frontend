@@ -121,14 +121,14 @@ export default function YankiShareLanding() {
 
   const handleCTA = () => {
     if (isAuthenticated) {
-      navigate(`/yanki-alani/${id}`);
+      navigate(`/yanki/post/${id}`);
     } else {
-      navigate(`/giris?redirect=/yanki-alani/${id}`);
+      navigate(`/giris?redirect=/yanki/post/${id}`);
     }
   };
 
   const handleExplore = () => {
-    navigate("/yanki-alani");
+    navigate("/yanki");
   };
 
   if (loading) {
@@ -229,8 +229,8 @@ export default function YankiShareLanding() {
           </button>
           {reflection && (
             <button className={styles.secondaryBtn} onClick={() => {
-              if (isAuthenticated) navigate(`/yanki-alani/${id}?sanri=1`);
-              else navigate(`/giris?redirect=/yanki-alani/${id}?sanri=1`);
+              if (isAuthenticated) navigate(`/yanki/post/${id}?sanri=1`);
+              else navigate(`/giris?redirect=/yanki/post/${id}?sanri=1`);
             }}>
               {isTR ? "✦ Sanrı'ya Sor" : "✦ Ask Sanri"}
             </button>

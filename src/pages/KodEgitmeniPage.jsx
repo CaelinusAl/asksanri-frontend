@@ -1129,7 +1129,7 @@ export default function KodEgitmeniPage() {
             {PRICE_CANLI_GIRIS_DERS} TL · Canlı giriş
           </Link>
           {view === "landing" && (
-            <button className={styles.backBtn} onClick={() => navigate("/")}>← Kapılar</button>
+            <button className={styles.backBtn} onClick={() => navigate("/kapilar")}>← Kapılar</button>
           )}
           {view === "modules" && (
             <button className={styles.backBtn} onClick={goLanding}>← Ana Sayfa</button>

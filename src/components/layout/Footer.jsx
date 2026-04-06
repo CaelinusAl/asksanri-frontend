@@ -54,7 +54,7 @@ export function Footer() {
 
         {/* Copyright */}
         <div style={copyrightStyle}>
-          © {new Date().getFullYear()} CaelinusAI • SANRI — Tüm hakları saklıdır.
+          © {new Date().getFullYear()} CaelinusAI • SANRI — Anlaşılma Alanı — Tüm hakları saklıdır.
         </div>
       </div>
     </footer>

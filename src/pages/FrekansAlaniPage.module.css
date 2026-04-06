@@ -39,12 +39,41 @@
 
 /* ── HERO ── */
 .hero { text-align: center; padding: 20px 0 8px; }
+.heroKicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(200, 190, 255, 0.45);
+  margin: 0 0 8px;
+}
+
 .h1 {
   font-size: 30px; font-weight: 300; letter-spacing: .12em;
   background: linear-gradient(135deg,#f0e0ff,#c8a0ff);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin: 0;
 }
+.cacheHint {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(180, 220, 255, 0.88);
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(167, 139, 250, 0.28);
+  max-width: 520px;
+}
+
+.cacheHintMuted {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(200, 190, 230, 0.55);
+  max-width: 520px;
+}
+
 .sub {
   font-size: 13px; color: rgba(200,180,230,.4); margin-top: 6px;
   letter-spacing: .04em;

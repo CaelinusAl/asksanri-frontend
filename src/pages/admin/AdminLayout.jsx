@@ -1,6 +1,7 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useAdmin } from "../../contexts/AdminContext";
+import { fetchAdminPendingSummary } from "../../data/adminApi";
 import styles from "./AdminLayout.module.css";
 
 const NAV_ITEMS = [
@@ -20,7 +21,7 @@ const NAV_ITEMS = [
   { to: "/admin/teslimatlar", icon: "✧", label: "Teslimatlar" },
   { to: "/admin/funnel", icon: "⊳", label: "Funnel" },
   { to: "/admin/billing", icon: "₺", label: "Billing" },
-  { to: "/admin/notifications", icon: "⊙", label: "Bildirimler" },
+  { to: "/admin/notifications", icon: "⊙", label: "Bildirimler", pendingBadge: true },
   { to: "/admin/system", icon: "⚙", label: "Sistem" },
 ];
 
@@ -29,6 +30,26 @@ export default function AdminLayout() {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [pendingOps, setPendingOps] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const tick = () => {
+      fetchAdminPendingSummary()
+        .then((d) => {
+          if (!cancelled) setPendingOps(Math.max(0, Number(d?.total ?? 0)));
+        })
+        .catch(() => {
+          if (!cancelled) setPendingOps(0);
+        });
+    };
+    tick();
+    const t = setInterval(tick, 60000);
+    return () => {
+      cancelled = true;
+      clearInterval(t);
+    };
+  }, []);
 
   const handleLogout = useCallback(() => {
     logout();
@@ -74,22 +95,40 @@ export default function AdminLayout() {
         </div>
 
         <nav className={styles.nav}>
-          {NAV_ITEMS.map(({ to, end, icon, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              onClick={closeMobile}
-              className={({ isActive }) =>
-                [styles.navLink, isActive ? styles.navLinkActive : ""].filter(Boolean).join(" ")
-              }
-            >
-              <span className={styles.navIcon} aria-hidden>
-                {icon}
-              </span>
-              <span className={styles.navLabel}>{label}</span>
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map(({ to, end, icon, label, pendingBadge }) => {
+            const showPending = pendingBadge && pendingOps > 0;
+            return (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                onClick={closeMobile}
+                className={({ isActive }) =>
+                  [
+                    styles.navLink,
+                    isActive ? styles.navLinkActive : "",
+                    showPending ? styles.navLinkWithBadge : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")
+                }
+              >
+                <span className={styles.navIcon} aria-hidden>
+                  {icon}
+                </span>
+                <span className={styles.navLabel}>{label}</span>
+                {showPending ? (
+                  <span
+                    className={collapsed ? styles.navBadgeDot : styles.navBadge}
+                    title={`${pendingOps} bekleyen iş`}
+                    aria-label={`${pendingOps} bekleyen iş`}
+                  >
+                    {!collapsed ? (pendingOps > 99 ? "99+" : pendingOps) : ""}
+                  </span>
+                ) : null}
+              </NavLink>
+            );
+          })}
         </nav>
       </aside>
 

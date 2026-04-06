@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getDeviceFingerprint } from "../data/shopierConfig";
 import { trackLead } from "../data/analytics";
+import { isAdminPath } from "../utils/adminPath";
 
 const API =
   (import.meta?.env?.VITE_BACKEND_URL &&
@@ -21,6 +23,7 @@ function shouldShow() {
 }
 
 export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
@@ -28,6 +31,7 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
   const shownRef = useRef(false);
 
   useEffect(() => {
+    if (isAdminPath(pathname)) return;
     if (shownRef.current || !shouldShow()) return;
 
     if (trigger === "timer") {
@@ -49,7 +53,7 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
       window.addEventListener("scroll", handler, { passive: true });
       return () => window.removeEventListener("scroll", handler);
     }
-  }, [trigger]);
+  }, [trigger, pathname]);
 
   const handleSubmit = async () => {
     setFieldError("");
@@ -104,6 +108,8 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
     try { localStorage.setItem(DISMISS_KEY, String(Date.now())); } catch {}
     setOpen(false);
   };
+
+  if (isAdminPath(pathname)) return null;
 
   return (
     <AnimatePresence>

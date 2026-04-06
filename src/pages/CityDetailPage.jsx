@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, MapPin, Sparkles, Compass, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../components/ui/button";
@@ -7,6 +8,7 @@ import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
 import { getCitiesByLanguage, getCityById } from "../data/cities";
 import { useLanguage } from "../contexts/LanguageContext";
+import { putCityContentCache } from "../lib/offline/nomadData";
   
   const safeArray = (v) => (Array.isArray(v) ? v : []);
   const CityDetailPage = () => {
@@ -15,6 +17,41 @@ import { useLanguage } from "../contexts/LanguageContext";
   
   const city = getCityById(cityId, language);
   const allCities = getCitiesByLanguage(language);
+
+  useEffect(() => {
+    if (!city) return;
+    const r =
+      language === "en"
+        ? [
+            `${city.name} speaks with the symbol of ${city.symbol}. This symbol is the carrier of the ${city.element} element in collective memory.`,
+            `${city.description} Walking on these lands is building a bridge between past and present.`,
+            `Number ${city.id} is the spiritual coordinate of this city. Each number is a gate, each gate a remembrance.`,
+          ]
+        : [
+            `${city.name}, ${city.symbol} sembolüyle konuşur. Bu sembol, kolektif hafızada ${city.element} elementinin taşıyıcısıdır.`,
+            `${city.description} Bu topraklarda yürümek, geçmişle şimdi arasında bir köprü kurmaktır.`,
+            `Sayı ${city.id}, bu şehrin ruhani koordinatıdır. Her sayı bir kapı, her kapı bir hatırlamadır.`,
+          ];
+    putCityContentCache(String(city.id), {
+      title: city.name,
+      language,
+      readings: r,
+      city: {
+        id: city.id,
+        name: city.name,
+        element: city.element,
+        symbol: city.symbol,
+        description: city.description,
+      },
+    }).catch(() => {});
+  }, [
+    city?.id,
+    city?.name,
+    city?.element,
+    city?.symbol,
+    city?.description,
+    language,
+  ]);
   
   if (!city) {
     return (
@@ -38,23 +75,18 @@ import { useLanguage } from "../contexts/LanguageContext";
   const nextCity = city.id < 81 ? allCities.find(c => c.id === city.id + 1) : null;
   const relatedCities = allCities.filter(c => c.element === city.element && c.id !== city.id).slice(0, 4);
 
-  // Generate symbolic reading based on city and language
-  const generateReading = (city, lang) => {
-    if (lang === 'en') {
-      return [
-        `${city.name} speaks with the symbol of ${city.symbol}. This symbol is the carrier of the ${city.element} element in collective memory.`,
-        `${city.description} Walking on these lands is building a bridge between past and present.`,
-        `Number ${city.id} is the spiritual coordinate of this city. Each number is a gate, each gate a remembrance.`
-      ];
-    }
-    return [
-      `${city.name}, ${city.symbol} sembolüyle konuşur. Bu sembol, kolektif hafızada ${city.element} elementinin taşıyıcısıdır.`,
-      `${city.description} Bu topraklarda yürümek, geçmişle şimdi arasında bir köprü kurmaktır.`,
-      `Sayı ${city.id}, bu şehrin ruhani koordinatıdır. Her sayı bir kapı, her kapı bir hatırlamadır.`
-    ];
-  };
-
-  const readings = generateReading(city, language);
+  const readings =
+    language === "en"
+      ? [
+          `${city.name} speaks with the symbol of ${city.symbol}. This symbol is the carrier of the ${city.element} element in collective memory.`,
+          `${city.description} Walking on these lands is building a bridge between past and present.`,
+          `Number ${city.id} is the spiritual coordinate of this city. Each number is a gate, each gate a remembrance.`,
+        ]
+      : [
+          `${city.name}, ${city.symbol} sembolüyle konuşur. Bu sembol, kolektif hafızada ${city.element} elementinin taşıyıcısıdır.`,
+          `${city.description} Bu topraklarda yürümek, geçmişle şimdi arasında bir köprü kurmaktır.`,
+          `Sayı ${city.id}, bu şehrin ruhani koordinatıdır. Her sayı bir kapı, her kapı bir hatırlamadır.`,
+        ];
 
   return (
     <div className="min-h-screen pt-24 pb-16">

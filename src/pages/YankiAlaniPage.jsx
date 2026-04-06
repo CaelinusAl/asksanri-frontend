@@ -1,14 +1,29 @@
 import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useAuth } from "../contexts/AuthContext";
 import { POST_TYPES, getPostTypeById, timeAgo } from "../data/yankiData";
-import { fetchPosts, fetchFeaturedPost, reactToPost, fetchMyReactions, askSanriReflection, addComment, reportPost, isLoggedIn, fetchNotifications, markAllNotificationsRead, markNotificationRead } from "../data/yankiApi";
+import {
+  fetchPosts,
+  fetchFieldStream,
+  fetchFeaturedPost,
+  reactToPost,
+  fetchMyReactions,
+  askSanriReflection,
+  addComment,
+  reportPost,
+  isLoggedIn,
+  fetchNotifications,
+  markAllNotificationsRead,
+  markNotificationRead,
+} from "../data/yankiApi";
 import SEED_POSTS from "../data/seedYankilar";
 import { getDailyQuestion } from "../data/dailyQuestions";
 import SanriSharePanel from "../components/SanriSharePanel";
 import styles from "./YankiAlaniPage.module.css";
+
+const VALID_YANKI_TABS = ["akis", "hisset", "gunluk", "sanri"];
 
 const REPORT_REASONS = [
   { id: "spam", label: { tr: "Spam / Reklam", en: "Spam / Advertising" } },
@@ -36,9 +51,12 @@ function parseStructuredReflection(text) {
 
 const TABS = [
   { id: "akis", label: { tr: "Akış", en: "Feed" } },
+  { id: "hisset", label: { tr: "Hissel akış", en: "Felt stream" } },
   { id: "gunluk", label: { tr: "Günlük Akış", en: "Daily Flow" } },
   { id: "sanri", label: { tr: "Sanrı Seçkisi", en: "Sanri Curated" } },
 ];
+
+const FIELD_HZ = [396, 417, 528, 639, 741, 852, 963];
 
 const DEEPEN_QUESTIONS = {
   duygu: {
@@ -73,6 +91,10 @@ const DEEPEN_QUESTIONS = {
     tr: "Bu paylaşımın altında ne yatıyor?",
     en: "What lies beneath this sharing?",
   },
+  frekans_alani: {
+    tr: "Bu frekansta ne yankılanıyor?",
+    en: "What resonates at this frequency?",
+  },
 };
 
 function normalizePost(p) {
@@ -93,6 +115,10 @@ function normalizePost(p) {
     comment_count: p.comment_count ?? p.commentCount ?? 0,
     created_at: p.created_at || p.createdAt || null,
     published_at: p.published_at || p.publishedAt || null,
+    frequency_hz: p.frequency_hz ?? null,
+    energy_feel: p.energy_feel ?? null,
+    post_source: p.post_source || "classic",
+    field_echo_count: p.field_echo_count ?? 0,
   };
 }
 
@@ -124,13 +150,17 @@ export default function YankiAlaniPage() {
   const { user } = useAuth();
   const isTR = language === "tr";
 
-  const initialTab = params.get("tab") || "akis";
+  const tabParam = params.get("tab") || "akis";
+  const initialTab = VALID_YANKI_TABS.includes(tabParam) ? tabParam : "akis";
   const [activeTab, setActiveTab] = useState(initialTab);
   const [activeType, setActiveType] = useState("all");
+  const [fieldHzFilter, setFieldHzFilter] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
+  /** Anlaşılma → Dinle → Yankı taşıması (location.state) */
+  const [anlasilmaCarryover, setAnlasilmaCarryover] = useState(null);
 
   // Saved posts (client-side only)
   const SAVED_KEY = "sanri_yanki_saved";
@@ -143,21 +173,56 @@ export default function YankiAlaniPage() {
     setLoading(true);
     setError(null);
     try {
-      const section = activeTab === "sanri" ? "curated" : activeTab === "gunluk" ? null : null;
-      const category = activeTab === "akis" && activeType !== "all" ? activeType : null;
-      const data = await fetchPosts({ category, section, limit: 40 });
-      setPosts((data.posts || []).map(normalizePost));
+      if (activeTab === "hisset") {
+        const data = await fetchFieldStream({
+          frequencyHz: fieldHzFilter ?? undefined,
+          limit: 24,
+          offset: 0,
+        });
+        setPosts((data.posts || []).map(normalizePost));
+      } else {
+        const section = activeTab === "sanri" ? "curated" : activeTab === "gunluk" ? null : null;
+        const category = activeTab === "akis" && activeType !== "all" ? activeType : null;
+        const data = await fetchPosts({ category, section, limit: 40 });
+        setPosts((data.posts || []).map(normalizePost));
+      }
     } catch (err) {
       console.error("[YankiAlani] load error:", err);
       setError(isTR ? "Yüklenirken bir hata oluştu." : "Failed to load posts.");
       setPosts([]);
     }
     setLoading(false);
-  }, [activeType, activeTab, isTR]);
+  }, [activeType, activeTab, fieldHzFilter, isTR]);
 
   useEffect(() => { loadPosts(); }, [loadPosts]);
 
+  useEffect(() => {
+    const st = location.state;
+    if (!st?.fromAnlasilma) return;
+    setActiveTab("hisset");
+    if (typeof st.anlasilmaHz === "number" && FIELD_HZ.includes(st.anlasilmaHz)) {
+      setFieldHzFilter(st.anlasilmaHz);
+    }
+    setAnlasilmaCarryover({
+      enter: st.anlasilmaEnter ?? null,
+      engine: st.anlasilmaEngine ?? null,
+      intent: typeof st.anlasilmaIntent === "string" ? st.anlasilmaIntent : "",
+      hz: st.anlasilmaHz,
+    });
+    navigate({ pathname: "/yanki", search: "?tab=hisset" }, { replace: true, state: {} });
+  }, [location.state, navigate]);
+
+  useEffect(() => {
+    const t = params.get("tab") || "akis";
+    if (t === "anlasilma") {
+      navigate("/", { replace: true });
+      return;
+    }
+    if (VALID_YANKI_TABS.includes(t)) setActiveTab(t);
+  }, [params, navigate]);
+
   const displayPosts = useMemo(() => {
+    if (activeTab === "hisset") return posts;
     let real = posts;
     if (activeTab === "gunluk") {
       real = posts.filter((p) => p.category === "gunluk_akis" || p.category === "gunluk");
@@ -220,7 +285,7 @@ export default function YankiAlaniPage() {
     }
     if (n.post_id) {
       setNotifOpen(false);
-      navigate(`/yanki-alani/${n.post_id}`);
+      navigate(`/yanki/post/${n.post_id}`);
     }
   };
 
@@ -229,6 +294,7 @@ export default function YankiAlaniPage() {
   const [popAnim, setPopAnim] = useState(null);
 
   useEffect(() => {
+    if (activeTab === "hisset") return;
     if (!isLoggedIn() || posts.length === 0) return;
     const realIds = posts.filter((p) => !p.isSeed).map((p) => p.id);
     if (realIds.length === 0) return;
@@ -241,7 +307,7 @@ export default function YankiAlaniPage() {
         setMyReactions(map);
       })
       .catch(() => {});
-  }, [posts]);
+  }, [posts, activeTab]);
 
   const handleReact = async (e, postId, type) => {
     e.stopPropagation();
@@ -412,7 +478,7 @@ export default function YankiAlaniPage() {
       {/* Back + brand + notifications + profile */}
       <header className={styles.topBar}>
         <button className={styles.backBtn} onClick={() => navigate("/")}>
-          ← {isTR ? "Kapılar" : "Gates"}
+          ← {isTR ? "Anlaşılma" : "Understanding"}
         </button>
         <div className={styles.topBarRight}>
           {isLoggedIn() && (
@@ -455,35 +521,46 @@ export default function YankiAlaniPage() {
             </div>
           )}
           {isLoggedIn() && (
-            <button className={styles.profileBtn} onClick={() => navigate("/yanki-alani/profil/me")}>
+            <button className={styles.profileBtn} onClick={() => navigate("/yanki/profil/me")}>
               👤
             </button>
           )}
         </div>
       </header>
 
-      {/* Hero */}
-      <motion.section
-        className={styles.hero}
-        initial={{ opacity: 0, y: -20 }}
+      {/* Başlık + enerji haritası (frekans katmanı) */}
+      <motion.div
+        className={styles.heroBand}
+        initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.5 }}
       >
-        <h1 className={styles.heroTitle}>{isTR ? "Yankı Alanı" : "Echo Field"}</h1>
-        <p className={styles.heroSub}>
-          {isTR
-            ? "Kolektif bilinç akışı — paylaş, yankıla, dinle"
-            : "Collective consciousness stream — share, echo, listen"}
-        </p>
-      </motion.section>
+        <p className={styles.heroKicker}>{isTR ? "Anlaşılma Alanı · alt modül" : "Understanding · submodule"}</p>
+        <h1 className={styles.heroTitle}>{isTR ? "Yankı" : "Echo"}</h1>
+      </motion.div>
+
+      <motion.p
+        className={styles.heroSub}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.15 }}
+      >
+        {activeTab === "hisset"
+          ? (isTR
+            ? "Frekansla süzülen hisler — acele yok, isim yok. Niyetini önce Anlaşılma’da işle."
+            : "Feelings filtered by frequency — slow, nameless. Process intent in Understanding first.")
+          : (isTR
+            ? "Kolektif akış — paylaş, yankıla, dinle."
+            : "Collective stream — share, echo, listen.")}
+      </motion.p>
 
       {/* Daily question */}
-      {(() => {
+      {activeTab !== "hisset" && (() => {
         const dq = getDailyQuestion();
         return (
           <div
             className={styles.dailyQ}
-            onClick={() => navigate("/yanki-alani/yeni")}
+            onClick={() => navigate("/yanki/yeni")}
           >
             <span className={styles.dailyQLabel}>{isTR ? "BUGÜNÜN SORUSU" : "TODAY'S QUESTION"}</span>
             <p className={styles.dailyQText}>{isTR ? dq.tr : dq.en}</p>
@@ -498,12 +575,43 @@ export default function YankiAlaniPage() {
           <button
             key={tab.id}
             className={`${styles.tab} ${activeTab === tab.id ? styles.tabActive : ""}`}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              setActiveTab(tab.id);
+              navigate({ pathname: "/yanki", search: `?tab=${tab.id}` }, { replace: true });
+            }}
           >
             {isTR ? tab.label.tr : tab.label.en}
           </button>
         ))}
       </nav>
+
+      {anlasilmaCarryover && (anlasilmaCarryover.enter || anlasilmaCarryover.engine) && (
+        <div className={styles.anlasilmaCarryover}>
+          <button
+            type="button"
+            className={styles.anlasilmaCarryoverClose}
+            aria-label={isTR ? "Kapat" : "Dismiss"}
+            onClick={() => setAnlasilmaCarryover(null)}
+          >
+            ×
+          </button>
+          <p className={styles.acKicker}>{isTR ? "Anlaşılma" : "Understanding"}</p>
+          {typeof anlasilmaCarryover.hz === "number" && (
+            <p className={styles.acHz}>{anlasilmaCarryover.hz} Hz</p>
+          )}
+          {anlasilmaCarryover.enter?.how_i_hear_you && (
+            <p className={styles.acBody}>{anlasilmaCarryover.enter.how_i_hear_you}</p>
+          )}
+          {anlasilmaCarryover.enter?.reflection && (
+            <p className={styles.acReflect}>{anlasilmaCarryover.enter.reflection}</p>
+          )}
+          <p className={styles.acHint}>
+            {isTR
+              ? "Bu hissi yalnız yaşamıyorsun. İstersen aşağıdaki akışta yankıla veya Yankıya bırak."
+              : "You're not alone in this. Echo below or release into the stream."}
+          </p>
+        </div>
+      )}
 
       {/* Category filter (only on main feed) */}
       {activeTab === "akis" && (
@@ -542,7 +650,7 @@ export default function YankiAlaniPage() {
             </div>
             <article
               className={styles.featuredCard}
-              onClick={() => navigate(`/yanki-alani/${featuredPost.id}`)}
+              onClick={() => navigate(`/yanki/post/${featuredPost.id}`)}
             >
               <div className={styles.featuredHeader}>
                 <span className={styles.featuredAvatar} style={{ background: fpt.color + "33", color: fpt.color }}>
@@ -589,15 +697,78 @@ export default function YankiAlaniPage() {
         {/* Error */}
         {error && !loading && (
           <div className={styles.errorWrap}>
-            <p className={styles.errorText}>{error}</p>
-            <button className={styles.retryBtn} onClick={loadPosts}>
-              {isTR ? "Tekrar Dene" : "Retry"}
+            <p className={styles.errorText}>
+              {isTR ? "Akış şu an sessiz — frekans alanında çakra dengelemesiyle devam edebilirsin." : "The stream is quiet — continue with chakra balancing in the frequency field."}
+            </p>
+            <button className={styles.retryBtn} onClick={() => navigate("/frekans")}>
+              {isTR ? "Frekans Alanına Bağlan" : "Enter Frequency Field"}
             </button>
           </div>
         )}
 
-        {/* ── Günlük Akış: time-grouped telegram-style ── */}
-        {!loading && !error && activeTab === "gunluk" ? (
+        {!loading && !error && activeTab === "hisset" ? (
+          <div className={styles.fieldFlow}>
+            <p className={styles.fieldIntro}>
+              {isTR
+                ? "Önce Anlaşılma Alanında niyetini işle; istersen buraya düşür. Yorum yok — sadece kısa yankılar."
+                : "Process your intent in the Understanding Field; drop it here if you choose. No comments — only brief echoes."}
+            </p>
+            <Link className={styles.fieldLink} to="/">
+              {isTR ? "Anlaşılma Alanına dön →" : "Back to Understanding →"}
+            </Link>
+            <div className={styles.fieldHzRow}>
+              <button
+                type="button"
+                className={`${styles.fieldHzChip} ${fieldHzFilter === null ? styles.fieldHzChipOn : ""}`}
+                onClick={() => setFieldHzFilter(null)}
+              >
+                {isTR ? "Tüm frekanslar" : "All frequencies"}
+              </button>
+              {FIELD_HZ.map((hz) => (
+                <button
+                  key={hz}
+                  type="button"
+                  className={`${styles.fieldHzChip} ${fieldHzFilter === hz ? styles.fieldHzChipOn : ""}`}
+                  onClick={() => setFieldHzFilter(hz)}
+                >
+                  {hz} Hz
+                </button>
+              ))}
+            </div>
+            {displayPosts.length === 0 ? (
+              <p className={styles.empty}>
+                {isTR
+                  ? "Bu süzgeçte henüz yankı yok. Sessizlik de bir cevap — ya da Anlaşılma'dan bir niyet bırak."
+                  : "No echoes in this filter yet. Silence is an answer too — or leave an intent from Understanding."}
+              </p>
+            ) : (
+              <div className={styles.fieldCardList}>
+                {displayPosts.map((post, i) => (
+                  <motion.article
+                    key={post.id}
+                    className={styles.fieldCard}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: Math.min(i * 0.06, 0.9) }}
+                    onClick={() => navigate(`/yanki/post/${post.id}`)}
+                  >
+                    <div className={styles.fieldCardTop}>
+                      <span className={styles.fieldHzBadge}>{post.frequency_hz} Hz</span>
+                      <span className={styles.fieldTime}>{timeAgo(post.created_at, isTR)}</span>
+                    </div>
+                    {post.energy_feel && (
+                      <p className={styles.fieldEnergy}>✦ {post.energy_feel}</p>
+                    )}
+                    <p className={styles.fieldBody}>{post.content}</p>
+                    <span className={styles.fieldEchoMeta}>
+                      {isTR ? "Yankı:" : "Echoes:"} {post.field_echo_count ?? 0}
+                    </span>
+                  </motion.article>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : !loading && !error && activeTab === "gunluk" ? (
           <div className={styles.dailyFeed}>
             {Object.keys(dailyGroups).length === 0 && (
               <p className={styles.empty}>{isTR ? "Henüz günlük akış yok..." : "No daily flow yet..."}</p>
@@ -624,7 +795,7 @@ export default function YankiAlaniPage() {
                         </span>
                         <span className={styles.dailyTime}>{timeAgo(post.created_at, isTR)}</span>
                       </div>
-                      <p className={styles.dailyContent} onClick={() => navigate(`/yanki-alani/${post.id}`)}>
+                      <p className={styles.dailyContent} onClick={() => navigate(`/yanki/post/${post.id}`)}>
                         {post.content}
                       </p>
                       <div className={styles.dailyActions}>
@@ -703,7 +874,7 @@ export default function YankiAlaniPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.35, delay: i * 0.04 }}
-                    onClick={() => !post.is_seed && navigate(`/yanki-alani/${post.id}`)}
+                    onClick={() => !post.is_seed && navigate(`/yanki/post/${post.id}`)}
                     style={post.is_seed ? { cursor: "default" } : undefined}
                   >
                     {post.is_seed && (
@@ -722,7 +893,7 @@ export default function YankiAlaniPage() {
                         {post.author_mode !== "anonymous" && post.author_id ? (
                           <button
                             className={styles.authorLink}
-                            onClick={(e) => { e.stopPropagation(); navigate(`/yanki-alani/profil/${post.author_id}`); }}
+                            onClick={(e) => { e.stopPropagation(); navigate(`/yanki/profil/${post.author_id}`); }}
                           >
                             {post.author_name || (isTR ? "Anonim" : "Anonymous")}
                           </button>
@@ -828,7 +999,7 @@ export default function YankiAlaniPage() {
                             </button>
                           );
                         })}
-                        <button className={styles.action} onClick={(e) => { e.stopPropagation(); navigate(`/yanki-alani/${post.id}`); }}>
+                        <button className={styles.action} onClick={(e) => { e.stopPropagation(); navigate(`/yanki/post/${post.id}`); }}>
                           💬 {post.comment_count}
                         </button>
                         <button
@@ -946,7 +1117,7 @@ export default function YankiAlaniPage() {
         className={styles.fab}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        onClick={() => navigate("/yanki-alani/yeni")}
+        onClick={() => navigate("/yanki/yeni")}
         aria-label={isTR ? "Yeni Paylaşım" : "New Post"}
       >
         +

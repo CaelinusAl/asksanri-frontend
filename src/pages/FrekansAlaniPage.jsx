@@ -1,11 +1,18 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import TurkiyeEnerjiHaritasi from "../components/enerji/TurkiyeEnerjiHaritasi";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./FrekansAlaniPage.module.css";
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
 import { chakraData } from "../data/chakraData";
+import {
+  putFrequencyFieldCache,
+  getLatestFrequencyChakraSnapshot,
+  mergeChakraSnapshotWithBundle,
+} from "../lib/offline/nomadData";
+import { useOfflineMesh } from "../contexts/OfflineMeshContext";
 
 const DURATIONS = [
   { label: "1 dk", seconds: 60 },
@@ -330,13 +337,42 @@ export default function FrekansAlaniPage() {
   const navigate = useNavigate();
   const { language, setLanguage } = useLanguage();
   const isTR = language === "tr";
+  const { online } = useOfflineMesh();
 
-  const [activeChakra, setActiveChakra] = useState(chakraData[0]);
+  const [activeChakra, setActiveChakra] = useState(() => chakraData[0]);
   const [sessionDone, setSessionDone] = useState(false);
+  const [restoredFromCache, setRestoredFromCache] = useState(false);
+
+  /* Cache-first: son seçilen çakra IndexedDB’den (bundle ile birleştir). */
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const snap = await getLatestFrequencyChakraSnapshot();
+        if (cancelled || !snap) return;
+        const merged = mergeChakraSnapshotWithBundle(snap, chakraData);
+        if (merged) {
+          setActiveChakra(merged);
+          setRestoredFromCache(true);
+        }
+      } catch {
+        /* IDB yok */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    putFrequencyFieldCache(activeChakra).catch(() => {});
+  }, [activeChakra]);
+
+  const [mapHz, setMapHz] = useState(417);
 
   const goBack = () => {
     unlockAudio();
-    navigate("/", { state: { skipIntro: true } });
+    navigate("/");
   };
 
   const handleChakraSelect = (ch) => {
@@ -355,7 +391,7 @@ export default function FrekansAlaniPage() {
         </div>
         <div className={styles.topbarRight}>
           <button type="button" className={styles.backBtn} onClick={goBack}>
-            {isTR ? "← Kapılara Dön" : "← Back to Gates"}
+            {isTR ? "← Anlaşılma Alanı" : "← Understanding"}
           </button>
           <button
             type="button"
@@ -370,13 +406,35 @@ export default function FrekansAlaniPage() {
       {/* CONTENT */}
       <div className={styles.shell}>
         <div className={styles.hero}>
+          <p className={styles.heroKicker}>{isTR ? "Anlaşılma Alanı · Frekans" : "Understanding · Frequency"}</p>
           <h1 className={styles.h1}>{isTR ? "Frekans Alanı" : "Frequency Field"}</h1>
           <p className={styles.sub}>
             {isTR
-              ? "Bir çakra seç. Frekansını hisset. Nefesle akışa gir."
-              : "Choose a chakra. Feel its frequency. Enter the flow with breath."}
+              ? "Türkiye enerji haritası ile Hz seçebilir; çakra ve nefesle bedende çalışabilirsin."
+              : "Pick Hz on the Turkey energy map; practice with chakras and breath in the body."}
           </p>
+          {!online && restoredFromCache ? (
+            <p className={styles.cacheHint} role="status">
+              {isTR
+                ? "Son kullandığın çakra cihazından yüklendi — internet olmadan da frekans alanı çalışır."
+                : "Your last chakra was loaded from this device — the frequency field works offline."}
+            </p>
+          ) : null}
+          {online && restoredFromCache ? (
+            <p className={styles.cacheHintMuted} role="status">
+              {isTR
+                ? "Son seçimin hatırlandı; ağa bağlıyken güncel veriyle devam edebilirsin."
+                : "Your last selection was restored; online, data stays in sync as you explore."}
+            </p>
+          ) : null}
         </div>
+
+        <TurkiyeEnerjiHaritasi
+          selectedHz={mapHz}
+          onHzChange={setMapHz}
+          isTR={isTR}
+          onProvinceSelect={(id) => navigate(`/sehir/${id}`)}
+        />
 
         <ChakraSelector active={activeChakra} onSelect={handleChakraSelect} />
 

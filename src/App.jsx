@@ -18,8 +18,11 @@ import YankiPostDetail from "./pages/YankiPostDetail";
 import YankiYeniPage from "./pages/YankiYeniPage";
 import YankiProfilPage from "./pages/YankiProfilPage";
 import YankiShareLanding from "./pages/YankiShareLanding";
+import AnlasilmaShell from "./pages/AnlasilmaShell";
+import AnlasilmaHomePage from "./pages/AnlasilmaHomePage";
 import OkumaAlaniPage from "./pages/OkumaAlaniPage";
 import OkumaDetayPage from "./pages/OkumaDetayPage";
+import SanriMeshPage from "./pages/SanriMeshPage";
 
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminGuard from "./components/admin/AdminGuard";
@@ -55,6 +58,8 @@ import { HakkimizdaPage, GizlilikPolitikasiPage, MesafeliSatisPage, IadeKosullar
 import KodEgitmeniPage from "./pages/KodEgitmeniPage";
 import KodGirisDersPage from "./pages/KodGirisDersPage";
 import BenimAlanimPage from "./pages/BenimAlanimPage";
+import CitiesPage from "./pages/CitiesPage";
+import CityDetailPage from "./pages/CityDetailPage";
 import ErrorBoundary from "./components/ErrorBoundary";
 import RolOkumaPage from "./pages/RolOkumaPage";
 import AnKodPage from "./pages/AnKodPage";
@@ -113,7 +118,64 @@ export default function App() {
     <PendingPurchaseRecovery />
     <EmailCaptureModal trigger="timer" page="global" />
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      {/* Sanrı = Anlaşılma Alanı — ana kabuk */}
+      <Route path="/" element={<AnlasilmaShell />}>
+        <Route index element={<AnlasilmaHomePage />} />
+        <Route path="frekans" element={<FrekansAlaniPage />} />
+        <Route path="yanki/yeni" element={<YankiYeniPage />} />
+        <Route path="yanki/profil/:userId" element={<YankiProfilPage />} />
+        <Route path="yanki/post/:id" element={<YankiPostDetail />} />
+        <Route path="yanki" element={<YankiAlaniPage />} />
+        <Route
+          path="rol-okuma"
+          element={
+            <ErrorBoundary
+              renderError={(err) => {
+                console.error("[Matrix Rol] üst error boundary:", err);
+                return (
+                  <div
+                    style={{
+                      minHeight: "100vh",
+                      background: "#07080d",
+                      color: "#e8e4f0",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 24,
+                      textAlign: "center",
+                      fontFamily: "system-ui, sans-serif",
+                    }}
+                  >
+                    <p style={{ margin: "0 0 20px", maxWidth: 380, lineHeight: 1.55 }}>
+                      Matrix Rol sayfasında beklenmeyen bir hata oluştu. Sayfayı yenileyerek tekrar deneyebilirsin.
+                    </p>
+                    <button
+                      type="button"
+                      style={{
+                        padding: "12px 24px",
+                        borderRadius: 12,
+                        border: "1px solid rgba(200,160,255,0.35)",
+                        background: "rgba(200,160,255,0.15)",
+                        color: "#fff",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => window.location.assign("/rol-okuma")}
+                    >
+                      Yenile
+                    </button>
+                  </div>
+                );
+              }}
+            >
+              <RolOkumaPage />
+            </ErrorBoundary>
+          }
+        />
+      </Route>
+
+      <Route path="/kapilar" element={<HomePage />} />
       <Route path="/giris" element={<GirisPage />} />
       <Route path="/profil" element={<ProfilePage />} />
       <Route path="/subscription" element={<SubscriptionPage />} />
@@ -129,18 +191,22 @@ export default function App() {
       <Route path="/ask" element={<SanriyaSorPage />} />
 
       <Route path="/bilinc-alani" element={<PortalPage />} />
-      <Route path="/frekans-alani" element={<FrekansAlaniPage />} />
+      <Route path="/frekans-alani" element={<Navigate to="/frekans" replace />} />
+      <Route path="/anlasilma-alani" element={<Navigate to="/" replace />} />
       <Route path="/uyanan-sehirler" element={<AwakenedCitiesPage />} />
+      <Route path="/sehirler" element={<CitiesPage />} />
+      <Route path="/sehir/:cityId" element={<CityDetailPage />} />
 
       <Route path="/rituel-alani" element={<RituelAlaniPage />} />
       <Route path="/rituel-alani/:id" element={<RitualDetailPage />} />
       <Route path="/rituel-alani/:id/session" element={<RitualSessionPage />} />
 
+      {/* Dış paylaşım linki — /yanki/:id (iç uygulama /yanki/post/:id kullanır) */}
       <Route path="/yanki/:id" element={<YankiShareLanding />} />
-      <Route path="/yanki-alani" element={<YankiAlaniPage />} />
-      <Route path="/yanki-alani/yeni" element={<YankiYeniPage />} />
-      <Route path="/yanki-alani/profil/:userId" element={<YankiProfilPage />} />
-      <Route path="/yanki-alani/:id" element={<YankiPostDetail />} />
+      <Route path="/yanki-alani" element={<Navigate to="/yanki" replace />} />
+      <Route path="/yanki-alani/yeni" element={<Navigate to="/yanki/yeni" replace />} />
+      <Route path="/yanki-alani/profil/:userId" element={<Navigate to="/yanki/profil/:userId" replace />} />
+      <Route path="/yanki-alani/:id" element={<Navigate to="/yanki/post/:id" replace />} />
 
       <Route
         path="/okuma-alani"
@@ -163,53 +229,6 @@ export default function App() {
       <Route path="/kod-egitmeni" element={<KodEgitmeniPage />} />
       <Route path="/kod-okuma-sistemi" element={<KodEgitmeniPage />} />
       <Route path="/kod-ogrenmeye-giris" element={<KodGirisDersPage />} />
-      <Route
-        path="/rol-okuma"
-        element={
-          <ErrorBoundary
-            renderError={(err) => {
-              console.error("[Matrix Rol] üst error boundary:", err);
-              return (
-              <div
-                style={{
-                  minHeight: "100vh",
-                  background: "#07080d",
-                  color: "#e8e4f0",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 24,
-                  textAlign: "center",
-                  fontFamily: "system-ui, sans-serif",
-                }}
-              >
-                <p style={{ margin: "0 0 20px", maxWidth: 380, lineHeight: 1.55 }}>
-                  Matrix Rol sayfasında beklenmeyen bir hata oluştu. Sayfayı yenileyerek tekrar deneyebilirsin.
-                </p>
-                <button
-                  type="button"
-                  style={{
-                    padding: "12px 24px",
-                    borderRadius: 12,
-                    border: "1px solid rgba(200,160,255,0.35)",
-                    background: "rgba(200,160,255,0.15)",
-                    color: "#fff",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                  onClick={() => window.location.assign("/rol-okuma")}
-                >
-                  Yenile
-                </button>
-              </div>
-              );
-            }}
-          >
-            <RolOkumaPage />
-          </ErrorBoundary>
-        }
-      />
       <Route
         path="/an-kod"
         element={
@@ -278,6 +297,7 @@ export default function App() {
       <Route path="/payment/iyzico-callback" element={<IyzicoCallbackPage />} />
       <Route path="/odeme-basarili" element={<OdemeBasariliPage />} />
       <Route path="/havale-odeme" element={<HavaleOdemePage />} />
+      <Route path="/sanri-ag" element={<SanriMeshPage />} />
 
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/:bookId" element={<BookReader />} />

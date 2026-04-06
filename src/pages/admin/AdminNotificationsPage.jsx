@@ -1,79 +1,47 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchAdminNotificationsFeed } from "../../data/adminApi";
 import styles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminNotificationsPage.module.css";
 
-const MOCK_NOTIFICATIONS = [
-  {
-    id: 1,
-    type: "purchase",
-    title: "Yeni Premium Aktivasyon",
-    text: "mira@test.com aylık premium satın aldı",
-    time: "2 dk önce",
-    read: false,
-  },
-  {
-    id: 2,
-    type: "moderation",
-    title: "Moderasyon Bekliyor",
-    text: "3 yeni post onay bekliyor",
-    time: "15 dk önce",
-    read: false,
-  },
-  {
-    id: 3,
-    type: "comment",
-    title: "Yorum Patlaması",
-    text: "'1999 — Kapanmayan Frekans' postuna 8 yeni yorum",
-    time: "1 sa önce",
-    read: false,
-  },
-  {
-    id: 4,
-    type: "system",
-    title: "API Yanıt Süresi",
-    text: "Ortalama yanıt süresi 850ms'e yükseldi",
-    time: "2 sa önce",
-    read: true,
-  },
-  {
-    id: 5,
-    type: "purchase",
-    title: "Kitap Satışı",
-    text: "eren@test.com Matrix Code kitabını satın aldı",
-    time: "3 sa önce",
-    read: true,
-  },
-  {
-    id: 6,
-    type: "moderation",
-    title: "Rapor",
-    text: "Bir kullanıcı spam bildirimi yaptı",
-    time: "5 sa önce",
-    read: true,
-  },
-  {
-    id: 7,
-    type: "comment",
-    title: "Yeni Yorum",
-    text: "Yankı Alanı'nda 12 yeni yorum",
-    time: "6 sa önce",
-    read: true,
-  },
-  {
-    id: 8,
-    type: "system",
-    title: "Deploy Başarılı",
-    text: "Frontend v2.4.1 başarıyla deploy edildi",
-    time: "8 sa önce",
-    read: true,
-  },
-];
+const READ_STORAGE_KEY = "sanri_admin_notif_read_v1";
+
+function loadReadSet() {
+  try {
+    const raw = localStorage.getItem(READ_STORAGE_KEY);
+    if (!raw) return new Set();
+    const arr = JSON.parse(raw);
+    return new Set(Array.isArray(arr) ? arr.map(String) : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveReadSet(set) {
+  try {
+    localStorage.setItem(READ_STORAGE_KEY, JSON.stringify([...set]));
+  } catch {
+    /* ignore */
+  }
+}
+
+function formatRelativeTime(iso) {
+  if (!iso) return "";
+  const t = new Date(iso).getTime();
+  if (Number.isNaN(t)) return String(iso);
+  const sec = Math.max(0, Math.floor((Date.now() - t) / 1000));
+  if (sec < 45) return "Az önce";
+  if (sec < 3600) return `${Math.floor(sec / 60)} dk önce`;
+  if (sec < 86400) return `${Math.floor(sec / 3600)} sa önce`;
+  if (sec < 86400 * 7) return `${Math.floor(sec / 86400)} gün önce`;
+  return new Date(t).toLocaleString("tr-TR", { dateStyle: "short", timeStyle: "short" });
+}
 
 const FILTER_TABS = [
   { id: "all", label: "Tümü" },
   { id: "purchase", label: "Satın Alım" },
   { id: "moderation", label: "Moderasyon" },
-  { id: "comment", label: "Yorum" },
+  { id: "comment", label: "Aktivite" },
   { id: "system", label: "Sistem" },
 ];
 
@@ -102,8 +70,43 @@ function iconGlyphForType(type) {
 }
 
 export default function AdminNotificationsPage() {
-  const [items, setItems] = useState(() => MOCK_NOTIFICATIONS.map((n) => ({ ...n })));
+  const navigate = useNavigate();
+  const [items, setItems] = useState([]);
   const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const mergeWithRead = useCallback((rawList) => {
+    const rs = loadReadSet();
+    return (rawList || []).map((n) => ({
+      ...n,
+      id: n.id != null ? String(n.id) : `row-${Math.random()}`,
+      read: rs.has(String(n.id)),
+      timeLabel: formatRelativeTime(n.time),
+    }));
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await fetchAdminNotificationsFeed(80);
+        const list = Array.isArray(data?.items) ? data.items : [];
+        if (!cancelled) setItems(mergeWithRead(list));
+      } catch (e) {
+        if (!cancelled) {
+          setError(e?.message || "Akış yüklenemedi");
+          setItems([]);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [mergeWithRead]);
 
   const unreadCount = useMemo(() => items.filter((n) => !n.read).length, [items]);
 
@@ -113,12 +116,27 @@ export default function AdminNotificationsPage() {
   }, [items, filter]);
 
   const markRead = useCallback((id) => {
-    setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
+    const sid = String(id);
+    const next = loadReadSet();
+    next.add(sid);
+    saveReadSet(next);
+    setItems((prev) => prev.map((n) => (String(n.id) === sid ? { ...n, read: true } : n)));
   }, []);
 
   const markAllRead = useCallback(() => {
+    const all = loadReadSet();
+    items.forEach((n) => all.add(String(n.id)));
+    saveReadSet(all);
     setItems((prev) => prev.map((n) => ({ ...n, read: true })));
-  }, []);
+  }, [items]);
+
+  const onCardClick = useCallback(
+    (n) => {
+      markRead(n.id);
+      if (n.href && typeof n.href === "string") navigate(n.href);
+    },
+    [markRead, navigate],
+  );
 
   return (
     <div>
@@ -140,7 +158,9 @@ export default function AdminNotificationsPage() {
           Tümünü Okundu İşaretle
         </button>
       </header>
-      <p className={styles.pageDesc}>Platform bildirimleri ve uyarılar</p>
+      <p className={styles.pageDesc}>
+        Canlı akış: havale bekleyenler, Yankı moderasyonu, yeni üyeler, funnel ve platform olayları.
+      </p>
 
       <div className={styles.filterBar}>
         {FILTER_TABS.map((tab) => (
@@ -155,16 +175,22 @@ export default function AdminNotificationsPage() {
         ))}
       </div>
 
+      {error ? <p className={pageStyles.emptyState}>{error}</p> : null}
+      {loading ? <p className={pageStyles.emptyState}>Akış yükleniyor…</p> : null}
+
       <div className={pageStyles.listWrap}>
-        {filtered.length === 0 ? (
-          <p className={pageStyles.emptyState}>Bu filtrede bildirim yok.</p>
-        ) : (
+        {!loading && !error && filtered.length === 0 ? (
+          <p className={pageStyles.emptyState}>
+            Bu filtrede kayıt yok. Etkinlik veya bekleyen iş oluşunca burada görünür.
+          </p>
+        ) : null}
+        {!loading &&
           filtered.map((n) => (
             <button
               key={n.id}
               type="button"
               className={`${pageStyles.notifCard} ${!n.read ? pageStyles.notifUnread : ""}`}
-              onClick={() => markRead(n.id)}
+              onClick={() => onCardClick(n)}
             >
               <span
                 className={`${pageStyles.notifIcon} ${iconClassForType(n.type)}`}
@@ -175,11 +201,10 @@ export default function AdminNotificationsPage() {
               <span className={pageStyles.notifBody}>
                 <span className={pageStyles.notifTitle}>{n.title}</span>
                 <span className={pageStyles.notifText}>{n.text}</span>
-                <span className={pageStyles.notifTime}>{n.time}</span>
+                <span className={pageStyles.notifTime}>{n.timeLabel || n.time}</span>
               </span>
             </button>
-          ))
-        )}
+          ))}
       </div>
     </div>
   );

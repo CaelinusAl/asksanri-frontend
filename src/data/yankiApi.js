@@ -207,6 +207,49 @@ export async function fetchMyReferrals() {
   return apiFetch("/yanki/me/referrals");
 }
 
+// ─── Hissel akış (frekans alanı — Anlaşılma → Yankı) ─────────────
+
+export async function fetchFieldStream({ frequencyHz, limit = 18, offset = 0 } = {}) {
+  const p = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+  if (frequencyHz != null && frequencyHz !== "") p.set("frequency_hz", String(frequencyHz));
+  try {
+    return await apiFetch(`/yanki/field/stream?${p}`);
+  } catch (e) {
+    if (e.status === 404 || e.status === 0) {
+      const fallback = await apiFetch(
+        `/yanki/posts?limit=${limit}&offset=${offset}`
+      );
+      return {
+        posts: (fallback.posts || []).map((post) => ({
+          ...post,
+          post_source: post.post_source || "classic",
+          frequency_hz: post.frequency_hz ?? null,
+          field_echo_count: post.field_echo_count ?? 0,
+        })),
+        total: fallback.total ?? 0,
+        limit,
+        offset,
+      };
+    }
+    throw e;
+  }
+}
+
+export async function fetchFieldPost(postId) {
+  return apiFetch(`/yanki/field/posts/${postId}`);
+}
+
+export async function fetchFieldEchoes(postId, { limit = 50, offset = 0 } = {}) {
+  return apiFetch(`/yanki/field/posts/${postId}/echoes?limit=${limit}&offset=${offset}`);
+}
+
+export async function postFieldEcho(postId, sessionId, text) {
+  return apiFetch(`/yanki/field/posts/${postId}/echo`, {
+    method: "POST",
+    body: JSON.stringify({ session_id: sessionId, text }),
+  });
+}
+
 // ─── Auth check helper ──────────────────────────────────────────
 
 export function isLoggedIn() {

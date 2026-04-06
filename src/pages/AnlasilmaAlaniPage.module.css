@@ -1,0 +1,849 @@
+/* Yankı içi gömülü panel — arka plan sayfadan gelir */
+.rootEmbedded {
+  min-height: auto;
+  padding: 0;
+  background: none;
+  overflow: visible;
+  color: #e4eaf5;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  position: relative;
+}
+.rootEmbedded .inner {
+  max-width: 100%;
+}
+
+.root {
+  min-height: 100vh;
+  background: radial-gradient(ellipse 120% 80% at 50% -20%, rgba(100, 200, 255, 0.12), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 60%, rgba(180, 100, 255, 0.08), transparent 45%),
+    linear-gradient(180deg, #05060a 0%, #0a0c14 40%, #06080e 100%);
+  color: #e4eaf5;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  padding-bottom: 4rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.gridBg {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  background-image: linear-gradient(rgba(120, 200, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 200, 255, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+  opacity: 0.6;
+}
+
+.inner {
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phase_feel,
+  .phase_freq,
+  .phase_approaching,
+  .phase_result,
+  .hearingRing,
+  .hearingLine,
+  .chakraSpotlight,
+  .cardResult,
+  .freqEchoBar,
+  .yankiBridge,
+  .titleFade,
+  .cardFeel {
+    animation: none !important;
+  }
+
+  .hzBtn,
+  .hzBtnSuggested,
+  .primarySoft,
+  .ctaDeepSoft {
+    transition: none !important;
+  }
+
+  .hzBtnSuggested:not(.hzBtnActive),
+  .hzBtnSuggested.hzBtnActive {
+    animation: none !important;
+  }
+}
+
+.phase_feel,
+.phase_freq,
+.phase_approaching,
+.phase_result {
+  animation: fadeRise 1s ease-out both;
+}
+
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.title {
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  margin: 0 0 0.35rem;
+  background: linear-gradient(120deg, #b8e8ff 0%, #c9b8ff 50%, #7fd4ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 40px rgba(120, 200, 255, 0.35);
+}
+
+.sub {
+  text-align: center;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(200, 215, 235, 0.72);
+  margin: 0 0 2rem;
+}
+
+.kicker {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(140, 190, 255, 0.55);
+  margin: 0 0 0.75rem;
+}
+
+.feelHeadline {
+  text-align: center;
+  font-size: clamp(1.65rem, 6.5vw, 2.35rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  margin: 0 0 1rem;
+  background: linear-gradient(120deg, #d8f0ff 0%, #c4b8ff 45%, #9fe8ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.feelHint {
+  text-align: center;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(190, 210, 235, 0.58);
+  margin: 0 0 1.75rem;
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.titleFade {
+  animation: fadeRise 1.2s ease-out both;
+}
+
+.cardFeel {
+  border-color: rgba(140, 200, 255, 0.12);
+  background: rgba(10, 16, 28, 0.5);
+  animation: fadeRise 1.1s ease-out 0.08s both;
+}
+
+.tagDetails {
+  margin-top: 1rem;
+  border: none;
+}
+
+.tagSummary {
+  list-style: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(150, 190, 230, 0.45);
+  padding: 0.5rem 0;
+  transition: color 0.35s ease;
+}
+
+.tagSummary::-webkit-details-marker {
+  display: none;
+}
+
+.tagDetails[open] .tagSummary {
+  color: rgba(170, 210, 255, 0.65);
+  margin-bottom: 0.5rem;
+}
+
+.tagSummary:hover {
+  color: rgba(190, 220, 255, 0.7);
+}
+
+.primarySoft {
+  transition: transform 0.45s ease, box-shadow 0.55s ease, opacity 0.35s ease;
+}
+
+.primarySoft:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 36px rgba(80, 160, 240, 0.22);
+}
+
+.feelTextarea {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  min-height: 7rem;
+}
+
+.freqHint {
+  text-align: center;
+  font-size: 0.82rem;
+  color: rgba(170, 195, 225, 0.5);
+  margin: -0.5rem 0 1.25rem;
+  line-height: 1.45;
+}
+
+.freqHint a {
+  color: rgba(160, 210, 255, 0.75);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  padding: 0.35rem 0;
+  background: none;
+  border: none;
+  color: rgba(160, 200, 255, 0.75);
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.back:hover {
+  color: #c8e8ff;
+}
+
+.hzGlowWrap {
+  --chakra-color: #5cdb9a;
+  --chakra-glow: rgba(92, 219, 154, 0.35);
+  padding: 1.35rem 1rem 1.5rem;
+  margin-bottom: 1.25rem;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--chakra-color) 35%, transparent);
+  background: radial-gradient(ellipse 90% 80% at 50% 0%, var(--chakra-glow), transparent 62%),
+    rgba(12, 18, 32, 0.55);
+  box-shadow: 0 0 60px var(--chakra-glow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: border-color 0.8s ease, box-shadow 0.9s ease, background 0.8s ease;
+}
+
+.hzRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.15rem;
+}
+
+.hzBtn {
+  min-width: 4.5rem;
+  padding: 0.5rem 0.45rem 0.55rem;
+  border-radius: 12px;
+  border: 1px solid rgba(120, 190, 255, 0.22);
+  background: rgba(20, 35, 55, 0.45);
+  color: #c8dff5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.55s ease, box-shadow 0.65s ease, background 0.55s ease, transform 0.5s ease;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.hzTopLine {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.12rem;
+}
+
+.hzHz {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.hzUnit {
+  font-size: 0.62rem;
+  font-weight: 600;
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+
+.hzChakraMini {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(180, 210, 240, 0.55);
+  max-width: 4.2rem;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.hzBtn:hover {
+  border-color: rgba(140, 210, 255, 0.4);
+  box-shadow: 0 0 22px rgba(100, 180, 255, 0.12);
+}
+
+.hzBtnActive {
+  border-color: color-mix(in srgb, var(--btn-chakra, #5cdb9a) 75%, white);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--btn-chakra-dim, rgba(92, 219, 154, 0.35)) 100%, transparent),
+    rgba(20, 40, 70, 0.5)
+  );
+  box-shadow: 0 0 28px color-mix(in srgb, var(--btn-chakra, #5cdb9a) 45%, transparent),
+    0 0 48px color-mix(in srgb, var(--btn-chakra, #5cdb9a) 22%, transparent), inset 0 0 20px var(--btn-chakra-dim);
+  transform: scale(1.04);
+}
+
+.hzBtnActive .hzChakraMini {
+  color: color-mix(in srgb, var(--btn-chakra, #9fe8ff) 80%, white);
+}
+
+/* Motor önerisi — seçimden bağımsız hafif nabız (seçili değilken de görünür) */
+.hzBtnSuggested:not(.hzBtnActive) {
+  animation: suggestPulse 3s ease-in-out infinite;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--btn-chakra, #64b5f6) 15%, transparent);
+}
+
+.hzBtnSuggested.hzBtnActive {
+  animation: suggestPulseActive 2.8s ease-in-out infinite;
+}
+
+@keyframes suggestPulse {
+  0%,
+  100% {
+    border-color: rgba(140, 200, 255, 0.28);
+    opacity: 1;
+  }
+  50% {
+    border-color: rgba(180, 230, 255, 0.45);
+    opacity: 0.92;
+  }
+}
+
+@keyframes suggestPulseActive {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.06);
+  }
+}
+
+.chakraSpotlight {
+  text-align: center;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(130, 200, 255, 0.12);
+  animation: fadeRise 0.9s ease-out both;
+}
+
+.chakraName {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--chakra-color, #5cdb9a);
+  text-shadow: 0 0 24px var(--chakra-glow);
+  margin-bottom: 0.45rem;
+}
+
+.chakraDesc {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(200, 220, 245, 0.78);
+  max-width: 26rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chakraSpotlightEngine .chakraDesc {
+  color: rgba(220, 235, 255, 0.9);
+  animation: fadeRise 0.85s ease-out both;
+}
+
+.card {
+  border-radius: 16px;
+  border: 1px solid rgba(130, 200, 255, 0.18);
+  background: rgba(12, 18, 32, 0.65);
+  backdrop-filter: blur(12px);
+  padding: 1.25rem 1.35rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(160, 200, 255, 0.55);
+  margin-bottom: 0.5rem;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 88px;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgba(100, 160, 220, 0.22);
+  background: rgba(8, 14, 26, 0.85);
+  color: #e8f0fa;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  resize: vertical;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.textarea:focus {
+  outline: none;
+  border-color: rgba(140, 210, 255, 0.45);
+  box-shadow: 0 0 0 1px rgba(100, 200, 255, 0.15);
+}
+.textarea::placeholder {
+  color: rgba(150, 170, 200, 0.45);
+}
+
+.counter {
+  text-align: right;
+  font-size: 0.75rem;
+  color: rgba(160, 180, 210, 0.5);
+  margin-top: 0.35rem;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.tag {
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(140, 180, 230, 0.28);
+  background: rgba(25, 40, 65, 0.45);
+  color: rgba(210, 225, 245, 0.88);
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.tag:hover {
+  border-color: rgba(160, 210, 255, 0.4);
+}
+.tagOn {
+  border-color: rgba(180, 230, 255, 0.55);
+  background: rgba(70, 130, 200, 0.22);
+  box-shadow: 0 0 16px rgba(100, 180, 255, 0.12);
+}
+
+.primary {
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1.25rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  background: linear-gradient(135deg, rgba(80, 160, 220, 0.45), rgba(140, 100, 220, 0.4));
+  color: #f0f8ff;
+  box-shadow: 0 4px 24px rgba(60, 140, 220, 0.25);
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(80, 160, 240, 0.3);
+}
+.primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.approaching {
+  text-align: center;
+  padding: 3.5rem 1rem 4rem;
+}
+
+.hearingRipples {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.75rem;
+}
+
+.hearingRing {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(160, 210, 255, 0.28);
+  box-shadow: 0 0 40px rgba(120, 200, 255, 0.12), inset 0 0 24px rgba(120, 200, 255, 0.06);
+  animation: rippleSlow 3.2s ease-out infinite;
+}
+
+.hearingRing:nth-child(2) {
+  animation-delay: 0.9s;
+  opacity: 0.75;
+}
+
+.hearingRing:nth-child(3) {
+  animation-delay: 1.8s;
+  opacity: 0.5;
+}
+
+@keyframes rippleSlow {
+  0% {
+    transform: scale(0.72);
+    opacity: 0.55;
+  }
+  45% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.hearingLine {
+  font-size: clamp(1.15rem, 4.5vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.45;
+  color: rgba(225, 238, 255, 0.95);
+  margin: 0 0 0.85rem;
+  animation: breatheText 2.8s ease-in-out infinite;
+}
+
+@keyframes breatheText {
+  0%,
+  100% {
+    opacity: 0.88;
+    letter-spacing: 0.03em;
+  }
+  50% {
+    opacity: 1;
+    letter-spacing: 0.06em;
+  }
+}
+
+.approachingWhisper {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(170, 200, 230, 0.55);
+  max-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.statLine {
+  font-size: 0.82rem;
+  color: rgba(150, 185, 220, 0.55);
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+.cardResult {
+  animation: fadeRise 1.15s ease-out 0.05s both;
+  border-color: rgba(150, 210, 255, 0.2);
+}
+
+.insightLead {
+  font-size: clamp(1.05rem, 3.8vw, 1.2rem);
+  line-height: 1.65;
+  color: rgba(240, 248, 255, 0.96);
+  margin: 0 0 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.hearRest {
+  font-size: 0.92rem;
+  line-height: 1.62;
+  color: rgba(195, 215, 240, 0.82);
+  margin: 0 0 1rem;
+}
+
+.hearBlock {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(230, 240, 255, 0.95);
+  margin: 0 0 1rem;
+}
+.reflectBlock {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: rgba(175, 200, 230, 0.72);
+  margin: 0;
+  font-style: italic;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(120, 180, 230, 0.12);
+}
+
+.freqEchoBar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+  padding: 0.65rem 1rem;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--chakra-color) 40%, transparent);
+  background: radial-gradient(ellipse 100% 100% at 50% 0%, var(--chakra-glow), transparent 70%),
+    rgba(14, 22, 38, 0.5);
+  box-shadow: 0 0 32px var(--chakra-glow);
+  animation: fadeRise 1s ease-out 0.15s both;
+}
+
+.freqEchoLabel {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: rgba(230, 240, 255, 0.92);
+}
+
+.freqEchoChakra {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--chakra-color);
+  text-shadow: 0 0 16px var(--chakra-glow);
+}
+
+.yankiBridge {
+  text-align: center;
+  margin: 1.5rem 0 0.65rem;
+  padding: 1.1rem 0.75rem;
+  animation: fadeRise 1.2s ease-out 0.25s both;
+}
+
+.yankiBridgeLine {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(220, 235, 255, 0.92);
+}
+
+.yankiBridgeSub {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(165, 195, 230, 0.62);
+}
+
+.yankiCta {
+  margin-top: 0.35rem;
+  border-color: color-mix(in srgb, var(--chakra-color, #64b5f6) 45%, rgba(140, 200, 255, 0.35));
+  box-shadow: 0 0 28px color-mix(in srgb, var(--chakra-color, #64b5f6) 18%, transparent);
+  transition: box-shadow 0.55s ease, border-color 0.55s ease;
+}
+
+.ctaDeepSoft {
+  margin-top: 1rem;
+  background: linear-gradient(120deg, rgba(120, 200, 255, 0.35), rgba(180, 140, 255, 0.32));
+  color: #e8f4ff;
+  border: 1px solid rgba(160, 210, 255, 0.35);
+  box-shadow: 0 4px 28px rgba(100, 160, 220, 0.2);
+  transition: transform 0.5s ease, box-shadow 0.55s ease;
+}
+
+.ctaDeepSoft:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(120, 180, 240, 0.28);
+}
+
+.secondaryGhost {
+  opacity: 0.92;
+  border-color: rgba(120, 170, 220, 0.22);
+  background: rgba(18, 30, 50, 0.28);
+}
+
+.proximityCard {
+  margin-top: 1.25rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(200, 160, 255, 0.35);
+  background: linear-gradient(135deg, rgba(80, 60, 120, 0.35), rgba(40, 80, 120, 0.25));
+  box-shadow: 0 0 32px rgba(160, 120, 255, 0.12);
+}
+.proximityTitle {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(220, 200, 255, 0.75);
+  margin: 0 0 0.4rem;
+}
+.proximityBody {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(230, 220, 255, 0.92);
+}
+
+.secondary {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(140, 200, 255, 0.3);
+  background: rgba(20, 40, 70, 0.35);
+  color: #c8e4ff;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.secondary:hover:not(:disabled) {
+  border-color: rgba(180, 220, 255, 0.45);
+}
+.secondary:disabled {
+  opacity: 0.5;
+}
+
+.ctaDeep {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.95rem;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0a0e18;
+  background: linear-gradient(120deg, #9fd4ff, #d4c4ff);
+  box-shadow: 0 4px 28px rgba(140, 200, 255, 0.35);
+  transition: transform 0.15s;
+}
+.ctaDeep:hover {
+  transform: translateY(-1px);
+}
+
+.chatBox {
+  margin-top: 1.5rem;
+}
+.chatStatus {
+  font-size: 0.85rem;
+  color: rgba(170, 200, 230, 0.7);
+  margin-bottom: 0.65rem;
+}
+.msgList {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding: 0.35rem 0;
+}
+.msg {
+  align-self: flex-start;
+  max-width: 92%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  border: 1px solid rgba(120, 180, 230, 0.2);
+  background: rgba(15, 25, 45, 0.7);
+}
+.msgSelf {
+  align-self: flex-end;
+  border-color: rgba(100, 200, 255, 0.35);
+  background: rgba(40, 90, 140, 0.28);
+}
+.chatInputRow {
+  display: flex;
+  gap: 0.5rem;
+}
+.chatInput {
+  flex: 1;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid rgba(100, 160, 220, 0.25);
+  background: rgba(8, 14, 26, 0.9);
+  color: #e8f0fa;
+  font-size: 0.88rem;
+  font-family: inherit;
+}
+.chatInput:focus {
+  outline: none;
+  border-color: rgba(140, 200, 255, 0.45);
+}
+.sendBtn {
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(140, 210, 255, 0.4);
+  background: rgba(50, 100, 160, 0.35);
+  color: #dff4ff;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+.sendBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.err {
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(120, 40, 60, 0.25);
+  border: 1px solid rgba(255, 120, 140, 0.25);
+  color: #ffc8d0;
+  font-size: 0.88rem;
+  margin-bottom: 1rem;
+}
+
+.muted {
+  font-size: 0.8rem;
+  color: rgba(160, 185, 215, 0.55);
+  margin-top: 1rem;
+  line-height: 1.5;
+}
+
+.shareNote {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(190, 215, 245, 0.85);
+  margin: 0.75rem 0 0;
+  text-align: center;
+}
+
+.shareLink {
+  color: #9fd4ff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.shareLink:hover {
+  color: #c8e8ff;
+}

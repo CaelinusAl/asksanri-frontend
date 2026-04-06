@@ -55,6 +55,11 @@ export const fetchYankiAdminStats = () => adminFetch("/yanki/admin/stats");
 export const fetchAuditLog = () => adminFetch("/admin/security/audit-log");
 export const fetchSecuritySummary = () => adminFetch("/admin/security/summary");
 
+// ── Canlı bildirim akışı (Genel Bakış / menü rozeti) ──
+export const fetchAdminNotificationsFeed = (limit = 60) =>
+  adminFetch(`/admin/notifications-feed?limit=${encodeURIComponent(String(limit))}`);
+export const fetchAdminPendingSummary = () => adminFetch("/admin/pending-summary");
+
 // ── Page Views / Visitors ──
 export const fetchVisitorStats = () => adminFetch("/analytics/stats");
 

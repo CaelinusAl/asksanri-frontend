@@ -12,6 +12,7 @@ import {
   buildMatrixRolReading,
   narrativeToSectionTexts,
 } from "../data/matrixRolNarrative";
+import { saveRolReadingCache, loadRolReadingCache } from "../lib/offline/rolReadingCache";
 import styles from "./RolOkumaPage.module.css";
 
 const API =
@@ -174,12 +175,57 @@ export default function RolOkumaPage() {
   const intervalRef = useRef(null);
 
   const [modal, setModal] = useState(null);
+  const [hasLocalRolCache, setHasLocalRolCache] = useState(false);
 
   const [serverUnlocked] = useServerUnlock("role_unlock", "ankod_unlock", "subconscious_unlock");
   const unlocked = serverUnlocked;
 
   useEffect(() => { trackFunnelEvent("role_page_view"); }, []);
   useEffect(() => { if (unlocked) trackFunnelEvent("role_unlock_success"); }, [unlocked]);
+
+  useEffect(() => {
+    loadRolReadingCache()
+      .then((c) => setHasLocalRolCache(Boolean(c?.apiData)))
+      .catch(() => setHasLocalRolCache(false));
+  }, []);
+
+  /* Offline: yükleme ekranı yok — doğrudan son kayıtlı okuma. */
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (typeof navigator !== "undefined" && navigator.onLine) return;
+      const cached = await loadRolReadingCache();
+      if (cancelled || !cached?.apiData) return;
+      try {
+        const narrative = buildMatrixRolReading(cached.apiData, cached.fullName, cached.birthDate);
+        setResultSessionId((k) => k + 1);
+        setResult({ data: cached.apiData, fullName: cached.fullName, narrative });
+        setPhase(PHASES.RESULT);
+      } catch {
+        /* bozuk önbellek */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const openCachedRolReading = useCallback(async () => {
+    const cached = await loadRolReadingCache();
+    if (!cached?.apiData) return;
+    try {
+      const narrative = buildMatrixRolReading(cached.apiData, cached.fullName, cached.birthDate);
+      setResultSessionId((k) => k + 1);
+      setResult({ data: cached.apiData, fullName: cached.fullName, narrative });
+      setPhase(PHASES.RESULT);
+      setFlowError("");
+      setError("");
+    } catch {
+      setFlowError(
+        isTR ? "Kayıtlı okuma açılamadı. Yeni okuma için formu kullan." : "Could not open saved reading. Use the form for a new one.",
+      );
+    }
+  }, [isTR]);
 
   const openModal = (label, price, productId, contentId) => {
     trackFunnelEvent("role_unlock_click");
@@ -283,12 +329,30 @@ export default function RolOkumaPage() {
       setResult({ data: data && typeof data === "object" ? data : {}, fullName, narrative });
       stopLoading();
       setPhase(PHASES.RESULT);
+      saveRolReadingCache({
+        apiData: data && typeof data === "object" ? data : {},
+        fullName,
+        birthDate: bd,
+      }).catch(() => {});
+      setHasLocalRolCache(true);
       debugRol("result phase OK", { fullName, sessionIdTick: true });
       trackFunnelEvent("role_free_result_view");
       if (!unlocked) trackFunnelEvent("role_lock_view");
     } catch (err) {
       stopLoading();
       console.error("[Matrix Rol] submit failed", err);
+      try {
+        const cached = await loadRolReadingCache();
+        if (cached?.apiData) {
+          const narrative = buildMatrixRolReading(cached.apiData, cached.fullName, cached.birthDate);
+          setResultSessionId((k) => k + 1);
+          setResult({ data: cached.apiData, fullName: cached.fullName, narrative });
+          setPhase(PHASES.RESULT);
+          return;
+        }
+      } catch {
+        /* devam */
+      }
       const fallback = isTR
         ? "Bağlantı hatası veya ağ kesildi. İnternetini kontrol edip tekrar dene."
         : "Connection error. Check your network and try again.";
@@ -415,6 +479,15 @@ export default function RolOkumaPage() {
               >
                 Rolünü Gör
               </button>
+              {hasLocalRolCache ? (
+                <button
+                  type="button"
+                  className={styles.cachedReadBtn}
+                  onClick={() => openCachedRolReading()}
+                >
+                  {isTR ? "Son kayıtlı okumanı göster (cihazından)" : "Show last saved reading (on device)"}
+                </button>
+              ) : null}
             </form>
           </motion.div>
         )}

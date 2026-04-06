@@ -2,6 +2,162 @@
   margin-bottom: 8px;
 }
 
+.realDataNote {
+  font-size: 12px;
+  color: rgba(200, 190, 220, 0.65);
+  line-height: 1.5;
+  margin: 0 0 16px;
+  max-width: 820px;
+}
+.realDataNote code {
+  font-size: 11px;
+  color: #c8a0ff;
+}
+
+.productSection {
+  margin-bottom: 28px;
+}
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+.productTile {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.productTileLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8e4f0;
+  letter-spacing: 0.02em;
+}
+.productTileValue {
+  font-size: 22px;
+  font-weight: 800;
+  color: #c8a0ff;
+  margin: 6px 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+.productTileHint {
+  font-size: 10px;
+  color: rgba(180, 170, 200, 0.55);
+  line-height: 1.35;
+}
+
+.insightEmpty {
+  margin: 12px 16px 20px;
+  font-size: 13px;
+  color: rgba(200, 190, 220, 0.55);
+  line-height: 1.5;
+}
+
+.funnelRealGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.funnelRealCell {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.funnelRealLabel {
+  font-size: 11px;
+  color: rgba(200, 190, 220, 0.6);
+}
+.funnelRealNum {
+  font-size: 18px;
+  font-weight: 700;
+  color: #7cf7d8;
+  font-variant-numeric: tabular-nums;
+}
+
+.scenarioDetails {
+  margin: 28px 0;
+  border: 1px solid rgba(200, 160, 255, 0.15);
+  border-radius: 14px;
+  padding: 8px 16px 20px;
+  background: rgba(0, 0, 0, 0.15);
+}
+.scenarioSummary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #d4c8f0;
+  padding: 12px 4px;
+  list-style: none;
+}
+.scenarioSummary::-webkit-details-marker {
+  display: none;
+}
+.scenarioDetails[open] .scenarioSummary {
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.scenarioSummaryInner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.scenarioSummaryTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #e4dcf8;
+  letter-spacing: 0.02em;
+}
+
+.scenarioSummaryHint {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(200, 190, 230, 0.55);
+  max-width: 52rem;
+}
+
+.scenarioIntro {
+  margin: 0 0 20px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(220, 210, 245, 0.78);
+  background: rgba(200, 160, 255, 0.06);
+  border: 1px solid rgba(200, 160, 255, 0.12);
+  border-radius: 10px;
+}
+
+.scenarioIntro em {
+  font-style: normal;
+  color: #c8a0ff;
+}
+
+.scenarioZoneLabel {
+  margin: 26px 0 10px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(180, 170, 210, 0.5);
+}
+
+.scenarioDetails > .scenarioZoneLabel:first-of-type {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
 .contentCard {
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid rgba(255, 255, 255, 0.06);
