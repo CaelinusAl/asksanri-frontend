@@ -188,19 +188,38 @@ export default function SanriSharePanel({
     window.setTimeout(() => setTiktokNote(false), 6000);
   }, [shareText, pageUrl, cardKind]);
 
-  const downloadCard = useCallback(() => {
+  const downloadCard = useCallback(async () => {
     trackEvent("share_click", { platform: "share_card_download", context: cardKind });
     const canvas = canvasRef.current;
     if (!canvas) return;
     drawShareCard(canvas, summaryLine, canvasTitle);
+
+    const fileName = cardKind === "yanki" ? "sanri-yanki-karti.png" : "sanri-rol-karti.png";
+
+    if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
+      try {
+        const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
+        if (blob) {
+          const file = new File([blob], fileName, { type: "image/png" });
+          await navigator.share({ files: [file], title: "SANRI" });
+          return;
+        }
+      } catch { /* fallback to download */ }
+    }
+
     canvas.toBlob((blob) => {
       if (!blob) return;
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = cardKind === "yanki" ? "sanri-yanki-karti.png" : "sanri-rol-karti.png";
+      a.download = fileName;
+      a.style.display = "none";
+      document.body.appendChild(a);
       a.click();
-      URL.revokeObjectURL(url);
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 500);
     }, "image/png");
   }, [summaryLine, canvasTitle, cardKind]);
 
@@ -263,11 +282,9 @@ export default function SanriSharePanel({
         </button>
       </div>
 
-      {!compact && (
-        <button type="button" className={styles.cardBtn} onClick={downloadCard}>
-          {t.cardBtn}
-        </button>
-      )}
+      <button type="button" className={compact ? styles.cardBtnCompact : styles.cardBtn} onClick={downloadCard}>
+        {t.cardBtn}
+      </button>
 
       <AnimatePresence>
         {igOpen && (
