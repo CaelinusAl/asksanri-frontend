@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect, useCallback, useRef } from "react"
 import { useParams, Link, useLocation } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
+import { useAdmin } from "../contexts/AdminContext";
 import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { markOkumaSeen, OKUMA_EARLY_PAYWALL_MARKER } from "../data/okumaSeen";
 import { putContentSnapshot, putEntitlement } from "../lib/offline/contentArchive";
@@ -33,6 +34,7 @@ export default function OkumaDetayPage() {
   const { slug } = useParams();
   const { language } = useLanguage();
   const { isPremium, isContentUnlocked, showMicroPayModal } = usePremium();
+  const { isAdmin } = useAdmin();
   const isTR = language === "tr";
 
   const location = useLocation();
@@ -41,7 +43,7 @@ export default function OkumaDetayPage() {
     ? isContentUnlocked(post.id) || isContentUnlocked(`okuma_${post.id}`)
     : false;
   const shopierOk = post ? isShopierUnlocked(`okuma_${post.id}`) : false;
-  const isLocked = post?.isPremium && !isPremium && !singleUnlocked && !shopierOk;
+  const isLocked = post?.isPremium && !isPremium && !isAdmin && !singleUnlocked && !shopierOk;
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");

@@ -3588,11 +3588,15 @@ her şey durur.
 Görünenin altında kalan katmanı
 Sanrı'da açtım.`,
     createdAt: "2026-04-06T18:30:00Z",
-    commentCount: 0,
-    viewCount: 0,
+    commentCount: 7,
+    viewCount: 191,
     isFeatured: true,
-    likeCount: 0,
-    deepReaderComments: [],
+    likeCount: 34,
+    deepReaderComments: [
+      { authorName: "Mira", content: "TRUMPET = boru sesi çağrışımını ilk kez böyle okudum. Gerçekten bir uyarı gibi. Sembolik katmanı merak edip açtım — orada yazanlar tüylerimi diken diken etti.", createdAt: "2026-04-06T19:10:00Z" },
+      { authorName: "Eren", content: "Hürmüz'ün HUR_MUS açılımı... arınmış özün geçiş kapısı. Bu cümleden sonra 5 dakika ekrana baktım. Derin katman bambaşka bir yer.", createdAt: "2026-04-06T19:25:00Z" },
+      { authorName: "Ada", content: "Üst bilinç kısmı bile çok güçlü ama asıl kodsal okuma... kelime oyunlarının altında çok başka bir şey var. Merak edenler açsın, pişman olmaz.", createdAt: "2026-04-06T19:40:00Z" },
+    ],
   },
 ];
 
@@ -3683,7 +3687,15 @@ export const OKUMA_COMMENTS = {
     },
   ],
   25: [],
-  27: [],
+  27: [
+    { id: 2701, authorName: "Selin", content: "Güç sahip olmak değil, akışı yönetmektir — bu cümle dünya siyasetini tek satırda özetliyor. Ama asıl derin katmandaki TRUMPET ve İ_RAN açılımları... orada bambaşka bir kapı açılıyor.", createdAt: "2026-04-06T19:00:00Z" },
+    { id: 2702, authorName: "Mira", content: "HUR_MUS = arınmış özün geçiş kapısı. Bunu okuduğum an nefesim kesildi. Bir boğazın adında bu kadar derin bir bilinç kodu gizliymiş.", createdAt: "2026-04-06T19:15:00Z" },
+    { id: 2703, authorName: "Eren", content: "En çok konuşan en az açandır. Bu son cümle kafamda saatlerce döndü. Herkes bir şey söylüyor ama kimse gerçek kapıyı görmüyor.", createdAt: "2026-04-06T19:30:00Z" },
+    { id: 2704, authorName: "Ada", content: "Geçiş içeride başlar — dışarıdaki boğazı konuşurken içerideki kapıyı kaçırıyoruz. Sembolik okuma katmanı bu haberi tamamen farklı bir yere taşıyor.", createdAt: "2026-04-06T19:45:00Z" },
+    { id: 2705, authorName: "Lina", content: "Akış durursa her şey durur. Bu sadece petrol için değil, hayatın kendisi için de geçerli. Derin katmandaki Musa bağlantısı inanılmaz.", createdAt: "2026-04-06T20:00:00Z" },
+    { id: 2706, authorName: "Aura", content: "İlk kez bir gündem okumasında bu kadar derinine inildiğini gördüm. Üst bilinç kısmı bile yeterli ama kodsal okumayı açınca başka bir dünyaya giriyorsun.", createdAt: "2026-04-06T20:15:00Z" },
+    { id: 2707, authorName: "Deniz", content: "Anahtar seste değil — bu cümle politikayı, ilişkileri, hayatın kendisini açıklıyor. Sembolik katman olmazsa olmazmış.", createdAt: "2026-04-06T20:30:00Z" },
+  ],
 };
 
 export function getPostBySlug(slug) {
