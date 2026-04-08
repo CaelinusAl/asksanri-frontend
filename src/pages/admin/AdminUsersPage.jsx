@@ -4,15 +4,6 @@ import styles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminUsersPage.module.css";
 import { fetchUsers, setUserRole } from "../../data/adminApi";
 
-const MOCK_USERS = [
-  { id: 1, email: "selin@caelinus.com", display_name: "Selin", role: "admin", is_active: true, created_at: "2025-12-01" },
-  { id: 2, email: "mira@test.com", display_name: "Mira", role: "user", is_active: true, created_at: "2026-01-15" },
-  { id: 3, email: "eren@test.com", display_name: "Eren", role: "user", is_active: true, created_at: "2026-02-20", is_premium: true },
-  { id: 4, email: "deniz@test.com", display_name: "Deniz", role: "user", is_active: false, created_at: "2026-03-01" },
-  { id: 5, email: "ada@test.com", display_name: "Ada", role: "user", is_active: true, created_at: "2026-03-10" },
-  { id: 6, email: "lina@test.com", display_name: "Lina", role: "user", is_active: true, created_at: "2026-03-15", is_premium: true },
-];
-
 const ROLE_FILTERS = [
   { id: "all", label: "Tümü" },
   { id: "user", label: "Kullanıcı" },
@@ -65,22 +56,6 @@ function useDebounced(value, ms) {
   return debounced;
 }
 
-function applyLocalFilters(list, debouncedSearch, roleFilter) {
-  let out = list;
-  const q = debouncedSearch.trim().toLowerCase();
-  if (q) {
-    out = out.filter(
-      (u) =>
-        (u.email && u.email.toLowerCase().includes(q)) ||
-        (u.display_name && String(u.display_name).toLowerCase().includes(q))
-    );
-  }
-  if (roleFilter === "user") out = out.filter((u) => u.role === "user");
-  else if (roleFilter === "admin") out = out.filter((u) => u.role === "admin");
-  else if (roleFilter === "premium") out = out.filter((u) => u.is_premium);
-  return out;
-}
-
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
@@ -88,7 +63,6 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [error, setError] = useState(null);
-  const [useMockData, setUseMockData] = useState(false);
 
   const debouncedSearch = useDebounced(search, 500);
 
@@ -98,8 +72,6 @@ export default function AdminUsersPage() {
   }, []);
 
   useEffect(() => {
-    if (useMockData) return undefined;
-
     let cancelled = false;
 
     async function load() {
@@ -123,12 +95,10 @@ export default function AdminUsersPage() {
         }
 
         setUsers(list);
-        setUseMockData(false);
       } catch (e) {
         if (cancelled) return;
         setError(e?.message || "Liste yüklenemedi");
-        setUsers(MOCK_USERS.map((u) => ({ ...u })));
-        setUseMockData(true);
+        setUsers([]);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -138,12 +108,9 @@ export default function AdminUsersPage() {
     return () => {
       cancelled = true;
     };
-  }, [debouncedSearch, roleFilter, useMockData]);
+  }, [debouncedSearch, roleFilter]);
 
-  const displayRows = useMemo(() => {
-    if (!useMockData) return users;
-    return applyLocalFilters(users, debouncedSearch, roleFilter);
-  }, [users, useMockData, debouncedSearch, roleFilter]);
+  const displayRows = users;
 
   const handleSetAdmin = useCallback(
     async (row, asAdmin) => {
@@ -232,7 +199,7 @@ export default function AdminUsersPage() {
 
       {error && (
         <p className={styles.pageDesc} style={{ color: "#c87850", marginTop: -16 }}>
-          {error} (yerel örnek veri gösteriliyor)
+          {error}
         </p>
       )}
 

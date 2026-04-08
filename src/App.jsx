@@ -219,6 +219,10 @@ export default function App() {
         }
       />
       <Route
+        path="/okuma-alani/gama-gamet-rolex-ust-bilinc-okuma"
+        element={<Navigate to="/okuma-alani/gama-gamet-rouleaux-ust-bilinc-okuma" replace />}
+      />
+      <Route
         path="/okuma-alani/:slug"
         element={
           <ErrorBoundary renderError={renderOkumaAreaError}>

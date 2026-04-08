@@ -553,6 +553,17 @@
   }
 }
 
+.hearingSub {
+  margin: 0.6rem 0 0;
+  font-size: clamp(0.82rem, 2.8vw, 0.95rem);
+  font-weight: 400;
+  color: rgba(200, 180, 230, 0.7);
+  letter-spacing: 0.02em;
+  animation: fadeRise 1.6s ease-out both;
+  animation-delay: 0.8s;
+  opacity: 0;
+}
+
 .approachingWhisper {
   margin: 0;
   font-size: 0.88rem;
@@ -963,4 +974,50 @@
 }
 .shareLink:hover {
   color: #c8e8ff;
+}
+
+/* ── Daily Feeling Banner ── */
+.dailyFeelingBanner {
+  position: relative;
+  margin: 0 0 1.25rem;
+  padding: 0.9rem 2rem 0.9rem 1rem;
+  background: linear-gradient(
+    135deg,
+    rgba(90, 60, 140, 0.12) 0%,
+    rgba(var(--feeling-color-rgb, 92, 219, 154), 0.08) 100%
+  );
+  border: 1px solid rgba(200, 160, 255, 0.1);
+  border-left: 3px solid var(--feeling-color, #5cdb9a);
+  border-radius: 12px;
+  animation: fadeRise 1s ease-out both;
+}
+.dailyFeelingClose {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  line-height: 1;
+}
+.dailyFeelingClose:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+.dailyFeelingText {
+  margin: 0;
+  font-size: clamp(0.88rem, 3vw, 1rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(220, 210, 240, 0.92);
+  letter-spacing: 0.01em;
+}
+.dailyFeelingMeta {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+  color: rgba(180, 160, 220, 0.6);
+  letter-spacing: 0.03em;
 }

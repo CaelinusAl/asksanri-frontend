@@ -29,18 +29,18 @@ import {
   resetAbTest,
 } from "../../data/ctaEngine";
 
-const MOCK_DASHBOARD = {
-  total_users: 1247,
-  daily_active: 89,
-  new_signups: 12,
+const EMPTY_DASHBOARD = {
+  total_users: 0,
+  daily_active: 0,
+  new_signups: 0,
 };
 
-const MOCK_MEMBERSHIP = {
-  premium_count: 34,
+const EMPTY_MEMBERSHIP = {
+  premium_count: 0,
 };
 
-const MOCK_MODERATION = {
-  pending: 3,
+const EMPTY_MODERATION = {
+  pending: 0,
 };
 
 const CONTENT_OPPORTUNITIES = [
@@ -363,12 +363,12 @@ function pickNumber(obj, ...keys) {
 }
 
 function normalizeDashboard(raw) {
-  if (!raw || typeof raw !== "object") return { ...MOCK_DASHBOARD };
+  if (!raw || typeof raw !== "object") return { ...EMPTY_DASHBOARD };
   const u = raw.users || {};
   return {
-    total_users: pickNumber(u, "total") ?? pickNumber(raw, "total_users", "totalUsers") ?? MOCK_DASHBOARD.total_users,
-    daily_active: pickNumber(u, "active_24h") ?? pickNumber(raw, "daily_active", "dailyActive") ?? MOCK_DASHBOARD.daily_active,
-    new_signups: pickNumber(u, "new_7d", "new_24h") ?? pickNumber(raw, "new_signups", "newSignups") ?? MOCK_DASHBOARD.new_signups,
+    total_users: pickNumber(u, "total") ?? pickNumber(raw, "total_users", "totalUsers") ?? 0,
+    daily_active: pickNumber(u, "active_24h") ?? pickNumber(raw, "daily_active", "dailyActive") ?? 0,
+    new_signups: pickNumber(u, "new_7d", "new_24h") ?? pickNumber(raw, "new_signups", "newSignups") ?? 0,
     premium_users: pickNumber(u, "premium") ?? 0,
     verified_users: pickNumber(u, "verified") ?? 0,
     admin_count: pickNumber(u, "admin") ?? 0,
@@ -376,9 +376,9 @@ function normalizeDashboard(raw) {
 }
 
 function normalizeMembership(raw) {
-  if (!raw || typeof raw !== "object") return { ...MOCK_MEMBERSHIP };
+  if (!raw || typeof raw !== "object") return { ...EMPTY_MEMBERSHIP };
   return {
-    premium_count: pickNumber(raw, "premium", "premium_count", "premiumCount") ?? MOCK_MEMBERSHIP.premium_count,
+    premium_count: pickNumber(raw, "premium", "premium_count", "premiumCount") ?? 0,
     total_users: pickNumber(raw, "total_users") ?? 0,
     free_users: pickNumber(raw, "free") ?? 0,
     conversion_rate: pickNumber(raw, "conversion_rate") ?? 0,
@@ -389,11 +389,11 @@ function normalizeMembership(raw) {
 }
 
 function normalizeModeration(raw) {
-  if (!raw || typeof raw !== "object") return { ...MOCK_MODERATION };
+  if (!raw || typeof raw !== "object") return { ...EMPTY_MODERATION };
   return {
     pending:
       pickNumber(raw, "pending", "pending_count", "pendingCount", "queue_count") ??
-      MOCK_MODERATION.pending,
+      0,
   };
 }
 
@@ -455,9 +455,9 @@ function activityDotClass(type) {
 export default function AdminDashboardPage() {
   const { adminUser } = useAdmin();
   const navigate = useNavigate();
-  const [dashboard, setDashboard] = useState(() => ({ ...MOCK_DASHBOARD }));
-  const [membership, setMembership] = useState(() => ({ ...MOCK_MEMBERSHIP }));
-  const [moderation, setModeration] = useState(() => ({ ...MOCK_MODERATION }));
+  const [dashboard, setDashboard] = useState(() => ({ ...EMPTY_DASHBOARD }));
+  const [membership, setMembership] = useState(() => ({ ...EMPTY_MEMBERSHIP }));
+  const [moderation, setModeration] = useState(() => ({ ...EMPTY_MODERATION }));
   const [activities, setActivities] = useState(() => []);
   const [expandedOpp, setExpandedOpp] = useState(null);
   const [expandedConv, setExpandedConv] = useState(null);
@@ -592,11 +592,11 @@ export default function AdminDashboardPage() {
     modPending: moderation.pending,
   });
 
-  const totalUsers = dashboard.total_users ?? MOCK_DASHBOARD.total_users;
-  const dailyActive = dashboard.daily_active ?? MOCK_DASHBOARD.daily_active;
-  const newSignups = dashboard.new_signups ?? MOCK_DASHBOARD.new_signups;
-  const premiumCount = membership.premium_count ?? MOCK_MEMBERSHIP.premium_count;
-  const pendingMod = moderation.pending ?? MOCK_MODERATION.pending;
+  const totalUsers = dashboard.total_users ?? 0;
+  const dailyActive = dashboard.daily_active ?? 0;
+  const newSignups = dashboard.new_signups ?? 0;
+  const premiumCount = membership.premium_count ?? 0;
+  const pendingMod = moderation.pending ?? 0;
 
   return (
     <div>

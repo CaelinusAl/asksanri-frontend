@@ -5,56 +5,7 @@ import styles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminPremiumPage.module.css";
 import { fetchMembership } from "../../data/adminApi";
 
-const MOCK_PACKAGES_INITIAL = [
-  {
-    id: 1,
-    name: "Aylık Premium",
-    type: "subscription",
-    price: "₺99/ay",
-    status: "active",
-    subscribers: 34,
-  },
-  {
-    id: 2,
-    name: "Yıllık Premium",
-    type: "subscription",
-    price: "₺799/yıl",
-    status: "active",
-    subscribers: 12,
-  },
-  {
-    id: 3,
-    name: "Matrix Code Kitabı",
-    type: "book",
-    price: "₺49",
-    status: "active",
-    sales: 89,
-  },
-  {
-    id: 4,
-    name: "Ritüel Paketi: Arınma",
-    type: "ritual_pack",
-    price: "₺29",
-    status: "inactive",
-    sales: 0,
-  },
-  {
-    id: 5,
-    name: "Okuma Alanı Erişimi",
-    type: "content",
-    price: "₺19/ay",
-    status: "active",
-    subscribers: 67,
-  },
-  {
-    id: 6,
-    name: "7 Günlük Deneme",
-    type: "trial",
-    price: "Ücretsiz",
-    status: "active",
-    subscribers: 156,
-  },
-];
+const INITIAL_PACKAGES = [];
 
 const TYPE_OPTIONS = [
   { value: "subscription", label: "Abonelik" },
@@ -102,7 +53,7 @@ function subscriberOrSalesCell(row) {
 }
 
 export default function AdminPremiumPage() {
-  const [packages, setPackages] = useState(MOCK_PACKAGES_INITIAL);
+  const [packages, setPackages] = useState(INITIAL_PACKAGES);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [membership, setMembershipData] = useState(null);
 

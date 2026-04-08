@@ -10,90 +10,7 @@ import {
   fetchYankiAdminStats,
 } from "../../data/adminApi";
 
-const MOCK_STATS = { approved: 142, pending: 3, rejected: 5, reported: 2 };
-
-const MOCK_POSTS_RAW = [
-  {
-    id: "mock-1",
-    content_raw:
-      "Bugün içimde garip bir huzur var; sanki evren bana küçük bir işaret bıraktı. Frekansım yükseldi.",
-    category: "duygu",
-    author_name: "Luna",
-    status: "pending_review",
-    created_at: "2026-03-28T10:30:00.000Z",
-    report_count: 0,
-  },
-  {
-    id: "mock-2",
-    content_raw:
-      "Farkındalık pratiğinde nefes ve beden ayrımını net hissettim. Gözlemci olmak farklı bir katman açıyor.",
-    category: "farkindalik",
-    author_name: "Deniz",
-    status: "pending_review",
-    created_at: "2026-03-29T14:15:00.000Z",
-    report_count: 1,
-  },
-  {
-    id: "mock-3",
-    content_raw:
-      "Rüyamda sonsuz bir merdiven vardı; her basamakta farklı bir yüzüm vardı. Uyanınca hâlâ titreşiyordu.",
-    category: "ruya",
-    author_name: "Kaan",
-    status: "approved",
-    created_at: "2026-03-20T09:00:00.000Z",
-    report_count: 0,
-  },
-  {
-    id: "mock-4",
-    content_raw:
-      "Meditasyon sonrası görsel alan yumuşadı; düşünceler bulut gibi geçip gitti.",
-    category: "farkindalik",
-    author_name: "Selin",
-    status: "approved",
-    created_at: "2026-03-22T16:45:00.000Z",
-    report_count: 0,
-  },
-  {
-    id: "mock-5",
-    content_raw:
-      "Korku anında kalbimin attığını izledim; yargılamadan. Bu basit gözlem çok şey değiştirdi.",
-    category: "duygu",
-    author_name: "Mert",
-    status: "rejected",
-    created_at: "2026-03-15T11:20:00.000Z",
-    report_count: 0,
-  },
-  {
-    id: "mock-6",
-    content_raw:
-      "Şehir gürültüsü içinde bile sessizlik bulunabiliyor; dikkat nereye giderse orası genişliyor.",
-    category: "genel",
-    author_name: "Ece",
-    status: "pending_review",
-    created_at: "2026-03-30T08:05:00.000Z",
-    report_count: 2,
-  },
-  {
-    id: "mock-7",
-    content_raw:
-      "Gece yarısı yazdığım notlar sabah okunmuyor bile; ama o anın enerjisi kaldı.",
-    category: "yansima",
-    author_name: "anon",
-    status: "approved",
-    created_at: "2026-03-25T19:00:00.000Z",
-    report_count: 0,
-  },
-  {
-    id: "mock-8",
-    content_raw:
-      "Topluluk kurallarına aykırı içerik örneği — moderasyon testi.",
-    category: "duygu",
-    author_name: "TestUser",
-    status: "rejected",
-    created_at: "2026-03-10T12:00:00.000Z",
-    report_count: 3,
-  },
-];
+const EMPTY_STATS = { approved: 0, pending: 0, rejected: 0, reported: 0 };
 
 function truncate(str, max = 80) {
   if (str == null || str === "") return "—";
@@ -103,7 +20,7 @@ function truncate(str, max = 80) {
 }
 
 function normalizeModerationStats(data) {
-  if (data == null || typeof data !== "object") return { ...MOCK_STATS };
+  if (data == null || typeof data !== "object") return { ...EMPTY_STATS };
   return {
     approved: Number(data.approved ?? data.published ?? 0) || 0,
     pending: Number(data.pending ?? data.pending_review ?? 0) || 0,
@@ -209,14 +126,13 @@ function typeLabel(type) {
 export default function AdminYankiPage() {
   const [activeTab, setActiveTab] = useState("all");
   const [posts, setPosts] = useState([]);
-  const [stats, setStats] = useState(MOCK_STATS);
+  const [stats, setStats] = useState(EMPTY_STATS);
   const [yankiExtra, setYankiExtra] = useState(null);
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [statsError, setStatsError] = useState(null);
-  const [usingMockPosts, setUsingMockPosts] = useState(false);
-  const [usingMockStats, setUsingMockStats] = useState(false);
+  const [apiError, setApiError] = useState(false);
   const [actionPostId, setActionPostId] = useState(null);
   const [actionError, setActionError] = useState(null);
 
@@ -226,10 +142,10 @@ export default function AdminYankiPage() {
     try {
       const mod = await fetchModerationStats();
       setStats(normalizeModerationStats(mod));
-      setUsingMockStats(false);
+      setApiError(false);
     } catch (e) {
-      setStats(MOCK_STATS);
-      setUsingMockStats(true);
+      setStats(EMPTY_STATS);
+      setApiError(true);
       setStatsError(e?.message || "İstatistikler alınamadı.");
     } finally {
       setStatsLoading(false);
@@ -259,11 +175,10 @@ export default function AdminYankiPage() {
         rows = rows.filter((p) => p.reportCount > 0);
       }
       setPosts(rows);
-      setUsingMockPosts(false);
+      setApiError(false);
     } catch (e) {
-      const normalizedMocks = MOCK_POSTS_RAW.map(normalizePost);
-      setPosts(filterPostsForTab(normalizedMocks, activeTab));
-      setUsingMockPosts(true);
+      setPosts([]);
+      setApiError(true);
       setError(e?.message || "Gönderiler yüklenemedi.");
     } finally {
       setLoading(false);
@@ -390,19 +305,19 @@ export default function AdminYankiPage() {
       <h1 className={styles.pageTitle}>Yankı Alanı Moderasyonu</h1>
       <p className={styles.pageDesc}>İçerikleri denetle ve yönet</p>
 
-      {(usingMockPosts || usingMockStats) && (
+      {apiError && (
         <div className={pageStyles.mockBanner}>
-          API verisi alınamadığı için örnek veri gösteriliyor. Bağlantı ve oturumu kontrol edin.
+          API bağlantısı kurulamadı. Gerçek veri yüklenene kadar boş gösterilir.
         </div>
       )}
 
-      {error && !usingMockPosts && (
+      {error && (
         <div className={pageStyles.errorBanner} role="alert">
           {error}
         </div>
       )}
 
-      {statsError && !usingMockStats && (
+      {statsError && (
         <div className={pageStyles.errorBanner} role="alert">
           {statsError}
         </div>

@@ -16,6 +16,10 @@ import {
 } from "../../data/emotionFrequencyEngine";
 import { suggestOkumaByFrequency } from "../../data/okumaData";
 import { trackFunnelEvent } from "../../data/funnelTracker";
+import { buildIdentityFallback } from "../../data/sanriIdentity";
+import { checkReturnState, getRetentionMessage, recordVisit, scheduleRetentionNotification } from "../../data/retentionManager";
+import { withFallback } from "../../data/apiFallback";
+import DailyFeelingBanner from "../DailyFeelingBanner";
 
 const HZ_LIST = [396, 417, 528, 639, 741, 852, 963];
 const HZ_SET = new Set(HZ_LIST);
@@ -95,12 +99,7 @@ function loadLastSession() {
   }
 }
 
-function liveFreqCount(hz) {
-  const hour = new Date().getHours();
-  const seed = (hz || 528) + hour * 7 + new Date().getDate() * 3;
-  const base = 12 + (seed % 35);
-  return base + (hour >= 18 && hour <= 22 ? 8 : hour >= 8 && hour <= 10 ? 4 : 0);
-}
+/** No longer generating fake counts -- liveCount comes from API enterResult.active_on_frequency */
 
 const EMOTION_PRESETS = [
   "Yorgunluk",
@@ -160,7 +159,9 @@ export default function AnlasilmaPanel({
 
   const sessionId = useMemo(() => getAnlasilmaSessionId(), []);
   const lastSession = useMemo(() => loadLastSession(), []);
-  const [showReturnBanner, setShowReturnBanner] = useState(() => !!lastSession);
+  const retentionState = useMemo(() => checkReturnState(), []);
+  const retentionMsg = useMemo(() => getRetentionMessage(retentionState.tier, isTR ? "tr" : "en"), [retentionState.tier, isTR]);
+  const [showReturnBanner, setShowReturnBanner] = useState(() => !!lastSession || retentionState.tier === "lapsed");
   const [phase, setPhase] = useState("feel");
   const [liveCount, setLiveCount] = useState(0);
   const initialHz =
@@ -187,6 +188,11 @@ export default function AnlasilmaPanel({
   const pollRef = useRef(null);
   const msgPollRef = useRef(null);
   const afterIdRef = useRef(0);
+
+  useEffect(() => {
+    recordVisit();
+    scheduleRetentionNotification();
+  }, []);
 
   useEffect(() => {
     if (frequencyHzProp != null && HZ_SET.has(frequencyHzProp)) {
@@ -250,16 +256,10 @@ export default function AnlasilmaPanel({
   }, [sendBlockedSec]);
 
   useEffect(() => {
-    if (phase !== "result" || !hz) return;
-    setLiveCount(liveFreqCount(hz));
-    const t = setInterval(() => {
-      setLiveCount((prev) => {
-        const delta = Math.random() > 0.5 ? 1 : -1;
-        return Math.max(5, prev + delta);
-      });
-    }, 8000 + Math.random() * 5000);
-    return () => clearInterval(t);
-  }, [phase, hz]);
+    if (phase !== "result" || !enterResult) return;
+    const real = enterResult.active_on_frequency;
+    setLiveCount(typeof real === "number" && real > 0 ? real : 0);
+  }, [phase, enterResult]);
 
   const toggleTag = (t) => {
     setTags((prev) => {
@@ -332,22 +332,23 @@ export default function AnlasilmaPanel({
     const hzSend = resolveHz();
     const minWait = new Promise((r) => setTimeout(r, APPROACH_MIN_MS));
 
-    let apiData = null;
-    try {
-      const [data] = await Promise.all([
-        anlasilmaEnter({
-          sessionId,
-          frequencyHz: hzSend,
-          intentText: trimmed,
-          emotionTags: tags,
-        }),
-        minWait,
-      ]);
-      apiData = data;
-    } catch {
-      await minWait;
-      apiData = buildSyntheticEnterResult(engineResult);
-    }
+    const { data: apiData } = await withFallback(
+      async () => {
+        const [data] = await Promise.all([
+          anlasilmaEnter({
+            sessionId,
+            frequencyHz: hzSend,
+            intentText: trimmed,
+            emotionTags: tags,
+          }),
+          minWait,
+        ]);
+        return data;
+      },
+      () => buildSyntheticEnterResult(engineResult) || buildIdentityFallback(hzSend, isTR ? "tr" : "en"),
+      { cacheKey: "anlasilma_enter" }
+    );
+    if (!apiData) await minWait;
 
     clearPolls();
     saveLastSession({ hz: hzSend, intent: trimmed, tags });
@@ -546,19 +547,19 @@ export default function AnlasilmaPanel({
               : "Back to feeling"}
         </button>
 
-        {phase === "feel" && showReturnBanner && lastSession && (
+        {phase === "feel" && showReturnBanner && (lastSession || retentionState.tier === "lapsed") && (
           <div className={styles.returnBanner}>
-            <p className={styles.returnTitle}>
-              {isTR ? "Son kaldığın yer burası" : "You left off here"}
-            </p>
+            <p className={styles.returnTitle}>{retentionMsg.title}</p>
             <p className={styles.returnSub}>
-              {lastSession.hz} Hz · {(HZ_CHAKRA[lastSession.hz] || HZ_CHAKRA[528]).nameTr}
-              {lastSession.intent ? ` — "${lastSession.intent.slice(0, 40)}${lastSession.intent.length > 40 ? "…" : ""}"` : ""}
+              {retentionMsg.sub}
+              {lastSession?.intent ? ` — "${lastSession.intent.slice(0, 40)}${lastSession.intent.length > 40 ? "…" : ""}"` : ""}
             </p>
             <div className={styles.returnActions}>
-              <button type="button" className={styles.returnResume} onClick={restoreLastSession}>
-                {isTR ? "Devam et" : "Resume"}
-              </button>
+              {lastSession && (
+                <button type="button" className={styles.returnResume} onClick={restoreLastSession}>
+                  {isTR ? "Devam et" : "Resume"}
+                </button>
+              )}
               <button type="button" className={styles.returnDismiss} onClick={() => setShowReturnBanner(false)}>
                 {isTR ? "Yeni başla" : "Start fresh"}
               </button>
@@ -568,8 +569,9 @@ export default function AnlasilmaPanel({
 
         {phase === "feel" ? (
           <>
+            <DailyFeelingBanner isTR={isTR} />
             <h1 className={styles.feelHeadline}>
-              {isTR ? "Şu an gerçekten ne hissediyorsun?" : "What are you really feeling, right now?"}
+              {isTR ? "İçinde kalan şeyi yaz…" : "Write what stayed inside…"}
             </h1>
           </>
         ) : phase === "freq" ? (
@@ -577,8 +579,8 @@ export default function AnlasilmaPanel({
             <h1 className={styles.title}>{isTR ? "Anlaşılma Alanı" : "Field of Being Understood"}</h1>
             <p className={styles.sub}>
               {isTR
-                ? "Metnine göre bir frekans önerildi; istersen başka Hz ile değiştirebilirsin."
-                : "A frequency was suggested from your words; you can switch to another Hz if you wish."}
+                ? "Sezdiğimiz şey bu… ama son söz senin."
+                : "This is what we sensed… but the final word is yours."}
             </p>
           </>
         ) : null}
@@ -602,7 +604,7 @@ export default function AnlasilmaPanel({
               value={intent}
               maxLength={INTENT_MAX}
               onChange={(e) => setIntent(e.target.value)}
-              placeholder={isTR ? "İçinde kalan şeyi yaz…" : "Write what’s still inside…"}
+              placeholder={isTR ? "Kimseye söyleyemediğin şeyi…" : "The thing you couldn’t tell anyone…"}
               rows={5}
               autoFocus
             />
@@ -611,7 +613,7 @@ export default function AnlasilmaPanel({
             </div>
             <details className={styles.tagDetails}>
               <summary className={styles.tagSummary}>
-                {isTR ? "İstersen birkaç duygu seç (isteğe bağlı)" : "Optionally pick a few feelings"}
+                {isTR ? "Seni en iyi anlatan duyguları seç" : "Choose the feelings that describe you best"}
               </summary>
               <div className={styles.tagRow}>
                 {EMOTION_PRESETS.map((t) => (
@@ -632,7 +634,7 @@ export default function AnlasilmaPanel({
               disabled={!intent.trim()}
               onClick={goToFreqPhase}
             >
-              {isTR ? "Devam" : "Continue"}
+              {isTR ? "Devam et" : "Continue"}
             </button>
           </div>
         )}
@@ -713,6 +715,7 @@ export default function AnlasilmaPanel({
               <span className={styles.hearingRing} />
             </div>
             <p className={styles.hearingLine}>{isTR ? "Seni duyuyorum…" : "I’m listening to you…"}</p>
+            <p className={styles.hearingSub}>{isTR ? "Belki ilk kez biri gerçekten dinliyor." : "Maybe for the first time, someone is truly listening."}</p>
           </div>
         )}
 
@@ -733,16 +736,18 @@ export default function AnlasilmaPanel({
               );
             })()}
 
-            <div className={styles.liveCountBar}>
-              <span className={styles.liveDot} />
-              <span className={styles.liveText}>
-                {isTR ? (
-                  <>Şu an <strong>{liveCount}</strong> kişi bu frekansta</>
-                ) : (
-                  <><strong>{liveCount}</strong> people on this frequency right now</>
-                )}
-              </span>
-            </div>
+            {liveCount > 0 && (
+              <div className={styles.liveCountBar}>
+                <span className={styles.liveDot} />
+                <span className={styles.liveText}>
+                  {isTR ? (
+                    <>Şu an <strong>{liveCount}</strong> kişi bu frekansta</>
+                  ) : (
+                    <><strong>{liveCount}</strong> people on this frequency right now</>
+                  )}
+                </span>
+              </div>
+            )}
 
             <div
               className={styles.freqEchoBar}
@@ -767,8 +772,8 @@ export default function AnlasilmaPanel({
             )}
 
             <div className={styles.yankiBridge}>
-              <p className={styles.yankiBridgeLine}>{isTR ? "Bu hissi yalnız yaşamıyorsun." : "You’re not alone in this feeling."}</p>
-              <p className={styles.yankiBridgeSub}>{isTR ? "İstersen yankıya bırak." : "If you want, release it to the echo."}</p>
+              <p className={styles.yankiBridgeLine}>{isTR ? "Bu hissi taşıyan tek kişi sen değilsin." : "You’re not the only one carrying this."}</p>
+              <p className={styles.yankiBridgeSub}>{isTR ? "Bazı şeyler yazıldığında hafifler." : "Some things get lighter when written."}</p>
             </div>
 
             <button

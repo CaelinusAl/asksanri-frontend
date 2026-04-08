@@ -4,7 +4,7 @@ import adminStyles from "../../components/admin/AdminStyles.module.css";
 import pageStyles from "./AdminSystemPage.module.css";
 import { fetchHealth, fetchVisitorStats, fetchFunnelStats } from "../../data/adminApi";
 
-const MOCK_HEALTH = { status: "ok", ok: true };
+const FALLBACK_HEALTH = { status: "unknown", ok: false };
 
 function isHealthy(data) {
   if (!data || typeof data !== "object") return false;
@@ -38,7 +38,7 @@ export default function AdminSystemPage() {
         setUsedMock(false);
       } catch {
         if (cancelled) return;
-        setHealth(MOCK_HEALTH);
+        setHealth(FALLBACK_HEALTH);
         setUsedMock(true);
       } finally {
         if (!cancelled) setReady(true);

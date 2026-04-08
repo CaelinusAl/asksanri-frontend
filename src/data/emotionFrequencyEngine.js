@@ -3,7 +3,7 @@
  * Öfke/korku→396, değişim→417, şifa→528, bağ→639, ifade→741, farkındalık→852, birlik/teslimiyet→963
  */
 
-export const EMOTION_ENGINE_VERSION = 1;
+export const EMOTION_ENGINE_VERSION = 2;
 
 const CATEGORY_ORDER = [
   "fear_anger",
@@ -205,6 +205,76 @@ const STEM_WEIGHTS = {
   ],
 };
 
+/** English stem weights — enables scoring for English-language input */
+const EN_STEM_WEIGHTS = {
+  fear_anger: [
+    ["anger", 1.5], ["angry", 1.5], ["rage", 1.5], ["fury", 1.3], ["fear", 1.5],
+    ["afraid", 1.5], ["scared", 1.5], ["anxious", 1.5], ["anxiety", 1.5], ["panic", 1.5],
+    ["threat", 1.2], ["hate", 1.5], ["insecure", 2.0], ["unsafe", 2.0], ["control", 0.8],
+    ["frustrat", 1.3], ["irritat", 1.2], ["resent", 1.3], ["bitter", 1.2], ["jealous", 1.2],
+    ["trauma", 1.5], ["nervous", 1.3], ["worry", 1.3], ["stressed", 1.3], ["overwhelm", 1.3],
+    ["helpless", 1.5], ["trapped", 1.3], ["suffocate", 1.3], ["disgust", 1.2],
+  ],
+  change: [
+    ["change", 1.5], ["transform", 1.5], ["transition", 1.3], ["letting go", 1.5],
+    ["let go", 1.5], ["move on", 1.3], ["new chapter", 1.5], ["stuck", 1.5],
+    ["stagnant", 1.3], ["crossroad", 1.3], ["reinvent", 1.3], ["evolve", 1.3],
+    ["different", 0.8], ["renew", 1.3], ["breakthrough", 1.3], ["shift", 1.2],
+    ["enough", 0.8], ["restart", 1.3], ["turning point", 1.5],
+  ],
+  healing: [
+    ["heal", 1.8], ["tired", 1.5], ["exhaust", 1.5], ["rest", 1.2], ["compassion", 1.5],
+    ["forgive", 1.5], ["wound", 1.5], ["hurt", 1.5], ["pain", 1.3], ["broken", 1.3],
+    ["recover", 1.3], ["peace", 1.8], ["calm", 1.5], ["balance", 1.5], ["gentle", 1.2],
+    ["breath", 1.2], ["cry", 1.3], ["tears", 1.3], ["sad", 1.5], ["grief", 1.5],
+    ["mourn", 1.3], ["sorrow", 1.5], ["relief", 1.3], ["comfort", 1.3], ["happy", 1.3],
+    ["joy", 1.3], ["grateful", 1.3], ["burnout", 1.5], ["drained", 1.5],
+  ],
+  bond: [
+    ["lonely", 1.8], ["alone", 1.5], ["abandon", 1.5], ["love", 1.8], ["loved", 1.5],
+    ["connect", 1.5], ["closeness", 1.5], ["relationship", 1.3], ["hug", 1.3],
+    ["hold me", 1.5], ["hear me", 1.5], ["understand", 1.3], ["miss", 1.8],
+    ["longing", 1.8], ["family", 1.2], ["mother", 1.3], ["father", 1.3], ["friend", 1.2],
+    ["belong", 1.5], ["trust", 1.8], ["safe", 1.5], ["togeth", 1.2],
+    ["intimacy", 1.3], ["warmth", 1.2], ["loss", 1.3], ["lost someone", 1.5],
+    ["heartbreak", 1.5], ["rejected", 1.3], ["ignored", 1.3],
+  ],
+  expression: [
+    ["express", 1.5], ["speak", 1.3], ["voice", 1.2], ["words", 1.2], ["silent", 1.3],
+    ["suppress", 1.3], ["scream", 1.5], ["shout", 1.2], ["creative", 1.2],
+    ["music", 1.0], ["art", 1.0], ["write", 0.8], ["poetry", 1.2], ["truth", 1.3],
+    ["honest", 1.2], ["can't say", 1.5], ["unsaid", 1.5], ["throat", 1.2],
+    ["unheard", 1.3], ["mute", 1.3], ["speechless", 1.3], ["bottled", 1.3],
+  ],
+  awareness: [
+    ["aware", 1.5], ["awareness", 1.8], ["intuition", 1.5], ["insight", 1.5],
+    ["dream", 1.3], ["symbol", 1.3], ["sign", 1.2], ["meaning", 1.3], ["curious", 1.5],
+    ["meditat", 1.5], ["silence", 1.2], ["why", 0.8], ["question", 1.0],
+    ["uncertain", 1.3], ["confused", 1.2], ["awaken", 1.5], ["conscious", 1.5],
+    ["realiz", 1.3], ["understand", 1.0], ["void", 1.5], ["nothing", 1.3],
+    ["emptiness", 1.5], ["contemplat", 1.3], ["depth", 1.2], ["mystery", 1.0],
+  ],
+  unity: [
+    ["surrender", 1.8], ["accept", 1.5], ["universe", 1.3], ["unity", 1.5],
+    ["whole", 1.3], ["spiritual", 1.5], ["sacred", 1.3], ["divine", 1.3],
+    ["god", 1.3], ["infinite", 1.3], ["complete", 1.0], ["grateful", 1.5],
+    ["gratitude", 1.8], ["bless", 1.3], ["soul", 1.0], ["cosmic", 1.3],
+    ["transcend", 1.3], ["oneness", 1.5], ["eternity", 1.3], ["light", 1.0],
+    ["enlighten", 1.5], ["grace", 1.3], ["faith", 1.3],
+  ],
+};
+
+/** English multi-word phrases */
+const EN_WEIGHTED_PHRASES = [
+  ["expression", 2.5, "can't express", "can't say", "words stuck", "i can't speak", "bottled up", "keeping it inside", "holding it in", "lost my voice", "can't put into words"],
+  ["bond", 2.5, "i feel alone", "no one understands", "i was abandoned", "i miss them", "need a hug", "want to be held", "nobody cares", "left behind", "all by myself", "i feel invisible"],
+  ["fear_anger", 2.5, "i'm so angry", "panic attack", "i feel unsafe", "can't control", "about to explode", "i can't take it", "full of rage", "i hate this", "so anxious"],
+  ["unity", 2.5, "i surrender", "i accept", "letting the universe", "feeling whole", "at peace", "everything is one", "spiritual peace", "i trust the universe", "connected to everything"],
+  ["awareness", 2.5, "i'm becoming aware", "had a dream", "seeing signs", "inner voice", "searching for meaning", "questioning everything", "something shifted", "looking inward"],
+  ["change", 2.5, "i want to change", "need a fresh start", "stuck in a loop", "time to move on", "i feel stuck", "can't stay here", "want something different", "at a crossroads"],
+  ["healing", 2.5, "i need to heal", "so tired", "my heart is broken", "i want to forgive", "it hurts inside", "i want to cry", "i need rest", "i feel drained", "burnt out"],
+];
+
 function normalizeText(text) {
   return text.toLocaleLowerCase("tr-TR").replace(/[.,;:!?'"()\[\]{}<>…–—""'']/g, " ").replace(/\s+/g, " ").trim();
 }
@@ -221,7 +291,8 @@ function tokenize(text) {
 function scoreFromText(haystack) {
   const scores = Object.fromEntries(CATEGORY_ORDER.map((c) => [c, 0]));
 
-  for (const row of WEIGHTED_PHRASES) {
+  const allPhrases = [...WEIGHTED_PHRASES, ...EN_WEIGHTED_PHRASES];
+  for (const row of allPhrases) {
     const cat = row[0];
     const w = row[1];
     for (let i = 2; i < row.length; i++) {
@@ -235,9 +306,19 @@ function scoreFromText(haystack) {
   const tokens = tokenize(haystack);
 
   for (const cat of CATEGORY_ORDER) {
-    const stems = STEM_WEIGHTS[cat] || [];
-    for (const [stem, weight] of stems) {
+    const trStems = STEM_WEIGHTS[cat] || [];
+    for (const [stem, weight] of trStems) {
       const s = stem.toLocaleLowerCase("tr-TR");
+      for (const tok of tokens) {
+        if (tok === s || tok.startsWith(s)) {
+          scores[cat] += weight;
+        }
+      }
+    }
+
+    const enStems = EN_STEM_WEIGHTS[cat] || [];
+    for (const [stem, weight] of enStems) {
+      const s = stem.toLowerCase();
       for (const tok of tokens) {
         if (tok === s || tok.startsWith(s)) {
           scores[cat] += weight;
@@ -285,36 +366,63 @@ function pickWinner(scores) {
  *   engineVersion: number
  * }}
  */
+const SAFE_FALLBACK = Object.freeze({
+  frequency: 528,
+  chakra: "Kalp merkezi",
+  category: "healing",
+  message: MESSAGES.healing.tr,
+  reflection: REFLECTIONS.healing?.tr ?? "",
+  scores: Object.fromEntries(CATEGORY_ORDER.map((c) => [c, 0])),
+  confidence: 0,
+  lowSignal: true,
+  engineVersion: EMOTION_ENGINE_VERSION,
+});
+
 export function inferEmotionFrequency({ text = "", tagLabels = [], locale = "tr" } = {}) {
-  const haystack = padHaystack(typeof text === "string" ? text : "");
-  let scores = scoreFromText(haystack);
-  scores = applyTagBoost(scores, tagLabels);
+  try {
+    const haystack = padHaystack(typeof text === "string" ? text : "");
+    let scores = scoreFromText(haystack);
+    scores = applyTagBoost(scores, tagLabels);
 
-  const total = CATEGORY_ORDER.reduce((s, c) => s + (scores[c] || 0), 0);
-  let category = pickWinner(scores);
+    const total = CATEGORY_ORDER.reduce((s, c) => s + (scores[c] || 0), 0);
+    let category = pickWinner(scores);
+    const winnerScore = scores[category] || 0;
+    const confidence = total > 0 ? Math.round((winnerScore / total) * 100) / 100 : 0;
+    const lowSignal = total < 0.75;
 
-  /* Belirsiz / çok düşük sinyal → 528 Hz (kalp, şifa — en nötr ve kapsayıcı frekans) */
-  if (total < 0.75) {
-    category = "healing";
-    scores = { ...scores, healing: (scores.healing || 0) + 0.5 };
+    if (lowSignal) {
+      category = "healing";
+      scores = { ...scores, healing: (scores.healing || 0) + 0.5 };
+    }
+
+    const frequency = CATEGORY_TO_HZ[category];
+    const loc = locale === "en" ? "en" : "tr";
+    const chakra = HZ_TO_CHAKRA[frequency][loc];
+    let message = MESSAGES[category][loc];
+
+    if (confidence < 0.3 && !lowSignal) {
+      const nudge = loc === "tr"
+        ? " Biraz daha anlatırsan seni daha net duyabilirim."
+        : " Tell me a little more so I can hear you more clearly.";
+      message += nudge;
+    }
+
+    const reflection = REFLECTIONS[category]?.[loc] ?? "";
+
+    return {
+      frequency,
+      chakra,
+      category,
+      message,
+      reflection,
+      scores,
+      confidence,
+      lowSignal,
+      engineVersion: EMOTION_ENGINE_VERSION,
+    };
+  } catch {
+    return { ...SAFE_FALLBACK };
   }
-
-  const frequency = CATEGORY_TO_HZ[category];
-  const loc = locale === "en" ? "en" : "tr";
-  const chakra = HZ_TO_CHAKRA[frequency][loc];
-  const message = MESSAGES[category][loc];
-
-  const reflection = REFLECTIONS[category]?.[loc] ?? "";
-
-  return {
-    frequency,
-    chakra,
-    category,
-    message,
-    reflection,
-    scores,
-    engineVersion: EMOTION_ENGINE_VERSION,
-  };
 }
 
 /**
