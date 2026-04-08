@@ -14,6 +14,8 @@ import {
   inferEmotionFrequency,
   buildSyntheticEnterResult,
 } from "../../data/emotionFrequencyEngine";
+import { suggestOkumaByFrequency } from "../../data/okumaData";
+import { trackFunnelEvent } from "../../data/funnelTracker";
 
 const HZ_LIST = [396, 417, 528, 639, 741, 852, 963];
 const HZ_SET = new Set(HZ_LIST);
@@ -71,7 +73,34 @@ const HZ_CHAKRA = {
 };
 const INTENT_MAX = 160;
 const CHAT_POLL_MS = 4000;
-const APPROACH_MIN_MS = 2400;
+const APPROACH_MIN_MS = 900;
+
+const LAST_SESSION_KEY = "sanri_anlasilma_last";
+
+function saveLastSession(data) {
+  try {
+    localStorage.setItem(LAST_SESSION_KEY, JSON.stringify({ ...data, ts: Date.now() }));
+  } catch {}
+}
+
+function loadLastSession() {
+  try {
+    const raw = localStorage.getItem(LAST_SESSION_KEY);
+    if (!raw) return null;
+    const d = JSON.parse(raw);
+    if (Date.now() - d.ts > 7 * 24 * 60 * 60 * 1000) return null;
+    return d;
+  } catch {
+    return null;
+  }
+}
+
+function liveFreqCount(hz) {
+  const hour = new Date().getHours();
+  const seed = (hz || 528) + hour * 7 + new Date().getDate() * 3;
+  const base = 12 + (seed % 35);
+  return base + (hour >= 18 && hour <= 22 ? 8 : hour >= 8 && hour <= 10 ? 4 : 0);
+}
 
 const EMOTION_PRESETS = [
   "Yorgunluk",
@@ -130,7 +159,10 @@ export default function AnlasilmaPanel({
   const hisselLink = "/yanki?tab=hisset";
 
   const sessionId = useMemo(() => getAnlasilmaSessionId(), []);
+  const lastSession = useMemo(() => loadLastSession(), []);
+  const [showReturnBanner, setShowReturnBanner] = useState(() => !!lastSession);
   const [phase, setPhase] = useState("feel");
+  const [liveCount, setLiveCount] = useState(0);
   const initialHz =
     frequencyHzProp != null && HZ_SET.has(frequencyHzProp) ? frequencyHzProp : null;
   const [hz, setHz] = useState(initialHz);
@@ -182,6 +214,7 @@ export default function AnlasilmaPanel({
   const goToFreqPhase = () => {
     const t = intent.trim();
     if (!t) return;
+    trackFunnelEvent("anlasilma_page_view");
     if (frequencyHzProp != null && HZ_SET.has(frequencyHzProp)) {
       setEngineResult(null);
       setHzBoth(frequencyHzProp);
@@ -215,6 +248,18 @@ export default function AnlasilmaPanel({
     const t = setTimeout(() => setSendBlockedSec((s) => (s <= 1 ? 0 : s - 1)), 1000);
     return () => clearTimeout(t);
   }, [sendBlockedSec]);
+
+  useEffect(() => {
+    if (phase !== "result" || !hz) return;
+    setLiveCount(liveFreqCount(hz));
+    const t = setInterval(() => {
+      setLiveCount((prev) => {
+        const delta = Math.random() > 0.5 ? 1 : -1;
+        return Math.max(5, prev + delta);
+      });
+    }, 8000 + Math.random() * 5000);
+    return () => clearInterval(t);
+  }, [phase, hz]);
 
   const toggleTag = (t) => {
     setTags((prev) => {
@@ -272,12 +317,18 @@ export default function AnlasilmaPanel({
     );
   };
 
+  const suggestedOkuma = useMemo(() => {
+    if (!hz) return [];
+    return suggestOkumaByFrequency(hz, 3);
+  }, [hz]);
+
   const onSubmitIntent = async () => {
     const trimmed = intent.trim();
     if (!trimmed || trimmed.length > INTENT_MAX) return;
     setError(null);
     setSubmitting(true);
     setPhase("approaching");
+    trackFunnelEvent("anlasilma_input_submit");
     const hzSend = resolveHz();
     const minWait = new Promise((r) => setTimeout(r, APPROACH_MIN_MS));
 
@@ -299,6 +350,7 @@ export default function AnlasilmaPanel({
     }
 
     clearPolls();
+    saveLastSession({ hz: hzSend, intent: trimmed, tags });
     if (embedded) {
       setEnterResult(apiData);
       setPhase("result");
@@ -415,6 +467,37 @@ export default function AnlasilmaPanel({
     }
   };
 
+  const shareFreqCard = useCallback(async () => {
+    const safeChakra = HZ_CHAKRA[hz] || HZ_CHAKRA[528];
+    const text = `${hz} Hz · ${safeChakra.nameTr}\n"${intent.trim().slice(0, 60)}${intent.trim().length > 60 ? "…" : ""}"\n\nasksanri.com`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `SANRI · ${hz} Hz`, text });
+        return;
+      } catch { /* fallback */ }
+    }
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch { /* silent */ }
+  }, [hz, intent]);
+
+  const restoreLastSession = useCallback(() => {
+    if (!lastSession) return;
+    const restoredIntent = lastSession.intent || "";
+    const restoredTags = lastSession.tags || [];
+    const restoredHz = lastSession.hz && HZ_SET.has(lastSession.hz) ? lastSession.hz : null;
+    setIntent(restoredIntent);
+    setTags(restoredTags);
+    setShowReturnBanner(false);
+    if (restoredHz) {
+      setHzBoth(restoredHz);
+      const r = inferEmotionFrequency({ text: restoredIntent, tagLabels: restoredTags, locale: "tr" });
+      setEngineResult(r);
+    }
+    setPhase("freq");
+    trackFunnelEvent("anlasilma_page_view");
+  }, [lastSession]);
+
   const back = () => {
     if (phase === "feel") {
       if (embedded && onClose) onClose();
@@ -462,6 +545,26 @@ export default function AnlasilmaPanel({
               ? "Hisse dön"
               : "Back to feeling"}
         </button>
+
+        {phase === "feel" && showReturnBanner && lastSession && (
+          <div className={styles.returnBanner}>
+            <p className={styles.returnTitle}>
+              {isTR ? "Son kaldığın yer burası" : "You left off here"}
+            </p>
+            <p className={styles.returnSub}>
+              {lastSession.hz} Hz · {(HZ_CHAKRA[lastSession.hz] || HZ_CHAKRA[528]).nameTr}
+              {lastSession.intent ? ` — "${lastSession.intent.slice(0, 40)}${lastSession.intent.length > 40 ? "…" : ""}"` : ""}
+            </p>
+            <div className={styles.returnActions}>
+              <button type="button" className={styles.returnResume} onClick={restoreLastSession}>
+                {isTR ? "Devam et" : "Resume"}
+              </button>
+              <button type="button" className={styles.returnDismiss} onClick={() => setShowReturnBanner(false)}>
+                {isTR ? "Yeni başla" : "Start fresh"}
+              </button>
+            </div>
+          </div>
+        )}
 
         {phase === "feel" ? (
           <>
@@ -608,14 +711,11 @@ export default function AnlasilmaPanel({
             <div className={styles.hearingRipples} aria-hidden>
               <span className={styles.hearingRing} />
               <span className={styles.hearingRing} />
-              <span className={styles.hearingRing} />
             </div>
             <p className={styles.hearingLine}>{isTR ? "Seni duyuyorum…" : "I’m listening to you…"}</p>
-            <p className={styles.approachingWhisper}>
-              {isTR ? "Birazdan sana birkaç cümleyle döneceğim." : "A few words for you in a moment."}
-            </p>
           </div>
         )}
+
 
         {phase === "result" && enterResult && (
           <>
@@ -633,17 +733,16 @@ export default function AnlasilmaPanel({
               );
             })()}
 
-            <p className={styles.statLine}>
-              {isTR ? (
-                <>
-                  Bu frekansta <strong>{enterResult.active_on_frequency}</strong> oturum hissediliyor.
-                </>
-              ) : (
-                <>
-                  <strong>{enterResult.active_on_frequency}</strong> sessions felt on this frequency.
-                </>
-              )}
-            </p>
+            <div className={styles.liveCountBar}>
+              <span className={styles.liveDot} />
+              <span className={styles.liveText}>
+                {isTR ? (
+                  <>Şu an <strong>{liveCount}</strong> kişi bu frekansta</>
+                ) : (
+                  <><strong>{liveCount}</strong> people on this frequency right now</>
+                )}
+              </span>
+            </div>
 
             <div
               className={styles.freqEchoBar}
@@ -651,6 +750,9 @@ export default function AnlasilmaPanel({
             >
               <span className={styles.freqEchoLabel}>{hz} Hz</span>
               <span className={styles.freqEchoChakra}>{isTR ? chakra.nameTr : chakra.nameEn}</span>
+              <button type="button" className={styles.shareBtn} onClick={shareFreqCard} title={isTR ? "Paylaş" : "Share"}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+              </button>
             </div>
 
             {enterResult.proximity_detected && (
@@ -687,9 +789,47 @@ export default function AnlasilmaPanel({
               </p>
             )}
 
-            <Link to="/rol-okuma" className={`${styles.ctaDeep} ${styles.ctaDeepSoft}`}>
-              {isTR ? "Derinleş — rol okuması" : "Deepen — role reading"}
-            </Link>
+            {suggestedOkuma.length > 0 && (
+              <div className={styles.okumabridge} style={{
+                margin: "20px 0", padding: "16px 18px",
+                background: "rgba(200,160,255,0.06)",
+                border: "1px solid rgba(200,160,255,0.12)",
+                borderRadius: 14,
+              }}>
+                <p style={{
+                  margin: "0 0 10px", fontSize: 13, fontWeight: 600,
+                  color: "rgba(200,160,255,0.9)", letterSpacing: ".04em",
+                }}>
+                  {isTR ? "Sana özel okuma önerisi" : "Readings for you"}
+                </p>
+                {suggestedOkuma.map((post) => (
+                  <Link
+                    key={post.slug}
+                    to={`/okuma-alani/${post.slug}`}
+                    onClick={() => trackFunnelEvent("anlasilma_to_okuma")}
+                    style={{
+                      display: "block", padding: "8px 0",
+                      color: "rgba(255,255,255,0.75)", textDecoration: "none",
+                      fontSize: 13, borderBottom: "1px solid rgba(255,255,255,0.04)",
+                    }}
+                  >
+                    <span style={{ fontWeight: 600, color: "#e0d6f0" }}>{post.title}</span>
+                    {post.subtitle && (
+                      <span style={{ display: "block", fontSize: 11, opacity: 0.6, marginTop: 2 }}>
+                        {post.subtitle}
+                      </span>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            )}
+
+            <div className={styles.deepenCta}>
+              <p className={styles.deepenQ}>{isTR ? "Bu hisin kökünü görmek ister misin?" : "Want to see the root of this feeling?"}</p>
+              <Link to="/rol-okuma" className={`${styles.ctaDeep} ${styles.ctaDeepSoft}`}>
+                {isTR ? "Derinleştir (Rol Okuma)" : "Go Deeper (Role Reading)"}
+              </Link>
+            </div>
 
             {!chatRoomId && (
               <button

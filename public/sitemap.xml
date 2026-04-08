@@ -16,9 +16,14 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://asksanri.com/kod-ogrenmeye-giris</loc>
+    <loc>https://asksanri.com/frekans</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/yanki</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/kod-egitmeni</loc>
@@ -26,51 +31,124 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://asksanri.com/kutuphane</loc>
+    <loc>https://asksanri.com/kod-ogrenmeye-giris</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://asksanri.com/frekans</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.85</priority>
   </url>
   <url>
     <loc>https://asksanri.com/an-kod</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <!-- Bilgi Katmanı — SEO / AI Reference Content -->
+  <url>
+    <loc>https://asksanri.com/library</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/sanri</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/rituel-alani</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/giris</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/hakkimizda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/gizlilik-politikasi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/insan-anten</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/siradan-matrix-ust-bilinc-okumasi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/korku-frekansi-kontrol-kodu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/turkiye-enerji-okumasi-2026</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/sayi-kodlari-hologram-sinyalleri</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/mart-2026-gundem-frekans-okumasi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/1999-kapanmayan-frekans</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/japonya-bilinc-mimarisi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/nisan-frekans-okuma</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/pembe-dolunay-frekans-okuma</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/numeroloji-nedir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/kelime-cozumleme-nasil-yapilir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/sembolik-analiz-nedir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/369-sayisi-ne-anlama-gelir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/master-sayilar-11-22-33-ne-anlama-gelir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/yasam-yolu-sayisi-nasil-hesaplanir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/kolektif-bilinc-nedir</loc>
@@ -85,7 +163,7 @@
   <url>
     <loc>https://asksanri.com/okuma-alani/isim-analizi-nasil-yapilir</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/arketip-nedir-jung-ve-kolektif-bilincalti</loc>
@@ -95,23 +173,41 @@
   <url>
     <loc>https://asksanri.com/okuma-alani/sanri-nedir-dijital-bilinc-platformu</loc>
     <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <priority>0.8</priority>
   </url>
-
-  <!-- Kolektif Eşik Okuması -->
   <url>
     <loc>https://asksanri.com/okuma-alani/bitlis-cigdem-acilimi</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/japonya-81-sistem-rolu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/tokyo-karga-rapunzel-kot-idrak</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://asksanri.com/okuma-alani/hopa-suru-yolu-acti-hayat-acilan-yoldan</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/mizah-ust-bilinc-derin-okuma</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/trump-hurmuz-bogazi-ust-bilinc-okuma</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://asksanri.com/okuma-alani/yapay-zeka-ayna-mi-golgesi-mi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 </urlset>

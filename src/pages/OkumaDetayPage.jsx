@@ -3,7 +3,8 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { usePremium } from "../contexts/PremiumContext";
 import { useAdmin } from "../contexts/AdminContext";
-import { getPostBySlug, getCategoryById, timeAgoOkuma } from "../data/okumaData";
+import { getPostBySlug, getCategoryById, timeAgoOkuma, getCommentsByPostId } from "../data/okumaData";
+import { trackFunnelEvent } from "../data/funnelTracker";
 import { markOkumaSeen, OKUMA_EARLY_PAYWALL_MARKER } from "../data/okumaSeen";
 import { putContentSnapshot, putEntitlement } from "../lib/offline/contentArchive";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
@@ -150,6 +151,11 @@ export default function OkumaDetayPage() {
     loadedRef.current = false;
     setComments([]);
   }, [slug]);
+
+  useEffect(() => {
+    if (!post) return;
+    trackFunnelEvent("okuma_detail_view", post.slug);
+  }, [post]);
 
   useEffect(() => {
     if (!post || loadedRef.current) return;
@@ -381,10 +387,56 @@ export default function OkumaDetayPage() {
           }
 
           if (hasEarlyPaywall) {
+            trackFunnelEvent("okuma_paywall_view", post.slug);
             const teaser = rawFull.split(OKUMA_EARLY_PAYWALL_MARKER)[0]?.trim() || "";
+            const deepComments = post.deepReaderComments || [];
             return (
               <>
                 <div className={styles.content}>{teaser}</div>
+
+                {(viewsCount + (post.viewCount || 0) > 10 || deepComments.length > 0) && (
+                  <div className={styles.socialProof} style={{
+                    margin: "16px 0", padding: "14px 16px",
+                    background: "rgba(200,160,255,0.05)",
+                    border: "1px solid rgba(200,160,255,0.10)",
+                    borderRadius: 12,
+                  }}>
+                    <p style={{ margin: 0, fontSize: 12, color: "rgba(200,160,255,0.8)", fontWeight: 600 }}>
+                      {isTR
+                        ? `Bu okuma ${viewsCount + (post.viewCount || 0)} kişi tarafından görüntülendi`
+                        : `This reading was viewed by ${viewsCount + (post.viewCount || 0)} people`}
+                      {deepComments.length > 0 && (
+                        <span style={{ opacity: 0.7 }}>
+                          {" · "}
+                          {isTR
+                            ? `${deepComments.length} kişi derin katmanı okudu`
+                            : `${deepComments.length} read the deep layer`}
+                        </span>
+                      )}
+                    </p>
+                    {deepComments.length > 0 && (
+                      <div style={{ marginTop: 10 }}>
+                        <p style={{ margin: "0 0 6px", fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: ".04em", fontWeight: 600 }}>
+                          {isTR ? "DERİN AÇILIMI OKUYANLARDAN:" : "FROM DEEP LAYER READERS:"}
+                        </p>
+                        {deepComments.slice(0, 2).map((c, i) => (
+                          <p key={i} style={{
+                            margin: "4px 0", padding: "8px 10px", fontSize: 12,
+                            background: "rgba(255,255,255,0.03)", borderRadius: 8,
+                            color: "rgba(255,255,255,0.6)", fontStyle: "italic",
+                            borderLeft: "2px solid rgba(200,160,255,0.3)",
+                          }}>
+                            "{c.content.length > 80 ? c.content.slice(0, 80) + "…" : c.content}"
+                            <span style={{ display: "block", fontSize: 10, marginTop: 3, opacity: 0.5, fontStyle: "normal" }}>
+                              — {c.authorName}
+                            </span>
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <div className={`${styles.lockZone} ${styles.lockZoneStandalone}`}>
                   <div className={styles.lockZoneGradient} />
                   <div className={styles.lockZoneOverlay}>
@@ -401,17 +453,19 @@ export default function OkumaDetayPage() {
                     </p>
                     <button
                       className={styles.lockZoneBtn}
-                      onClick={() =>
-                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
-                      }
+                      onClick={() => {
+                        trackFunnelEvent("okuma_unlock_click", post.slug);
+                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname);
+                      }}
                     >
                       {isTR ? "Derin okumayı aç — 9,90 ₺" : "Open deep reading — ₺9.90"}
                     </button>
                     <button
                       className={styles.lockZoneAlt}
-                      onClick={() =>
-                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname)
-                      }
+                      onClick={() => {
+                        trackFunnelEvent("okuma_unlock_click", post.slug);
+                        redirectToShopier("okuma_devami", `okuma_${post.id}`, location.pathname);
+                      }}
                     >
                       {isTR ? "İlerle" : "Continue"}
                     </button>

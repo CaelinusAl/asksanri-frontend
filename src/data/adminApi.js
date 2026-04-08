@@ -62,6 +62,7 @@ export const fetchAdminPendingSummary = () => adminFetch("/admin/pending-summary
 
 // ── Page Views / Visitors ──
 export const fetchVisitorStats = () => adminFetch("/analytics/stats");
+export const fetchRetentionStats = (days = 30) => adminFetch(`/analytics/retention?days=${days}`);
 
 // ── System ──
 export const fetchHealth = () => fetch(`${API}/health`).then((r) => r.json());

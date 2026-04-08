@@ -12,6 +12,7 @@ import {
   fetchAnalytics,
   fetchFunnelStats,
   fetchOkumaAllStats,
+  fetchRetentionStats,
 } from "../../data/adminApi";
 import { OKUMA_POSTS } from "../../data/okumaData";
 import {
@@ -529,12 +530,13 @@ export default function AdminDashboardPage() {
   const [funnel, setFunnel] = useState(null);
   const [analyticsRaw, setAnalyticsRaw] = useState(null);
   const [okumaStatsPayload, setOkumaStatsPayload] = useState(null);
+  const [retention, setRetention] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
 
     (async () => {
-      const [dashResult, memResult, modResult, visitorResult, funResult, anResult, okResult] =
+      const [dashResult, memResult, modResult, visitorResult, funResult, anResult, okResult, retResult] =
         await Promise.all([
           fetchDashboard().catch(() => null),
           fetchMembership().catch(() => null),
@@ -543,6 +545,7 @@ export default function AdminDashboardPage() {
           fetchFunnelStats(7).catch(() => null),
           fetchAnalytics("7d").catch(() => null),
           fetchOkumaAllStats().catch(() => null),
+          fetchRetentionStats(30).catch(() => null),
         ]);
 
       if (cancelled) return;
@@ -551,6 +554,7 @@ export default function AdminDashboardPage() {
       if (funResult != null) setFunnel(funResult);
       if (anResult != null) setAnalyticsRaw(anResult);
       if (okResult?.stats && typeof okResult.stats === "object") setOkumaStatsPayload(okResult.stats);
+      if (retResult != null) setRetention(retResult);
 
       if (dashResult != null) {
         setDashRaw(dashResult);
@@ -683,6 +687,113 @@ export default function AdminDashboardPage() {
                   <span style={{ fontWeight: 600, color: "#c8a0ff" }}>{p.views}</span>
                 </div>
               ))}
+            </div>
+          )}
+        </section>
+      )}
+
+      {retention && (
+        <section style={{ marginBottom: 28 }}>
+          <h2 className={adminStyles.sectionTitle}>Retention (30 gün)</h2>
+          <div className={adminStyles.grid5}>
+            <StatCard
+              label="Tekil Ziyaretçi"
+              value={retention.total_unique_visitors ?? 0}
+              icon="◇"
+              accent="#c8a0ff"
+            />
+            <StatCard
+              label="Geri Dönen"
+              value={retention.returning_visitors ?? 0}
+              icon="↻"
+              accent="#50c878"
+            />
+            <StatCard
+              label="Geri Dönüş Oranı"
+              value={`%${retention.return_rate ?? 0}`}
+              icon="◉"
+              accent={retention.return_rate >= 20 ? "#50c878" : "#ff9a6c"}
+            />
+          </div>
+          {retention.daily_active?.length > 0 && (
+            <div style={{
+              marginTop: 16, padding: "16px 20px",
+              background: "rgba(80,200,120,0.04)",
+              border: "1px solid rgba(80,200,120,0.10)",
+              borderRadius: 14,
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#50c878", marginBottom: 10, letterSpacing: ".06em" }}>
+                GÜNLÜK AKTİF ZİYARETÇİ (30 GÜN)
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: 2, height: 60 }}>
+                {retention.daily_active.slice(-30).map((d, i) => {
+                  const maxU = Math.max(...retention.daily_active.map((x) => x.uniques || 1));
+                  const h = Math.max(4, (d.uniques / maxU) * 56);
+                  return (
+                    <div
+                      key={i}
+                      title={`${d.day}: ${d.uniques} ziyaretçi`}
+                      style={{
+                        flex: 1, minWidth: 0, height: h, borderRadius: 3,
+                        background: "rgba(80,200,120,0.5)",
+                      }}
+                    />
+                  );
+                })}
+              </div>
+              <div style={{
+                display: "flex", justifyContent: "space-between", marginTop: 4,
+                fontSize: 10, color: "rgba(255,255,255,0.35)",
+              }}>
+                <span>{retention.daily_active[0]?.day?.slice(5) ?? ""}</span>
+                <span>{retention.daily_active[retention.daily_active.length - 1]?.day?.slice(5) ?? ""}</span>
+              </div>
+            </div>
+          )}
+          {retention.cohorts && Object.keys(retention.cohorts).length > 0 && (
+            <div style={{
+              marginTop: 16, padding: "16px 20px",
+              background: "rgba(200,160,255,0.04)",
+              border: "1px solid rgba(200,160,255,0.10)",
+              borderRadius: 14,
+            }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: "#c8a0ff", marginBottom: 10, letterSpacing: ".06em" }}>
+                HAFTALIK KOHORT RETENTİON
+              </div>
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", fontSize: 12, color: "rgba(255,255,255,0.7)", borderCollapse: "collapse" }}>
+                  <thead>
+                    <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+                      <th style={{ textAlign: "left", padding: "6px 8px", fontWeight: 600, color: "#c8a0ff" }}>Kohort</th>
+                      <th style={{ textAlign: "right", padding: "6px 8px", fontWeight: 600 }}>Boyut</th>
+                      <th style={{ textAlign: "right", padding: "6px 8px", fontWeight: 600 }}>H0</th>
+                      <th style={{ textAlign: "right", padding: "6px 8px", fontWeight: 600 }}>H1</th>
+                      <th style={{ textAlign: "right", padding: "6px 8px", fontWeight: 600 }}>H2</th>
+                      <th style={{ textAlign: "right", padding: "6px 8px", fontWeight: 600 }}>H3</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(retention.cohorts).slice(0, 5).map(([week, data]) => (
+                      <tr key={week} style={{ borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+                        <td style={{ padding: "6px 8px", fontFamily: "monospace" }}>{week.slice(5)}</td>
+                        <td style={{ textAlign: "right", padding: "6px 8px", fontWeight: 600 }}>{data.cohort_size}</td>
+                        {[0, 1, 2, 3].map((wn) => {
+                          const val = data.weeks?.[String(wn)];
+                          const pct = data.cohort_size > 0 && val ? Math.round((val / data.cohort_size) * 100) : null;
+                          return (
+                            <td key={wn} style={{
+                              textAlign: "right", padding: "6px 8px",
+                              color: pct != null ? (pct >= 30 ? "#50c878" : pct >= 15 ? "#ffc832" : "#ff6482") : "rgba(255,255,255,0.2)",
+                            }}>
+                              {pct != null ? `%${pct}` : "—"}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </section>

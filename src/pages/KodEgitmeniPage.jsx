@@ -18,6 +18,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import { redirectToShopier, isShopierProductUnlocked } from "../data/shopierConfig";
 import BankTransferLink from "../components/BankTransferLink";
+import { trackFunnelEvent } from "../data/funnelTracker";
 import {
   KOD_CONTENT_ID_ILK_KAPI,
   KOD_CONTENT_ID_TAM_PROGRAM,
@@ -547,7 +548,10 @@ function ModuleList({ onSelectLesson, adminBypass }) {
 function Paywall() {
   const navigate = useNavigate();
 
+  useEffect(() => { trackFunnelEvent("kod_paywall_view"); }, []);
+
   const openIlkKapi = () => {
+    trackFunnelEvent("kod_unlock_click", "ilk_kapi");
     redirectToShopier("kod_giris_ders", KOD_CONTENT_ID_ILK_KAPI, "/kod-egitmeni?v=modules");
   };
   const openTamSistem = () => {
@@ -1073,6 +1077,8 @@ export default function KodEgitmeniPage() {
   const navigate = useNavigate();
   const [, rerender] = useState(0);
 
+  useEffect(() => { trackFunnelEvent("kod_page_view"); }, []);
+
   // Varsayılan: ders hub'ı (üretimde /kod-egitmeni ile aynı deneyim). Tanıtım: ?v=landing
   const vParam = sp.get("v");
   const view =
@@ -1088,8 +1094,8 @@ export default function KodEgitmeniPage() {
   const lesson = mod && lesId ? getLessonById(modId, lesId) : null;
 
   const goLanding = () => setSp({ v: "landing" });
-  const goModules = () => setSp({ v: "modules" });
-  const goLesson = (m, l) => setSp({ v: "lesson", m, l });
+  const goModules = () => { trackFunnelEvent("kod_module_view"); setSp({ v: "modules" }); };
+  const goLesson = (m, l) => { trackFunnelEvent("kod_lesson_view", `${m}/${l}`); setSp({ v: "lesson", m, l }); };
 
   const legacyLessonResolved = useRef(false);
   useEffect(() => {

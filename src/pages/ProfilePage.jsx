@@ -1,7 +1,7 @@
 // CAELINUS AI - Bilinç Aynası (Consciousness Mirror) Profile Page
 // User journey statistics, SANRI interactions, frequency progress
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -82,25 +82,45 @@ const ProfilePage = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Örnek: fetchProfile — şimdilik kırmayacak şekilde
-  const fetchProfile = async () => {
-    try {
-      setIsLoading(true);
-      // TODO: buraya gerçek endpoint gelecek
-      // const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/profile`, { ... })
-      // const json = await res.json();
-      // setData(json);
+  const { user } = useAuth();
 
-      // Şimdilik demo boş veri (map patlamasın)
-      setData((prev) => prev ?? {
-        level: 1,
-        next_level_progress: 0,
-        consciousness_map: {},
-        recent_activity: [],
+  const fetchProfile = async () => {
+    setIsLoading(true);
+    try {
+      const API =
+        (import.meta.env?.VITE_BACKEND_URL &&
+          String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+        "https://sanri-api-production-4a7b.up.railway.app";
+      const token = localStorage.getItem("sanri_token");
+      const res = await fetch(`${API}/profile`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
-    } finally {
-      setIsLoading(false);
-    }
+      if (res.ok) {
+        const json = await res.json();
+        setData({
+          level: json.vip ? 2 : 1,
+          next_level_progress: json.vip ? 100 : 35,
+          name: json.name || user?.name || "",
+          email: json.email || user?.email || "",
+          bio: json.bio || "",
+          intention: json.intention || "",
+          consciousness_map: {},
+          recent_activity: [],
+        });
+        setIsLoading(false);
+        return;
+      }
+    } catch { /* fallback below */ }
+
+    setData({
+      level: 1,
+      next_level_progress: 0,
+      name: user?.name || "",
+      email: user?.email || "",
+      consciousness_map: {},
+      recent_activity: [],
+    });
+    setIsLoading(false);
   };
 
   useEffect(() => {

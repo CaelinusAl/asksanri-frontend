@@ -32,7 +32,8 @@ function getDeviceType() {
 const _sent = new Set();
 
 export function trackFunnelEvent(eventType, extra) {
-  const key = `${eventType}_${getSessionId()}`;
+  const extraStr = extra ? (typeof extra === "string" ? extra : JSON.stringify(extra)) : "";
+  const key = `${eventType}_${extraStr}_${getSessionId()}`;
   if (_sent.has(key)) return;
   _sent.add(key);
 
@@ -42,7 +43,7 @@ export function trackFunnelEvent(eventType, extra) {
     source: getSource(),
     device_type: getDeviceType(),
   };
-  if (extra) body.extra = typeof extra === "string" ? extra : JSON.stringify(extra);
+  if (extraStr) body.extra = extraStr;
 
   fetch(`${API}/funnel/event`, {
     method: "POST",

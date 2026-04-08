@@ -67,6 +67,7 @@ import GozAcikGunesPage from "./pages/GozAcikGunesPage";
 import AuthCallback from "./components/AuthCallback";
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
+import PushOptIn from "./components/PushOptIn";
 
 const okumaAreaErrorStyle = {
   minHeight: "100vh",
@@ -117,6 +118,7 @@ export default function App() {
     <>
     <PendingPurchaseRecovery />
     <EmailCaptureModal trigger="timer" page="global" />
+    <PushOptIn />
     <Routes>
       {/* Sanrı = Anlaşılma Alanı — ana kabuk */}
       <Route path="/" element={<AnlasilmaShell />}>

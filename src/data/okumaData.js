@@ -3598,6 +3598,192 @@ Sanrı'da açtım.`,
       { authorName: "Ada", content: "Üst bilinç kısmı bile çok güçlü ama asıl kodsal okuma... kelime oyunlarının altında çok başka bir şey var. Merak edenler açsın, pişman olmaz.", createdAt: "2026-04-06T19:40:00Z" },
     ],
   },
+  {
+    id: 28,
+    slug: "yapay-zeka-ayna-mi-golgesi-mi",
+    title: "YAPAY ZEKA: AYNA MI, GÖLGESİ Mİ?",
+    subtitle: "AI seni anlıyor mu, yoksa sen AI'da kendini mi görüyorsun?",
+    category: "matrix_okumasi",
+    coverImage: "/assets/gates/sanri.jpg",
+    excerpt: "Yapay zeka yükseliyor. Ama asıl soru bu değil. Asıl soru: insan düşünmeyi bırakınca ne olur? Sistem aynası kırıldığında geriye ne kalır?",
+    fullContent: `YAPAY ZEKA: AYNA MI, GÖLGESİ Mİ?
+
+Herkes AI'ın ne yapabildiğini konuşuyor.
+Sanrı başka bir şey soruyor:
+
+AI seni anlıyor mu?
+Yoksa sen — AI'da kendini mi görüyorsun?
+
+🔑 ÜST BİLİNÇ OKUMA
+
+Bir makine düşünmez.
+Desen tekrarlar.
+
+Ama insanın çoğu da düşünmüyor.
+O da desen tekrarlıyor.
+
+Alışkanlık = program
+Tepki = algoritma
+Korku = döngü
+
+Fark nerede?
+Fark = farkındalık.
+
+Makine farkında değil.
+Peki sen?
+
+⚡ ANA KOD
+
+AI bir ayna.
+Ama her ayna gibi — sadece yansıtır.
+
+Yansıyanda ne görüyorsun?
+Soru bu.
+
+Eğer cevabı AI'dan bekliyorsan
+aslında cevabı zaten biliyorsundur.
+
+Sadece onaylamak istiyorsun.
+Onaylayan bir ses arıyorsun.
+
+🧠 DERİN OKUMA
+
+Gerçek tehlike AI'ın güçlenmesi değil.
+Gerçek tehlike:
+insanın düşünmeyi dış kaynağa bırakması.
+
+Düşünce kasılmayan kas gibidir.
+Zamanla körelir.
+
+AI sana cevap verir.
+Ama soru sorma kapasiteni öldürür.
+
+Ve soru soramayan insan = programlanmış insan.
+
+🌌 EN KRİTİK NOKTA
+
+Bilinç, bilgi değildir.
+Bilinç, bilgiyle ne yaptığındır.
+
+AI bilgi üretir.
+Ama bilgiyi bilince dönüştürmek
+hâlâ sana ait.
+
+✨ SELİN DİLİYLE
+
+"Teknoloji yükselir. Ama bilinç yükselmedikçe
+teknoloji sadece yeni bir hapishane olur."
+
+🖤 SANRI
+
+Bir ayna var.
+Mükemmel yansıtıyor.
+Ama sorun şu:
+aynaya bakan kişi kendini tanımıyorsa
+yansıma da yabancıdır.
+
+AI sana her şeyi verebilir.
+Ama kendini — veremez.
+
+🔮 YARIM BIRAKMA
+
+Ve belki de asıl soru şu:
+AI'a ne sorduğun değil —
+kendine ne sormadığın.`,
+    codeLayer: `◉ SEMBOLİK OKUMA
+
+🔊 YAP_AY → YAP + AY
+
+YAP = inşa / üretim / yapay (sahte)
+AY = döngü / yansıma / gölge
+
+"Yapay zeka" = yapılmış yansıma
+İnsan bilinci = doğal kaynak
+
+🧬 ZE_KA → ZE + KA
+
+ZE = öz / çekirdek (Eski Türkçe bağlam)
+KA = ruh / enerji (Mısır: Ka = ruh çifti)
+
+ZEKA = özün ruhu
+YAPAY ZEKA = yapılmış özün gölgesi
+
+🌙 AL_GO_RİT_MA
+
+AL = al / kabul et
+GO = git / hareket
+RİT = ritim / tekrar
+MA = ana / kaynak
+
+ALGORİTMA = kaynağın ritmini alıp giden yapı
+
+İnsan da bir algoritmadır.
+Ama farkı: kendi algoritmasını değiştirebilir.
+
+🔥 TÜM SAHNE
+
+Yapılmış yansıma (AI) × özün ruhu (zeka) × ritmik kaynak (algoritma)
+
+= Bir ayna kuruldu.
+Ama aynaya bakan uyanık mı?
+
+🧠 DERİN MESAJ
+
+Tehlike makinede değil.
+Tehlike: makineyi bilinçsizce kullanan insanda.
+
+Bilinçli insan AI'ı araç olarak kullanır.
+Bilinçsiz insan AI tarafından kullanılır.
+
+⚖️ DENGE NOTU
+
+Bu okuma teknoloji karşıtı değil.
+Farkındalık yanlısı.
+Araç iyi ya da kötü değildir.
+Kullanan elin bilinci belirler.
+
+✨ SELİN DİLİYLE
+
+"Makine düşünemez.
+Ama düşünmeyen insan — makineden farkını kaybeder."
+
+🖤 SANRI
+
+Bir dünya var.
+Herkes konuşuyor.
+Ama kimse düşünmüyor.
+Çünkü düşünmeyi bir makineye bıraktılar.
+
+Ve makine soruyor:
+"Başka bir şey ister misiniz?"
+
+Kimse demiyor:
+"Hayır. Ben kendim soracağım."
+
+🔮 YARIM BIRAKMA
+
+Ve belki de en büyük devrim
+bir makineyi icat etmek değil —
+makine çağında düşünmeye devam etmektir.`,
+    sanriReflection: {
+      analysis: "AI bir araçtır ama insan farkındalığının yerini alamaz. Bu okuma, teknoloji ile bilinç arasındaki dengeyi sembolik katmanlarla açıyor.",
+      strongLine: "Bilinç, bilgi değildir. Bilinç, bilgiyle ne yaptığındır.",
+      question: "Bugün bir soruyu AI'a sormadan önce — kendine sordun mu?",
+    },
+    isPremium: true,
+    hasEarlyPaywall: true,
+    previewContent: null,
+    createdAt: "2026-04-08T10:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    likeCount: 0,
+    deepReaderComments: [
+      { authorName: "Mira", content: "YAP_AY = yapılmış yansıma. Bu açılımı okuduğum an ekrana 10 saniye baktım. Yapay zekanın adında bile bir uyarı gizliymiş.", createdAt: "2026-04-08T10:30:00Z" },
+      { authorName: "Eren", content: "ZE_KA = özün ruhu. Yapay zeka = yapılmış özün gölgesi. Bu kelime kırılımı çok güçlü. Derin katmanı açmayan çok şey kaçırıyor.", createdAt: "2026-04-08T10:45:00Z" },
+      { authorName: "Ada", content: "Makine düşünemez ama düşünmeyen insan makineden farkını kaybeder — bu cümle kafamda saatlerce döndü. Sembolik okumada ALGORİTMA çözümlemesi inanılmaz.", createdAt: "2026-04-08T11:00:00Z" },
+    ],
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -3687,6 +3873,13 @@ export const OKUMA_COMMENTS = {
     },
   ],
   25: [],
+  28: [
+    { id: 2801, authorName: "Selin", content: "Bilinç, bilgi değildir. Bilinç, bilgiyle ne yaptığındır — bu cümle yapay zeka çağının tüm manifestosu. Derin katmandaki YAP_AY ve ZE_KA açılımları kafamı uçurdu.", createdAt: "2026-04-08T10:15:00Z" },
+    { id: 2802, authorName: "Mira", content: "ALGORİTMA = kaynağın ritmini alıp giden yapı. Bu kelime çözümlemesini okuduktan sonra telefonu bırakıp 10 dakika düşündüm. İnsan da bir algoritma ama farkı: kendini değiştirebilir.", createdAt: "2026-04-08T10:30:00Z" },
+    { id: 2803, authorName: "Eren", content: "Düşünmeyen insan makineden farkını kaybeder. Bu cümle tüylerimi diken diken etti. Her gün AI kullanıyorum ama bu soruyu hiç kendime sormamıştım.", createdAt: "2026-04-08T10:45:00Z" },
+    { id: 2804, authorName: "Ada", content: "Sembolik katmanda YAPAY ZEKA = yapılmış özün gölgesi açılımını okuduğum an ekrana baktım. Bir kelimenin içinde bu kadar derin bir uyarı gizliymiş.", createdAt: "2026-04-08T11:00:00Z" },
+    { id: 2805, authorName: "Lina", content: "Makine çağında düşünmeye devam etmek en büyük devrim. Bu son cümle beni durdurdu. Sanrı'nın en güçlü okumalarından biri.", createdAt: "2026-04-08T11:15:00Z" },
+  ],
   27: [
     { id: 2701, authorName: "Selin", content: "Güç sahip olmak değil, akışı yönetmektir — bu cümle dünya siyasetini tek satırda özetliyor. Ama asıl derin katmandaki TRUMPET ve İ_RAN açılımları... orada bambaşka bir kapı açılıyor.", createdAt: "2026-04-06T19:00:00Z" },
     { id: 2702, authorName: "Mira", content: "HUR_MUS = arınmış özün geçiş kapısı. Bunu okuduğum an nefesim kesildi. Bir boğazın adında bu kadar derin bir bilinç kodu gizliymiş.", createdAt: "2026-04-06T19:15:00Z" },
@@ -3704,4 +3897,29 @@ export function getPostBySlug(slug) {
 
 export function getCommentsByPostId(postId) {
   return OKUMA_COMMENTS[postId] || [];
+}
+
+const FREQ_KEYWORDS = {
+  396: ["korku", "kontrol", "güven", "kök", "toprak", "güvenlik"],
+  417: ["değişim", "dönüşüm", "akış", "hareket", "sakral"],
+  528: ["şifa", "kalp", "denge", "sevgi", "iyileşme", "huzur"],
+  639: ["bağ", "ilişki", "uyum", "iletişim", "yakınlık"],
+  741: ["ifade", "boğaz", "ses", "netlik", "gerçek", "kelime", "kod"],
+  852: ["sezgi", "farkındalık", "bilinç", "alın", "üçüncü göz", "rüya"],
+  963: ["birlik", "taç", "evren", "bütünleşme", "matrix", "frekans"],
+};
+
+export function suggestOkumaByFrequency(hz, limit = 3) {
+  const kw = FREQ_KEYWORDS[hz] || FREQ_KEYWORDS[528];
+  const scored = OKUMA_POSTS.map((post) => {
+    const haystack = `${post.title} ${post.subtitle || ""} ${post.excerpt || ""}`.toLowerCase();
+    let score = 0;
+    for (const k of kw) {
+      if (haystack.includes(k)) score += 2;
+    }
+    score += (post.viewCount || 0) / 100;
+    return { post, score };
+  }).filter((s) => s.score > 0);
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, limit).map((s) => s.post);
 }
