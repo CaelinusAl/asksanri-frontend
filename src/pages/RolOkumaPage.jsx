@@ -1,4 +1,4 @@
-﻿import React, { useState, useCallback, useRef, useEffect } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
@@ -774,7 +774,13 @@ export default function RolOkumaPage() {
 
               <NarrativeLead s={result.narrative?.sections} />
 
-              <RolDeepenSection isTR={isTR} navigate={navigate} />
+              <KatmanliAcilim
+                analysisData={{
+                  ...(result.data && typeof result.data === "object" ? result.data : {}),
+                  sectionTexts: narrativeToSectionTexts(result.narrative),
+                }}
+                returnPath="/rol-okuma"
+              />
 
               {unlocked ? (
                 <>
@@ -785,75 +791,59 @@ export default function RolOkumaPage() {
                       <p className={styles.teaserText}>{result.data.teaser}</p>
                     </div>
                   ) : null}
-
-                  <KatmanliAcilim
-                    analysisData={{
-                      ...(result.data && typeof result.data === "object" ? result.data : {}),
-                      sectionTexts: narrativeToSectionTexts(result.narrative),
-                    }}
-                    returnPath="/rol-okuma"
-                  />
                 </>
               ) : (
-                <>
-                  <div className={styles.lockZone}>
-                    <div className={styles.lockZoneBlur}>
-                      <div className={styles.sections}>
-                        <div className={styles.section}>
-                          <p className={styles.sectionText}>
-                            {result.narrative?.sections?.derin_iliski ?? ""}
-                          </p>
-                        </div>
-                        <div className={styles.section}>
-                          <p className={styles.sectionText}>
-                            {result.narrative?.sections?.derin_para ?? ""}
-                          </p>
-                        </div>
+                <div className={styles.lockZone}>
+                  <div className={styles.lockZoneBlur}>
+                    <div className={styles.sections}>
+                      <div className={styles.section}>
+                        <p className={styles.sectionText}>
+                          {result.narrative?.sections?.derin_iliski ?? ""}
+                        </p>
+                      </div>
+                      <div className={styles.section}>
+                        <p className={styles.sectionText}>
+                          {result.narrative?.sections?.derin_para ?? ""}
+                        </p>
                       </div>
                     </div>
-                    <div className={styles.lockZoneGradient} />
-                    <div className={styles.lockZoneOverlay}>
-                      <p className={styles.lockZoneLine1}>Sen yaşamıyorsun.</p>
-                      <p className={styles.lockZoneLine2}>Bir şeyi tekrar ediyorsun.</p>
-                      <div className={styles.lockZoneDivider} />
-                      <p className={styles.lockZonePersonal}>
-                        Sorun çözmek değil. Görmek.
-                      </p>
-                      <p className={styles.lockZonePersonalSoft}>Bu sana özel.</p>
-                      <button
-                        className={styles.lockZoneBtn}
-                        onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
-                      >
-                        Hatırla
-                      </button>
-                      <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
-                      <button
-                        type="button"
-                        className={styles.lockZoneRecovery}
-                        onClick={async () => {
-                          const ok = await checkServerUnlock("role_unlock");
-                          if (ok) window.location.reload();
-                          else {
-                            window.alert(
-                              "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
-                            );
-                          }
-                        }}
-                      >
-                        Satın alımı doğrula
-                      </button>
-                    </div>
                   </div>
-
-                  <KatmanliAcilim
-                    analysisData={{
-                      ...(result.data && typeof result.data === "object" ? result.data : {}),
-                      sectionTexts: narrativeToSectionTexts(result.narrative),
-                    }}
-                    returnPath="/rol-okuma"
-                  />
-                </>
+                  <div className={styles.lockZoneGradient} />
+                  <div className={styles.lockZoneOverlay}>
+                    <p className={styles.lockZoneLine1}>Sen yaşamıyorsun.</p>
+                    <p className={styles.lockZoneLine2}>Bir şeyi tekrar ediyorsun.</p>
+                    <div className={styles.lockZoneDivider} />
+                    <p className={styles.lockZonePersonal}>
+                      Sorun çözmek değil. Görmek.
+                    </p>
+                    <p className={styles.lockZonePersonalSoft}>Bu sana özel.</p>
+                    <button
+                      className={styles.lockZoneBtn}
+                      onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
+                    >
+                      Hatırla
+                    </button>
+                    <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
+                    <button
+                      type="button"
+                      className={styles.lockZoneRecovery}
+                      onClick={async () => {
+                        const ok = await checkServerUnlock("role_unlock");
+                        if (ok) window.location.reload();
+                        else {
+                          window.alert(
+                            "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
+                          );
+                        }
+                      }}
+                    >
+                      Satın alımı doğrula
+                    </button>
+                  </div>
+                </div>
               )}
+
+              <RolDeepenSection isTR={isTR} navigate={navigate} />
 
               <button
                 type="button"
@@ -868,6 +858,7 @@ export default function RolOkumaPage() {
               >
                 Tekrar Oku
               </button>
+
               <RolShareFooterBlock
                 narrative={result.narrative}
                 isTR={isTR}
