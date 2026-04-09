@@ -63,8 +63,17 @@ export default function AdminMuhasebePage() {
     }
   }, [dateFrom, dateTo, contentId, paymentStatus, offset]);
 
+  const [lastRefresh, setLastRefresh] = useState(null);
+
   useEffect(() => {
-    load();
+    load().then(() => setLastRefresh(new Date()));
+  }, [load]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      load().then(() => setLastRefresh(new Date()));
+    }, 30000);
+    return () => clearInterval(id);
   }, [load]);
 
   const summary = data?.summary;
@@ -192,9 +201,14 @@ export default function AdminMuhasebePage() {
             }}
           />
         </div>
-        <button type="button" className={pageStyles.btn} onClick={load}>
+        <button type="button" className={pageStyles.btn} onClick={() => load().then(() => setLastRefresh(new Date()))}>
           Yenile
         </button>
+        {lastRefresh && (
+          <span style={{ color: "#6a6480", fontSize: 11, alignSelf: "flex-end", marginBottom: 6 }}>
+            Son: {lastRefresh.toLocaleTimeString("tr-TR")} (30sn oto)
+          </span>
+        )}
         <button type="button" className={`${pageStyles.btn} ${pageStyles.btnSecondary}`} onClick={exportCsv}>
           CSV indir
         </button>

@@ -36,7 +36,18 @@ export default function AdminRevenuePage() {
     }
   }, [period]);
 
-  useEffect(() => { load(); }, [load]);
+  const [lastRefresh, setLastRefresh] = useState(null);
+
+  useEffect(() => {
+    load().then(() => setLastRefresh(new Date()));
+  }, [load]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      load().then(() => setLastRefresh(new Date()));
+    }, 30000);
+    return () => clearInterval(id);
+  }, [load]);
 
   const summary = billing?.summary || {};
   const recentPurchases = billing?.recent_purchases || [];
@@ -65,9 +76,16 @@ export default function AdminRevenuePage() {
   return (
     <div>
       <h1 className={styles.pageTitle}>Gelir &amp; Dönüşüm</h1>
-      <p className={styles.pageDesc}>
-        Gerçek zamanlı gelir takibi ve dönüşüm analizi
-      </p>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+        <p className={styles.pageDesc} style={{ margin: 0 }}>
+          Gerçek zamanlı gelir takibi ve dönüşüm analizi
+        </p>
+        {lastRefresh && (
+          <span style={{ color: "#6a6480", fontSize: 11 }}>
+            Son: {lastRefresh.toLocaleTimeString("tr-TR")} (30sn oto)
+          </span>
+        )}
+      </div>
 
       <div className={styles.filterBar} role="group" aria-label="Dönem">
         {[

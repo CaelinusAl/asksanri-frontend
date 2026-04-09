@@ -377,6 +377,23 @@ export async function bindShopierPurchaseEmail(email, contentId) {
   }
 }
 
+export async function verifyPurchaseByEmail(email, contentId) {
+  try {
+    const res = await fetch(`${API}/shopier/verify-by-email`, {
+      method: "POST",
+      headers: { ..._getAuthHeaders(), "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: String(email || "").trim().toLowerCase(),
+        content_id: String(contentId || ""),
+      }),
+    });
+    if (!res.ok) return { unlocked: false, reason: "http_error" };
+    return await res.json();
+  } catch {
+    return { unlocked: false, reason: "network_error" };
+  }
+}
+
 export async function checkServerUnlock(contentId) {
   const data = await fetchShopierPurchaseCheck(contentId);
   if (data.unlocked) {

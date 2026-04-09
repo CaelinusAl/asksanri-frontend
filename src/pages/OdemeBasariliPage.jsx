@@ -9,6 +9,7 @@ import {
   applyVerifiedShopierUnlock,
   fetchShopierPurchaseCheck,
   bindShopierPurchaseEmail,
+  verifyPurchaseByEmail,
   redirectToShopier,
   SHOPIER_PRODUCTS,
 } from "../data/shopierConfig";
@@ -96,29 +97,52 @@ export default function OdemeBasariliPage() {
 
     const pendingSnap = getPendingPurchase();
     const target = contentId || "premium";
+    const pendingEmail = params.get("email") || pendingSnap?.email || "";
 
     (async () => {
       setPhase("verifying");
-      setVerifyNote("Ödeme kontrol ediliyor...");
+      setVerifyNote("\u00D6deme kontrol ediliyor...");
 
+      // Katman 1: Sunucu kaydini hemen kontrol et (webhook gelmis olabilir)
+      const immediate = await fetchShopierPurchaseCheck(target, pendingEmail);
+      if (immediate.unlocked) {
+        const at = immediate.purchased_at || immediate.purchase?.purchased_at;
+        await runVerifiedSuccess(target, at, pendingSnap);
+        return;
+      }
+
+      // Katman 2: PAT ile Shopier API uzerinden email dogrulama
+      if (pendingEmail && pendingEmail.includes("@")) {
+        setVerifyNote("Shopier kayd\u0131 kontrol ediliyor...");
+        const pat = await verifyPurchaseByEmail(pendingEmail, target);
+        if (pat.unlocked) {
+          const check = await fetchShopierPurchaseCheck(target, pendingEmail);
+          const at = check.purchased_at || check.purchase?.purchased_at || new Date().toISOString();
+          await runVerifiedSuccess(target, at, pendingSnap);
+          return;
+        }
+      }
+
+      // Katman 3: Polling (webhook gecikmeli gelebilir)
       for (let i = 0; i < 24; i++) {
-        const r = await fetchShopierPurchaseCheck(target);
+        await sleep(2500);
+        const r = await fetchShopierPurchaseCheck(target, pendingEmail);
         if (r.unlocked) {
           const at = r.purchased_at || r.purchase?.purchased_at;
           await runVerifiedSuccess(target, at, pendingSnap);
           return;
         }
-        await sleep(2500);
-        if (i === 8) {
-          setVerifyNote(
-            "Ödeme kaydı birkaç saniye gecikebilir. Giriş yaptıysan hesabındaki e-posta ile de aranıyor."
-          );
+        if (i === 4) {
+          setVerifyNote("\u00D6deme kayd\u0131 birka\u00E7 saniye gecikebilir. Kontrol devam ediyor...");
+        }
+        if (i === 12) {
+          setVerifyNote("\u00D6deme kayd\u0131 hen\u00FCz ula\u015Fmad\u0131. Biraz daha bekliyoruz...");
         }
       }
 
       setPhase("need_email");
       setVerifyNote(
-        "Ödeme doğrulanamadı. Eğer ödemeyi yeni yaptıysan kısa süre sonra tekrar dene. Ödeme kaydı bulunamadıysa Shopier’da kullandığın e-postayı girerek bu cihaza bağlayabilirsin."
+        "\u00D6deme do\u011Frulanamad\u0131. E\u011Fer \u00F6demeyi yeni yapt\u0131ysan k\u0131sa s\u00FCre sonra tekrar dene. \u00D6deme kayd\u0131 bulunamad\u0131ysa Shopier\u2019da kulland\u0131\u011F\u0131n e-postay\u0131 girerek bu cihaza ba\u011Flayabilirsin."
       );
     })();
   }, [contentId, runVerifiedSuccess]);
@@ -131,24 +155,36 @@ export default function OdemeBasariliPage() {
     setBindError("");
     const em = emailInput.trim();
     if (!em.includes("@")) {
-      setBindError("Geçerli bir e-posta gir.");
+      setBindError("Ge\u00E7erli bir e-posta gir.");
       return;
     }
+
+    // Once PAT verify dene, sonra bind
+    const pat = await verifyPurchaseByEmail(em, target);
+    if (pat.unlocked) {
+      const r = await fetchShopierPurchaseCheck(target, em);
+      if (r.unlocked) {
+        const pendingSnap = getPendingPurchase();
+        await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
+        return;
+      }
+    }
+
     const bind = await bindShopierPurchaseEmail(em, target);
     if (!bind.ok) {
       if (bind.error === "device_mismatch") {
-        setBindError("Bu satın alma başka bir cihaza bağlı görünüyor. Destek ile iletişime geç.");
+        setBindError("Bu sat\u0131n alma ba\u015Fka bir cihaza ba\u011Fl\u0131 g\u00F6r\u00FCn\u00FCyor. Destek ile ileti\u015Fime ge\u00E7.");
       } else {
-        setBindError("Bu e-posta ile eşleşen ödeme bulunamadı. E-postayı kontrol et veya birkaç dakika sonra tekrar dene.");
+        setBindError("Bu e-posta ile e\u015Fle\u015Fen \u00F6deme bulunamad\u0131. E-postay\u0131 kontrol et veya birka\u00E7 dakika sonra tekrar dene.");
       }
       return;
     }
-    const r = await fetchShopierPurchaseCheck(target);
+    const r = await fetchShopierPurchaseCheck(target, em);
     if (r.unlocked) {
       const pendingSnap = getPendingPurchase();
       await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
     } else {
-      setBindError("Bağlandı ama doğrulama yanıt vermedi. Sayfayı yenile.");
+      setBindError("Ba\u011Fland\u0131 ama do\u011Frulama yan\u0131t vermedi. Sayfay\u0131 yenile.");
     }
   };
 
@@ -182,9 +218,9 @@ export default function OdemeBasariliPage() {
             transition={{ duration: 0.5 }}
           >
             <div className={styles.voidPulse}>
-              <span className={styles.voidGlyph}>◈</span>
+              <span className={styles.voidGlyph}>{"\u25C8"}</span>
             </div>
-            <p className={styles.voidText}>{verifyNote || "Ödeme kontrol ediliyor..."}</p>
+            <p className={styles.voidText}>{verifyNote || "\u00D6deme kontrol ediliyor..."}</p>
           </motion.div>
         )}
 
@@ -197,7 +233,7 @@ export default function OdemeBasariliPage() {
             style={{ maxWidth: 420, padding: "0 20px" }}
           >
             <h1 className={styles.ritualTitle} style={{ fontSize: "clamp(20px,4vw,26px)" }}>
-              Ödeme henüz doğrulanamadı
+              {"\u00D6deme hen\u00FCz do\u011Frulanamad\u0131"}
             </h1>
             <p
               style={{
@@ -211,7 +247,7 @@ export default function OdemeBasariliPage() {
             </p>
             <input
               type="email"
-              placeholder="Shopier ödeme e-postası"
+              placeholder="Shopier \u00F6deme e-postas\u0131"
               value={emailInput}
               onChange={(e) => setEmailInput(e.target.value)}
               style={{
@@ -244,7 +280,7 @@ export default function OdemeBasariliPage() {
                 cursor: "pointer",
               }}
             >
-              E-postayı doğrula
+              {"E-postay\u0131 do\u011Frula"}
             </button>
             <button
               type="button"
@@ -260,7 +296,7 @@ export default function OdemeBasariliPage() {
                 cursor: "pointer",
               }}
             >
-              Tekrar ödeme yap
+              {"Tekrar \u00F6deme yap"}
             </button>
           </motion.div>
         )}
@@ -287,7 +323,7 @@ export default function OdemeBasariliPage() {
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <h1 className={styles.ritualTitle}>Kapı açıldı.</h1>
+            <h1 className={styles.ritualTitle}>{"Kap\u0131 a\u00E7\u0131ld\u0131."}</h1>
             <p
               style={{
                 marginTop: 14,
@@ -297,7 +333,7 @@ export default function OdemeBasariliPage() {
                 fontStyle: "italic",
               }}
             >
-              Ödemen doğrulandı. İçeriğin açıldı.
+              {"\u00D6demen do\u011Fruland\u0131. \u0130\u00E7eri\u011Fin a\u00E7\u0131ld\u0131."}
             </p>
           </motion.div>
         )}
@@ -311,7 +347,7 @@ export default function OdemeBasariliPage() {
             transition={{ duration: 0.8 }}
           >
             <div style={{ fontSize: 28, color: "rgba(120,247,216,0.5)", marginBottom: 24 }}>
-              ✦
+              {"\u2726"}
             </div>
             <p
               style={{
@@ -321,7 +357,7 @@ export default function OdemeBasariliPage() {
                 lineHeight: 1.7,
               }}
             >
-              Devam ettiğinde:
+              {"Devam etti\u011Finde:"}
             </p>
             <p
               style={{
@@ -331,7 +367,7 @@ export default function OdemeBasariliPage() {
                 fontStyle: "italic",
               }}
             >
-              okuduğun şey değişmeyecek.
+              {"okudu\u011Fun \u015Fey de\u011Fi\u015Fmeyecek."}
             </p>
             <h2
               style={{
@@ -342,7 +378,7 @@ export default function OdemeBasariliPage() {
                 letterSpacing: "0.02em",
               }}
             >
-              Sen değişeceksin.
+              {"Sen de\u011Fi\u015Feceksin."}
             </h2>
             <button
               onClick={() => navigate(finalPath, { replace: true })}
@@ -359,7 +395,7 @@ export default function OdemeBasariliPage() {
                 letterSpacing: "0.03em",
               }}
             >
-              {finalPath.includes("rol-okuma") ? "Rolünü Gör" : "Devam Et"}
+              {finalPath.includes("rol-okuma") ? "Rol\u00FCn\u00FC G\u00F6r" : "Devam Et"}
             </button>
           </motion.div>
         )}
