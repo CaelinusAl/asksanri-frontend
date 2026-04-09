@@ -1,13 +1,13 @@
-/* ═══════════════════════════════════════════════════
-   SHOPIER PAYMENT CONFIGURATION — Multi-tier
+﻿/* ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ
+   SHOPIER PAYMENT CONFIGURATION ÔÇö Multi-tier
    Server-side purchase persistence + localStorage cache
-   ═══════════════════════════════════════════════════ */
+   ÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉÔòÉ */
 
 const SITE_URL =
   (typeof window !== "undefined" && window.location.origin) ||
   "https://asksanri.com";
 
-/** Shopier ödeme sonrası yönlendirme — her zaman canlı domain (preview/local origin değil) */
+/** Shopier ├Âdeme sonras─▒ y├Ânlendirme ÔÇö her zaman canl─▒ domain (preview/local origin de─şil) */
 const SHOPIER_SUCCESS_ORIGIN =
   (import.meta?.env?.VITE_SITE_URL &&
     String(import.meta.env.VITE_SITE_URL).replace(/\/$/, "")) ||
@@ -20,8 +20,8 @@ const API =
   "https://sanri-api-production-4a7b.up.railway.app";
 
 /**
- * 47 TL “SANRI Kod Eğitmeni — Giriş Katmanı” (Shopier ürün kodu 45786456).
- * 9,90 TL ile karıştırma: 45786803 = okuma devamı / haftalık akış vb.
+ * 47 TL ÔÇ£SANRI Kod E─şitmeni ÔÇö Giri┼ş Katman─▒ÔÇØ (Shopier ├╝r├╝n kodu 45786456).
+ * 9,90 TL ile kar─▒┼şt─▒rma: 45786803 = okuma devam─▒ / haftal─▒k ak─▒┼ş vb.
  */
 const DEFAULT_KOD_GIRIS_SHOPIER_PATH = "45786456";
 const KOD_GIRIS_SHOPIER_URL = String(
@@ -31,94 +31,103 @@ const KOD_GIRIS_SHOPIER_URL = String(
 export const SHOPIER_PRODUCTS = {
   okuma_devami: {
     id: "okuma_devami",
-    label: "Okuma Devamı",
+    label: "Okuma Devam─▒",
     price: "9.90",
     url: "https://shopier.com/asksanri/45786803",
   },
   kod_egitmeni: {
     id: "kod_egitmeni",
-    label: "SANRI Kod Okuma Sistemi™ — Tam Erişim",
+    label: "SANRI Kod Okuma SistemiÔäó ÔÇö Tam Eri┼şim",
     price: "999",
     url: "https://shopier.com/asksanri/45833965",
   },
   kod_giris_ders: {
     id: "kod_giris_ders",
-    label: "Kod Öğrenmeye Giriş — Canlı Ders",
+    label: "Kod ├û─şrenmeye Giri┼ş ÔÇö Canl─▒ Ders",
     price: "47",
     url: KOD_GIRIS_SHOPIER_URL,
   },
   kitap_112: {
     id: "kitap_112",
-    label: "112. Kitap: Kendini Yaratan Tanrıça",
+    label: "112. Kitap: Kendini Yaratan Tanr─▒├ğa",
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
   matrix_code: {
     id: "matrix_code",
-    label: "Matrix Code: İkra",
+    label: "Matrix Code: ─░kra",
     price: "470",
     url: "https://shopier.com/asksanri/45786667",
   },
   rol_okuma: {
     id: "rol_okuma",
-    label: "Matrix Rol Okuma — Tam Analiz",
+    label: "Matrix Rol Okuma ÔÇö Tam Analiz",
     price: "369",
     url: "https://shopier.com/asksanri/45812975",
   },
   iliski_acilimi: {
     id: "iliski_acilimi",
-    label: "İlişki Açılımı",
+    label: "─░li┼şki A├ğ─▒l─▒m─▒",
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
   para_akisi: {
     id: "para_akisi",
-    label: "Para Akışı Açılımı",
+    label: "Para Ak─▒┼ş─▒ A├ğ─▒l─▒m─▒",
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
   ankod: {
     id: "ankod",
-    label: "AN_KOD — Anın Kodları Tam Analiz",
+    label: "AN_KOD ÔÇö An─▒n Kodlar─▒ Tam Analiz",
     price: "99",
     url: "https://shopier.com/asksanri/45813111",
   },
   bilinc_alti: {
     id: "bilinc_alti",
-    label: "Bilinçaltın Ne Diyor? — Derin Okuma",
+    label: "Bilin├ğalt─▒n Ne Diyor? ÔÇö Derin Okuma",
     price: "99",
     url: "https://shopier.com/asksanri/45813111",
   },
   kariyer_acilimi: {
     id: "kariyer_acilimi",
-    label: "Kariyer Açılımı",
+    label: "Kariyer A├ğ─▒l─▒m─▒",
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
   haftalik_akis: {
     id: "haftalik_akis",
-    label: "Haftalık Akış — Bu Haftanın Kodu",
+    label: "Haftal─▒k Ak─▒┼ş ÔÇö Bu Haftan─▒n Kodu",
     price: "69",
     url: "https://shopier.com/asksanri/45786803",
   },
   saglik_enerji: {
     id: "saglik_enerji",
-    label: "Sağlık & Enerji Katmanı",
+    label: "Sa─şl─▒k & Enerji Katman─▒",
+    price: "369",
+    url: "https://shopier.com/asksanri/45786763",
+  },
+  genel_derin_acilim: {
+    id: "genel_derin_acilim",
+    label: "Genel Derin A├ğ─▒l─▒m",
     price: "369",
     url: "https://shopier.com/asksanri/45786763",
   },
 };
 
-/** localStorage unlock key → SHOPIER_PRODUCTS key (labels, server record, analytics) */
+/** localStorage unlock key ÔåÆ SHOPIER_PRODUCTS key (labels, server record, analytics) */
 export const CONTENT_TO_PRODUCT = {
   role_unlock: "rol_okuma",
   ankod_unlock: "ankod",
   subconscious_unlock: "ankod",
+  deep_iliski_unlock: "iliski_acilimi",
+  deep_kariyer_unlock: "kariyer_acilimi",
+  deep_genel_unlock: "genel_derin_acilim",
 };
 
 /**
- * Ödeme başarı sayfası: URL contentId + pending.productId ile Shopier ürünü, fiyat ve pixel id.
- * okuma_*, book_*, kod_* dinamik id'ler pending.productId veya prefix ile çözülür.
+ * ├ûdeme ba┼şar─▒ sayfas─▒: URL contentId + pending.productId ile Shopier ├╝r├╝n├╝, fiyat ve pixel id.
+ * okuma_*, book_*, kod_* dinamik id'ler pending.productId veya prefix ile ├ğ├Âz├╝l├╝r.
  */
 export function resolveShopierPurchaseMeta(contentId, pendingProductId) {
   const cid = String(contentId || "").trim();
@@ -132,6 +141,7 @@ export function resolveShopierPurchaseMeta(contentId, pendingProductId) {
     if (productKey === "kitap_112") return "book_112";
     if (productKey === "kod_giris_ders" || c === "kod_giris_ders") return "kod_giris_ders";
     if (productKey === "kod_egitmeni") return "kod_egitmeni";
+    if (c.startsWith("deep_") && c.endsWith("_unlock")) return "deep_acilim";
     return productKey || "other";
   };
 
@@ -187,7 +197,7 @@ export function resolveShopierPurchaseMeta(contentId, pendingProductId) {
   };
 }
 
-// ── Device fingerprint (stable per browser) ──
+// ÔöÇÔöÇ Device fingerprint (stable per browser) ÔöÇÔöÇ
 const FP_KEY = "sanri_device_fp";
 
 export function getDeviceFingerprint() {
@@ -206,7 +216,7 @@ export function getDeviceFingerprint() {
   }
 }
 
-// ── Access key management (localStorage cache) ──
+// ÔöÇÔöÇ Access key management (localStorage cache) ÔöÇÔöÇ
 const SHOPIER_ACCESS_KEY = "sanri_shopier_access";
 const SHOPIER_PENDING_KEY = "sanri_shopier_pending";
 
@@ -244,9 +254,9 @@ export function isShopierUnlocked(contentId) {
 }
 
 /**
- * Yalnızca bu contentId için Shopier kaydı var mı?
- * `premium` global bayrağı sayılmaz — SANRI Kod Okuma™ gibi ayrı ürünlerde
- * genel premium / başka satın alımların tüm müfredatı açmaması için kullanılır.
+ * Yaln─▒zca bu contentId i├ğin Shopier kayd─▒ var m─▒?
+ * `premium` global bayra─ş─▒ say─▒lmaz ÔÇö SANRI Kod OkumaÔäó gibi ayr─▒ ├╝r├╝nlerde
+ * genel premium / ba┼şka sat─▒n al─▒mlar─▒n t├╝m m├╝fredat─▒ a├ğmamas─▒ i├ğin kullan─▒l─▒r.
  */
 export function isShopierProductUnlocked(contentId) {
   const cid = String(contentId || "").trim();
@@ -254,7 +264,7 @@ export function isShopierProductUnlocked(contentId) {
   return accessRowTrusted(getShopierAccess()[cid]);
 }
 
-// ── Server-side purchase recording ──
+// ÔöÇÔöÇ Server-side purchase recording ÔöÇÔöÇ
 function _getAuthHeaders() {
   const h = { "Content-Type": "application/json" };
   try {
@@ -265,8 +275,8 @@ function _getAuthHeaders() {
 }
 
 /**
- * Yalnızca GET /shopier/check doğrulandıktan sonra çağrılmalı.
- * İstemci tek başına erişim açamaz (güvenlik).
+ * Yaln─▒zca GET /shopier/check do─şruland─▒ktan sonra ├ğa─şr─▒lmal─▒.
+ * ─░stemci tek ba┼ş─▒na eri┼şim a├ğamaz (g├╝venlik).
  */
 export function applyVerifiedShopierUnlock(contentId, purchasedAt) {
   const access = getShopierAccess();
@@ -281,10 +291,10 @@ export function applyVerifiedShopierUnlock(contentId, purchasedAt) {
   saveShopierAccess(access);
 }
 
-/** @deprecated Güvensiz — kullanmayın. */
+/** @deprecated G├╝vensiz ÔÇö kullanmay─▒n. */
 export function unlockViaShopier(_contentId) {
   if (typeof console !== "undefined" && console.warn) {
-    console.warn("[SANRI] unlockViaShopier kaldırıldı; erişim sunucu doğrulaması gerektirir.");
+    console.warn("[SANRI] unlockViaShopier kald─▒r─▒ld─▒; eri┼şim sunucu do─şrulamas─▒ gerektirir.");
   }
 }
 
@@ -380,7 +390,7 @@ export function getUnlockedItems() {
   const items = [];
   for (const [key, val] of Object.entries(access)) {
     if (key === "premium" && val && access.premiumServerVerified) {
-      items.push({ id: "premium", label: "Premium Erişim", at: access.premium_at });
+      items.push({ id: "premium", label: "Premium Eri┼şim", at: access.premium_at });
     } else if (val?.unlocked && val?.serverVerified) {
       const pKey = CONTENT_TO_PRODUCT[key] || key;
       const product = SHOPIER_PRODUCTS[pKey];

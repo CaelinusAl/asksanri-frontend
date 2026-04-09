@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState, useCallback } from "react";
+﻿import React, { useMemo, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   buildSanriShareText,
@@ -59,7 +59,7 @@ function drawShareCard(canvas, bodyText, titleLine) {
   ctx.font = "600 48px system-ui, -apple-system, Segoe UI, sans-serif";
   ctx.fillText(titleLine, w / 2, 200);
 
-  const body = String(bodyText || "").trim() || "—";
+  const body = String(bodyText || "").trim() || "ÔÇö";
   ctx.fillStyle = "rgba(232, 228, 244, 0.92)";
   ctx.font = "400 32px system-ui, -apple-system, Segoe UI, sans-serif";
   const maxW = w - 160;
@@ -72,7 +72,7 @@ function drawShareCard(canvas, bodyText, titleLine) {
 
   ctx.fillStyle = "rgba(200, 160, 255, 0.35)";
   ctx.font = "italic 26px system-ui, -apple-system, Segoe UI, sans-serif";
-  ctx.fillText("Bu rastgele değilmiş.", w / 2, h - 220);
+  ctx.fillText("Bu rastgele de─şilmi┼ş.", w / 2, h - 220);
 
   ctx.fillStyle = "rgba(120, 247, 216, 0.9)";
   ctx.font = "600 30px system-ui, -apple-system, Segoe UI, sans-serif";
@@ -81,12 +81,13 @@ function drawShareCard(canvas, bodyText, titleLine) {
 
 /**
  * @param {object} props
- * @param {string} [props.anaTema] — Matrix ana tema (reflectionText yoksa)
- * @param {string} [props.reflectionText] — Sanrı yansıması ham metni (varsa öncelik)
- * @param {string} [props.shareUrl] — paylaşım linki (Yankı / yönlendirme)
+ * @param {string} [props.anaTema] ÔÇö Matrix ana tema (reflectionText yoksa)
+ * @param {string} [props.reflectionText] ÔÇö Sanr─▒ yans─▒mas─▒ ham metni (varsa ├Âncelik)
+ * @param {string} [props.shareUrl] ÔÇö payla┼ş─▒m linki (Yank─▒ / y├Ânlendirme)
  * @param {"full"|"compact"} [props.variant]
- * @param {"rol"|"yanki"} [props.cardKind] — PNG başlığı
+ * @param {"rol"|"yanki"} [props.cardKind] ÔÇö PNG ba┼şl─▒─ş─▒
  * @param {boolean} [props.isTR]
+ * @param {string|null} [props.headline] ÔÇö varsay─▒lan iki sat─▒rl─▒ tetikleyici yerine tek ba┼şl─▒k (├Ârn. yumu┼şak payla┼ş─▒m metni)
  */
 export default function SanriSharePanel({
   anaTema = "",
@@ -96,6 +97,7 @@ export default function SanriSharePanel({
   cardKind = "rol",
   className = "",
   isTR = true,
+  headline = null,
 }) {
   const pageUrl = useMemo(
     () => String(shareUrl || "").trim() || SANRI_SHARE_URL,
@@ -106,7 +108,7 @@ export default function SanriSharePanel({
     if (reflectionText && String(reflectionText).trim()) {
       return parseReflectionShareLine(reflectionText);
     }
-    return String(anaTema || "").trim() || (isTR ? "Matrix Rol okumamı denedim." : "I tried Matrix Rol on Sanrı.");
+    return String(anaTema || "").trim() || (isTR ? "Matrix Rol okumam─▒ denedim." : "I tried Matrix Rol on Sanr─▒.");
   }, [reflectionText, anaTema, isTR]);
 
   const shareText = useMemo(
@@ -115,8 +117,8 @@ export default function SanriSharePanel({
   );
 
   const canvasTitle = cardKind === "yanki"
-    ? (isTR ? "Yankı Yanıtı" : "Echo Reply")
-    : (isTR ? "Rolünü Hatırla" : "Remember Your Role");
+    ? (isTR ? "Yank─▒ Yan─▒t─▒" : "Echo Reply")
+    : (isTR ? "Rol├╝n├╝ Hat─▒rla" : "Remember Your Role");
 
   const [igOpen, setIgOpen] = useState(false);
   const [tiktokNote, setTiktokNote] = useState(false);
@@ -224,20 +226,20 @@ export default function SanriSharePanel({
   }, [summaryLine, canvasTitle, cardKind]);
 
   const t = {
-    trigger1: isTR ? "Bu sana dokunduysa…" : "If this moved you…",
-    trigger2: isTR ? "bir kişiyle paylaş." : "share it with someone.",
-    cardBtn: isTR ? "Paylaşım kartı indir (PNG)" : "Download share card (PNG)",
-    preview: isTR ? "Paylaşım özeti" : "Share preview",
-    copied: isTR ? "Kopyalandı" : "Copied",
+    trigger1: isTR ? "Bu sana dokunduysaÔÇĞ" : "If this moved youÔÇĞ",
+    trigger2: isTR ? "bir ki┼şiyle payla┼ş." : "share it with someone.",
+    cardBtn: isTR ? "Payla┼ş─▒m kart─▒ indir (PNG)" : "Download share card (PNG)",
+    preview: isTR ? "Payla┼ş─▒m ├Âzeti" : "Share preview",
+    copied: isTR ? "Kopyaland─▒" : "Copied",
     copy: isTR ? "Kopyala" : "Copy",
     tiktokBtn: isTR ? "TikTok (metin kopyala)" : "TikTok (copy text)",
     igHint: isTR
-      ? <>Metni panoya kopyaladık. Instagram’da <strong>Hikaye</strong> veya <strong>Gönderi</strong> açıp yapıştırarak paylaşabilirsin.</>
+      ? <>Metni panoya kopyalad─▒k. InstagramÔÇÖda <strong>Hikaye</strong> veya <strong>G├Ânderi</strong> a├ğ─▒p yap─▒┼şt─▒rarak payla┼şabilirsin.</>
       : <>We copied the text. Paste it in an Instagram <strong>Story</strong> or <strong>Post</strong>.</>,
     igOk: isTR ? "Tamam" : "OK",
     tiktokHint: isTR
-      ? "TikTok’ta paylaşmak için metni kopyaladık; uygulamada açıklamaya yapıştırıp linki ekleyebilirsin."
-      : "Text copied — paste it in TikTok’s caption and add the link.",
+      ? "TikTokÔÇÖta payla┼şmak i├ğin metni kopyalad─▒k; uygulamada a├ğ─▒klamaya yap─▒┼şt─▒r─▒p linki ekleyebilirsin."
+      : "Text copied ÔÇö paste it in TikTokÔÇÖs caption and add the link.",
   };
 
   return (
@@ -250,18 +252,24 @@ export default function SanriSharePanel({
       <canvas ref={canvasRef} className={styles.hiddenCanvas} aria-hidden />
 
       <p className={styles.triggerLine}>
-        {t.trigger1}
-        <br />
-        {t.trigger2}
+        {headline && String(headline).trim()
+          ? String(headline).trim()
+          : (
+            <>
+              {t.trigger1}
+              <br />
+              {t.trigger2}
+            </>
+          )}
       </p>
 
       <div className={styles.btnGrid}>
         <button type="button" className={styles.shareBtn} onClick={whatsapp}>
-          <span className={styles.shareIcon} aria-hidden>💬</span>
+          <span className={styles.shareIcon} aria-hidden>­şÆ¼</span>
           WhatsApp
         </button>
         <button type="button" className={styles.shareBtn} onClick={twitter}>
-          <span className={styles.shareIcon} aria-hidden>𝕏</span>
+          <span className={styles.shareIcon} aria-hidden>­ØòÅ</span>
           X (Twitter)
         </button>
         <button type="button" className={styles.shareBtn} onClick={facebook}>
@@ -269,15 +277,15 @@ export default function SanriSharePanel({
           Facebook
         </button>
         <button type="button" className={styles.shareBtn} onClick={instagram}>
-          <span className={styles.shareIcon} aria-hidden>◎</span>
+          <span className={styles.shareIcon} aria-hidden>ÔùÄ</span>
           Instagram
         </button>
         <button type="button" className={styles.shareBtn} onClick={copyShareText}>
-          <span className={styles.shareIcon} aria-hidden>📋</span>
+          <span className={styles.shareIcon} aria-hidden>­şôï</span>
           {copied ? t.copied : t.copy}
         </button>
         <button type="button" className={styles.shareBtnGhost} onClick={tiktok}>
-          <span className={styles.shareIcon} aria-hidden>♪</span>
+          <span className={styles.shareIcon} aria-hidden>ÔÖ¬</span>
           {t.tiktokBtn}
         </button>
       </div>
