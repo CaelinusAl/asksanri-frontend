@@ -5,6 +5,7 @@ import { usePremium } from "../contexts/PremiumContext";
 import { LockBadge } from "../components/premium/PremiumGate";
 import { OKUMA_POSTS, OKUMA_CATEGORIES, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { isOkumaSeen } from "../data/okumaSeen";
+import SeoHead from "../components/SeoHead";
 import styles from "./OkumaAlaniPage.module.css";
 
 const API =
@@ -152,6 +153,14 @@ export default function OkumaAlaniPage() {
 
   return (
     <div className={styles.page}>
+      <SeoHead
+        title={isTR ? "Okuma Alanı — Bilinç Okumaları ve Derin Analiz" : "Reading Field — Consciousness Readings & Deep Analysis"}
+        description={isTR
+          ? "SANRI Okuma Alanı: numeroloji, sembolik analiz, kolektif bilinç okumaları, frekans analizleri ve derin bilinç içerikleri."
+          : "SANRI Reading Field: numerology, symbolic analysis, collective consciousness readings, frequency analysis and deep awareness content."
+        }
+        path="/okuma-alani"
+      />
       {/* ── Header ── */}
       <div className={styles.header}>
         <Link to="/" className={styles.backBtn}>← {isTR ? "Ana Sayfa" : "Home"}</Link>

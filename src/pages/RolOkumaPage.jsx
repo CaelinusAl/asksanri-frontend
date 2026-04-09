@@ -19,6 +19,7 @@ import {
   narrativeToSectionTexts,
 } from "../data/matrixRolNarrative";
 import { saveRolReadingCache, loadRolReadingCache } from "../lib/offline/rolReadingCache";
+import SeoHead from "../components/SeoHead";
 import styles from "./RolOkumaPage.module.css";
 
 const API =
@@ -581,6 +582,14 @@ export default function RolOkumaPage() {
 
   return (
     <div className={styles.page}>
+      <SeoHead
+        title={isTR ? "Matrix Rol Okuma — Kişisel Enerji İmza Analizi" : "Matrix Role Reading — Personal Energy Signature"}
+        description={isTR
+          ? "Doğum tarihinden kişisel enerji imzanı hesapla. İsim ve doğum numerolojisi ile yaşam rolünü, ilişki döngülerini ve kariyer yolunu keşfet."
+          : "Calculate your personal energy signature from your birth date. Discover your life role, relationship cycles and career path through name and birth numerology."
+        }
+        path="/rol-okuma"
+      />
       <div className={styles.bgOrb} />
       <div className={styles.bgOrb2} />
 

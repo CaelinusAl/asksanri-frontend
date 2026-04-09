@@ -16,6 +16,7 @@ import {
   EMOTION_FREQ_HIS,
   getCategoryMeta,
 } from "../data/ankodQuizData";
+import SeoHead from "../components/SeoHead";
 import styles from "./AnKodPage.module.css";
 
 const THEMES = {
@@ -358,6 +359,11 @@ export default function AnKodPage() {
 
   return (
     <div className={styles.page}>
+      <SeoHead
+        title="AN_KOD — Anın Kodları Analizi"
+        description="AN_KOD: bilinçaltı kodlarını keşfet. Renk, hayvan, element ve sembol testleriyle kişisel analizini al. SANRI dijital bilinç platformu."
+        path="/an-kod"
+      />
       <div className={styles.bgOrb} />
       <div className={styles.bgOrb2} />
 

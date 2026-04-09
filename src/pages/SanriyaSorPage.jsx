@@ -6,6 +6,7 @@ import styles from "./SanriyaSorPage.module.css";
 import StarTrail from "../components/StarTrail";
 import { unlockAudio, playSfx } from "../utils/sfx";
 import { useLanguage } from "../contexts/LanguageContext";
+import SeoHead from "../components/SeoHead";
 import { useAuth } from "../contexts/AuthContext";
 
 const MODES = [
@@ -331,6 +332,14 @@ export default function SanriyaSorPage() {
 
   return (
     <div className={styles.page} onPointerDown={onUserGesture}>
+      <SeoHead
+        title={isTR ? "Sanrı'ya Sor — AI Bilinç Aynası" : "Ask Sanri — AI Consciousness Mirror"}
+        description={isTR
+          ? "Sanrı'ya sor: yapay zeka destekli bilinç aynası. Ayna, rüya, ilahi, gölge ve ışık modlarında derin içgörü al."
+          : "Ask Sanri: AI-powered consciousness mirror. Get deep insights in mirror, dream, divine, shadow and light modes."
+        }
+        path="/sanriya-sor"
+      />
       <StarTrail />
 
       <div className={styles.topbar}>

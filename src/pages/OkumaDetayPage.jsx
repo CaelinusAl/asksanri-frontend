@@ -11,6 +11,7 @@ import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
 import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
 import { EmailCaptureInline } from "../components/EmailCaptureModal";
 import BankTransferLink from "../components/BankTransferLink";
+import SeoHead from "../components/SeoHead";
 import styles from "./OkumaDetayPage.module.css";
 
 const API =
@@ -254,6 +255,13 @@ export default function OkumaDetayPage() {
 
   return (
     <div className={styles.page}>
+      <SeoHead
+        title={post.title}
+        description={post.excerpt || post.title}
+        path={`/okuma-alani/${post.slug}`}
+        ogImage={post.coverImage}
+        ogType="article"
+      />
       {/* ── Back ── */}
       <div className={styles.topBar}>
         <Link to="/okuma-alani" className={styles.backLink}>

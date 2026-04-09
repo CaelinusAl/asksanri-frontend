@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -80,30 +81,32 @@ function renderRootError(err, reset) {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ErrorBoundary renderError={renderRootError}>
-      <ThemeProvider>
-        <NomadToaster />
-        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <LanguageProvider>
-            <AuthProvider>
-              <AdminProvider>
-                <PremiumProvider>
-                  <OfflineMeshProvider>
-                    <DoorNavProvider>
-                      <OfflineBanner />
-                      <App />
-                      <Footer />
-                      <MicroPayModal />
-                      <ThemeToggle />
-                    </DoorNavProvider>
-                  </OfflineMeshProvider>
-                </PremiumProvider>
-              </AdminProvider>
-            </AuthProvider>
-          </LanguageProvider>
-        </BrowserRouter>
-      </ThemeProvider>
-      <Analytics />
-      <SpeedInsights />
+      <HelmetProvider>
+        <ThemeProvider>
+          <NomadToaster />
+          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            <LanguageProvider>
+              <AuthProvider>
+                <AdminProvider>
+                  <PremiumProvider>
+                    <OfflineMeshProvider>
+                      <DoorNavProvider>
+                        <OfflineBanner />
+                        <App />
+                        <Footer />
+                        <MicroPayModal />
+                        <ThemeToggle />
+                      </DoorNavProvider>
+                    </OfflineMeshProvider>
+                  </PremiumProvider>
+                </AdminProvider>
+              </AuthProvider>
+            </LanguageProvider>
+          </BrowserRouter>
+        </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
+      </HelmetProvider>
     </ErrorBoundary>
   </React.StrictMode>,
 );

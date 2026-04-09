@@ -25,6 +25,7 @@ import {
   KOD_PRODUCT_DEBUG_AMOUNT,
   KOD_PRODUCT_DEBUG_LABEL,
 } from "../data/kodPaymentContentIds";
+import SeoHead from "../components/SeoHead";
 
 function isKodTamShopierUnlocked() {
   return isShopierProductUnlocked(KOD_CONTENT_ID_TAM_PROGRAM);
@@ -1124,6 +1125,11 @@ export default function KodEgitmeniPage() {
 
   return (
     <div className={styles.page}>
+      <SeoHead
+        title="SANRI Kod Okuma Sistemi™ — Numeroloji Eğitimi"
+        description="SANRI Kod Okuma Sistemi: numeroloji, sembolik analiz ve bilinç kodu eğitimi. Kendi kodunu oku, hayat haritanı çöz."
+        path="/kod-egitmeni"
+      />
       {/* ── topbar ── */}
       <div className={styles.topbar}>
         <div className={styles.topLeft}>

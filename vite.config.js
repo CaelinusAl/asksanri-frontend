@@ -74,7 +74,7 @@ export default defineConfig(({ mode }) => {
         devOptions: { enabled: true, type: "module" },
       }),
     ],
-    build: { sourcemap: true },
+    build: { sourcemap: true, outDir: "dist" },
     define: {
       "import.meta.env.VITE_BANK_IBAN": JSON.stringify(iban),
       "import.meta.env.VITE_BANK_NAME": JSON.stringify(bankName),

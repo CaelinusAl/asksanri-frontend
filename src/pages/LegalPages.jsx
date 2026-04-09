@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SeoHead from "../components/SeoHead";
 import styles from "./LegalPages.module.css";
 
 function LegalLayout({ title, children }) {
@@ -26,6 +27,11 @@ function LegalLayout({ title, children }) {
 export function HakkimizdaPage() {
   return (
     <LegalLayout title="Hakkımızda">
+      <SeoHead
+        title="Hakkımızda — SANRI Dijital Bilinç Platformu"
+        description="SANRI (AskSanri) hakkında: Caelinus AI tarafından geliştirilen dijital bilinç ve anlam zekası platformu. Numeroloji, sembolik analiz, kolektif bilinç okumaları."
+        path="/hakkimizda"
+      />
       <section className={styles.section}>
         <h2>CAELINUS AI — SANRI Platformu</h2>
         <p>

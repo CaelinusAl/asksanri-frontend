@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import styles from "./FrekansAlaniPage.module.css";
 import StarTrail from "../components/StarTrail";
 import { useLanguage } from "../contexts/LanguageContext";
+import SeoHead from "../components/SeoHead";
 import { unlockAudio } from "../utils/sfx";
 import { chakraData } from "../data/chakraData";
 import {
@@ -382,6 +383,14 @@ export default function FrekansAlaniPage() {
 
   return (
     <div className={styles.page} style={{ "--chakra-color": activeChakra.color }} onPointerDown={unlockAudio}>
+      <SeoHead
+        title={isTR ? "Frekans Alanı — Çakra Meditasyon ve Enerji Okuma" : "Frequency Field — Chakra Meditation & Energy Reading"}
+        description={isTR
+          ? "Frekans Alanı: çakra meditasyonu, nefes çalışması ve enerji haritası ile kişisel frekansını keşfet. SANRI bilinç ve anlam zekası platformu."
+          : "Frequency Field: discover your personal frequency through chakra meditation, breathwork and energy mapping. SANRI consciousness platform."
+        }
+        path="/frekans"
+      />
       <StarTrail />
 
       {/* TOPBAR */}
