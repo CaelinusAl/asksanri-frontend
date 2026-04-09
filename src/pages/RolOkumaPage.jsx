@@ -2,13 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
-import {
-  redirectToShopier,
-  isShopierUnlocked,
-  checkServerUnlock,
-  isShopierProductUnlocked,
-  SHOPIER_PRODUCTS,
-} from "../data/shopierConfig";
+import { redirectToShopier, isShopierUnlocked, checkServerUnlock, isShopierProductUnlocked, SHOPIER_PRODUCTS } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
@@ -19,8 +13,8 @@ import {
   narrativeToSectionTexts,
 } from "../data/matrixRolNarrative";
 import { saveRolReadingCache, loadRolReadingCache } from "../lib/offline/rolReadingCache";
-import SeoHead from "../components/SeoHead";
 import styles from "./RolOkumaPage.module.css";
+import SeoHead from "../components/SeoHead";
 
 const API =
   (import.meta?.env?.VITE_BACKEND_URL &&
@@ -36,14 +30,14 @@ const debugRol = (...args) => {
 };
 
 const LOADING_LINES = [
-  "Sanr─▒ seni okuyor...",
-  "─░smin ├ğ├Âz├╝l├╝yor...",
-  "Do─şum frekans─▒n hesaplan─▒yor...",
-  "Katmanlar a├ğ─▒l─▒yor...",
-  "Zaten biliyorsun. Sadece hat─▒rlam─▒yorsun.",
+  "Sanrı seni okuyor...",
+  "İsmin çözülüyor...",
+  "Doğum frekansın hesaplanıyor...",
+  "Katmanlar açılıyor...",
+  "Zaten biliyorsun. Sadece hatırlamıyorsun.",
 ];
 
-/* ÔöÇÔöÇ Energy Exchange Modal ÔöÇÔöÇ */
+/* ── Energy Exchange Modal ── */
 function EnergyModal({ open, onClose, label, price, productId, contentId }) {
   if (!open) return null;
 
@@ -57,36 +51,36 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
         exit={{ opacity: 0, scale: 0.95 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
       >
-        <div className={styles.modalGlyph}>Ô£Ğ</div>
+        <div className={styles.modalGlyph}>✦</div>
         <p className={styles.modalTextDeep}>
-          Sen d├╝┼ş├╝nd├╝─ş├╝n├╝ san─▒yorsun.
+          Sen düşündüğünü sanıyorsun.
         </p>
         <p className={styles.modalTextDeep}>
-          Ama ├ğo─şu ┼şey sana ait de─şil.
-        </p>
-        <div className={styles.modalDivider} />
-        <p className={styles.modalTextDeep}>
-          Bir rol├╝n var.
-          <br />
-          Ve o rol, hayat─▒n─▒n i├ğinden konu┼şuyor.
+          Ama çoğu şey sana ait değil.
         </p>
         <div className={styles.modalDivider} />
         <p className={styles.modalTextDeep}>
-          Bu katman a├ğ─▒ld─▒─ş─▒nda,
+          Bir rolün var.
           <br />
-          sadece bilgi almazs─▒n.
+          Ve o rol, hayatının içinden konuşuyor.
+        </p>
+        <div className={styles.modalDivider} />
+        <p className={styles.modalTextDeep}>
+          Bu katman açıldığında,
+          <br />
+          sadece bilgi almazsın.
         </p>
         <p className={styles.modalTextHighlight}>
-          Kendini farkl─▒ g├Ârmeye ba┼şlars─▒n.
+          Kendini farklı görmeye başlarsın.
         </p>
         <div className={styles.modalDivider} />
         <p className={styles.modalTextSoft}>
-          Bu bir cevap de─şil. Bir ayna.
+          Bu bir cevap değil. Bir ayna.
           <br />
-          Ve o aynaya bakmakÔÇĞ herkes i├ğin kolay de─şil.
+          Ve o aynaya bakmak… herkes için kolay değil.
         </p>
         <p className={styles.modalPrice}>
-          {price}Ôé║ enerji de─şi┼şimi
+          {price}₺ enerji değişimi
         </p>
         <button
           className={styles.modalBtn}
@@ -95,24 +89,23 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
             redirectToShopier(productId, contentId, "/rol-okuma");
           }}
         >
-          Kartla An─▒nda ├ûde
+          Kartla Anında Öde
         </button>
         <BankTransferLink
           contentId={contentId || "role_unlock"}
           returnTo="/rol-okuma"
           className={styles.modalHavale}
         >
-          Havale / EFT ile ├Âde
+          Havale / EFT ile öde
         </BankTransferLink>
         <button className={styles.modalClose} onClick={onClose}>
-          ┼Şimdilik kal
+          Şimdilik kal
         </button>
       </motion.div>
     </div>
   );
 }
 
-/** Sonu├ğ a─şac─▒ndaki beklenmeyen render hatalar─▒n─▒ yakalar (├Âr. eksik prop). */
 function useVerifiedProductUnlock(contentId) {
   const [ok, setOk] = useState(() => isShopierProductUnlocked(contentId));
   useEffect(() => {
@@ -120,20 +113,15 @@ function useVerifiedProductUnlock(contentId) {
     checkServerUnlock(contentId).then((unlocked) => {
       if (alive && unlocked) setOk(true);
     });
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, [contentId]);
   return ok;
 }
 
 const DEEP_CTA_PREFILL = {
-  deep_iliski_unlock:
-    "Derin ─░li┼şki A├ğ─▒l─▒m─▒ i├ğin sat─▒n al─▒m─▒m var ÔÇö teslimat / devam ad─▒m─▒ i├ğin yaz─▒yorum.",
-  deep_kariyer_unlock:
-    "Kariyer / Yol A├ğ─▒l─▒m─▒ i├ğin sat─▒n al─▒m─▒m var ÔÇö teslimat / devam ad─▒m─▒ i├ğin yaz─▒yorum.",
-  deep_genel_unlock:
-    "Genel Derin A├ğ─▒l─▒m i├ğin sat─▒n al─▒m─▒m var ÔÇö teslimat / devam ad─▒m─▒ i├ğin yaz─▒yorum.",
+  deep_iliski_unlock: "Derin İlişki Açılımı için satın alımım var — teslimat / devam adımı için yazıyorum.",
+  deep_kariyer_unlock: "Kariyer / Yol Açılımı için satın alımım var — teslimat / devam adımı için yazıyorum.",
+  deep_genel_unlock: "Genel Derin Açılım için satın alımım var — teslimat / devam adımı için yazıyorum.",
 };
 
 function RolDeepenSection({ isTR, navigate }) {
@@ -147,10 +135,8 @@ function RolDeepenSection({ isTR, navigate }) {
       productKey: "iliski_acilimi",
       funnel: "role_deepen_relationship_click",
       unlocked: uIliski,
-      title: isTR ? "Derin ─░li┼şki A├ğ─▒l─▒m─▒" : "Deep Relationship Reading",
-      blurb: isTR
-        ? "─░li┼şkide tekrar eden d├Âng├╝n├╝ g├Âr."
-        : "See the loop that repeats in relationships.",
+      title: isTR ? "Derin İlişki Açılımı" : "Deep Relationship Reading",
+      blurb: isTR ? "İlişkide tekrar eden döngünü gör." : "See the loop that repeats in relationships.",
       micro: isTR ? "Daha derine inmek ister misin?" : "Want to go deeper?",
     },
     {
@@ -158,10 +144,8 @@ function RolDeepenSection({ isTR, navigate }) {
       productKey: "kariyer_acilimi",
       funnel: "role_deepen_career_click",
       unlocked: uKar,
-      title: isTR ? "Kariyer / Yol A├ğ─▒l─▒m─▒" : "Career / Path Reading",
-      blurb: isTR
-        ? "Kariyer yolundaki d├╝─ş├╝m├╝ a├ğ."
-        : "Open the knot on your career path.",
+      title: isTR ? "Kariyer / Yol Açılımı" : "Career / Path Reading",
+      blurb: isTR ? "Kariyer yolundaki düğümü aç." : "Open the knot on your career path.",
       micro: isTR ? "Bu sadece ilk katman." : "This is only the first layer.",
     },
     {
@@ -169,10 +153,8 @@ function RolDeepenSection({ isTR, navigate }) {
       productKey: "genel_derin_acilim",
       funnel: "role_deepen_general_click",
       unlocked: uGen,
-      title: isTR ? "Genel Derin A├ğ─▒l─▒m" : "General Deep Reading",
-      blurb: isTR
-        ? "Hayat─▒ndaki ana paterni daha net g├Âr."
-        : "See the main pattern in your life more clearly.",
+      title: isTR ? "Genel Derin Açılım" : "General Deep Reading",
+      blurb: isTR ? "Hayatındaki ana paterni daha net gör." : "See the main pattern in your life more clearly.",
       micro: isTR ? "Daha derine inmek ister misin?" : "Want to go deeper?",
     },
   ];
@@ -188,11 +170,11 @@ function RolDeepenSection({ isTR, navigate }) {
   };
 
   return (
-    <section className={styles.deepenSection} aria-label={isTR ? "Derin a├ğ─▒l─▒mlar" : "Deep readings"}>
-      <h3 className={styles.deepenTitle}>{isTR ? "Bunun devam─▒ var." : "There is more to this."}</h3>
+    <section className={styles.deepenSection} aria-label={isTR ? "Derin açılımlar" : "Deep readings"}>
+      <h3 className={styles.deepenTitle}>{isTR ? "Bunun devamı var." : "There is more to this."}</h3>
       <p className={styles.deepenIntro}>
         {isTR
-          ? "Bu sadece ilk katman. ─░stersen ili┼şki, kariyer ve genel ya┼şam d├Âng├╝n i├ğin daha derin a├ğ─▒l─▒m─▒ g├Ârebilirsin."
+          ? "Bu sadece ilk katman. İstersen ilişki, kariyer ve genel yaşam döngün için daha derin açılımı görebilirsin."
           : "This is only the first layer. You can go deeper into relationship, career, and your life pattern."}
       </p>
       <div className={styles.deepenGrid}>
@@ -203,19 +185,9 @@ function RolDeepenSection({ isTR, navigate }) {
               <h4 className={styles.deepenCardTitle}>{item.title}</h4>
               <p className={styles.deepenCardBlurb}>{item.blurb}</p>
               <p className={styles.deepenCardMicro}>{item.micro}</p>
-              <div className={styles.deepenPrice}>{price} Ôé║</div>
-              <button
-                type="button"
-                className={styles.deepenBtn}
-                onClick={() => handlePrimary(item)}
-              >
-                {item.unlocked
-                  ? isTR
-                    ? "A├ğ─▒l─▒m─▒ a├ğ"
-                    : "Open reading"
-                  : isTR
-                    ? "A├ğ─▒l─▒m─▒ G├Âr"
-                    : "View reading"}
+              <div className={styles.deepenPrice}>{price} ₺</div>
+              <button type="button" className={styles.deepenBtn} onClick={() => handlePrimary(item)}>
+                {item.unlocked ? (isTR ? "Açılımı aç" : "Open reading") : (isTR ? "Açılımı Gör" : "View reading")}
               </button>
             </article>
           );
@@ -262,14 +234,14 @@ function RolShareFooterBlock({ narrative, isTR, shareFooterRef }) {
     <div ref={shareFooterRef} className={styles.resultShareFooter}>
       <p className={styles.resultWhisper}>
         {isTR
-          ? "Baz─▒ cevaplar ilk bak─▒┼şta g├Âr├╝nmez. Derine indik├ğe anlam netle┼şir."
+          ? "Bazı cevaplar ilk bakışta görünmez. Derine indikçe anlam netleşir."
           : "Some answers stay hidden at first glance. Meaning clarifies as you go deeper."}
       </p>
       <SanriSharePanel
         anaTema={sections?.ana_tema ?? ""}
         isTR={isTR}
         cardKind="rol"
-        headline={isTR ? "─░stersen bunu payla┼şabilirsin" : "You can share this if youÔÇÖd like"}
+        headline={isTR ? "İstersen bunu paylaşabilirsin" : "You can share this if you'd like"}
       />
       {hasCopy ? (
         <div className={styles.shareStripFooter}>
@@ -292,6 +264,7 @@ function RolShareFooterBlock({ narrative, isTR, shareFooterRef }) {
   );
 }
 
+/** Sonuç ağacındaki beklenmeyen render hatalarını yakalar (ör. eksik prop). */
 class RolOkumaResultBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -303,7 +276,7 @@ class RolOkumaResultBoundary extends React.Component {
   }
 
   componentDidCatch(error, info) {
-    console.error("[Matrix Rol] Sonu├ğ ekran─▒ render hatas─▒:", error?.message, info?.componentStack);
+    console.error("[Matrix Rol] Sonuç ekranı render hatası:", error?.message, info?.componentStack);
   }
 
   render() {
@@ -317,13 +290,13 @@ class RolOkumaResultBoundary extends React.Component {
           transition={{ duration: 0.45 }}
         >
           <div className={styles.resultErrorCard}>
-            <div className={styles.resultErrorGlyph}>Ôùê</div>
+            <div className={styles.resultErrorGlyph}>◈</div>
             <h2 className={styles.resultErrorTitle}>
-              {isTR ? "Sonu├ğ g├Âsterilemedi" : "Could not show result"}
+              {isTR ? "Sonuç gösterilemedi" : "Could not show result"}
             </h2>
             <p className={styles.resultErrorText}>
               {isTR
-                ? "Teknik bir sorun olu┼ştu. Bilgilerini kontrol edip tekrar deneyebilirsin."
+                ? "Teknik bir sorun oluştu. Bilgilerini kontrol edip tekrar deneyebilirsin."
                 : "Something went wrong. Check your details and try again."}
             </p>
             <button
@@ -334,7 +307,7 @@ class RolOkumaResultBoundary extends React.Component {
                 onReset?.();
               }}
             >
-              {isTR ? "Forma d├Ân" : "Back to form"}
+              {isTR ? "Forma dön" : "Back to form"}
             </button>
           </div>
         </motion.div>
@@ -402,7 +375,7 @@ export default function RolOkumaPage() {
       .catch(() => setHasLocalRolCache(false));
   }, []);
 
-  /* Offline: y├╝kleme ekran─▒ yok ÔÇö do─şrudan son kay─▒tl─▒ okuma. */
+  /* Offline: yükleme ekranı yok — doğrudan son kayıtlı okuma. */
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -415,7 +388,7 @@ export default function RolOkumaPage() {
         setResult({ data: cached.apiData, fullName: cached.fullName, narrative });
         setPhase(PHASES.RESULT);
       } catch {
-        /* bozuk ├Ânbellek */
+        /* bozuk önbellek */
       }
     })();
     return () => {
@@ -435,7 +408,7 @@ export default function RolOkumaPage() {
       setError("");
     } catch {
       setFlowError(
-        isTR ? "Kay─▒tl─▒ okuma a├ğ─▒lamad─▒. Yeni okuma i├ğin formu kullan." : "Could not open saved reading. Use the form for a new one.",
+        isTR ? "Kayıtlı okuma açılamadı. Yeni okuma için formu kullan." : "Could not open saved reading. Use the form for a new one.",
       );
     }
   }, [isTR]);
@@ -469,11 +442,11 @@ export default function RolOkumaPage() {
     const bd = birthDate.trim();
 
     if (!first) {
-      setError(isTR ? "L├╝tfen ad─▒n─▒ gir." : "Please enter your first name.");
+      setError(isTR ? "Lütfen adını gir." : "Please enter your first name.");
       return;
     }
     if (!bd) {
-      setError(isTR ? "L├╝tfen do─şum tarihini se├ğ." : "Please select your birth date.");
+      setError(isTR ? "Lütfen doğum tarihini seç." : "Please select your birth date.");
       return;
     }
 
@@ -485,7 +458,7 @@ export default function RolOkumaPage() {
     const targetUrl = `${API}/matrix-rol`;
     const payload = { name: fullName, birth_date: bd };
 
-    debugRol("form submit values", { ad: first, soyad: last || "(bo┼ş)", fullName, birth_date: bd });
+    debugRol("form submit values", { ad: first, soyad: last || "(boş)", fullName, birth_date: bd });
     debugRol("POST target URL", targetUrl, "current route", typeof window !== "undefined" ? window.location.pathname : "");
 
     setPhase(PHASES.LOADING);
@@ -505,10 +478,10 @@ export default function RolOkumaPage() {
         console.error("[Matrix Rol] API HTTP error", res.status, raw?.slice(0, 500));
         const msg =
           res.status === 429
-            ? (isTR ? "├çok fazla istek. K─▒sa s├╝re sonra tekrar dene." : "Too many requests. Try again shortly.")
+            ? (isTR ? "Çok fazla istek. Kısa süre sonra tekrar dene." : "Too many requests. Try again shortly.")
             : res.status >= 500
-              ? (isTR ? "Sunucu ge├ğici olarak yan─▒t vermiyor. Daha sonra tekrar dene." : "Server error. Please try again later.")
-              : (isTR ? "─░stek reddedildi. Bilgilerini kontrol edip tekrar dene." : "Request failed. Check your details and try again.");
+              ? (isTR ? "Sunucu geçici olarak yanıt vermiyor. Daha sonra tekrar dene." : "Server error. Please try again later.")
+              : (isTR ? "İstek reddedildi. Bilgilerini kontrol edip tekrar dene." : "Request failed. Check your details and try again.");
         throw new Error(msg);
       }
 
@@ -518,7 +491,7 @@ export default function RolOkumaPage() {
       } catch (parseErr) {
         console.error("[Matrix Rol] JSON parse failed", parseErr, raw?.slice(0, 200));
         throw new Error(
-          isTR ? "Sunucu yan─▒t─▒ okunamad─▒. Tekrar dene." : "Could not read server response. Try again."
+          isTR ? "Sunucu yanıtı okunamadı. Tekrar dene." : "Could not read server response. Try again."
         );
       }
 
@@ -534,7 +507,7 @@ export default function RolOkumaPage() {
       } catch (buildErr) {
         console.error("[Matrix Rol] buildMatrixRolReading error", buildErr);
         throw new Error(
-          isTR ? "Okuma metni olu┼şturulamad─▒. Tekrar dene." : "Could not build reading. Try again."
+          isTR ? "Okuma metni oluşturulamadı. Tekrar dene." : "Could not build reading. Try again."
         );
       }
 
@@ -567,7 +540,7 @@ export default function RolOkumaPage() {
         /* devam */
       }
       const fallback = isTR
-        ? "Ba─şlant─▒ hatas─▒ veya a─ş kesildi. ─░nternetini kontrol edip tekrar dene."
+        ? "Bağlantı hatası veya ağ kesildi. İnternetini kontrol edip tekrar dene."
         : "Connection error. Check your network and try again.";
       let message = fallback;
       if (err instanceof Error && err.message) {
@@ -595,13 +568,13 @@ export default function RolOkumaPage() {
 
       <div className={styles.topbar}>
         <button className={styles.backBtn} onClick={() => navigate("/")}>
-          ÔåÉ Kap─▒lar
+          ← Kapılar
         </button>
         <span className={styles.topTitle}>Matrix Rol Okuma</span>
       </div>
 
       <AnimatePresence mode="wait">
-        {/* ÔòÉÔòÉÔòÉ FORM ÔòÉÔòÉÔòÉ */}
+        {/* ═══ FORM ═══ */}
         {phase === PHASES.FORM && (
           <motion.div
             key="form"
@@ -611,46 +584,46 @@ export default function RolOkumaPage() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <div className={styles.formGlyph}>Ôùê</div>
-            <h1 className={styles.formTitle}>Sistemdeki Rol├╝n├╝ Hat─▒rla</h1>
+            <div className={styles.formGlyph}>◈</div>
+            <h1 className={styles.formTitle}>Sistemdeki Rolünü Hatırla</h1>
             <p className={styles.formSubHero}>
-              Bu alan sana kim oldu─şunu s├Âylemez.
+              Bu alan sana kim olduğunu söylemez.
               <br />
-              Sana zaten bildi─şin ┼şeyi hat─▒rlat─▒r.
+              Sana zaten bildiğin şeyi hatırlatır.
             </p>
 
             <div className={styles.deepDesc}>
               <p className={styles.deepDescLine}>
-                Hayat─▒nda tekrar eden ┼şeyler,
+                Hayatında tekrar eden şeyler,
                 <br />
-                kar┼ş─▒na ├ğ─▒kan insanlar,
+                karşına çıkan insanlar,
                 <br />
-                ka├ğamad─▒─ş─▒n d├Âng├╝lerÔÇĞ
+                kaçamadığın döngüler…
               </p>
-              <p className={styles.deepDescPunch}>rastgele de─şil.</p>
+              <p className={styles.deepDescPunch}>rastgele değil.</p>
               <div className={styles.deepDescDivider} />
               <p className={styles.deepDescLine}>
-                Bir rol├╝n var.
+                Bir rolün var.
                 <br />
-                Ve sen onu ya┼ş─▒yorsun,
+                Ve sen onu yaşıyorsun,
                 <br />
-                ama ├ğo─şu zaman g├Ârmeden.
+                ama çoğu zaman görmeden.
               </p>
               <div className={styles.deepDescDivider} />
               <p className={styles.deepDescLine}>
                 Matrix Rol Okuma ile:
                 <br />
-                ad─▒n, do─şum tarihin ve ta┼ş─▒d─▒─ş─▒n frekans birle┼şir.
+                adın, doğum tarihin ve taşıdığın frekans birleşir.
               </p>
               <p className={styles.deepDescHighlight}>
-                Ve sana ait olan ┼şey a├ğ─▒l─▒r.
+                Ve sana ait olan şey açılır.
               </p>
               <div className={styles.deepDescDivider} />
               <p className={styles.deepDescSoft}>
-                Bu bir analiz de─şil. Bu bir hat─▒rlay─▒┼ş.
+                Bu bir analiz değil. Bu bir hatırlayış.
               </p>
               <p className={styles.deepDescCall}>
-                Buraya kadar geldiysenÔÇĞ zaten ├ğa─şr─▒ld─▒n.
+                Buraya kadar geldiysen… zaten çağrıldın.
               </p>
             </div>
 
@@ -661,7 +634,7 @@ export default function RolOkumaPage() {
                   <input
                     className={styles.input}
                     type="text"
-                    placeholder="Ad─▒n"
+                    placeholder="Adın"
                     value={name}
                     onFocus={handleFormStart}
                     onChange={(e) => setName(e.target.value)}
@@ -673,7 +646,7 @@ export default function RolOkumaPage() {
                   <input
                     className={styles.input}
                     type="text"
-                    placeholder="Soyad─▒n"
+                    placeholder="Soyadın"
                     value={surname}
                     onChange={(e) => setSurname(e.target.value)}
                   />
@@ -681,7 +654,7 @@ export default function RolOkumaPage() {
               </div>
 
               <div className={styles.field}>
-                <label className={styles.label}>Do─şum Tarihi</label>
+                <label className={styles.label}>Doğum Tarihi</label>
                 <input
                   className={styles.input}
                   type="date"
@@ -698,7 +671,7 @@ export default function RolOkumaPage() {
                 className={styles.submitBtn}
                 disabled={!name.trim() || !birthDate}
               >
-                Rol├╝n├╝ G├Âr
+                Rolünü Gör
               </button>
               {hasLocalRolCache ? (
                 <button
@@ -706,14 +679,14 @@ export default function RolOkumaPage() {
                   className={styles.cachedReadBtn}
                   onClick={() => openCachedRolReading()}
                 >
-                  {isTR ? "Son kay─▒tl─▒ okuman─▒ g├Âster (cihaz─▒ndan)" : "Show last saved reading (on device)"}
+                  {isTR ? "Son kayıtlı okumanı göster (cihazından)" : "Show last saved reading (on device)"}
                 </button>
               ) : null}
             </form>
           </motion.div>
         )}
 
-        {/* ÔòÉÔòÉÔòÉ LOADING ÔòÉÔòÉÔòÉ */}
+        {/* ═══ LOADING ═══ */}
         {phase === PHASES.LOADING && (
           <motion.div
             key="loading"
@@ -724,7 +697,7 @@ export default function RolOkumaPage() {
             transition={{ duration: 0.5 }}
           >
             <div className={styles.loadingOrb}>
-              <span className={styles.loadingGlyph}>Ôùê</span>
+              <span className={styles.loadingGlyph}>◈</span>
             </div>
             <AnimatePresence mode="wait">
               <motion.p
@@ -741,7 +714,7 @@ export default function RolOkumaPage() {
           </motion.div>
         )}
 
-        {/* ÔòÉÔòÉÔòÉ SUBMIT / API ERROR (siyah ekran yerine kart) ÔòÉÔòÉÔòÉ */}
+        {/* ═══ SUBMIT / API ERROR (siyah ekran yerine kart) ═══ */}
         {phase === PHASES.ERROR && (
           <motion.div
             key="flow-error"
@@ -752,9 +725,9 @@ export default function RolOkumaPage() {
             transition={{ duration: 0.45 }}
           >
             <div className={styles.resultErrorCard}>
-              <div className={styles.resultErrorGlyph}>Ôùê</div>
+              <div className={styles.resultErrorGlyph}>◈</div>
               <h2 className={styles.resultErrorTitle}>
-                {isTR ? "Okuma tamamlanamad─▒" : "Reading could not complete"}
+                {isTR ? "Okuma tamamlanamadı" : "Reading could not complete"}
               </h2>
               <p className={styles.resultErrorText}>{flowError}</p>
               <button
@@ -771,7 +744,7 @@ export default function RolOkumaPage() {
           </motion.div>
         )}
 
-        {/* ÔòÉÔòÉÔòÉ RESULT ÔòÉÔòÉÔòÉ */}
+        {/* ═══ RESULT ═══ */}
         {phase === PHASES.RESULT && result && (
           <RolOkumaResultBoundary
             key={resultSessionId}
@@ -792,8 +765,8 @@ export default function RolOkumaPage() {
               transition={{ duration: 0.6 }}
             >
               <div className={styles.resultHeader}>
-                <div className={styles.resultGlyph}>Ô£Ğ</div>
-                <h2 className={styles.resultName}>{result.fullName || "ÔÇö"}</h2>
+                <div className={styles.resultGlyph}>✦</div>
+                <h2 className={styles.resultName}>{result.fullName || "—"}</h2>
                 {result.data?.matrix_role ? (
                   <div className={styles.roleBadge}>{result.data.matrix_role}</div>
                 ) : null}
@@ -840,20 +813,20 @@ export default function RolOkumaPage() {
                     </div>
                     <div className={styles.lockZoneGradient} />
                     <div className={styles.lockZoneOverlay}>
-                      <p className={styles.lockZoneLine1}>Sen ya┼şam─▒yorsun.</p>
-                      <p className={styles.lockZoneLine2}>Bir ┼şeyi tekrar ediyorsun.</p>
+                      <p className={styles.lockZoneLine1}>Sen yaşamıyorsun.</p>
+                      <p className={styles.lockZoneLine2}>Bir şeyi tekrar ediyorsun.</p>
                       <div className={styles.lockZoneDivider} />
                       <p className={styles.lockZonePersonal}>
-                        Sorun ├ğ├Âzmek de─şil. G├Ârmek.
+                        Sorun çözmek değil. Görmek.
                       </p>
-                      <p className={styles.lockZonePersonalSoft}>Bu sana ├Âzel.</p>
+                      <p className={styles.lockZonePersonalSoft}>Bu sana özel.</p>
                       <button
                         className={styles.lockZoneBtn}
                         onClick={() => openModal("Rol Okuma", "369", "rol_okuma", "role_unlock")}
                       >
-                        Hat─▒rla
+                        Hatırla
                       </button>
-                      <span className={styles.lockZoneHint}>Bu kap─▒, haz─▒r olana a├ğ─▒l─▒r.</span>
+                      <span className={styles.lockZoneHint}>Bu kapı, hazır olana açılır.</span>
                       <button
                         type="button"
                         className={styles.lockZoneRecovery}
@@ -862,12 +835,12 @@ export default function RolOkumaPage() {
                           if (ok) window.location.reload();
                           else {
                             window.alert(
-                              "Sunucuda aktif sat─▒n al─▒m bulunamad─▒. ├ûdeme sonras─▒ /odeme-basarili sayfas─▒ndan do─şrula veya giri┼ş yapt─▒─ş─▒n e-posta ile hesab─▒n─▒ kullan."
+                              "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
                             );
                           }
                         }}
                       >
-                        Sat─▒n al─▒m─▒ do─şrula
+                        Satın alımı doğrula
                       </button>
                     </div>
                   </div>
@@ -895,7 +868,6 @@ export default function RolOkumaPage() {
               >
                 Tekrar Oku
               </button>
-
               <RolShareFooterBlock
                 narrative={result.narrative}
                 isTR={isTR}
@@ -906,7 +878,7 @@ export default function RolOkumaPage() {
         )}
       </AnimatePresence>
 
-      {/* ÔöÇÔöÇ Energy Exchange Modal ÔöÇÔöÇ */}
+      {/* ── Energy Exchange Modal ── */}
       <AnimatePresence>
         {modal && (
           <EnergyModal
@@ -959,7 +931,7 @@ function NarrativeBlock({ label, text, delay }) {
       transition={{ delay, duration: 0.4 }}
     >
       {label ? <span className={styles.narrativeLabel}>{label}</span> : null}
-      <p className={styles.narrativeBody}>{body || "ÔÇö"}</p>
+      <p className={styles.narrativeBody}>{body || "—"}</p>
     </motion.div>
   );
 }
@@ -1003,13 +975,13 @@ function NarrativeDeep({ narrative, hideShareStrip, isTR = true }) {
 
   return (
     <div className={styles.narrativeDeepWrap}>
-      <NarrativeBlock label="Derin okuma ÔÇö ili┼şki" text={sections.derin_iliski} delay={d()} />
-      <NarrativeBlock label="Derin okuma ÔÇö para" text={sections.derin_para} delay={d()} />
-      <NarrativeBlock label="Derin okuma ÔÇö i├ğsel yap─▒" text={sections.derin_icsel} delay={d()} />
-      <NarrativeBlock label="Derin okuma ÔÇö davran─▒┼ş kal─▒b─▒" text={sections.derin_davranis} delay={d()} />
-      <NarrativeBlock label="K├Âr nokta" text={sections.kor_nokta} delay={d()} />
-      <NarrativeBlock label="D├Âng├╝" text={sections.dongu_aciklamasi} delay={d()} />
-      <NarrativeBlock label="K─▒r─▒lma" text={sections.kirilma_noktasi} delay={d()} />
+      <NarrativeBlock label="Derin okuma — ilişki" text={sections.derin_iliski} delay={d()} />
+      <NarrativeBlock label="Derin okuma — para" text={sections.derin_para} delay={d()} />
+      <NarrativeBlock label="Derin okuma — içsel yapı" text={sections.derin_icsel} delay={d()} />
+      <NarrativeBlock label="Derin okuma — davranış kalıbı" text={sections.derin_davranis} delay={d()} />
+      <NarrativeBlock label="Kör nokta" text={sections.kor_nokta} delay={d()} />
+      <NarrativeBlock label="Döngü" text={sections.dongu_aciklamasi} delay={d()} />
+      <NarrativeBlock label="Kırılma" text={sections.kirilma_noktasi} delay={d()} />
       <NarrativeBlock label="SANRI" text={sections.sanri_imza} delay={d()} />
       {!hideShareStrip ? (
         <motion.div
@@ -1025,7 +997,7 @@ function NarrativeDeep({ narrative, hideShareStrip, isTR = true }) {
                 {isTR ? "Metni kopyala" : "Copy text"}
               </button>
               <button type="button" className={styles.copyNarrativeBtnGhost} onClick={copyJson}>
-                {isTR ? "JSON kopyala" : "Copy JSON"}
+                JSON {isTR ? "kopyala" : "copy"}
               </button>
             </div>
           ) : null}
