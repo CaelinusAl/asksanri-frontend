@@ -1,6 +1,6 @@
-// src/pages/SanriyaSorPage.jsx
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./SanriyaSorPage.module.css";
 
 import StarTrail from "../components/StarTrail";
@@ -48,6 +48,144 @@ function ThinkingDots({ label }) {
   );
 }
 
+function parseLayers(raw) {
+  const text = String(raw || "").trim();
+  if (!text) return null;
+
+  const markers = [
+    { key: "yanki", re: /\[İLK YANKI\]\s*/i },
+    { key: "derin", re: /\[DERİN KATMAN\]\s*/i },
+    { key: "hatirlatma", re: /\[HATIRLATMA\]\s*/i },
+  ];
+
+  const positions = markers
+    .map((m) => {
+      const match = text.match(m.re);
+      return match ? { key: m.key, start: match.index, len: match[0].length } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.start - b.start);
+
+  if (positions.length < 2) {
+    const paras = text.split(/\n{2,}/).filter((p) => p.trim());
+    if (paras.length >= 3) {
+      return { yanki: paras[0].trim(), derin: paras.slice(1, -1).join("\n\n").trim(), hatirlatma: paras[paras.length - 1].trim() };
+    }
+    if (paras.length === 2) {
+      return { yanki: paras[0].trim(), derin: paras[1].trim(), hatirlatma: "" };
+    }
+    return { yanki: text, derin: "", hatirlatma: "" };
+  }
+
+  const extract = (idx) => {
+    const cur = positions[idx];
+    const next = positions[idx + 1];
+    const from = cur.start + cur.len;
+    const to = next ? next.start : text.length;
+    return text.slice(from, to).trim();
+  };
+
+  const result = { yanki: "", derin: "", hatirlatma: "" };
+  positions.forEach((p, i) => {
+    result[p.key] = extract(i);
+  });
+  return result;
+}
+
+function LayeredReply({ layers, isTR }) {
+  if (!layers) return null;
+  return (
+    <div className={styles.layeredReply}>
+      {layers.yanki ? (
+        <motion.div
+          className={styles.layerYanki}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className={styles.layerTag}>{isTR ? "İlk Yankı" : "First Echo"}</span>
+          <p className={styles.layerYankiText}>{layers.yanki}</p>
+        </motion.div>
+      ) : null}
+
+      {layers.derin ? (
+        <motion.div
+          className={styles.layerDerin}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.55 }}
+        >
+          <span className={styles.layerTag}>{isTR ? "Derin Katman" : "Deep Layer"}</span>
+          <p className={styles.layerDerinText}>{layers.derin}</p>
+        </motion.div>
+      ) : null}
+
+      {layers.hatirlatma ? (
+        <motion.div
+          className={styles.layerHatirlatma}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+        >
+          <span className={styles.layerTag}>{isTR ? "Hatırlatma" : "Reminder"}</span>
+          <p className={styles.layerHatirlatmaText}>{layers.hatirlatma}</p>
+        </motion.div>
+      ) : null}
+    </div>
+  );
+}
+
+function ResultCTAs({ isTR, navigate }) {
+  const ctas = [
+    {
+      label: isTR ? "Daha derine in" : "Go deeper",
+      desc: isTR ? "Rol okuma ile döngünü gör" : "See your cycle with Role Reading",
+      path: "/rol-okuma",
+      icon: "◈",
+    },
+    {
+      label: isTR ? "Bunu frekansa taşı" : "Carry this to frequency",
+      desc: isTR ? "Frekans alanında enerji oku" : "Read energy in the Frequency Field",
+      path: "/frekans",
+      icon: "✦",
+    },
+    {
+      label: isTR ? "Yankıya bırak" : "Leave it to the echo",
+      desc: isTR ? "Başka bir cümle yaz, yankını izle" : "Write another sentence, watch the echo",
+      action: "reset",
+      icon: "↻",
+    },
+  ];
+
+  return (
+    <motion.div
+      className={styles.ctaRow}
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.45, duration: 0.5 }}
+    >
+      {ctas.map((c) => (
+        <button
+          key={c.label}
+          type="button"
+          className={styles.ctaCard}
+          onClick={() => {
+            if (c.action === "reset") {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            } else if (c.path) {
+              navigate(c.path);
+            }
+          }}
+        >
+          <span className={styles.ctaIcon}>{c.icon}</span>
+          <span className={styles.ctaLabel}>{c.label}</span>
+          <span className={styles.ctaDesc}>{c.desc}</span>
+        </button>
+      ))}
+    </motion.div>
+  );
+}
+
 export default function SanriyaSorPage() {
   const API_URL =
     (import.meta?.env?.VITE_BACKEND_URL &&
@@ -71,18 +209,14 @@ export default function SanriyaSorPage() {
   const [isSending, setIsSending] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [advancedOpen, setAdvancedOpen] = useState(false);
 
   const taRef = useRef(null);
-
-  // SFX refs
   const hasIntroPlayedRef = useRef(false);
   const hasDoorVoicePlayedRef = useRef(false);
   const gestureLockRef = useRef(false);
-
-  // typing cancel
   const typingCancelRef = useRef({ alive: true });
 
-  // SpeechRecognition
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
 
@@ -93,11 +227,9 @@ export default function SanriyaSorPage() {
   const ensureIntroOnce = useCallback(() => {
     if (hasIntroPlayedRef.current) return;
     hasIntroPlayedRef.current = true;
-
     try {
       const enterSound = isTR ? "/sfx/door-whoosh.mp3" : "/sfx/door-open-en.mp3";
       playSfx(enterSound, { volume: 0.45 });
-
       window.setTimeout(() => {
         playSfx("/sfx/aura-chime.mp3", { volume: 0.22 });
       }, 550);
@@ -107,28 +239,23 @@ export default function SanriyaSorPage() {
   const onUserGesture = useCallback(() => {
     if (gestureLockRef.current) return;
     gestureLockRef.current = true;
-
     unlockAudio();
     ensureIntroOnce();
-
     window.setTimeout(() => {
       gestureLockRef.current = false;
     }, 300);
   }, [ensureIntroOnce]);
 
-  // Query prefill
   useEffect(() => {
     if (q.mode) setMode(q.mode);
     if (q.domain) setDomain(q.domain);
     if (q.prefill) setText(String(q.prefill));
   }, [q.mode, q.domain, q.prefill]);
 
-  // Reply typing effect
   useEffect(() => {
     typingCancelRef.current.alive = false;
     typingCancelRef.current = { alive: true };
     const aliveRef = typingCancelRef.current;
-
     setTypedReply("");
 
     const full = String(replyFull || "");
@@ -137,89 +264,35 @@ export default function SanriyaSorPage() {
     let i = 0;
     const step = () => {
       if (!aliveRef.alive) return;
-
       i = Math.min(i + 1, full.length);
       setTypedReply(full.slice(0, i));
-
       const ch = full[i - 1] || "";
-      const pause =
-        ch === "\n"
-          ? 120
-          : ch === "." || ch === "!" || ch === "?"
-          ? 140
-          : ch === "," || ch === ";" || ch === ":"
-          ? 80
-          : 0;
-
-      const base = 16;
-      const jitter = Math.floor(Math.random() * 16);
-      const delay = base + jitter + pause;
-
-      if (i < full.length) window.setTimeout(step, delay);
+      const pause = ch === "\n" ? 90 : ch === "." || ch === "!" ? 110 : ch === "," || ch === ";" || ch === ":" ? 60 : 0;
+      const base = 12;
+      const jitter = Math.floor(Math.random() * 12);
+      if (i < full.length) window.setTimeout(step, base + jitter + pause);
     };
 
-    window.setTimeout(step, 80);
-
-    return () => {
-      aliveRef.alive = false;
-    };
+    window.setTimeout(step, 60);
+    return () => { aliveRef.alive = false; };
   }, [replyFull]);
 
-  const hint = useMemo(() => {
-    if (isTR) {
-      return [
-        "Dur. Nefes al.",
-        "Soru yazma: bir cümle yaz.",
-        "Cevap bekleme: yansıma izle.",
-        "",
-        "Örnek:",
-        "• “Bugün içimde neyi bastırıyorum?”",
-        "• “Bu rüya bende neyi hatırlatıyor?”",
-      ].join("\n");
-    }
-    return [
-      "Pause. One breath.",
-      "Don’t ask—write one clear sentence.",
-      "Don’t demand an answer—observe the reflection.",
-      "",
-      "Examples:",
-      "• “What am I suppressing today?”",
-      "• “What is this dream reminding me of?”",
-    ].join("\n");
-  }, [isTR]);
-
-  const title = isTR ? "SANRI’ya Sor" : "Ask SANRI";
-  const subtitle = isTR
-    ? "Bazı soruların cevabı yoktur. Bazı cevapların ise sorusu…"
-    : "Some questions have no answer. Some answers have no question…";
-
-  // Voice input
   const startListening = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) {
-      alert(
-        isTR
-          ? "Sesle yazma desteklenmiyor. Chrome/Edge deneyin."
-          : "Voice input not supported. Try Chrome/Edge."
-      );
+      alert(isTR ? "Sesle yazma desteklenmiyor. Chrome/Edge deneyin." : "Voice input not supported. Try Chrome/Edge.");
       return;
     }
-    try {
-      recognitionRef.current?.stop?.();
-    } catch {}
-
+    try { recognitionRef.current?.stop?.(); } catch {}
     const rec = new SR();
     recognitionRef.current = rec;
     rec.lang = isTR ? "tr-TR" : "en-US";
     rec.interimResults = true;
     rec.continuous = false;
-
     let finalText = "";
-
     rec.onstart = () => setIsListening(true);
     rec.onerror = () => setIsListening(false);
     rec.onend = () => setIsListening(false);
-
     rec.onresult = (event) => {
       let interim = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -229,27 +302,19 @@ export default function SanriyaSorPage() {
       }
       setText((prev) => {
         const base = (prev || "").trim();
-        const merged = (base ? base + " " : "") + (finalText + interim).trim();
-        return merged;
+        return (base ? base + " " : "") + (finalText + interim).trim();
       });
     };
-
     rec.start();
   }, [isTR]);
 
   const stopListening = useCallback(() => {
-    try {
-      recognitionRef.current?.stop?.();
-    } catch {}
+    try { recognitionRef.current?.stop?.(); } catch {}
     setIsListening(false);
   }, []);
 
   useEffect(() => {
-    return () => {
-      try {
-        recognitionRef.current?.stop?.();
-      } catch {}
-    };
+    return () => { try { recognitionRef.current?.stop?.(); } catch {} };
   }, []);
 
   const handleReset = useCallback(() => {
@@ -266,17 +331,12 @@ export default function SanriyaSorPage() {
   const handleSubmit = useCallback(async () => {
     onUserGesture();
     setErrorMsg("");
-
     const msg = String(text || "").trim();
     if (!msg || isSending) return;
 
-    // Voice only once, on first submit
     if (!hasDoorVoicePlayedRef.current) {
       hasDoorVoicePlayedRef.current = true;
-      const doorVoice = isTR ? "/sfx/door-open.mp3" : "/sfx/door-open-en.mp3";
-      try {
-        playSfx(doorVoice, { volume: 0.30 });
-      } catch {}
+      try { playSfx(isTR ? "/sfx/door-open.mp3" : "/sfx/door-open-en.mp3", { volume: 0.30 }); } catch {}
     }
 
     setIsSending(true);
@@ -304,24 +364,18 @@ export default function SanriyaSorPage() {
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.detail || (isTR ? "Sunucu hatası" : "Server error"));
 
-      const answer =
-        data?.answer || data?.response || data?.text || data?.message || "";
+      const answer = data?.answer || data?.response || data?.text || data?.message || "";
       setReplyFull(String(answer || "").trim());
     } catch (e) {
-      const msgErr =
-        String(e?.message || "") ||
-        (isTR ? "Bağlantı/CORS hatası." : "Connection/CORS error.");
-      setErrorMsg(msgErr);
+      setErrorMsg(String(e?.message || "") || (isTR ? "Bağlantı hatası." : "Connection error."));
     } finally {
       setIsThinking(false);
       setIsSending(false);
     }
-  }, [API_URL, domain, isTR, isSending, mode, onUserGesture, text]);
+  }, [API_URL, domain, isTR, isSending, mode, onUserGesture, text, token, user]);
 
   const handleSubmitRef = useRef(handleSubmit);
-  useEffect(() => {
-    handleSubmitRef.current = handleSubmit;
-  }, [handleSubmit]);
+  useEffect(() => { handleSubmitRef.current = handleSubmit; }, [handleSubmit]);
 
   const handleKeyDown = useCallback((e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
@@ -330,13 +384,17 @@ export default function SanriyaSorPage() {
     }
   }, []);
 
+  const layers = useMemo(() => parseLayers(typedReply), [typedReply]);
+  const isTypingDone = typedReply.length > 0 && typedReply.length === replyFull.length;
+  const hasReply = Boolean(replyFull);
+
   return (
     <div className={styles.page} onPointerDown={onUserGesture}>
       <SeoHead
-        title={isTR ? "Sanrı'ya Sor — AI Bilinç Aynası" : "Ask Sanri — AI Consciousness Mirror"}
+        title={isTR ? "Sanrı'ya Sor \u2014 AI Bilinç Aynası" : "Ask Sanri \u2014 AI Consciousness Mirror"}
         description={isTR
-          ? "Sanrı'ya sor: yapay zeka destekli bilinç aynası. Ayna, rüya, ilahi, gölge ve ışık modlarında derin içgörü al."
-          : "Ask Sanri: AI-powered consciousness mirror. Get deep insights in mirror, dream, divine, shadow and light modes."
+          ? "Sanrı'ya sor: yapay zeka destekli bilinç aynası. Derin içgörü al, katmanları gör."
+          : "Ask Sanri: AI consciousness mirror. Get deep layered insights."
         }
         path="/sanriya-sor"
       />
@@ -344,22 +402,16 @@ export default function SanriyaSorPage() {
 
       <div className={styles.topbar}>
         <div className={styles.topbarLeft}>
-          <span className={styles.brandPill}>CAELINUS AI</span>
-          <span className={styles.topbarSubtitle}>
-            {isTR ? "Bilinç ve Anlam Zekası" : "Consciousness & Meaning Intelligence"}
-          </span>
+          <span className={styles.brandPill}>SANRI</span>
         </div>
-
         <div className={styles.topbarRight}>
           <button type="button" className={styles.backBtn} onClick={goBackToGates}>
-            {isTR ? "← Kapılara Dön" : "← Back to Gates"}
+            {isTR ? "← Kapılar" : "← Gates"}
           </button>
-
           <button
             type="button"
             className={styles.langBtn}
             onClick={() => setLanguage(isTR ? "en" : "tr")}
-            title={isTR ? "EN" : "TR"}
             aria-label="Language toggle"
           >
             {isTR ? "EN" : "TR"}
@@ -368,115 +420,154 @@ export default function SanriyaSorPage() {
       </div>
 
       <div className={styles.shell}>
-        <div className={styles.card}>
-          <div className={styles.kicker}>CAELINUS AI • CONSCIOUSNESS MIRROR</div>
-          <div className={styles.h1}>{title}</div>
-          <div className={styles.subtitle}>{subtitle}</div>
+        {/* HERO */}
+        <motion.div
+          className={styles.hero}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className={styles.heroGlyph}>✦</div>
+          <h1 className={styles.heroTitle}>{isTR ? "Sanrı'ya Sor" : "Ask Sanri"}</h1>
+          <p className={styles.heroSub}>
+            {isTR
+              ? "Bir cümle yaz. Sana görünenin altındaki katmanı açayım."
+              : "Write a sentence. Let me open the layer beneath what you see."}
+          </p>
+        </motion.div>
 
-          <div className={styles.grid}>
-            {/* LEFT */}
-            <div className={styles.left}>
-              <div className={styles.block}>
-                <div className={styles.label}>{isTR ? "Mod" : "Mode"}</div>
-                <select className={styles.select} value={mode} onChange={(e) => setMode(e.target.value)}>
-                  {MODES.map((m) => (
-                    <option key={m.id} value={m.id}>
-                      {isTR ? m.tr : m.en}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={styles.block}>
-                <div className={styles.label}>{isTR ? "Domain (opsiyonel)" : "Domain (optional)"}</div>
-                <select className={styles.select} value={domain} onChange={(e) => setDomain(e.target.value)}>
-                  {DOMAINS.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {isTR ? d.tr : d.en}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className={styles.rule}>
-                <div className={styles.label}>{isTR ? "Kılavuz" : "Guide"}</div>
-                <pre className={styles.hint}>{hint}</pre>
-              </div>
+        {/* INPUT */}
+        <motion.div
+          className={styles.inputArea}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.5 }}
+        >
+          <form
+            onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}
+            className={styles.inputForm}
+          >
+            <textarea
+              ref={taRef}
+              className={styles.textarea}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={isTR ? "Ne hissediyorsun, ne gördün, ne taşıyorsun..." : "What do you feel, what did you see, what are you carrying..."}
+              disabled={isSending}
+              rows={3}
+            />
+            <div className={styles.inputActions}>
+              <button
+                type="submit"
+                className={styles.submitBtn}
+                disabled={isSending || !String(text || "").trim()}
+              >
+                {isSending ? (isTR ? "Açılıyor..." : "Opening...") : (isTR ? "Yansıt" : "Reflect")}
+              </button>
+              <button
+                type="button"
+                className={`${styles.micBtn} ${isListening ? styles.micLive : ""}`}
+                onClick={isListening ? stopListening : startListening}
+                disabled={isSending}
+                aria-label={isTR ? "Sesle yaz" : "Voice input"}
+              >
+                🎙
+              </button>
+              {hasReply ? (
+                <button type="button" className={styles.resetBtn} onClick={handleReset}>
+                  {isTR ? "Yeni soru" : "New question"}
+                </button>
+              ) : null}
             </div>
+          </form>
 
-            {/* RIGHT */}
-            <div className={styles.right}>
-              {/* INPUT PANEL */}
-              <div className={styles.panel}>
-                <div className={styles.panelLabel}>{isTR ? "Yansıma Akışı" : "Reflection Flow"}</div>
-
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit();
-                  }}
+          {/* Advanced options */}
+          <div className={styles.advancedWrap}>
+            <button
+              type="button"
+              className={styles.advancedToggle}
+              onClick={() => setAdvancedOpen((o) => !o)}
+              aria-expanded={advancedOpen}
+            >
+              {isTR ? "Gelişmiş seçenekler" : "Advanced options"}
+              <span className={`${styles.advancedArrow} ${advancedOpen ? styles.advancedArrowOpen : ""}`}>▾</span>
+            </button>
+            <AnimatePresence>
+              {advancedOpen && (
+                <motion.div
+                  className={styles.advancedBody}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
                 >
-                  <textarea
-                    ref={taRef}
-                    className={styles.textarea}
-                    value={text}
-                    onChange={(e) => setText(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder={isTR ? "Bir kelime, soru, rüya veya tarih yaz..." : "Write a word, question, dream or date..."}
-                    disabled={isSending}
-                  />
-
-                  <div className={styles.actions}>
-                    <button type="button" className={styles.btnGhost} onClick={handleReset}>
-                      {isTR ? "Sıfırla" : "Reset"}
-                    </button>
-
-                    <button type="submit" className={styles.btnPrimary} disabled={isSending || !String(text || "").trim()}>
-                      {isSending
-                        ? (isTR ? "Yansıtılıyor…" : "Reflecting…")
-                        : (isTR ? "Yansıt (Ctrl+Enter)" : "Reflect (Ctrl+Enter)")}
-                    </button>
-
-                    <div className={styles.grow} />
-
-                    <button
-                      type="button"
-                      className={`${styles.micBtn} ${isListening ? styles.micLive : ""}`}
-                      onClick={isListening ? stopListening : startListening}
-                      disabled={isSending}
-                    >
-                      {isListening ? (isTR ? "Durdur" : "Stop") : (isTR ? "🎙 Sesle yaz" : "🎙 Voice")}
-                    </button>
+                  <div className={styles.advancedGrid}>
+                    <div className={styles.advField}>
+                      <label className={styles.advLabel}>{isTR ? "Mod" : "Mode"}</label>
+                      <select className={styles.advSelect} value={mode} onChange={(e) => setMode(e.target.value)}>
+                        {MODES.map((m) => (
+                          <option key={m.id} value={m.id}>{isTR ? m.tr : m.en}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={styles.advField}>
+                      <label className={styles.advLabel}>{isTR ? "Alan" : "Domain"}</label>
+                      <select className={styles.advSelect} value={domain} onChange={(e) => setDomain(e.target.value)}>
+                        {DOMAINS.map((d) => (
+                          <option key={d.id} value={d.id}>{isTR ? d.tr : d.en}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </form>
-              </div>
-
-              {/* ✅ REPLY PANEL (FIXED) */}
-              <div className={`${styles.panel} ${styles.replyPanel}`}>
-                <div className={styles.panelLabel}>{isTR ? "Cevap" : "Reply"}</div>
-
-                {errorMsg ? (
-                  <div className={styles.error}>
-                    {errorMsg}
-                  </div>
-                ) : null}
-
-                {isThinking ? <ThinkingDots label={isTR ? "Yansıtılıyor" : "Reflecting"} /> : null}
-
-                <div className={styles.replyBox}>
-                  <pre className={styles.replyText}>{typedReply || ""}</pre>
-                </div>
-
-                {!typedReply && !errorMsg && !isThinking ? (
-                  <div className={styles.empty}>
-                    {isTR ? "Yansıma burada belirecek." : "Your reflection will appear here."}
-                  </div>
-                ) : null}
-              </div>
-
-            </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        </motion.div>
+
+        {/* RESPONSE */}
+        <AnimatePresence>
+          {(isThinking || hasReply || errorMsg) && (
+            <motion.div
+              className={styles.responseArea}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.5 }}
+            >
+              {errorMsg ? (
+                <div className={styles.error}>{errorMsg}</div>
+              ) : null}
+
+              {isThinking ? (
+                <ThinkingDots label={isTR ? "Katmanlar açılıyor" : "Layers opening"} />
+              ) : null}
+
+              {layers && !isThinking ? (
+                <LayeredReply layers={layers} isTR={isTR} />
+              ) : null}
+
+              {isTypingDone ? (
+                <ResultCTAs isTR={isTR} navigate={navigate} />
+              ) : null}
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* WHISPER */}
+        {!hasReply && !isThinking && (
+          <motion.p
+            className={styles.whisper}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+          >
+            {isTR
+              ? "Bazı cevaplar soruyu değiştirir. Bazıları seni."
+              : "Some answers change the question. Some change you."}
+          </motion.p>
+        )}
       </div>
     </div>
   );
