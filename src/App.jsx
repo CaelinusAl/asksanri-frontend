@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import usePageView from "./hooks/usePageView";
 import { syncPurchasesFromServer } from "./data/shopierConfig";
+import { useAuth } from "./contexts/AuthContext";
+import PurchaseToast from "./components/PurchaseToast";
 
 import HomePage from "./pages/HomePage";
 import SanriyaSorPage from "./pages/SanriyaSorPage";
@@ -111,11 +113,32 @@ function renderOkumaAreaError(err) {
 
 export default function App() {
   usePageView();
+  const { isAuthenticated } = useAuth();
+  const [toastItems, setToastItems] = useState(null);
+  const authSyncDone = useRef(false);
+
   useEffect(() => {
+    try {
+      if (localStorage.getItem("sanri_token")) return;
+    } catch {}
     syncPurchasesFromServer();
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated || authSyncDone.current) return;
+    authSyncDone.current = true;
+    syncPurchasesFromServer({ returnDetails: true }).then((items) => {
+      if (Array.isArray(items) && items.length > 0) {
+        setToastItems(items);
+      }
+    });
+  }, [isAuthenticated]);
+
+  const dismissToast = useCallback(() => setToastItems(null), []);
+
   return (
     <>
+    {toastItems && <PurchaseToast items={toastItems} onDismiss={dismissToast} />}
     <PendingPurchaseRecovery />
     <EmailCaptureModal trigger="timer" page="global" />
     <PushOptIn />

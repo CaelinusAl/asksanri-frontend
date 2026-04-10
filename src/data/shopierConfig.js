@@ -302,7 +302,7 @@ export function recordPurchaseToServer(_contentId) {
   return Promise.resolve();
 }
 
-export async function syncPurchasesFromServer() {
+export async function syncPurchasesFromServer({ returnDetails = false } = {}) {
   try {
     const fp = getDeviceFingerprint();
     const res = await fetch(
@@ -310,9 +310,10 @@ export async function syncPurchasesFromServer() {
       { headers: _getAuthHeaders() }
     );
     const data = await res.json();
-    if (!data.purchases?.length) return 0;
+    if (!data.purchases?.length) return returnDetails ? [] : 0;
     const access = getShopierAccess();
     let changed = 0;
+    const newItems = [];
     for (const p of data.purchases) {
       const cur = access[p.content_id];
       if (!cur || !cur.serverVerified) {
@@ -322,12 +323,19 @@ export async function syncPurchasesFromServer() {
           at: p.purchased_at || cur?.at,
         };
         changed++;
+        const pKey = CONTENT_TO_PRODUCT[p.content_id] || p.content_id;
+        const product = SHOPIER_PRODUCTS[pKey];
+        newItems.push({
+          content_id: p.content_id,
+          label: product?.label || p.product_name || p.content_id,
+          at: p.purchased_at,
+        });
       }
     }
     if (changed) saveShopierAccess(access);
-    return changed;
+    return returnDetails ? newItems : changed;
   } catch {
-    return 0;
+    return returnDetails ? [] : 0;
   }
 }
 
