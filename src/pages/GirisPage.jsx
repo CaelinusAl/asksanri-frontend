@@ -357,7 +357,7 @@ export default function GirisPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { language, setLanguage } = useLanguage();
-  const { loginEmail, registerEmail, isAuthenticated } = useAuth();
+  const { loginEmail, registerEmail, isAuthenticated, loading } = useAuth();
   const isTR = language === "tr";
 
   const returnTo = location.state?.from || "/";
@@ -379,6 +379,14 @@ export default function GirisPage() {
       navigate(returnTo, { replace: true });
     }
   }, [isAuthenticated, navigate, returnTo]);
+
+  if (loading || isAuthenticated) {
+    return (
+      <div style={{ ...P.page, alignItems: "center", justifyContent: "center" }}>
+        <DataFall />
+      </div>
+    );
+  }
 
   const openAuth = useCallback(() => {
     setTransitioning(true);

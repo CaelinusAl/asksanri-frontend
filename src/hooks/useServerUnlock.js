@@ -12,12 +12,8 @@ export default function useServerUnlock(...contentIds) {
   const localCheck = contentIds.some((id) => isShopierUnlocked(id));
   const [unlocked, setUnlocked] = useState(localCheck);
   const [loading, setLoading] = useState(!localCheck);
-
-  let userEmail = "";
-  try {
-    const auth = useAuth();
-    userEmail = auth?.user?.email || "";
-  } catch {}
+  const { user } = useAuth();
+  const userEmail = user?.email || "";
 
   useEffect(() => {
     if (localCheck) {

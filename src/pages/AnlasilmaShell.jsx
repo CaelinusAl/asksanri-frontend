@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Outlet, Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import styles from "./AnlasilmaShell.module.css";
 
 /**
@@ -9,6 +10,7 @@ import styles from "./AnlasilmaShell.module.css";
  */
 export default function AnlasilmaShell() {
   const { language } = useLanguage();
+  const { isAuthenticated } = useAuth();
   const isTR = language === "tr";
   const [moreOpen, setMoreOpen] = useState(false);
 
@@ -65,9 +67,15 @@ export default function AnlasilmaShell() {
                 <Link to="/sanriya-sor" className={styles.moreItem} onClick={() => setMoreOpen(false)}>
                   {isTR ? "Sanrı'ya sor" : "Ask Sanrı"}
                 </Link>
-                <Link to="/giris" className={styles.moreItem} onClick={() => setMoreOpen(false)}>
-                  {isTR ? "Giriş / Profil" : "Sign in / Profile"}
-                </Link>
+                {isAuthenticated ? (
+                  <Link to="/benim-alanim" className={styles.moreItem} onClick={() => setMoreOpen(false)}>
+                    {isTR ? "Benim Alanım" : "My Space"}
+                  </Link>
+                ) : (
+                  <Link to="/giris" className={styles.moreItem} onClick={() => setMoreOpen(false)}>
+                    {isTR ? "Giriş / Profil" : "Sign in / Profile"}
+                  </Link>
+                )}
               </div>
             )}
           </div>
