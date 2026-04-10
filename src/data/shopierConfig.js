@@ -302,11 +302,14 @@ export function recordPurchaseToServer(_contentId) {
   return Promise.resolve();
 }
 
-export async function syncPurchasesFromServer({ returnDetails = false } = {}) {
+export async function syncPurchasesFromServer({ returnDetails = false, email = "" } = {}) {
   try {
     const fp = getDeviceFingerprint();
+    const qs = new URLSearchParams();
+    if (fp && fp !== "anon") qs.set("device_fp", fp);
+    if (email && String(email).includes("@")) qs.set("email", String(email).trim().toLowerCase());
     const res = await fetch(
-      `${API}/shopier/my-purchases?device_fp=${fp}`,
+      `${API}/shopier/my-purchases?${qs.toString()}`,
       { headers: _getAuthHeaders() }
     );
     const data = await res.json();
@@ -402,8 +405,8 @@ export async function verifyPurchaseByEmail(email, contentId) {
   }
 }
 
-export async function checkServerUnlock(contentId) {
-  const data = await fetchShopierPurchaseCheck(contentId);
+export async function checkServerUnlock(contentId, email = "") {
+  const data = await fetchShopierPurchaseCheck(contentId, email);
   if (data.unlocked) {
     applyVerifiedShopierUnlock(contentId, data.purchased_at || data.purchase?.purchased_at);
   }

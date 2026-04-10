@@ -113,7 +113,7 @@ function renderOkumaAreaError(err) {
 
 export default function App() {
   usePageView();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [toastItems, setToastItems] = useState(null);
   const authSyncDone = useRef(false);
 
@@ -127,12 +127,13 @@ export default function App() {
   useEffect(() => {
     if (!isAuthenticated || authSyncDone.current) return;
     authSyncDone.current = true;
-    syncPurchasesFromServer({ returnDetails: true }).then((items) => {
+    const email = user?.email || "";
+    syncPurchasesFromServer({ returnDetails: true, email }).then((items) => {
       if (Array.isArray(items) && items.length > 0) {
         setToastItems(items);
       }
     });
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user]);
 
   const dismissToast = useCallback(() => setToastItems(null), []);
 

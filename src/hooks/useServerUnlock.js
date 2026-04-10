@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { isShopierUnlocked, checkServerUnlock } from "../data/shopierConfig";
+import { useAuth } from "../contexts/AuthContext";
 
 /**
  * Checks if content is unlocked — first from localStorage (instant),
@@ -12,6 +13,12 @@ export default function useServerUnlock(...contentIds) {
   const [unlocked, setUnlocked] = useState(localCheck);
   const [loading, setLoading] = useState(!localCheck);
 
+  let userEmail = "";
+  try {
+    const auth = useAuth();
+    userEmail = auth?.user?.email || "";
+  } catch {}
+
   useEffect(() => {
     if (localCheck) {
       setUnlocked(true);
@@ -23,7 +30,7 @@ export default function useServerUnlock(...contentIds) {
 
     async function verify() {
       for (const id of contentIds) {
-        const ok = await checkServerUnlock(id);
+        const ok = await checkServerUnlock(id, userEmail);
         if (ok && !cancelled) {
           setUnlocked(true);
           setLoading(false);
@@ -35,7 +42,7 @@ export default function useServerUnlock(...contentIds) {
 
     verify();
     return () => { cancelled = true; };
-  }, [localCheck, ...contentIds]);
+  }, [localCheck, userEmail, ...contentIds]);
 
   return [unlocked, loading];
 }
