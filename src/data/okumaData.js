@@ -4316,10 +4316,16 @@ Zihin b\u00f6l\u00fcn\u00fcnce \u2192 d\u0131\u015far\u0131da sava\u015f ba\u015
     hasEarlyPaywall: true,
     previewContent: null,
     createdAt: "2026-04-11T10:00:00Z",
-    commentCount: 0,
-    viewCount: 0,
+    commentCount: 5,
+    viewCount: 116,
     isFeatured: true,
-    deepReaderComments: [],
+    deepReaderComments: [
+      { authorName: "Selin", content: "Bu okumayı yaparken ellerim titredi. U_GAN_DA = bilincin açıldığı alan. ŞEMS_PAZE = bilincin parçalanması. Kelimelerin içinde harita var — ve o harita hep oradaymış. Derin katmanı açmadan geçmeyin.", createdAt: "2026-04-11T11:00:00Z" },
+      { authorName: "Mira", content: "144 = 12×12 = bütünlüğün kırılması. Bu sayıyı haberde gördüğümde 'veri' sandım. Sistem okumasında bambaşka bir anlam taşıyormuş. Kodsal katman çok derin.", createdAt: "2026-04-11T11:20:00Z" },
+      { authorName: "Eren", content: "MOON_KEY — zihnin anahtarı. Monkey kelimesini bir daha aynı gözle göremeyeceğim. Derin açılım bunu tamamen değiştiriyor.", createdAt: "2026-04-11T11:35:00Z" },
+      { authorName: "Ada", content: "7 yıl = döngü tamamlanması, 17 yavru = yeni başlangıçların yok olması. Sayılar tesadüf değilmiş. Sistem okuması olmadan bu haber sadece haber kalıyor.", createdAt: "2026-04-11T11:50:00Z" },
+      { authorName: "Deniz", content: "İçinde bölünürsen kendine zarar verirsin. Bu cümle derin açılımın tam ortasında geldi ve her şeyi bağladı. Haberin altında bambaşka bir katman var.", createdAt: "2026-04-11T12:05:00Z" },
+    ],
   },
 ];
 
@@ -4425,6 +4431,13 @@ export const OKUMA_COMMENTS = {
     { id: 2705, authorName: "Lina", content: "Akış durursa her şey durur. Bu sadece petrol için değil, hayatın kendisi için de geçerli. Derin katmandaki Musa bağlantısı inanılmaz.", createdAt: "2026-04-06T20:00:00Z" },
     { id: 2706, authorName: "Aura", content: "İlk kez bir gündem okumasında bu kadar derinine inildiğini gördüm. Üst bilinç kısmı bile yeterli ama kodsal okumayı açınca başka bir dünyaya giriyorsun.", createdAt: "2026-04-06T20:15:00Z" },
     { id: 2707, authorName: "Deniz", content: "Anahtar seste değil — bu cümle politikayı, ilişkileri, hayatın kendisini açıklıyor. Sembolik katman olmazsa olmazmış.", createdAt: "2026-04-06T20:30:00Z" },
+  ],
+  30: [
+    { id: 3001, authorName: "Selin", content: "Bu okumayı yaparken ellerim titredi. U_GAN_DA = bilincin açıldığı alan. ŞEMS_PAZE = bilincin parçalanması. Kelimelerin içinde bir harita var — ve o harita hep oradaymış. Sistem okuması olmadan bu haber sadece haber kalır.", createdAt: "2026-04-11T11:00:00Z" },
+    { id: 3002, authorName: "Mira", content: "144 = 12×12 = bütünlüğün kırılması. Haberde bu sayıyı gördüğümde 'istatistik' sandım. Derin katmanda bambaşka bir anlam taşıyormuş. Kodsal okuma gözümü açtı.", createdAt: "2026-04-11T11:20:00Z" },
+    { id: 3003, authorName: "Eren", content: "MOON_KEY — zihnin anahtarı. Monkey kelimesini bir daha aynı gözle göremeyeceğim. Derin açılım bu haberi tamamen farklı bir yere taşıyor.", createdAt: "2026-04-11T11:35:00Z" },
+    { id: 3004, authorName: "Ada", content: "7 yıl = döngü tamamlanması, 17 yavru = yeni başlangıçların yok olması. Bu sayılar tesadüf değilmiş. Sistem okuması olmadan haberin yarısını kaçırıyormuşuz.", createdAt: "2026-04-11T11:50:00Z" },
+    { id: 3005, authorName: "Deniz", content: "İçinde bölünürsen kendine zarar verirsin. Bu cümle derin açılımın tam ortasında geldi ve her şeyi bağladı. Haberin altında bambaşka bir katman varmış.", createdAt: "2026-04-11T12:05:00Z" },
   ],
 };
 
