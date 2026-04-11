@@ -4066,7 +4066,7 @@ Soru: Dizildiğini görmek mi özgürleştirir — yoksa dizilmeyi bırakmak mı
     id: 30,
     slug: "uganda-sempanze-savasi-ayrisma-kodu",
     title: "\u{1f9ff} Uganda \u015eempanze Sava\u015f\u0131 \u2014 Ayr\u0131\u015fman\u0131n Kodu",
-    subtitle: "Birlik bozulursa sava\u015f ba\u015flar. D\u00fc\u015fman sonradan olu\u015fmaz \u2014 ayr\u0131\u015fmadan do\u011far. Derin sistem a\u00e7\u0131l\u0131m\u0131 9,90 \u20ba.",
+    subtitle: "Birlik bozulursa sava\u015f ba\u015flar. D\u00fc\u015fman sonradan olu\u015fmaz \u2014 ayr\u0131\u015fmadan do\u011far.",
     category: "gundem_kodu",
     coverImage: "/assets/okuma/uganda-sempanze.jpg",
     excerpt:
