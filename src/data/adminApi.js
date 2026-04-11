@@ -70,6 +70,9 @@ export const fetchHealth = () => fetch(`${API}/health`).then((r) => r.json());
 // ── Funnel Analytics ──
 export const fetchFunnelStats = (days = 7) => adminFetch(`/funnel/admin/stats?days=${days}`);
 
+// ── Webhook Logs ──
+export const fetchWebhookLogs = (limit = 50) => adminFetch(`/shopier/admin/webhook-logs?limit=${limit}`);
+
 // ── Muhasebe Merkezi (Shopier + funnel) ──
 export const fetchAccounting = (params = {}) => {
   const q = new URLSearchParams();

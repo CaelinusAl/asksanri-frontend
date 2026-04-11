@@ -1,75 +1,92 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import usePageView from "./hooks/usePageView";
 import { syncPurchasesFromServer } from "./data/shopierConfig";
 import { useAuth } from "./contexts/AuthContext";
 import PurchaseToast from "./components/PurchaseToast";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-import HomePage from "./pages/HomePage";
-import SanriyaSorPage from "./pages/SanriyaSorPage";
-import AwakenedCitiesPage from "./pages/AwakendCitiesPage";
-import PortalPage from "./pages/PortalPage";
-import FrekansAlaniPage from "./pages/FrekansAlaniPage";
-import LibraryPage from "./pages/LibraryPage";
-import BookReader from "./pages/BookReader";
-import RituelAlaniPage from "./pages/RituelAlaniPage";
-import RitualDetailPage from "./pages/RitualDetailPage";
-import RitualSessionPage from "./pages/RitualSessionPage";
-import YankiAlaniPage from "./pages/YankiAlaniPage";
-import YankiPostDetail from "./pages/YankiPostDetail";
-import YankiYeniPage from "./pages/YankiYeniPage";
-import YankiProfilPage from "./pages/YankiProfilPage";
-import YankiShareLanding from "./pages/YankiShareLanding";
 import AnlasilmaShell from "./pages/AnlasilmaShell";
 import AnlasilmaHomePage from "./pages/AnlasilmaHomePage";
-import OkumaAlaniPage from "./pages/OkumaAlaniPage";
-import OkumaDetayPage from "./pages/OkumaDetayPage";
-import SanriMeshPage from "./pages/SanriMeshPage";
 
-import AdminLoginPage from "./pages/admin/AdminLoginPage";
-import AdminGuard from "./components/admin/AdminGuard";
-import AdminLayout from "./pages/admin/AdminLayout";
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
-import AdminUsersPage from "./pages/admin/AdminUsersPage";
-import AdminOkumaPage from "./pages/admin/AdminOkumaPage";
-import AdminLibraryPage from "./pages/admin/AdminLibraryPage";
-import AdminYankiPage from "./pages/admin/AdminYankiPage";
-import AdminRituelPage from "./pages/admin/AdminRituelPage";
-import AdminPremiumPage from "./pages/admin/AdminPremiumPage";
-import AdminRevenuePage from "./pages/admin/AdminRevenuePage";
-import AdminNotificationsPage from "./pages/admin/AdminNotificationsPage";
-import AdminSystemPage from "./pages/admin/AdminSystemPage";
-import AdminContentEnginePage from "./pages/admin/AdminContentEnginePage";
-import AdminCalendarPage from "./pages/admin/AdminCalendarPage";
-import AdminGrowthPage from "./pages/admin/AdminGrowthPage";
-import AdminBillingPage from "./pages/admin/AdminBillingPage";
-import AdminFunnelPage from "./pages/admin/AdminFunnelPage";
-import AdminMuhasebePage from "./pages/admin/AdminMuhasebePage";
-import AdminBankTransferPage from "./pages/admin/AdminBankTransferPage";
-import AdminDeliverablesPage from "./pages/admin/AdminDeliverablesPage";
-import HavaleOdemePage from "./pages/HavaleOdemePage";
-import PaymentSuccessPage from "./pages/PaymentSuccessPage";
-import PaymentCancelPage from "./pages/PaymentCancelPage";
-import IyzicoCallbackPage from "./pages/IyzicoCallbackPage";
-import OdemeBasariliPage from "./pages/OdemeBasariliPage";
-import GirisPage from "./pages/GirisPage";
-import ProfilePage from "./pages/ProfilePage";
-import SubscriptionPage from "./pages/SubscriptionPage";
-import GizlilikPage from "./pages/GizlilikPage";
-import { HakkimizdaPage, GizlilikPolitikasiPage, MesafeliSatisPage, IadeKosullariPage } from "./pages/LegalPages";
-import KodEgitmeniPage from "./pages/KodEgitmeniPage";
-import KodGirisDersPage from "./pages/KodGirisDersPage";
-import BenimAlanimPage from "./pages/BenimAlanimPage";
-import CitiesPage from "./pages/CitiesPage";
-import CityDetailPage from "./pages/CityDetailPage";
-import ErrorBoundary from "./components/ErrorBoundary";
-import RolOkumaPage from "./pages/RolOkumaPage";
-import AnKodPage from "./pages/AnKodPage";
-import GozAcikGunesPage from "./pages/GozAcikGunesPage";
-import AuthCallback from "./components/AuthCallback";
+const FrekansAlaniPage = lazy(() => import("./pages/FrekansAlaniPage"));
+const YankiAlaniPage = lazy(() => import("./pages/YankiAlaniPage"));
+const YankiPostDetail = lazy(() => import("./pages/YankiPostDetail"));
+const YankiYeniPage = lazy(() => import("./pages/YankiYeniPage"));
+const YankiProfilPage = lazy(() => import("./pages/YankiProfilPage"));
+const YankiShareLanding = lazy(() => import("./pages/YankiShareLanding"));
+const RolOkumaPage = lazy(() => import("./pages/RolOkumaPage"));
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const SanriyaSorPage = lazy(() => import("./pages/SanriyaSorPage"));
+const AwakenedCitiesPage = lazy(() => import("./pages/AwakendCitiesPage"));
+const PortalPage = lazy(() => import("./pages/PortalPage"));
+const LibraryPage = lazy(() => import("./pages/LibraryPage"));
+const BookReader = lazy(() => import("./pages/BookReader"));
+const RituelAlaniPage = lazy(() => import("./pages/RituelAlaniPage"));
+const RitualDetailPage = lazy(() => import("./pages/RitualDetailPage"));
+const RitualSessionPage = lazy(() => import("./pages/RitualSessionPage"));
+const OkumaAlaniPage = lazy(() => import("./pages/OkumaAlaniPage"));
+const OkumaDetayPage = lazy(() => import("./pages/OkumaDetayPage"));
+const SanriMeshPage = lazy(() => import("./pages/SanriMeshPage"));
+const KodEgitmeniPage = lazy(() => import("./pages/KodEgitmeniPage"));
+const KodGirisDersPage = lazy(() => import("./pages/KodGirisDersPage"));
+const AnKodPage = lazy(() => import("./pages/AnKodPage"));
+const GozAcikGunesPage = lazy(() => import("./pages/GozAcikGunesPage"));
+const BenimAlanimPage = lazy(() => import("./pages/BenimAlanimPage"));
+const CitiesPage = lazy(() => import("./pages/CitiesPage"));
+const CityDetailPage = lazy(() => import("./pages/CityDetailPage"));
+
+const GirisPage = lazy(() => import("./pages/GirisPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
+const GizlilikPage = lazy(() => import("./pages/GizlilikPage"));
+const HakkimizdaPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.HakkimizdaPage })));
+const GizlilikPolitikasiPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.GizlilikPolitikasiPage })));
+const MesafeliSatisPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.MesafeliSatisPage })));
+const IadeKosullariPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.IadeKosullariPage })));
+
+const HavaleOdemePage = lazy(() => import("./pages/HavaleOdemePage"));
+const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage"));
+const PaymentCancelPage = lazy(() => import("./pages/PaymentCancelPage"));
+const IyzicoCallbackPage = lazy(() => import("./pages/IyzicoCallbackPage"));
+const OdemeBasariliPage = lazy(() => import("./pages/OdemeBasariliPage"));
+
+const AdminLoginPage = lazy(() => import("./pages/admin/AdminLoginPage"));
+const AdminGuard = lazy(() => import("./components/admin/AdminGuard"));
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
+const AdminDashboardPage = lazy(() => import("./pages/admin/AdminDashboardPage"));
+const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
+const AdminOkumaPage = lazy(() => import("./pages/admin/AdminOkumaPage"));
+const AdminLibraryPage = lazy(() => import("./pages/admin/AdminLibraryPage"));
+const AdminYankiPage = lazy(() => import("./pages/admin/AdminYankiPage"));
+const AdminRituelPage = lazy(() => import("./pages/admin/AdminRituelPage"));
+const AdminPremiumPage = lazy(() => import("./pages/admin/AdminPremiumPage"));
+const AdminRevenuePage = lazy(() => import("./pages/admin/AdminRevenuePage"));
+const AdminNotificationsPage = lazy(() => import("./pages/admin/AdminNotificationsPage"));
+const AdminSystemPage = lazy(() => import("./pages/admin/AdminSystemPage"));
+const AdminContentEnginePage = lazy(() => import("./pages/admin/AdminContentEnginePage"));
+const AdminCalendarPage = lazy(() => import("./pages/admin/AdminCalendarPage"));
+const AdminGrowthPage = lazy(() => import("./pages/admin/AdminGrowthPage"));
+const AdminBillingPage = lazy(() => import("./pages/admin/AdminBillingPage"));
+const AdminFunnelPage = lazy(() => import("./pages/admin/AdminFunnelPage"));
+const AdminMuhasebePage = lazy(() => import("./pages/admin/AdminMuhasebePage"));
+const AdminBankTransferPage = lazy(() => import("./pages/admin/AdminBankTransferPage"));
+const AdminDeliverablesPage = lazy(() => import("./pages/admin/AdminDeliverablesPage"));
+
+const AuthCallback = lazy(() => import("./components/AuthCallback"));
+const LandingRolOkumaPage = lazy(() => import("./pages/LandingRolOkumaPage"));
+const BlogPage = lazy(() => import("./pages/BlogPage"));
+const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
 import PushOptIn from "./components/PushOptIn";
+
+const LazyFallback = () => (
+  <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#07080d" }}>
+    <div style={{ color: "rgba(180,160,240,0.5)", fontSize: 13, letterSpacing: "0.1em" }}>...</div>
+  </div>
+);
 
 const okumaAreaErrorStyle = {
   minHeight: "100vh",
@@ -143,6 +160,7 @@ export default function App() {
     <PendingPurchaseRecovery />
     <EmailCaptureModal trigger="timer" page="global" />
     <PushOptIn />
+    <Suspense fallback={<LazyFallback />}>
     <Routes>
       {/* Sanrı = Anlaşılma Alanı — ana kabuk */}
       <Route path="/" element={<AnlasilmaShell />}>
@@ -328,6 +346,9 @@ export default function App() {
       <Route path="/odeme-basarili" element={<OdemeBasariliPage />} />
       <Route path="/havale-odeme" element={<HavaleOdemePage />} />
       <Route path="/sanri-ag" element={<SanriMeshPage />} />
+      <Route path="/d/rol-okuma" element={<LandingRolOkumaPage />} />
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/blog/:slug" element={<BlogPostPage />} />
 
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/:bookId" element={<BookReader />} />
@@ -357,6 +378,7 @@ export default function App() {
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
+    </Suspense>
     </>
   );
 }
