@@ -61,7 +61,18 @@ export default defineConfig(({ mode }) => {
             },
             {
               urlPattern: ({ url }) =>
-                url.pathname.startsWith("/assets/") || url.pathname.startsWith("/audio/"),
+                url.pathname.startsWith("/assets/") &&
+                (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")),
+              handler: "StaleWhileRevalidate",
+              options: {
+                cacheName: "sanri-code-assets",
+                expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 7 },
+              },
+            },
+            {
+              urlPattern: ({ url }) =>
+                (url.pathname.startsWith("/assets/") || url.pathname.startsWith("/audio/")) &&
+                !url.pathname.endsWith(".js") && !url.pathname.endsWith(".css"),
               handler: "CacheFirst",
               options: {
                 cacheName: "sanri-static-media",

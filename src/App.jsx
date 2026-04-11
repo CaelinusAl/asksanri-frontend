@@ -9,75 +9,88 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import AnlasilmaShell from "./pages/AnlasilmaShell";
 import AnlasilmaHomePage from "./pages/AnlasilmaHomePage";
 
-const FrekansAlaniPage = lazy(() => import("./pages/FrekansAlaniPage"));
-const YankiAlaniPage = lazy(() => import("./pages/YankiAlaniPage"));
-const YankiPostDetail = lazy(() => import("./pages/YankiPostDetail"));
-const YankiYeniPage = lazy(() => import("./pages/YankiYeniPage"));
-const YankiProfilPage = lazy(() => import("./pages/YankiProfilPage"));
-const YankiShareLanding = lazy(() => import("./pages/YankiShareLanding"));
-const RolOkumaPage = lazy(() => import("./pages/RolOkumaPage"));
+function lazyRetry(factory) {
+  return lazy(() =>
+    factory().catch(() =>
+      new Promise((resolve) => {
+        setTimeout(() => resolve(factory().catch(() => {
+          window.location.reload();
+          return { default: () => null };
+        })), 1500);
+      })
+    )
+  );
+}
 
-const HomePage = lazy(() => import("./pages/HomePage"));
-const SanriyaSorPage = lazy(() => import("./pages/SanriyaSorPage"));
-const AwakenedCitiesPage = lazy(() => import("./pages/AwakendCitiesPage"));
-const PortalPage = lazy(() => import("./pages/PortalPage"));
-const LibraryPage = lazy(() => import("./pages/LibraryPage"));
-const BookReader = lazy(() => import("./pages/BookReader"));
-const RituelAlaniPage = lazy(() => import("./pages/RituelAlaniPage"));
-const RitualDetailPage = lazy(() => import("./pages/RitualDetailPage"));
-const RitualSessionPage = lazy(() => import("./pages/RitualSessionPage"));
-const OkumaAlaniPage = lazy(() => import("./pages/OkumaAlaniPage"));
-const OkumaDetayPage = lazy(() => import("./pages/OkumaDetayPage"));
-const SanriMeshPage = lazy(() => import("./pages/SanriMeshPage"));
-const KodEgitmeniPage = lazy(() => import("./pages/KodEgitmeniPage"));
-const KodGirisDersPage = lazy(() => import("./pages/KodGirisDersPage"));
-const AnKodPage = lazy(() => import("./pages/AnKodPage"));
-const GozAcikGunesPage = lazy(() => import("./pages/GozAcikGunesPage"));
-const BenimAlanimPage = lazy(() => import("./pages/BenimAlanimPage"));
-const CitiesPage = lazy(() => import("./pages/CitiesPage"));
-const CityDetailPage = lazy(() => import("./pages/CityDetailPage"));
+const FrekansAlaniPage = lazyRetry(() => import("./pages/FrekansAlaniPage"));
+const YankiAlaniPage = lazyRetry(() => import("./pages/YankiAlaniPage"));
+const YankiPostDetail = lazyRetry(() => import("./pages/YankiPostDetail"));
+const YankiYeniPage = lazyRetry(() => import("./pages/YankiYeniPage"));
+const YankiProfilPage = lazyRetry(() => import("./pages/YankiProfilPage"));
+const YankiShareLanding = lazyRetry(() => import("./pages/YankiShareLanding"));
+const RolOkumaPage = lazyRetry(() => import("./pages/RolOkumaPage"));
 
-const GirisPage = lazy(() => import("./pages/GirisPage"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const SubscriptionPage = lazy(() => import("./pages/SubscriptionPage"));
-const GizlilikPage = lazy(() => import("./pages/GizlilikPage"));
-const HakkimizdaPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.HakkimizdaPage })));
-const GizlilikPolitikasiPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.GizlilikPolitikasiPage })));
-const MesafeliSatisPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.MesafeliSatisPage })));
-const IadeKosullariPage = lazy(() => import("./pages/LegalPages").then(m => ({ default: m.IadeKosullariPage })));
+const HomePage = lazyRetry(() => import("./pages/HomePage"));
+const SanriyaSorPage = lazyRetry(() => import("./pages/SanriyaSorPage"));
+const AwakenedCitiesPage = lazyRetry(() => import("./pages/AwakendCitiesPage"));
+const PortalPage = lazyRetry(() => import("./pages/PortalPage"));
+const LibraryPage = lazyRetry(() => import("./pages/LibraryPage"));
+const BookReader = lazyRetry(() => import("./pages/BookReader"));
+const RituelAlaniPage = lazyRetry(() => import("./pages/RituelAlaniPage"));
+const RitualDetailPage = lazyRetry(() => import("./pages/RitualDetailPage"));
+const RitualSessionPage = lazyRetry(() => import("./pages/RitualSessionPage"));
+const OkumaAlaniPage = lazyRetry(() => import("./pages/OkumaAlaniPage"));
+const OkumaDetayPage = lazyRetry(() => import("./pages/OkumaDetayPage"));
+const SanriMeshPage = lazyRetry(() => import("./pages/SanriMeshPage"));
+const KodEgitmeniPage = lazyRetry(() => import("./pages/KodEgitmeniPage"));
+const KodGirisDersPage = lazyRetry(() => import("./pages/KodGirisDersPage"));
+const AnKodPage = lazyRetry(() => import("./pages/AnKodPage"));
+const GozAcikGunesPage = lazyRetry(() => import("./pages/GozAcikGunesPage"));
+const BenimAlanimPage = lazyRetry(() => import("./pages/BenimAlanimPage"));
+const CitiesPage = lazyRetry(() => import("./pages/CitiesPage"));
+const CityDetailPage = lazyRetry(() => import("./pages/CityDetailPage"));
 
-const HavaleOdemePage = lazy(() => import("./pages/HavaleOdemePage"));
-const PaymentSuccessPage = lazy(() => import("./pages/PaymentSuccessPage"));
-const PaymentCancelPage = lazy(() => import("./pages/PaymentCancelPage"));
-const IyzicoCallbackPage = lazy(() => import("./pages/IyzicoCallbackPage"));
-const OdemeBasariliPage = lazy(() => import("./pages/OdemeBasariliPage"));
+const GirisPage = lazyRetry(() => import("./pages/GirisPage"));
+const ProfilePage = lazyRetry(() => import("./pages/ProfilePage"));
+const SubscriptionPage = lazyRetry(() => import("./pages/SubscriptionPage"));
+const GizlilikPage = lazyRetry(() => import("./pages/GizlilikPage"));
+const HakkimizdaPage = lazyRetry(() => import("./pages/LegalPages").then(m => ({ default: m.HakkimizdaPage })));
+const GizlilikPolitikasiPage = lazyRetry(() => import("./pages/LegalPages").then(m => ({ default: m.GizlilikPolitikasiPage })));
+const MesafeliSatisPage = lazyRetry(() => import("./pages/LegalPages").then(m => ({ default: m.MesafeliSatisPage })));
+const IadeKosullariPage = lazyRetry(() => import("./pages/LegalPages").then(m => ({ default: m.IadeKosullariPage })));
 
-const AdminLoginPage = lazy(() => import("./pages/admin/AdminLoginPage"));
-const AdminGuard = lazy(() => import("./components/admin/AdminGuard"));
-const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
-const AdminDashboardPage = lazy(() => import("./pages/admin/AdminDashboardPage"));
-const AdminUsersPage = lazy(() => import("./pages/admin/AdminUsersPage"));
-const AdminOkumaPage = lazy(() => import("./pages/admin/AdminOkumaPage"));
-const AdminLibraryPage = lazy(() => import("./pages/admin/AdminLibraryPage"));
-const AdminYankiPage = lazy(() => import("./pages/admin/AdminYankiPage"));
-const AdminRituelPage = lazy(() => import("./pages/admin/AdminRituelPage"));
-const AdminPremiumPage = lazy(() => import("./pages/admin/AdminPremiumPage"));
-const AdminRevenuePage = lazy(() => import("./pages/admin/AdminRevenuePage"));
-const AdminNotificationsPage = lazy(() => import("./pages/admin/AdminNotificationsPage"));
-const AdminSystemPage = lazy(() => import("./pages/admin/AdminSystemPage"));
-const AdminContentEnginePage = lazy(() => import("./pages/admin/AdminContentEnginePage"));
-const AdminCalendarPage = lazy(() => import("./pages/admin/AdminCalendarPage"));
-const AdminGrowthPage = lazy(() => import("./pages/admin/AdminGrowthPage"));
-const AdminBillingPage = lazy(() => import("./pages/admin/AdminBillingPage"));
-const AdminFunnelPage = lazy(() => import("./pages/admin/AdminFunnelPage"));
-const AdminMuhasebePage = lazy(() => import("./pages/admin/AdminMuhasebePage"));
-const AdminBankTransferPage = lazy(() => import("./pages/admin/AdminBankTransferPage"));
-const AdminDeliverablesPage = lazy(() => import("./pages/admin/AdminDeliverablesPage"));
+const HavaleOdemePage = lazyRetry(() => import("./pages/HavaleOdemePage"));
+const PaymentSuccessPage = lazyRetry(() => import("./pages/PaymentSuccessPage"));
+const PaymentCancelPage = lazyRetry(() => import("./pages/PaymentCancelPage"));
+const IyzicoCallbackPage = lazyRetry(() => import("./pages/IyzicoCallbackPage"));
+const OdemeBasariliPage = lazyRetry(() => import("./pages/OdemeBasariliPage"));
 
-const AuthCallback = lazy(() => import("./components/AuthCallback"));
-const LandingRolOkumaPage = lazy(() => import("./pages/LandingRolOkumaPage"));
-const BlogPage = lazy(() => import("./pages/BlogPage"));
-const BlogPostPage = lazy(() => import("./pages/BlogPostPage"));
+const AdminLoginPage = lazyRetry(() => import("./pages/admin/AdminLoginPage"));
+const AdminGuard = lazyRetry(() => import("./components/admin/AdminGuard"));
+const AdminLayout = lazyRetry(() => import("./pages/admin/AdminLayout"));
+const AdminDashboardPage = lazyRetry(() => import("./pages/admin/AdminDashboardPage"));
+const AdminUsersPage = lazyRetry(() => import("./pages/admin/AdminUsersPage"));
+const AdminOkumaPage = lazyRetry(() => import("./pages/admin/AdminOkumaPage"));
+const AdminLibraryPage = lazyRetry(() => import("./pages/admin/AdminLibraryPage"));
+const AdminYankiPage = lazyRetry(() => import("./pages/admin/AdminYankiPage"));
+const AdminRituelPage = lazyRetry(() => import("./pages/admin/AdminRituelPage"));
+const AdminPremiumPage = lazyRetry(() => import("./pages/admin/AdminPremiumPage"));
+const AdminRevenuePage = lazyRetry(() => import("./pages/admin/AdminRevenuePage"));
+const AdminNotificationsPage = lazyRetry(() => import("./pages/admin/AdminNotificationsPage"));
+const AdminSystemPage = lazyRetry(() => import("./pages/admin/AdminSystemPage"));
+const AdminContentEnginePage = lazyRetry(() => import("./pages/admin/AdminContentEnginePage"));
+const AdminCalendarPage = lazyRetry(() => import("./pages/admin/AdminCalendarPage"));
+const AdminGrowthPage = lazyRetry(() => import("./pages/admin/AdminGrowthPage"));
+const AdminBillingPage = lazyRetry(() => import("./pages/admin/AdminBillingPage"));
+const AdminFunnelPage = lazyRetry(() => import("./pages/admin/AdminFunnelPage"));
+const AdminMuhasebePage = lazyRetry(() => import("./pages/admin/AdminMuhasebePage"));
+const AdminBankTransferPage = lazyRetry(() => import("./pages/admin/AdminBankTransferPage"));
+const AdminDeliverablesPage = lazyRetry(() => import("./pages/admin/AdminDeliverablesPage"));
+
+const AuthCallback = lazyRetry(() => import("./components/AuthCallback"));
+const LandingRolOkumaPage = lazyRetry(() => import("./pages/LandingRolOkumaPage"));
+const BlogPage = lazyRetry(() => import("./pages/BlogPage"));
+const BlogPostPage = lazyRetry(() => import("./pages/BlogPostPage"));
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
 import PushOptIn from "./components/PushOptIn";
