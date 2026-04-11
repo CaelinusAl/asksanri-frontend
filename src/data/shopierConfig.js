@@ -69,13 +69,13 @@ export const SHOPIER_PRODUCTS = {
     id: "iliski_acilimi",
     label: "İlişki Açılımı",
     price: "369",
-    url: "https://shopier.com/asksanri/45786763",
+    url: "https://shopier.com/asksanri/45812975",
   },
   para_akisi: {
     id: "para_akisi",
     label: "Para Akışı Açılımı",
     price: "369",
-    url: "https://shopier.com/asksanri/45786763",
+    url: "https://shopier.com/asksanri/45812975",
   },
   ankod: {
     id: "ankod",
@@ -93,7 +93,7 @@ export const SHOPIER_PRODUCTS = {
     id: "kariyer_acilimi",
     label: "Kariyer Açılımı",
     price: "369",
-    url: "https://shopier.com/asksanri/45786763",
+    url: "https://shopier.com/asksanri/45812975",
   },
   haftalik_akis: {
     id: "haftalik_akis",
@@ -105,13 +105,13 @@ export const SHOPIER_PRODUCTS = {
     id: "saglik_enerji",
     label: "Sağlık & Enerji Katmanı",
     price: "369",
-    url: "https://shopier.com/asksanri/45786763",
+    url: "https://shopier.com/asksanri/45812975",
   },
   genel_derin_acilim: {
     id: "genel_derin_acilim",
     label: "Genel Derin Açılım",
     price: "369",
-    url: "https://shopier.com/asksanri/45786763",
+    url: "https://shopier.com/asksanri/45812975",
   },
 };
 
