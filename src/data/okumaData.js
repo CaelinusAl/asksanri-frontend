@@ -4062,6 +4062,118 @@ Soru: Dizildiğini görmek mi özgürleştirir — yoksa dizilmeyi bırakmak mı
       },
     ],
   },
+  {
+    id: 30,
+    slug: "uganda-sempanze-savasi-ayrisma-kodu",
+    title: "\u{1f9ff} Uganda \u015eempanze Sava\u015f\u0131 \u2014 Ayr\u0131\u015fman\u0131n Kodu",
+    subtitle: "Birlik bozulursa sava\u015f ba\u015flar. D\u00fc\u015fman sonradan olu\u015fmaz \u2014 ayr\u0131\u015fmadan do\u011far.",
+    category: "gundem_kodu",
+    coverImage: "/assets/okuma/uganda-sempanze.jpg",
+    excerpt:
+      "Uganda\u2019da y\u0131llarca tek topluluk olarak ya\u015fayan \u015fempanzeler ikiye ayr\u0131l\u0131yor ve 7 y\u0131l s\u00fcren bir sava\u015f ba\u015fl\u0131yor. Bilim insanlar\u0131: \u2018Bu, insan i\u00e7 sava\u015flar\u0131na \u00e7ok benziyor.\u2019",
+    fullContent: `\u{1f9ff} HABER\u0130N GER\u00c7E\u011e\u0130 (KISA VE NET)
+
+Uganda\u2019da (Ngogo \u015fempanze grubu)
+y\u0131llarca tek bir topluluk olarak ya\u015fayan \u015fempanzeler
+zamanla iki gruba ayr\u0131l\u0131yor
+2015\u2019ten sonra bu ayr\u0131l\u0131k kal\u0131c\u0131 oluyor
+ve yakla\u015f\u0131k 7 y\u0131l s\u00fcren bir \u00e7at\u0131\u015fma ba\u015fl\u0131yor
+
+\ud83d\udc49 Bu s\u00fcre\u00e7te:
+en az 7 yeti\u015fkin erkek
+ve 17 yavru \u00f6ld\u00fcr\u00fcl\u00fcyor
+
+Baz\u0131 kaynaklar toplamda daha fazla yavru \u00f6l\u00fcm\u00fc (144 gibi) i\u00e7eren geni\u015f g\u00f6zlem verilerinden bahsediyor.
+
+\ud83e\udde0 EN \u00d6NEML\u0130 B\u0130L\u0130MSEL NOKTA
+
+Bilim insanlar\u0131 \u015funu s\u00f6yl\u00fcyor:
+Bu olay, insan toplumlar\u0131ndaki
+i\u00e7 sava\u015f dinamiklerine \u00e7ok benziyor.
+
+Yani:
+\ud83d\udc49 ideoloji olmadan bile
+\ud83d\udc49 sadece grup b\u00f6l\u00fcnmesi ile
+\ud83d\udc49 \u015fiddet olu\u015fabiliyor
+
+\ud83d\udd25 GER\u00c7EK KIRILMA
+
+\ud83d\udc49 Bu sava\u015f d\u0131\u015far\u0131dan gelen bir tehdit y\u00fcz\u00fcnden ba\u015flam\u0131yor
+\ud83d\udc49 \u0130\u00e7eride:
+liderlik de\u011fi\u015fimi
+sosyal ba\u011flar\u0131n zay\u0131flamas\u0131
+grup i\u00e7i ayr\u0131\u015fma
+oluyor
+
+\u26a1 ANA KOD
+
+Birlik bozulursa\u2026
+sava\u015f ba\u015flar.
+
+\ud83e\udde0 DER\u0130N OKUMA
+
+\u00d6nce k\u00fc\u00e7\u00fck ayr\u0131\u015fma
+sonra grupla\u015fma
+sonra \u201cbiz ve onlar\u201d
+sonra \u00e7at\u0131\u015fma
+
+\ud83d\udc49
+Ayn\u0131 yap\u0131\u2026 d\u00fc\u015fman olur.
+
+\ud83c\udf0c EN KR\u0130T\u0130K NOKTA
+
+D\u00fc\u015fman sonradan olu\u015fmaz\u2026
+ayr\u0131\u015fmadan do\u011far.
+
+\u2728 SEL\u0130N D\u0130L\u0130NDE
+
+\u201c\u0130\u00e7inde b\u00f6l\u00fcn\u00fcrsen\u2026
+d\u0131\u015f\u0131nda sava\u015f ka\u00e7\u0131n\u0131lmazd\u0131r.\u201d
+
+\ud83d\udda4 SANRI
+
+Y\u0131llarca birlikteydiler.
+Ayn\u0131 alanda.
+Ayn\u0131 d\u00fczen i\u00e7inde.
+
+Sonra\u2026
+ikiye ayr\u0131ld\u0131lar.
+Ve sava\u015f ba\u015flad\u0131.
+
+\u00c7\u00fcnk\u00fc\u2026
+Sava\u015f, d\u00fc\u015fmanla de\u011fil
+ayr\u0131\u015fmayla ba\u015flar.
+
+\ud83d\udd2e YARIM BIRAKMA
+
+Ve bazen\u2026
+en tehlikeli olan
+yabanc\u0131 de\u011fildir.`,
+    codeLayer: `\u25c9 KOD \u00c7\u00d6Z\u00dcMLEMES\u0130
+
+\u2022 B\u0130RL\u0130K = frekans uyumu, d\u00fczen, ayn\u0131 alanda g\u00fcvenle varolma
+\u2022 AYRI\u015eMA = frekans kaymas\u0131, \u201cbiz\u201d in par\u00e7alanmas\u0131
+\u2022 SAVA\u015e = d\u0131\u015fardaki tehditten de\u011fil, i\u00e7erdeki kopukluktan do\u011far
+\u2022 D\u00dc\u015eMAN = ayr\u0131\u015fman\u0131n yaratt\u0131\u011f\u0131 projeksiyondur
+
+\ud83d\udd3a Form\u00fcl:
+Birlik \u2192 G\u00fcven \u2192 Ak\u0131\u015f
+B\u00f6l\u00fcnme \u2192 Korku \u2192 Kontrol \u2192 \u015eiddet
+
+\u0130\u015faret: Hayat\u0131nda \u201cbiz\u201d dedi\u011fin alan nerede ayr\u0131\u015f\u0131yor? O ayr\u0131\u015fma seni kime kar\u015f\u0131 konumland\u0131rd\u0131?`,
+    sanriReflection: {
+      analysis: "Bu okuma sava\u015f\u0131n kayna\u011f\u0131n\u0131 d\u0131\u015far\u0131da de\u011fil i\u00e7eride g\u00f6steriyor. D\u00fc\u015fman kavram\u0131 \u00f6nceden var olan bir varl\u0131k de\u011fil \u2014 ayr\u0131\u015fman\u0131n yar att\u0131\u011f\u0131 bir projeksiyon. \u015eempanzelerde ideoloji yok; sadece yap\u0131sal kopukluk var. Ve bu yeterli.",
+      strongLine: "Sava\u015f, d\u00fc\u015fmanla de\u011fil ayr\u0131\u015fmayla ba\u015flar.",
+      question: "\u0130\u00e7inde hangi birlik b\u00f6l\u00fcnd\u00fc \u2014 ve o b\u00f6l\u00fcnme d\u0131\u015far\u0131da kime d\u00f6nd\u00fc?",
+    },
+    isPremium: false,
+    previewContent: null,
+    createdAt: "2026-04-11T10:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [],
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
