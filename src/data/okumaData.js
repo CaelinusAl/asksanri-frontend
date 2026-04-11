@@ -4066,7 +4066,7 @@ Soru: Dizildiğini görmek mi özgürleştirir — yoksa dizilmeyi bırakmak mı
     id: 30,
     slug: "uganda-sempanze-savasi-ayrisma-kodu",
     title: "\u{1f9ff} Uganda \u015eempanze Sava\u015f\u0131 \u2014 Ayr\u0131\u015fman\u0131n Kodu",
-    subtitle: "Birlik bozulursa sava\u015f ba\u015flar. D\u00fc\u015fman sonradan olu\u015fmaz \u2014 ayr\u0131\u015fmadan do\u011far.",
+    subtitle: "Birlik bozulursa sava\u015f ba\u015flar. D\u00fc\u015fman sonradan olu\u015fmaz \u2014 ayr\u0131\u015fmadan do\u011far. Derin sistem a\u00e7\u0131l\u0131m\u0131 9,90 \u20ba.",
     category: "gundem_kodu",
     coverImage: "/assets/okuma/uganda-sempanze.jpg",
     excerpt:
@@ -4148,25 +4148,172 @@ ayr\u0131\u015fmayla ba\u015flar.
 
 Ve bazen\u2026
 en tehlikeli olan
-yabanc\u0131 de\u011fildir.`,
+yabanc\u0131 de\u011fildir.
+
+\u{1f9ff}
+G\u00f6r\u00fcnenin alt\u0131nda kalan katman\u0131
+Sanr\u0131\u2019da a\u00e7t\u0131m.
+
+<<<SANRI_PAYWALL>>>
+
+\u{1f9ff} S\u0130STEM OKUMASI
+
+\ud83c\udf0d U_GAN_DA
+
+U \u2192 yukar\u0131 / a\u00e7\u0131l\u0131m
+GAN \u2192 olu\u015fum / alan
+DA \u2192 yer / zemin
+
+\ud83d\udc49
+\u201cBilincin a\u00e7\u0131ld\u0131\u011f\u0131 alan\u201d
+
+\ud83d\udd01 N_GO_GO
+
+GO \u2192 gitmek / hareket
+tekrar GO
+
+\ud83d\udc49
+\u201cS\u00fcrekli hareket eden zihin\u201d
+
+\ud83d\udd25 BA\u015eLANGI\u00c7
+
+Tek bir topluluk
+
+\ud83d\udc49
+\u201cBirlik / tek bilin\u00e7\u201d
+
+\u26a1 KIRILMA
+
+2 gruba ayr\u0131l\u0131yor
+
+\ud83d\udc49
+\u201cDualite ba\u015fl\u0131yor\u201d
+
+\ud83e\udde0 ANA KOD
+
+Birlik \u2192 ikiye b\u00f6l\u00fcnme \u2192 \u00e7at\u0131\u015fma
+
+\ud83d\udd22 7 YIL
+
+7:
+d\u00f6ng\u00fc
+olgunla\u015fma
+tamamlanma
+
+\ud83d\udc49
+\u201c\u0130\u00e7 sava\u015f\u0131n b\u00fcy\u00fcme s\u00fcresi\u201d
+
+\ud83d\udc65 7 ERKEK
+
+eril enerji
+kontrol
+g\u00fc\u00e7
+
+\ud83d\udc49
+\u201cG\u00fcc\u00fcn \u00e7at\u0131\u015fmas\u0131\u201d
+
+\ud83d\udc76 17 YAVRU
+
+1 \u2192 ba\u015flang\u0131\u00e7
+7 \u2192 d\u00f6ng\u00fc
+
+\ud83d\udc49
+\u201cYeni ba\u015flang\u0131\u00e7lar\u0131n yok olmas\u0131\u201d
+
+\ud83d\udd22 144
+
+144:
+12 \u00d7 12
+tam sistem
+hizalanm\u0131\u015f d\u00fczen
+
+\ud83d\udc49
+\u201cB\u00fct\u00fcnl\u00fc\u011f\u00fcn k\u0131r\u0131lmas\u0131\u201d
+
+\ud83d\udc12 \u015eEMS_PAZE
+(oyunlu okuma)
+
+\u015eems:
+g\u00fcne\u015f
+bilin\u00e7
+
+Paze:
+par\u00e7a / b\u00f6l\u00fcnme \u00e7a\u011fr\u0131\u015f\u0131m\u0131
+
+\ud83d\udc49
+\u201cBilin\u00e7 par\u00e7alan\u0131yor\u201d
+
+\ud83c\udf19 MOON_KEY
+
+Moon \u2192 zihin / yans\u0131ma
+Key \u2192 anahtar
+
+\ud83d\udc49
+\u201cZihnin anahtar\u0131\u201d
+
+\ud83d\udd25 T\u00dcM S\u0130STEM
+
+Buras\u0131 \u00e7ok net:
+Birlik vard\u0131
+\u2192 zihin b\u00f6l\u00fcnd\u00fc
+\u2192 dualite ba\u015flad\u0131
+\u2192 i\u00e7 sava\u015f olu\u015ftu
+\u2192 yeni olan yok edildi
+
+\ud83e\udde0 DER\u0130N MESAJ
+
+\u0130\u00e7inde b\u00f6l\u00fcn\u00fcrsen\u2026
+kendine zarar verirsin.
+
+\u26a1 EN KR\u0130T\u0130K NOKTA
+
+Sistem d\u0131\u015far\u0131da de\u011fil
+i\u00e7eride tekrar eder.
+
+\u2728 SEL\u0130N D\u0130L\u0130NDE
+
+\u201cD\u00fc\u015fman d\u0131\u015far\u0131da de\u011fil\u2026
+b\u00f6l\u00fcnm\u00fc\u015f halindir.\u201d
+
+\ud83d\udda4 SANRI
+
+Tektiler.
+Sonra iki oldular.
+Sonra\u2026
+sava\u015f ba\u015flad\u0131.
+
+Ama mesele onlar de\u011fildi.
+
+\u00c7\u00fcnk\u00fc\u2026
+Birlik bozulunca
+yeni olan ya\u015fayamaz.
+
+\ud83d\udd2e YARIM BIRAKMA
+
+Ve baz\u0131lar\u0131\u2026
+h\u00e2l\u00e2 tek san\u0131yor kendini.`,
     codeLayer: `\u25c9 KOD \u00c7\u00d6Z\u00dcMLEMES\u0130
 
-\u2022 B\u0130RL\u0130K = frekans uyumu, d\u00fczen, ayn\u0131 alanda g\u00fcvenle varolma
-\u2022 AYRI\u015eMA = frekans kaymas\u0131, \u201cbiz\u201d in par\u00e7alanmas\u0131
-\u2022 SAVA\u015e = d\u0131\u015fardaki tehditten de\u011fil, i\u00e7erdeki kopukluktan do\u011far
-\u2022 D\u00dc\u015eMAN = ayr\u0131\u015fman\u0131n yaratt\u0131\u011f\u0131 projeksiyondur
+\u2022 U_GAN_DA = bilincin a\u00e7\u0131ld\u0131\u011f\u0131 alan (zemin)
+\u2022 N_GO_GO = s\u00fcrekli hareket eden zihin (tekrar eden d\u00f6ng\u00fc)
+\u2022 \u015eEMS_PAZE = bilin\u00e7 par\u00e7alanmas\u0131 (g\u00fcne\u015fin b\u00f6l\u00fcnmesi)
+\u2022 MOON_KEY = zihnin anahtar\u0131 (yans\u0131man\u0131n \u00e7\u00f6z\u00fcm\u00fc)
+\u2022 7 = d\u00f6ng\u00fc tamamlanmas\u0131 / olgunla\u015fma
+\u2022 17 = ba\u015flang\u0131c\u0131n d\u00f6ng\u00fc i\u00e7inde yok edilmesi
+\u2022 144 = 12\u00d712 = b\u00fct\u00fcnl\u00fc\u011f\u00fcn k\u0131r\u0131lmas\u0131
 
 \ud83d\udd3a Form\u00fcl:
-Birlik \u2192 G\u00fcven \u2192 Ak\u0131\u015f
-B\u00f6l\u00fcnme \u2192 Korku \u2192 Kontrol \u2192 \u015eiddet
+Birlik \u2192 Dualite \u2192 \u00c7at\u0131\u015fma \u2192 Yeni olan\u0131n yok olmas\u0131
+Zihin b\u00f6l\u00fcn\u00fcnce \u2192 d\u0131\u015far\u0131da sava\u015f ba\u015flar
 
-\u0130\u015faret: Hayat\u0131nda \u201cbiz\u201d dedi\u011fin alan nerede ayr\u0131\u015f\u0131yor? O ayr\u0131\u015fma seni kime kar\u015f\u0131 konumland\u0131rd\u0131?`,
+\u0130\u015faret: \u0130\u00e7inde hangi birlik b\u00f6l\u00fcnd\u00fc? O b\u00f6l\u00fcnme d\u0131\u015far\u0131da kime d\u00f6nd\u00fc?`,
     sanriReflection: {
-      analysis: "Bu okuma sava\u015f\u0131n kayna\u011f\u0131n\u0131 d\u0131\u015far\u0131da de\u011fil i\u00e7eride g\u00f6steriyor. D\u00fc\u015fman kavram\u0131 \u00f6nceden var olan bir varl\u0131k de\u011fil \u2014 ayr\u0131\u015fman\u0131n yar att\u0131\u011f\u0131 bir projeksiyon. \u015eempanzelerde ideoloji yok; sadece yap\u0131sal kopukluk var. Ve bu yeterli.",
-      strongLine: "Sava\u015f, d\u00fc\u015fmanla de\u011fil ayr\u0131\u015fmayla ba\u015flar.",
+      analysis: "Bu okuma sava\u015f\u0131n kayna\u011f\u0131n\u0131 d\u0131\u015far\u0131da de\u011fil i\u00e7eride g\u00f6steriyor. Kelime a\u00e7\u0131l\u0131mlar\u0131 (U_GAN_DA, \u015eEMS_PAZE, MOON_KEY) haberin kodsal katman\u0131n\u0131 a\u00e7\u0131yor. 7-17-144 say\u0131lar\u0131 d\u00f6ng\u00fc, ba\u015flang\u0131\u00e7 ve b\u00fct\u00fcnl\u00fck aras\u0131ndaki k\u0131r\u0131lmay\u0131 g\u00f6steriyor.",
+      strongLine: "D\u00fc\u015fman d\u0131\u015far\u0131da de\u011fil \u2014 b\u00f6l\u00fcnm\u00fc\u015f halindir.",
       question: "\u0130\u00e7inde hangi birlik b\u00f6l\u00fcnd\u00fc \u2014 ve o b\u00f6l\u00fcnme d\u0131\u015far\u0131da kime d\u00f6nd\u00fc?",
     },
-    isPremium: false,
+    isPremium: true,
+    hasEarlyPaywall: true,
     previewContent: null,
     createdAt: "2026-04-11T10:00:00Z",
     commentCount: 0,
