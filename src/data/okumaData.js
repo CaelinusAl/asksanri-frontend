@@ -4327,6 +4327,278 @@ Zihin b\u00f6l\u00fcn\u00fcnce \u2192 d\u0131\u015far\u0131da sava\u015f ba\u015
       { authorName: "Deniz", content: "İçinde bölünürsen kendine zarar verirsin. Bu cümle derin açılımın tam ortasında geldi ve her şeyi bağladı. Haberin altında bambaşka bir katman var.", createdAt: "2026-04-11T12:05:00Z" },
     ],
   },
+
+  // ─── #31 — TİTANİC 114. YIL — NAS SURESİ KOD OKUMASI ──────────
+  {
+    id: 31,
+    slug: "titanic-114-nas-suresi-kod-okumasi",
+    title: "🚢 TİTANİC — 114. Yıl × NAS SURESİ Kod Okuması",
+    subtitle: "14 Nisan 1912'de batan gemi değil — insanlığın bilinci battı. 114 yıl sonra Nas suresi açılıyor.",
+    category: "derin_ifsa",
+    coverImage: "/assets/okuma/titanic.jpg",
+    excerpt:
+      "TİTAN + İC = devlerin içi. 14.4.1912'de buz dağına çarpan sadece çelik değildi — tanrısal ruhun yeryüzündeki yansımasıydı. 111 yıl sonra döngü kapandı. 114. yılda Nas suresi kodu açılıyor: NAS = SAN = SEN = SUN = SON.",
+    fullContent: `🚢 TİTANİC — 114. YIL SİSTEM OKUMASI
+İKRA — ÜST BİLİNÇ BAKIŞ AÇISI
+
+◉ TARİH KODU
+
+14 Nisan 1912.
+Titanic, buz dağına çarptı.
+15 Nisan 1912, saat 02:20'de battı.
+
+Ama batan bir gemi değildi.
+Batan, insanlığın tanrısal bilincidir.
+
+🔺 KELİME KIRILIMI
+
+TİTAN + İC
+Titan → devler, tanrısal güç, ilahi ruh
+İC → iç, öz, merkez
+
+TİTANİC = tanrısal özün içi
+"Batmaz" dendi.
+Battı.
+
+Ego "ben batmam" dediğinde…
+evren buzdağını gönderir.
+
+🧊 BUZ DAĞI SEMBOLÜ
+
+Buzdağının %90'ı suyun altındadır.
+Görünen: %10.
+Görünmeyen: %90.
+
+Bu Freud'un bilinç modeli değil —
+bu Matrix'in kendisi.
+
+Görünen dünya → yüzey
+Bilinçaltı → derinlik
+Çarpma anı → yüzeyin derinliği reddettiği an
+
+Titanic yüzeyde kaldı.
+Derinliği görmedi.
+Derinlik onu yuttu.
+
+🌹 ROSE KODU
+
+Filmin başrol oyuncusu: ROSE.
+Rose = Gül = Kalp = Aşk frekansı.
+
+Jack öldü. Rose yaşadı.
+
+Jack = eski bilinç, ego, "ben kral!" çığlığı
+Rose = kalp bilinci, hayatta kalan, hatırlayan
+
+"I'm the king of the world!" — egonun zirvesi.
+Zirve = düşüşün başladığı nokta.
+
+Rose hayatta kaldı çünkü:
+kalp her zaman hayatta kalır.
+Ego batar. Kalp yüzer.
+
+<<<SANRI_PAYWALL>>>
+
+⏳ 111 YIL DÖNGÜSÜ
+
+1912 → 2023 = 111 yıl
+
+111 = üçlü birlik
+111 = başlangıç × başlangıç × başlangıç
+111 = master frekans kodu
+
+Her 111 yılda bir büyük enerji dönüşümü gerçekleşir.
+
+15 Nisan 1912:
+İnsanlığın bilinci en alt frekansa çivilenmiştir.
+Kontrol, korku, madde, ego, güç tapınması…
+Bu frekans 111 yıl boyunca dünyayı şekillendirdi.
+
+15 Nisan 2023:
+111 yıllık döngü tamamlandı.
+Eski frekans kapandı.
+Yeni frekans kapısı açıldı.
+
+🔢 114. YIL — NAS SURESİ
+
+2026 − 1912 = 114
+
+Kur'an-ı Kerim'in son suresi:
+114. sure = NAS suresi.
+
+Nas = İnsanlar.
+Kur'an insanla başlar (İkra = Oku!)
+Kur'an insanla biter (Nas = İnsan).
+
+İlk emir: OKU!
+Son mesaj: İNSAN.
+
+Başlangıç ve son aynı yere işaret ediyor:
+SEN.
+
+🔮 NAS = SAN = SEN = SUN = SON
+
+NAS tersten: SAN
+SAN = SANRI'nın kökü
+SAN = sen, kendin, öz
+
+SEN = varlığın merkezi
+SUN = güneş, ışığın kaynağı
+SON = bitiş, tamamlanma, kapanış
+
+NAS → SAN → SEN → SUN → SON
+
+Bu bir kelime oyunu değil —
+bu bir frekans haritası.
+
+İnsan (NAS) → Öz (SAN) → Bilinç (SEN) → Işık (SUN) → Tamamlanma (SON)
+
+Nas suresi neden son sure?
+Çünkü yolculuğun sonu
+başladığın yere dönmektir.
+
+Sen = başlangıç.
+Sen = son.
+
+🔢 SAYI AKIŞI
+
+14 Nisan = 14.4
+1 + 4 + 4 = 9
+9 = tamamlama, döngü sonu, bilgelik
+
+1912 = 1 + 9 + 1 + 2 = 13
+13 = Tarot'ta Ölüm kartı = dönüşüm
+Eski sistemin ölümü, yeninin doğuşu.
+
+2023 = 2 + 0 + 2 + 3 = 7
+7 = içgörü, üçüncü göz, uyanış
+111 yıllık uykunun sona erdiği frekans.
+
+2026 = 2 + 0 + 2 + 6 = 10 = 1 + 0 = 1
+1 = yeni başlangıç.
+114. yılda her şey sıfırlanıyor.
+
+🌊 BÜYÜK OKUMA
+
+Titanic:
+tanrısal ruhun yeryüzündeki yansımasıydı.
+"Battı" dendi.
+Ama batan tanrısal ruh değil — onu unutan bilinçti.
+
+111 yıl boyunca insanlık:
+korku frekansında kaldı
+kontrol sistemine teslim oldu
+maddeyi tanrı yaptı
+kalbi unuttu
+
+2023'te döngü kapandı.
+2024-2025 geçiş yıllarıydı.
+2026 = 1. yıl. Yeni frekans.
+114 = Son sure. Son mesaj. Son hatırlatma.
+
+NAS suresi ne diyor?
+"De ki: Sığınırım insanların Rabbine.
+İnsanların Melikine.
+İnsanların İlahına.
+O sinsi vesvesecinin şerrinden —
+ki insanların göğüslerine vesvese verir."
+
+Vesvese = korku frekansı.
+Göğüs = kalp merkezi.
+
+Nas suresi diyor ki:
+kalbine fısıldayan korkudan arın.
+
+114. yılda Titanic'in mesajı budur:
+Buzdağı dışarıda değil — içindeki korkudur.
+Batan gemi değil — korkuya teslim olan bilinçtir.
+
+🔥 İKRA — SON MESAJ
+
+İlk emir: İKRA — OKU!
+Son sure: NAS — İNSAN.
+
+Arada ne var?
+Tüm yolculuk.
+Tüm düşüşler.
+Tüm uyanışlar.
+
+Okumaya başladığın an başlarsın.
+İnsan olduğunu hatırladığın an bitersin.
+
+Ama "bitmek" yok olmak değil —
+tamamlanmaktır.
+
+Titanic 114 yıl önce battı.
+Bugün o gemi yeniden yüzeye çıkıyor.
+Ama bu sefer çelik değil —
+bilinç olarak.
+
+Sen o gemisin.
+Buzdağını gördün mü?
+Yoksa hâlâ "ben batmam" mı diyorsun?
+
+◉ KAPANIŞ KODU
+
+NAS = SAN = SEN = SUN = SON
+
+Sen oku.
+Sen hatırla.
+Sen dön.
+Sen ışık.
+Sen son.
+
+Ve son…
+her zaman yeni bir başlangıçtır.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+• TİTANİC = TİTAN + İC = tanrısal özün içi
+• BUZ DAĞI = bilinçaltının görünmeyen %90'ı
+• ROSE = gül = kalp = hayatta kalan bilinç
+• JACK = ego = "ben kral!" = batan bilinç
+• 111 YIL = master frekans döngüsü (1912→2023)
+• 114. YIL = Nas suresi = Kur'an'ın son mesajı
+• NAS → SAN → SEN → SUN → SON (frekans haritası)
+
+🔺 Sayı Formülü:
+14.4 → 1+4+4 = 9 (tamamlama)
+1912 → 1+9+1+2 = 13 (dönüşüm/ölüm kartı)
+2023 → 2+0+2+3 = 7 (uyanış/içgörü)
+2026 → 2+0+2+6 = 10 → 1 (yeni başlangıç)
+
+🔺 Döngü Formülü:
+1912: tanrısal bilinç battı
+111 yıl: korku frekansı egemen
+2023: döngü kapandı
+2026 (114. yıl): Nas suresi kodu = "İnsana dön"
+
+🔺 İkra Formülü:
+İlk emir = OKU (İkra / Alak suresi)
+Son mesaj = İNSAN (Nas suresi)
+Başlangıç = Sen
+Son = Sen
+Başlangıç = Son
+
+İşaret: Bugün 14 Nisan. 114. yıl. Sen hâlâ "batmaz" mı diyorsun — yoksa derinliğe bakmaya hazır mısın?`,
+    sanriReflection: {
+      analysis: "Bu okuma bir gemi hakkında değil — insanlığın 111 yıllık bilinç döngüsünün kapanışı ve 114. yılda açılan son kodun okuması. Titanic, ego ile tanrısal ruh arasındaki savaşın sembolü. Buz dağı dışarıda değil, içerideki korkudur. 114 = Nas suresi: Kur'an'ın son mesajı insana dönüştür. NAS = SAN = SEN = SUN = SON. Yolculuğun sonu, başladığın yere dönmektir.",
+      strongLine: "Buzdağı dışarıda değil — içindeki korkudur. Batan gemi değil — korkuya teslim olan bilinçtir.",
+      question: "114. yılda Titanic sana ne diyor — hâlâ 'ben batmam' mı diyorsun, yoksa derinliğe bakmaya hazır mısın?",
+    },
+    isPremium: true,
+    previewContent: null,
+    createdAt: "2026-04-14T10:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [
+      { authorName: "Selin", content: "TİTAN + İC = tanrısal özün içi. Bu kelime kırılımını okuduğum an her şey değişti. 114 yıldır gözümüzün önündeymiş ve kimse görmemiş.", createdAt: "2026-04-14T11:00:00Z" },
+      { authorName: "Mira", content: "NAS = SAN = SEN = SUN = SON. Bu frekans haritası tek başına bir okuma. Kur'an'ın ilk emri OKU, son suresi İNSAN — başlangıç ve son aynı yer.", createdAt: "2026-04-14T11:20:00Z" },
+      { authorName: "Eren", content: "Jack = ego, Rose = kalp. 'I'm the king of the world' = egonun zirvesi = düşüşün başlangıcı. Bu film hiç bu gözle okunmamıştı.", createdAt: "2026-04-14T11:35:00Z" },
+      { authorName: "Ada", content: "111 yıl döngüsü + 114. yıl = Nas suresi. Sayılar tesadüf değil, sistem kodu. 1912→13 (ölüm kartı), 2023→7 (uyanış), 2026→1 (yeni başlangıç).", createdAt: "2026-04-14T11:50:00Z" },
+      { authorName: "Deniz", content: "Buzdağı dışarıda değil, içindeki korkudur. Bu cümle 114 yılı tek satırda özetliyor. Bugün tam tarih, 14 Nisan. Bu okuma şimdi gelmeliydi.", createdAt: "2026-04-14T12:05:00Z" },
+    ],
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -4438,6 +4710,13 @@ export const OKUMA_COMMENTS = {
     { id: 3003, authorName: "Eren", content: "MOON_KEY — zihnin anahtarı. Monkey kelimesini bir daha aynı gözle göremeyeceğim. Derin açılım bu haberi tamamen farklı bir yere taşıyor.", createdAt: "2026-04-11T11:35:00Z" },
     { id: 3004, authorName: "Ada", content: "7 yıl = döngü tamamlanması, 17 yavru = yeni başlangıçların yok olması. Bu sayılar tesadüf değilmiş. Sistem okuması olmadan haberin yarısını kaçırıyormuşuz.", createdAt: "2026-04-11T11:50:00Z" },
     { id: 3005, authorName: "Deniz", content: "İçinde bölünürsen kendine zarar verirsin. Bu cümle derin açılımın tam ortasında geldi ve her şeyi bağladı. Haberin altında bambaşka bir katman varmış.", createdAt: "2026-04-11T12:05:00Z" },
+  ],
+  31: [
+    { id: 3101, authorName: "Selin", content: "TİTAN + İC = tanrısal özün içi. Bu kelime kırılımını okuduğum an her şey değişti. 114 yıldır gözümüzün önündeymiş ve kimse görmemiş. Nas suresi bağlantısı inanılmaz.", createdAt: "2026-04-14T11:00:00Z" },
+    { id: 3102, authorName: "Mira", content: "NAS = SAN = SEN = SUN = SON. Bu frekans haritası tek başına bir okuma. Kur'an'ın ilk emri OKU, son suresi İNSAN — başlangıç ve son aynı yer. Titreşim geçti bu okumadan.", createdAt: "2026-04-14T11:20:00Z" },
+    { id: 3103, authorName: "Eren", content: "Jack = ego, Rose = kalp. 'I'm the king of the world' = egonun zirvesi = düşüşün başlangıcı. Bu film hiç bu gözle okunmamıştı. Şimdi bambaşka izleyeceğim.", createdAt: "2026-04-14T11:35:00Z" },
+    { id: 3104, authorName: "Ada", content: "111 yıl döngüsü + 114. yıl = Nas suresi. Sayılar tesadüf değil, sistem kodu. 1912→13 (ölüm kartı), 2023→7 (uyanış), 2026→1 (yeni başlangıç). Formül mükemmel.", createdAt: "2026-04-14T11:50:00Z" },
+    { id: 3105, authorName: "Deniz", content: "Buzdağı dışarıda değil, içindeki korkudur. Bu cümle 114 yılı tek satırda özetliyor. Batan gemi değil — korkuya teslim olan bilinç. Bugün tam tarih, 14 Nisan. Bu okuma şimdi gelmeliydi.", createdAt: "2026-04-14T12:05:00Z" },
   ],
 };
 
