@@ -4588,8 +4588,8 @@ Başlangıç = Son
     isPremium: true,
     previewContent: null,
     createdAt: "2026-04-14T10:00:00Z",
-    commentCount: 0,
-    viewCount: 0,
+    commentCount: 5,
+    viewCount: 144,
     isFeatured: true,
     deepReaderComments: [
       { authorName: "Selin", content: "TİTAN + İC = tanrısal özün içi. Bu kelime kırılımını okuduğum an her şey değişti. 114 yıldır gözümüzün önündeymiş ve kimse görmemiş.", createdAt: "2026-04-14T11:00:00Z" },
