@@ -8,7 +8,8 @@ import { trackFunnelEvent } from "../data/funnelTracker";
 import { markOkumaSeen, OKUMA_EARLY_PAYWALL_MARKER } from "../data/okumaSeen";
 import { putContentSnapshot, putEntitlement } from "../lib/offline/contentArchive";
 import { pickCtaForUser, recordCtaClick } from "../data/ctaEngine";
-import { isShopierUnlocked, redirectToShopier } from "../data/shopierConfig";
+import { isShopierUnlocked, redirectToShopier, verifyPurchaseByEmail, fetchShopierPurchaseCheck, applyVerifiedShopierUnlock, checkServerUnlock } from "../data/shopierConfig";
+import useServerUnlock from "../hooks/useServerUnlock";
 import { EmailCaptureInline } from "../components/EmailCaptureModal";
 import BankTransferLink from "../components/BankTransferLink";
 import SeoHead from "../components/SeoHead";
@@ -44,8 +45,13 @@ export default function OkumaDetayPage() {
   const singleUnlocked = post
     ? isContentUnlocked(post.id) || isContentUnlocked(`okuma_${post.id}`)
     : false;
-  const shopierOk = post ? isShopierUnlocked(`okuma_${post.id}`) : false;
-  const isLocked = post?.isPremium && !isPremium && !isAdmin && !singleUnlocked && !shopierOk;
+  const shopierOk = post
+    ? isShopierUnlocked(`okuma_${post.id}`) || isShopierUnlocked("okuma_devami")
+    : false;
+  const [serverUnlocked] = useServerUnlock(
+    ...(post ? [`okuma_${post.id}`, "okuma_devami"] : ["__none__"])
+  );
+  const isLocked = post?.isPremium && !isPremium && !isAdmin && !singleUnlocked && !shopierOk && !serverUnlocked;
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -348,47 +354,72 @@ export default function OkumaDetayPage() {
             : rawFull;
 
           if (showFull) {
+            const emailCollected = (() => {
+              try { return !!localStorage.getItem("sanri_email_collected"); } catch { return false; }
+            })();
+            const displayParagraphs = fullTextForDisplay.split(/\n\n+/).filter(Boolean);
+            const GATE_AFTER = 3;
+            const needsGate = !emailCollected && displayParagraphs.length > GATE_AFTER + 1;
+
             return (
               <>
-                <div className={styles.content}>{fullTextForDisplay}</div>
+                <div className={styles.content}>
+                  {needsGate
+                    ? displayParagraphs.slice(0, GATE_AFTER).join("\n\n")
+                    : fullTextForDisplay}
+                </div>
 
-                {post.codeLayer && (
-                  <div className={styles.codeLayerWrap}>
-                    <div className={styles.codeLayerHeader}>
-                      <span className={styles.codeLayerIcon}>⟁</span>
-                      <span className={styles.codeLayerTitle}>
-                        {isTR ? "Kod Çözümleme" : "Code Decryption"}
-                      </span>
-                    </div>
-                    <div className={styles.codeLayerText}>{post.codeLayer}</div>
-                  </div>
+                {needsGate && (
+                  <ContentEmailGate
+                    page={`okuma/${post.slug}`}
+                    isTR={isTR}
+                    onUnlock={() => {
+                      try { localStorage.setItem("sanri_email_collected", "1"); } catch {}
+                    }}
+                  />
                 )}
 
-                {sr && typeof sr === "object" && (
-                  <div className={styles.sanriWrap}>
-                    <div className={styles.sanriHeader}>
-                      <span className={styles.sanriGlyph}>✦</span>
-                      <span className={styles.sanriLabel}>
-                        {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
-                      </span>
-                    </div>
-                    <p className={styles.sanriAnalysis}>{sr.analysis}</p>
-                    <p className={styles.sanriStrong}>{sr.strongLine}</p>
-                    <p className={styles.sanriQuestion}>{sr.question}</p>
-                  </div>
-                )}
-                {sr && typeof sr === "string" && (
-                  <div className={styles.sanriWrap}>
-                    <div className={styles.sanriHeader}>
-                      <span className={styles.sanriGlyph}>✦</span>
-                      <span className={styles.sanriLabel}>
-                        {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
-                      </span>
-                    </div>
-                    <p className={styles.sanriAnalysis} style={{ whiteSpace: "pre-wrap" }}>
-                      {sr}
-                    </p>
-                  </div>
+                {needsGate ? null : (
+                  <>
+                    {post.codeLayer && (
+                      <div className={styles.codeLayerWrap}>
+                        <div className={styles.codeLayerHeader}>
+                          <span className={styles.codeLayerIcon}>⟁</span>
+                          <span className={styles.codeLayerTitle}>
+                            {isTR ? "Kod Çözümleme" : "Code Decryption"}
+                          </span>
+                        </div>
+                        <div className={styles.codeLayerText}>{post.codeLayer}</div>
+                      </div>
+                    )}
+
+                    {sr && typeof sr === "object" && (
+                      <div className={styles.sanriWrap}>
+                        <div className={styles.sanriHeader}>
+                          <span className={styles.sanriGlyph}>✦</span>
+                          <span className={styles.sanriLabel}>
+                            {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
+                          </span>
+                        </div>
+                        <p className={styles.sanriAnalysis}>{sr.analysis}</p>
+                        <p className={styles.sanriStrong}>{sr.strongLine}</p>
+                        <p className={styles.sanriQuestion}>{sr.question}</p>
+                      </div>
+                    )}
+                    {sr && typeof sr === "string" && (
+                      <div className={styles.sanriWrap}>
+                        <div className={styles.sanriHeader}>
+                          <span className={styles.sanriGlyph}>✦</span>
+                          <span className={styles.sanriLabel}>
+                            {isTR ? "Sanrı Yansıması" : "Sanri Reflection"}
+                          </span>
+                        </div>
+                        <p className={styles.sanriAnalysis} style={{ whiteSpace: "pre-wrap" }}>
+                          {sr}
+                        </p>
+                      </div>
+                    )}
+                  </>
                 )}
               </>
             );
@@ -484,6 +515,11 @@ export default function OkumaDetayPage() {
                     >
                       {isTR ? "Havale / EFT ile öde (9,90 ₺)" : "Pay via bank transfer (₺9.90)"}
                     </BankTransferLink>
+                    <PaywallEmailRecovery
+                      contentId={`okuma_${post.id}`}
+                      isTR={isTR}
+                      onUnlocked={() => window.location.reload()}
+                    />
                   </div>
                 </div>
               </>
@@ -530,6 +566,11 @@ export default function OkumaDetayPage() {
                     >
                       {isTR ? "Havale / EFT ile öde (9,90 ₺)" : "Pay via bank transfer (₺9.90)"}
                     </BankTransferLink>
+                    <PaywallEmailRecovery
+                      contentId={`okuma_${post.id}`}
+                      isTR={isTR}
+                      onUnlocked={() => window.location.reload()}
+                    />
                   </div>
                 </div>
               </>
@@ -581,6 +622,11 @@ export default function OkumaDetayPage() {
                   >
                     {isTR ? "Havale / EFT ile öde (9,90 ₺)" : "Pay via bank transfer (₺9.90)"}
                   </BankTransferLink>
+                  <PaywallEmailRecovery
+                    contentId={`okuma_${post.id}`}
+                    isTR={isTR}
+                    onUnlocked={() => window.location.reload()}
+                  />
                 </div>
               </div>
             </>
@@ -752,3 +798,324 @@ export default function OkumaDetayPage() {
     </div>
   );
 }
+
+function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
+  const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState("idle");
+  const [msg, setMsg] = useState("");
+
+  const handleVerify = async () => {
+    const em = email.trim().toLowerCase();
+    if (!em || !em.includes("@")) {
+      setMsg(isTR ? "Geçerli bir e-posta gir." : "Enter a valid email.");
+      return;
+    }
+    setStatus("checking");
+    setMsg(isTR ? "Shopier kaydı kontrol ediliyor..." : "Checking Shopier records...");
+
+    try {
+      const pat = await verifyPurchaseByEmail(em, contentId);
+      if (pat.unlocked) {
+        const check = await fetchShopierPurchaseCheck(contentId, em);
+        if (check.unlocked) {
+          applyVerifiedShopierUnlock(contentId, check.purchased_at || check.purchase?.purchased_at);
+          setStatus("success");
+          setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
+          setTimeout(() => onUnlocked?.(), 800);
+          return;
+        }
+      }
+
+      const direct = await checkServerUnlock(contentId, em);
+      if (direct) {
+        setStatus("success");
+        setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
+        setTimeout(() => onUnlocked?.(), 800);
+        return;
+      }
+
+      const genericId = "okuma_devami";
+      const patGeneric = await verifyPurchaseByEmail(em, genericId);
+      if (patGeneric.unlocked) {
+        const checkG = await fetchShopierPurchaseCheck(genericId, em);
+        if (checkG.unlocked) {
+          applyVerifiedShopierUnlock(contentId, checkG.purchased_at || checkG.purchase?.purchased_at);
+          setStatus("success");
+          setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
+          setTimeout(() => onUnlocked?.(), 800);
+          return;
+        }
+      }
+
+      setStatus("not_found");
+      setMsg(
+        isTR
+          ? "Bu e-posta ile eşleşen ödeme henüz bulunamadı. Shopier'da ödeme yaptıysan birkaç dakika bekleyip tekrar dene. Sorun devam ederse WhatsApp'tan yaz: +90 542 XXX XX XX"
+          : "No matching payment found for this email. If you paid on Shopier, wait a few minutes and retry."
+      );
+    } catch {
+      setStatus("error");
+      setMsg(isTR ? "Bağlantı hatası. Tekrar dene." : "Connection error. Try again.");
+    }
+  };
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        style={{
+          marginTop: 14,
+          background: "none",
+          border: "none",
+          color: "rgba(200,160,255,0.5)",
+          fontSize: 12,
+          cursor: "pointer",
+          textDecoration: "underline",
+          padding: "4px 0",
+        }}
+      >
+        {isTR ? "Ödeme yaptım ama açılmadı" : "I paid but it didn't unlock"}
+      </button>
+    );
+  }
+
+  return (
+    <div style={{
+      marginTop: 16,
+      padding: "16px",
+      background: "rgba(200,160,255,0.04)",
+      border: "1px solid rgba(200,160,255,0.15)",
+      borderRadius: 14,
+      textAlign: "center",
+    }}>
+      <p style={{ margin: "0 0 8px", fontSize: 13, color: "rgba(200,160,255,0.7)", lineHeight: 1.6 }}>
+        {isTR
+          ? "Shopier'da ödeme yaptığın e-postayı gir — sistemden doğrulayalım."
+          : "Enter the email you used on Shopier — we'll verify from the system."}
+      </p>
+      <div style={{ display: "flex", gap: 8, maxWidth: 360, margin: "0 auto" }}>
+        <input
+          type="email"
+          placeholder={isTR ? "Shopier e-postan" : "Shopier email"}
+          value={email}
+          onChange={(e) => { setEmail(e.target.value); setMsg(""); setStatus("idle"); }}
+          onKeyDown={(e) => e.key === "Enter" && handleVerify()}
+          style={{
+            flex: 1,
+            padding: "11px 14px",
+            borderRadius: 10,
+            border: "1px solid rgba(200,160,255,0.2)",
+            background: "rgba(255,255,255,0.04)",
+            color: "#e8e4f4",
+            fontSize: 14,
+            outline: "none",
+          }}
+        />
+        <button
+          type="button"
+          onClick={handleVerify}
+          disabled={status === "checking"}
+          style={{
+            padding: "11px 18px",
+            borderRadius: 10,
+            border: "none",
+            background: status === "success"
+              ? "rgba(120,247,216,0.2)"
+              : "linear-gradient(135deg, #c8a0ff, #a07aff)",
+            color: status === "success" ? "#78f7d8" : "#07080d",
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: status === "checking" ? "wait" : "pointer",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {status === "checking"
+            ? "..."
+            : status === "success"
+            ? "✓"
+            : isTR ? "Doğrula" : "Verify"}
+        </button>
+      </div>
+      {msg && (
+        <p style={{
+          marginTop: 10,
+          fontSize: 12,
+          lineHeight: 1.6,
+          color: status === "success"
+            ? "#78f7d8"
+            : status === "not_found" || status === "error"
+            ? "#f6ad55"
+            : "rgba(200,160,255,0.6)",
+        }}>
+          {msg}
+        </p>
+      )}
+      {status === "not_found" && (
+        <button
+          type="button"
+          onClick={handleVerify}
+          style={{
+            marginTop: 10,
+            padding: "10px 20px",
+            borderRadius: 10,
+            border: "1px solid rgba(200,160,255,0.2)",
+            background: "rgba(200,160,255,0.06)",
+            color: "rgba(200,160,255,0.7)",
+            fontSize: 13,
+            cursor: "pointer",
+          }}
+        >
+          {isTR ? "Tekrar dene" : "Retry"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+const GATE_API =
+  (import.meta?.env?.VITE_BACKEND_URL &&
+    String(import.meta.env.VITE_BACKEND_URL).replace(/\/$/, "")) ||
+  "https://sanri-api-production-4a7b.up.railway.app";
+
+function ContentEmailGate({ page, isTR, onUnlock }) {
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [done, setDone] = useState(false);
+  const [err, setErr] = useState("");
+
+  const submit = async () => {
+    setErr("");
+    const em = email.trim().toLowerCase();
+    if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      setErr(isTR ? "Geçerli bir e-posta gir." : "Enter a valid email.");
+      return;
+    }
+    setSending(true);
+    try {
+      const token = localStorage.getItem("sanri_token");
+      const headers = { "Content-Type": "application/json" };
+      if (token) headers["Authorization"] = `Bearer ${token}`;
+      await fetch(`${GATE_API}/shopier/collect-email`, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ email: em, source: "content_gate", page }),
+      });
+      onUnlock?.();
+      setDone(true);
+      setTimeout(() => window.location.reload(), 600);
+    } catch {
+      setErr(isTR ? "Bir hata oluştu." : "An error occurred.");
+    }
+    setSending(false);
+  };
+
+  if (done) {
+    return (
+      <div style={gateStyles.wrap}>
+        <p style={gateStyles.doneText}>{isTR ? "Devam et, okuma seninle." : "Continue, the reading is with you."}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={gateStyles.wrap}>
+      <div style={gateStyles.gradient} />
+      <div style={gateStyles.inner}>
+        <p style={gateStyles.icon}>◈</p>
+        <p style={gateStyles.title}>
+          {isTR ? "Okumaya devam et" : "Continue reading"}
+        </p>
+        <p style={gateStyles.desc}>
+          {isTR
+            ? "Bu içeriğin devamını görmek için e-postanı bırak. Yeni içerikler yayınlandığında seni haberdar edelim."
+            : "Leave your email to continue reading. We'll notify you when new content is published."}
+        </p>
+        <div style={gateStyles.row}>
+          <input
+            type="email"
+            style={gateStyles.input}
+            placeholder={isTR ? "E-posta adresin" : "Your email"}
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); setErr(""); }}
+            onKeyDown={(e) => e.key === "Enter" && submit()}
+          />
+          <button style={gateStyles.btn} onClick={submit} disabled={sending}>
+            {sending ? "..." : isTR ? "Devam Et" : "Continue"}
+          </button>
+        </div>
+        {err && <p style={gateStyles.err}>{err}</p>}
+      </div>
+    </div>
+  );
+}
+
+const gateStyles = {
+  wrap: {
+    position: "relative",
+    margin: "0 -20px",
+    padding: "0 20px",
+  },
+  gradient: {
+    position: "absolute",
+    top: -60,
+    left: 0,
+    right: 0,
+    height: 60,
+    background: "linear-gradient(to bottom, transparent, #07080d)",
+    pointerEvents: "none",
+  },
+  inner: {
+    textAlign: "center",
+    padding: "32px 20px 40px",
+    background: "linear-gradient(170deg, rgba(200,160,255,0.04) 0%, rgba(120,247,216,0.02) 100%)",
+    border: "1px solid rgba(200,160,255,0.12)",
+    borderRadius: 18,
+  },
+  icon: { fontSize: 28, color: "rgba(200,160,255,0.5)", margin: "0 0 8px" },
+  title: {
+    fontSize: 18,
+    fontWeight: 700,
+    color: "#e8e4f4",
+    margin: "0 0 8px",
+  },
+  desc: {
+    fontSize: 13,
+    color: "rgba(200,160,255,0.5)",
+    lineHeight: 1.7,
+    margin: "0 0 20px",
+    maxWidth: 380,
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+  row: {
+    display: "flex",
+    gap: 8,
+    maxWidth: 380,
+    margin: "0 auto",
+  },
+  input: {
+    flex: 1,
+    padding: "12px 16px",
+    borderRadius: 10,
+    border: "1px solid rgba(200,160,255,0.2)",
+    background: "rgba(200,160,255,0.06)",
+    color: "#e8e4f4",
+    fontSize: 14,
+    outline: "none",
+  },
+  btn: {
+    padding: "12px 22px",
+    borderRadius: 10,
+    border: "1px solid rgba(120,247,216,0.3)",
+    background: "rgba(120,247,216,0.1)",
+    color: "#78f7d8",
+    fontSize: 14,
+    fontWeight: 700,
+    cursor: "pointer",
+    whiteSpace: "nowrap",
+  },
+  err: { color: "#ff6b6b", fontSize: 12, marginTop: 8, textAlign: "center" },
+  doneText: { color: "#78f7d8", fontSize: 14, fontWeight: 600, textAlign: "center", padding: 20 },
+};

@@ -99,50 +99,83 @@ export default function OdemeBasariliPage() {
     const target = contentId || "premium";
     const pendingEmail = params.get("email") || pendingSnap?.email || "";
 
+    const alternateIds = [];
+    if (target.startsWith("okuma_")) {
+      alternateIds.push("okuma_devami");
+      const numPart = target.replace("okuma_", "");
+      if (numPart !== target) alternateIds.push(`okuma_${numPart}`);
+    }
+    if (target === "okuma_devami") {
+    } else if (!target.startsWith("okuma_")) {
+      alternateIds.push(target);
+    }
+
+    const tryAllIds = async (email) => {
+      const idsToTry = [target, ...alternateIds.filter(id => id !== target)];
+      for (const id of idsToTry) {
+        const r = await fetchShopierPurchaseCheck(id, email);
+        if (r.unlocked) {
+          return { unlocked: true, id, at: r.purchased_at || r.purchase?.purchased_at };
+        }
+      }
+      return { unlocked: false };
+    };
+
+    const tryVerifyByEmail = async (email) => {
+      const idsToTry = [target, ...alternateIds.filter(id => id !== target)];
+      for (const id of idsToTry) {
+        const pat = await verifyPurchaseByEmail(email, id);
+        if (pat.unlocked) {
+          const check = await fetchShopierPurchaseCheck(id, email);
+          if (check.unlocked) {
+            return { unlocked: true, id, at: check.purchased_at || check.purchase?.purchased_at || new Date().toISOString() };
+          }
+        }
+      }
+      return { unlocked: false };
+    };
+
     (async () => {
       setPhase("verifying");
-      setVerifyNote("\u00D6deme kontrol ediliyor...");
+      setVerifyNote("Ödeme kontrol ediliyor...");
 
-      // Katman 1: Sunucu kaydini hemen kontrol et (webhook gelmis olabilir)
-      const immediate = await fetchShopierPurchaseCheck(target, pendingEmail);
+      const immediate = await tryAllIds(pendingEmail);
       if (immediate.unlocked) {
-        const at = immediate.purchased_at || immediate.purchase?.purchased_at;
-        await runVerifiedSuccess(target, at, pendingSnap);
+        await runVerifiedSuccess(target, immediate.at, pendingSnap);
         return;
       }
 
-      // Katman 2: PAT ile Shopier API uzerinden email dogrulama
       if (pendingEmail && pendingEmail.includes("@")) {
-        setVerifyNote("Shopier kayd\u0131 kontrol ediliyor...");
-        const pat = await verifyPurchaseByEmail(pendingEmail, target);
-        if (pat.unlocked) {
-          const check = await fetchShopierPurchaseCheck(target, pendingEmail);
-          const at = check.purchased_at || check.purchase?.purchased_at || new Date().toISOString();
-          await runVerifiedSuccess(target, at, pendingSnap);
+        setVerifyNote("Shopier kaydı kontrol ediliyor...");
+        const patResult = await tryVerifyByEmail(pendingEmail);
+        if (patResult.unlocked) {
+          await runVerifiedSuccess(target, patResult.at, pendingSnap);
           return;
         }
       }
 
-      // Katman 3: Polling (webhook gecikmeli gelebilir)
       for (let i = 0; i < 24; i++) {
         await sleep(2500);
-        const r = await fetchShopierPurchaseCheck(target, pendingEmail);
+        const r = await tryAllIds(pendingEmail);
         if (r.unlocked) {
-          const at = r.purchased_at || r.purchase?.purchased_at;
-          await runVerifiedSuccess(target, at, pendingSnap);
+          await runVerifiedSuccess(target, r.at, pendingSnap);
           return;
         }
         if (i === 4) {
-          setVerifyNote("\u00D6deme kayd\u0131 birka\u00E7 saniye gecikebilir. Kontrol devam ediyor...");
+          setVerifyNote("Ödeme kaydı birkaç saniye gecikebilir. Kontrol devam ediyor...");
         }
-        if (i === 12) {
-          setVerifyNote("\u00D6deme kayd\u0131 hen\u00FCz ula\u015Fmad\u0131. Biraz daha bekliyoruz...");
+        if (i === 8) {
+          setPhase("need_email");
+          setVerifyNote(
+            "Ödeme kaydı henüz ulaşmadı. Shopier'da kullandığın e-postanı girerek hızlıca doğrulayabilirsin."
+          );
+          return;
         }
       }
 
       setPhase("need_email");
       setVerifyNote(
-        "\u00D6deme do\u011Frulanamad\u0131. E\u011Fer \u00F6demeyi yeni yapt\u0131ysan k\u0131sa s\u00FCre sonra tekrar dene. \u00D6deme kayd\u0131 bulunamad\u0131ysa Shopier\u2019da kulland\u0131\u011F\u0131n e-postay\u0131 girerek bu cihaza ba\u011Flayabilirsin."
+        "Ödeme doğrulanamadı. Shopier'da kullandığın e-postayı girerek bu cihaza bağlayabilirsin."
       );
     })();
   }, [contentId, runVerifiedSuccess]);
@@ -153,39 +186,55 @@ export default function OdemeBasariliPage() {
   const handleBindEmail = async () => {
     const target = contentId || "premium";
     setBindError("");
-    const em = emailInput.trim();
+    const em = emailInput.trim().toLowerCase();
     if (!em.includes("@")) {
-      setBindError("Ge\u00E7erli bir e-posta gir.");
+      setBindError("Geçerli bir e-posta gir.");
       return;
     }
 
-    // Once PAT verify dene, sonra bind
-    const pat = await verifyPurchaseByEmail(em, target);
-    if (pat.unlocked) {
-      const r = await fetchShopierPurchaseCheck(target, em);
-      if (r.unlocked) {
-        const pendingSnap = getPendingPurchase();
-        await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
+    const idsToTry = [target];
+    if (target.startsWith("okuma_") && target !== "okuma_devami") {
+      idsToTry.push("okuma_devami");
+    }
+    if (target === "okuma_devami") {
+    }
+
+    for (const cid of idsToTry) {
+      const pat = await verifyPurchaseByEmail(em, cid);
+      if (pat.unlocked) {
+        const r = await fetchShopierPurchaseCheck(cid, em);
+        if (r.unlocked) {
+          const pendingSnap = getPendingPurchase();
+          await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
+          return;
+        }
+      }
+    }
+
+    for (const cid of idsToTry) {
+      const bind = await bindShopierPurchaseEmail(em, cid);
+      if (bind.ok) {
+        const r = await fetchShopierPurchaseCheck(cid, em);
+        if (r.unlocked) {
+          const pendingSnap = getPendingPurchase();
+          await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
+          return;
+        }
+        setBindError("Bağlandı ama doğrulama yanıt vermedi. Sayfayı yenile veya birkaç dakika bekle.");
+        return;
+      }
+      if (bind.error === "device_mismatch") {
+        setBindError("Bu satın alma başka bir cihaza bağlı görünüyor. Destek ile iletişime geç.");
         return;
       }
     }
 
-    const bind = await bindShopierPurchaseEmail(em, target);
-    if (!bind.ok) {
-      if (bind.error === "device_mismatch") {
-        setBindError("Bu sat\u0131n alma ba\u015Fka bir cihaza ba\u011Fl\u0131 g\u00F6r\u00FCn\u00FCyor. Destek ile ileti\u015Fime ge\u00E7.");
-      } else {
-        setBindError("Bu e-posta ile e\u015Fle\u015Fen \u00F6deme bulunamad\u0131. E-postay\u0131 kontrol et veya birka\u00E7 dakika sonra tekrar dene.");
-      }
-      return;
-    }
-    const r = await fetchShopierPurchaseCheck(target, em);
-    if (r.unlocked) {
-      const pendingSnap = getPendingPurchase();
-      await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
-    } else {
-      setBindError("Ba\u011Fland\u0131 ama do\u011Frulama yan\u0131t vermedi. Sayfay\u0131 yenile.");
-    }
+    setBindError(
+      "Bu e-posta ile eşleşen ödeme henüz bulunamadı.\n\n" +
+      "• Shopier ödeme e-postanı doğru girdiğinden emin ol\n" +
+      "• Ödeme birkaç dakika gecikebilir — 2-3 dk sonra tekrar dene\n" +
+      "• Sorun devam ederse: destek@asksanri.com"
+    );
   };
 
   const handleRetryPayment = () => {
@@ -233,7 +282,7 @@ export default function OdemeBasariliPage() {
             style={{ maxWidth: 420, padding: "0 20px" }}
           >
             <h1 className={styles.ritualTitle} style={{ fontSize: "clamp(20px,4vw,26px)" }}>
-              {"\u00D6deme hen\u00FCz do\u011Frulanamad\u0131"}
+              {"Ödeme henüz doğrulanamadı"}
             </h1>
             <p
               style={{
@@ -245,26 +294,49 @@ export default function OdemeBasariliPage() {
             >
               {verifyNote}
             </p>
-            <input
-              type="email"
-              placeholder="Shopier \u00F6deme e-postas\u0131"
-              value={emailInput}
-              onChange={(e) => setEmailInput(e.target.value)}
-              style={{
-                width: "100%",
-                marginTop: 20,
-                padding: "14px 16px",
-                borderRadius: 12,
-                border: "1px solid rgba(200,160,255,0.2)",
-                background: "rgba(255,255,255,0.04)",
-                color: "#e8e4f4",
-                fontSize: 15,
-                boxSizing: "border-box",
-              }}
-            />
+
+            <div style={{
+              marginTop: 20,
+              padding: "16px",
+              background: "rgba(200,160,255,0.04)",
+              border: "1px solid rgba(200,160,255,0.12)",
+              borderRadius: 14,
+              textAlign: "left",
+            }}>
+              <p style={{ margin: "0 0 10px", fontSize: 13, color: "rgba(200,160,255,0.7)", fontWeight: 600 }}>
+                {"Shopier'da ödeme yaptığın e-postayı gir:"}
+              </p>
+              <input
+                type="email"
+                placeholder="ornek@gmail.com"
+                value={emailInput}
+                onChange={(e) => { setEmailInput(e.target.value); setBindError(""); }}
+                onKeyDown={(e) => e.key === "Enter" && handleBindEmail()}
+                style={{
+                  width: "100%",
+                  padding: "14px 16px",
+                  borderRadius: 12,
+                  border: "1px solid rgba(200,160,255,0.2)",
+                  background: "rgba(255,255,255,0.04)",
+                  color: "#e8e4f4",
+                  fontSize: 15,
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
             {bindError && (
-              <p style={{ color: "#f6ad55", fontSize: 13, marginTop: 10 }}>{bindError}</p>
+              <p style={{
+                color: "#f6ad55",
+                fontSize: 13,
+                marginTop: 12,
+                lineHeight: 1.6,
+                whiteSpace: "pre-line",
+                textAlign: "left",
+                padding: "0 4px",
+              }}>{bindError}</p>
             )}
+
             <button
               type="button"
               onClick={handleBindEmail}
@@ -278,26 +350,61 @@ export default function OdemeBasariliPage() {
                 color: "#07080d",
                 fontWeight: 700,
                 cursor: "pointer",
+                fontSize: 15,
               }}
             >
-              {"E-postay\u0131 do\u011Frula"}
+              {"Ödemeyi doğrula"}
             </button>
-            <button
-              type="button"
-              onClick={handleRetryPayment}
-              style={{
-                marginTop: 12,
-                width: "100%",
-                padding: "12px 20px",
-                borderRadius: 12,
-                border: "1px solid rgba(200,160,255,0.25)",
-                background: "transparent",
-                color: "rgba(200,160,255,0.75)",
-                cursor: "pointer",
-              }}
-            >
-              {"Tekrar \u00F6deme yap"}
-            </button>
+
+            <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+              <button
+                type="button"
+                onClick={handleRetryPayment}
+                style={{
+                  flex: 1,
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid rgba(200,160,255,0.25)",
+                  background: "transparent",
+                  color: "rgba(200,160,255,0.75)",
+                  cursor: "pointer",
+                  fontSize: 13,
+                }}
+              >
+                {"Tekrar ödeme yap"}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (returnPath && returnPath !== "/") {
+                    navigate(decodeURIComponent(returnPath), { replace: true });
+                  } else {
+                    navigate("/", { replace: true });
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  padding: "12px 16px",
+                  borderRadius: 12,
+                  border: "1px solid rgba(200,160,255,0.15)",
+                  background: "transparent",
+                  color: "rgba(200,160,255,0.5)",
+                  cursor: "pointer",
+                  fontSize: 13,
+                }}
+              >
+                {"Okumaya dön"}
+              </button>
+            </div>
+
+            <p style={{
+              marginTop: 16,
+              fontSize: 11,
+              color: "rgba(200,160,255,0.35)",
+              lineHeight: 1.6,
+            }}>
+              {"Ödeme yaptıysan ama doğrulama çalışmıyorsa, okuma sayfasındaki \"Ödeme yaptım ama açılmadı\" butonunu da kullanabilirsin."}
+            </p>
           </motion.div>
         )}
 

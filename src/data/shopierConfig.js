@@ -250,7 +250,11 @@ function accessRowTrusted(row) {
 export function isShopierUnlocked(contentId) {
   const access = getShopierAccess();
   if (access.premium && access.premiumServerVerified) return true;
-  return accessRowTrusted(access[contentId]);
+  if (accessRowTrusted(access[contentId])) return true;
+  if (String(contentId).startsWith("okuma_") && contentId !== "okuma_devami") {
+    return accessRowTrusted(access["okuma_devami"]);
+  }
+  return false;
 }
 
 /**
@@ -409,8 +413,17 @@ export async function checkServerUnlock(contentId, email = "") {
   const data = await fetchShopierPurchaseCheck(contentId, email);
   if (data.unlocked) {
     applyVerifiedShopierUnlock(contentId, data.purchased_at || data.purchase?.purchased_at);
+    return true;
   }
-  return Boolean(data.unlocked);
+  if (String(contentId).startsWith("okuma_") && contentId !== "okuma_devami") {
+    const fallback = await fetchShopierPurchaseCheck("okuma_devami", email);
+    if (fallback.unlocked) {
+      applyVerifiedShopierUnlock(contentId, fallback.purchased_at || fallback.purchase?.purchased_at);
+      applyVerifiedShopierUnlock("okuma_devami", fallback.purchased_at || fallback.purchase?.purchased_at);
+      return true;
+    }
+  }
+  return false;
 }
 
 export function getUnlockedItems() {
