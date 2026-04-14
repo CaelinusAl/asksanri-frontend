@@ -322,19 +322,20 @@ export async function syncPurchasesFromServer({ returnDetails = false, email = "
     let changed = 0;
     const newItems = [];
     for (const p of data.purchases) {
-      const cur = access[p.content_id];
+      const cid = p.content_id;
+      const cur = access[cid];
       if (!cur || !cur.serverVerified) {
-        access[p.content_id] = {
+        access[cid] = {
           unlocked: true,
           serverVerified: true,
           at: p.purchased_at || cur?.at,
         };
         changed++;
-        const pKey = CONTENT_TO_PRODUCT[p.content_id] || p.content_id;
+        const pKey = CONTENT_TO_PRODUCT[cid] || cid;
         const product = SHOPIER_PRODUCTS[pKey];
         newItems.push({
-          content_id: p.content_id,
-          label: product?.label || p.product_name || p.content_id,
+          content_id: cid,
+          label: product?.label || p.product_name || cid,
           at: p.purchased_at,
         });
       }

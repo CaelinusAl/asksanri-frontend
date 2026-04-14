@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { getPendingPurchase, clearPendingPurchase } from "../data/shopierConfig";
+import {
+  getPendingPurchase,
+  clearPendingPurchase,
+  checkServerUnlock,
+  applyVerifiedShopierUnlock,
+  syncPurchasesFromServer,
+} from "../data/shopierConfig";
 import { isAdminPath } from "../utils/adminPath";
 
 const STYLE = {
@@ -44,6 +50,12 @@ const STYLE = {
     margin: "0 0 20px",
     lineHeight: 1.6,
   },
+  successTitle: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: "#78f7d8",
+    margin: "0 0 6px",
+  },
   btnRow: {
     display: "flex",
     gap: 10,
@@ -78,11 +90,21 @@ const STYLE = {
   },
 };
 
+async function silentCheckWithFallback(contentId) {
+  const ok = await checkServerUnlock(contentId);
+  if (ok) return true;
+  if (contentId.startsWith("okuma_") && contentId !== "okuma_devami") {
+    return checkServerUnlock("okuma_devami");
+  }
+  return false;
+}
+
 export default function PendingPurchaseRecovery() {
   const navigate = useNavigate();
   const location = useLocation();
   const [pending, setPending] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [autoUnlocked, setAutoUnlocked] = useState(false);
 
   useEffect(() => {
     if (isAdminPath(location.pathname)) return;
@@ -90,9 +112,28 @@ export default function PendingPurchaseRecovery() {
 
     const p = getPendingPurchase();
     if (p && p.contentId) {
-      setPending(p);
-      const delay = setTimeout(() => setVisible(true), 1200);
-      return () => clearTimeout(delay);
+      silentCheckWithFallback(p.contentId)
+        .then((unlocked) => {
+          if (unlocked) {
+            applyVerifiedShopierUnlock(p.contentId, new Date().toISOString());
+            syncPurchasesFromServer();
+            clearPendingPurchase();
+            setAutoUnlocked(true);
+            setPending(p);
+            setTimeout(() => setVisible(true), 600);
+            setTimeout(() => {
+              setVisible(false);
+              setPending(null);
+            }, 4000);
+            return;
+          }
+          setPending(p);
+          setTimeout(() => setVisible(true), 1200);
+        })
+        .catch(() => {
+          setPending(p);
+          setTimeout(() => setVisible(true), 1200);
+        });
     }
   }, [location.pathname]);
 
@@ -102,6 +143,14 @@ export default function PendingPurchaseRecovery() {
     navigate(
       `/odeme-basarili?content=${encodeURIComponent(pending.contentId)}&ref=${ref}`
     );
+  }, [pending, navigate]);
+
+  const goBack = useCallback(() => {
+    if (pending?.returnPath) {
+      navigate(pending.returnPath, { replace: true });
+    } else {
+      window.location.reload();
+    }
   }, [pending, navigate]);
 
   const handleCancel = useCallback(() => {
@@ -121,20 +170,36 @@ export default function PendingPurchaseRecovery() {
             exit={{ opacity: 0, y: 40 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <div style={STYLE.glyph}>✦</div>
-            <p style={STYLE.title}>Yarım kalan ödeme</p>
-            <p style={STYLE.desc}>
-              Erişim yalnızca ödeme sunucuda doğrulandıktan sonra açılır. Ödeme sayfasından döndüysen doğrulama
-              ekranına git.
-            </p>
-            <div style={STYLE.btnRow}>
-              <button type="button" style={STYLE.primaryBtn} onClick={goVerify}>
-                Erişimi doğrula
-              </button>
-              <button type="button" style={STYLE.cancelBtn} onClick={handleCancel}>
-                Kapat
-              </button>
-            </div>
+            {autoUnlocked ? (
+              <>
+                <div style={STYLE.glyph}>{"✓"}</div>
+                <p style={STYLE.successTitle}>{"Ödeme doğrulandı!"}</p>
+                <p style={STYLE.desc}>
+                  {"İçeriğin açıldı. Okumaya devam edebilirsin."}
+                </p>
+                <div style={STYLE.btnRow}>
+                  <button type="button" style={STYLE.primaryBtn} onClick={goBack}>
+                    {"Okumaya dön"}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div style={STYLE.glyph}>{"✦"}</div>
+                <p style={STYLE.title}>{"Yarım kalan ödeme"}</p>
+                <p style={STYLE.desc}>
+                  {"Ödeme sayfasından döndüysen doğrulama ekranına git. İçerik sunucuda doğrulandıktan sonra açılır."}
+                </p>
+                <div style={STYLE.btnRow}>
+                  <button type="button" style={STYLE.primaryBtn} onClick={goVerify}>
+                    {"Erişimi doğrula"}
+                  </button>
+                  <button type="button" style={STYLE.cancelBtn} onClick={handleCancel}>
+                    {"Kapat"}
+                  </button>
+                </div>
+              </>
+            )}
           </motion.div>
         </div>
       )}

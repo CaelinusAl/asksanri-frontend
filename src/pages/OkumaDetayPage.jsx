@@ -799,11 +799,14 @@ export default function OkumaDetayPage() {
   );
 }
 
+const WHATSAPP_LINK = "https://wa.me/905324099498?text=Merhaba%2C%20Shopier%20%C3%BCzerinden%20%C3%B6deme%20yapt%C4%B1m%20ama%20i%C3%A7erik%20a%C3%A7%C4%B1lmad%C4%B1.";
+
 function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
   const [msg, setMsg] = useState("");
+  const [attempts, setAttempts] = useState(0);
 
   const handleVerify = async () => {
     const em = email.trim().toLowerCase();
@@ -815,11 +818,30 @@ function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
     setMsg(isTR ? "Shopier kaydı kontrol ediliyor..." : "Checking Shopier records...");
 
     try {
-      const pat = await verifyPurchaseByEmail(em, contentId);
-      if (pat.unlocked) {
-        const check = await fetchShopierPurchaseCheck(contentId, em);
-        if (check.unlocked) {
-          applyVerifiedShopierUnlock(contentId, check.purchased_at || check.purchase?.purchased_at);
+      const idsToTry = [contentId];
+      if (contentId.startsWith("okuma_") && contentId !== "okuma_devami") {
+        idsToTry.push("okuma_devami");
+      }
+
+      for (const cid of idsToTry) {
+        const pat = await verifyPurchaseByEmail(em, cid);
+        if (pat.unlocked) {
+          const check = await fetchShopierPurchaseCheck(cid, em);
+          if (check.unlocked) {
+            applyVerifiedShopierUnlock(contentId, check.purchased_at || check.purchase?.purchased_at);
+            applyVerifiedShopierUnlock(cid, check.purchased_at || check.purchase?.purchased_at);
+            setStatus("success");
+            setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
+            setTimeout(() => onUnlocked?.(), 800);
+            return;
+          }
+        }
+      }
+
+      for (const cid of idsToTry) {
+        const direct = await checkServerUnlock(cid, em);
+        if (direct) {
+          applyVerifiedShopierUnlock(contentId, new Date().toISOString());
           setStatus("success");
           setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
           setTimeout(() => onUnlocked?.(), 800);
@@ -827,33 +849,23 @@ function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
         }
       }
 
-      const direct = await checkServerUnlock(contentId, em);
-      if (direct) {
-        setStatus("success");
-        setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
-        setTimeout(() => onUnlocked?.(), 800);
-        return;
-      }
-
-      const genericId = "okuma_devami";
-      const patGeneric = await verifyPurchaseByEmail(em, genericId);
-      if (patGeneric.unlocked) {
-        const checkG = await fetchShopierPurchaseCheck(genericId, em);
-        if (checkG.unlocked) {
-          applyVerifiedShopierUnlock(contentId, checkG.purchased_at || checkG.purchase?.purchased_at);
-          setStatus("success");
-          setMsg(isTR ? "Ödeme doğrulandı! Sayfa açılıyor..." : "Payment verified! Opening...");
-          setTimeout(() => onUnlocked?.(), 800);
-          return;
-        }
-      }
-
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
       setStatus("not_found");
-      setMsg(
-        isTR
-          ? "Bu e-posta ile eşleşen ödeme henüz bulunamadı. Shopier'da ödeme yaptıysan birkaç dakika bekleyip tekrar dene. Sorun devam ederse WhatsApp'tan yaz: +90 542 XXX XX XX"
-          : "No matching payment found for this email. If you paid on Shopier, wait a few minutes and retry."
-      );
+
+      if (newAttempts >= 2) {
+        setMsg(
+          isTR
+            ? "Ödeme doğrulanamadı. WhatsApp'tan bize ulaş — hemen yardımcı olalım."
+            : "Payment not verified. Contact us via WhatsApp for immediate help."
+        );
+      } else {
+        setMsg(
+          isTR
+            ? "Bu e-posta ile eşleşen ödeme henüz bulunamadı. Birkaç dakika bekleyip tekrar dene."
+            : "No matching payment found. Wait a few minutes and retry."
+        );
+      }
     } catch {
       setStatus("error");
       setMsg(isTR ? "Bağlantı hatası. Tekrar dene." : "Connection error. Try again.");
@@ -890,7 +902,7 @@ function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
       borderRadius: 14,
       textAlign: "center",
     }}>
-      <p style={{ margin: "0 0 8px", fontSize: 13, color: "rgba(200,160,255,0.7)", lineHeight: 1.6 }}>
+      <p style={{ margin: "0 0 10px", fontSize: 13, color: "rgba(200,160,255,0.7)", lineHeight: 1.6 }}>
         {isTR
           ? "Shopier'da ödeme yaptığın e-postayı gir — sistemden doğrulayalım."
           : "Enter the email you used on Shopier — we'll verify from the system."}
@@ -953,22 +965,43 @@ function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
         </p>
       )}
       {status === "not_found" && (
-        <button
-          type="button"
-          onClick={handleVerify}
-          style={{
-            marginTop: 10,
-            padding: "10px 20px",
-            borderRadius: 10,
-            border: "1px solid rgba(200,160,255,0.2)",
-            background: "rgba(200,160,255,0.06)",
-            color: "rgba(200,160,255,0.7)",
-            fontSize: 13,
-            cursor: "pointer",
-          }}
-        >
-          {isTR ? "Tekrar dene" : "Retry"}
-        </button>
+        <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 10 }}>
+          <button
+            type="button"
+            onClick={handleVerify}
+            style={{
+              padding: "10px 18px",
+              borderRadius: 10,
+              border: "1px solid rgba(200,160,255,0.2)",
+              background: "rgba(200,160,255,0.06)",
+              color: "rgba(200,160,255,0.7)",
+              fontSize: 13,
+              cursor: "pointer",
+            }}
+          >
+            {isTR ? "Tekrar dene" : "Retry"}
+          </button>
+          {attempts >= 2 && (
+            <a
+              href={WHATSAPP_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "10px 18px",
+                borderRadius: 10,
+                border: "1px solid rgba(37,211,102,0.3)",
+                background: "rgba(37,211,102,0.1)",
+                color: "#25d366",
+                fontSize: 13,
+                fontWeight: 700,
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+            >
+              {isTR ? "WhatsApp destek" : "WhatsApp support"}
+            </a>
+          )}
+        </div>
       )}
     </div>
   );

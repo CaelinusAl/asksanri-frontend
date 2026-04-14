@@ -16,6 +16,8 @@ import {
 import { trackPurchase } from "../data/analytics";
 import styles from "./PaymentPages.module.css";
 
+const WHATSAPP_LINK = "https://wa.me/905324099498?text=Merhaba%2C%20Shopier%20%C3%BCzerinden%20%C3%B6deme%20yapt%C4%B1m%20ama%20i%C3%A7erik%20a%C3%A7%C4%B1lmad%C4%B1.";
+
 function fireMetaPurchase(value) {
   const payload = { value, currency: "TRY" };
   const tryOnce = () => {
@@ -42,14 +44,55 @@ const CROSS_UNLOCK_MAP = {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+function buildAlternateIds(target) {
+  const alts = [];
+  if (target.startsWith("okuma_") && target !== "okuma_devami") {
+    alts.push("okuma_devami");
+  }
+  return alts;
+}
+
+async function tryAllIds(target, alternateIds, email) {
+  const idsToTry = [target, ...alternateIds.filter((id) => id !== target)];
+  for (const id of idsToTry) {
+    const r = await fetchShopierPurchaseCheck(id, email);
+    if (r.unlocked) {
+      return { unlocked: true, id, at: r.purchased_at || r.purchase?.purchased_at };
+    }
+  }
+  return { unlocked: false };
+}
+
+async function tryVerifyByEmail(target, alternateIds, email) {
+  const idsToTry = [target, ...alternateIds.filter((id) => id !== target)];
+  for (const id of idsToTry) {
+    const pat = await verifyPurchaseByEmail(email, id);
+    if (pat.unlocked) {
+      const check = await fetchShopierPurchaseCheck(id, email);
+      if (check.unlocked) {
+        return {
+          unlocked: true,
+          id,
+          at: check.purchased_at || check.purchase?.purchased_at || new Date().toISOString(),
+        };
+      }
+    }
+  }
+  return { unlocked: false };
+}
+
 export default function OdemeBasariliPage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const [phase, setPhase] = useState("verifying");
+  const [phase, setPhase] = useState("checking_with_email");
   const [verifyNote, setVerifyNote] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [bindError, setBindError] = useState("");
+  const [emailAttempts, setEmailAttempts] = useState(0);
+  const [pollingActive, setPollingActive] = useState(true);
   const startedRef = useRef(false);
+  const pollingRef = useRef(true);
+  const successCalledRef = useRef(false);
 
   const pending = getPendingPurchase();
   const contentId = params.get("content") || pending?.contentId || null;
@@ -67,7 +110,14 @@ export default function OdemeBasariliPage() {
 
   const runVerifiedSuccess = useCallback(
     async (target, purchasedAt, pendingSnap) => {
+      if (successCalledRef.current) return;
+      successCalledRef.current = true;
+      pollingRef.current = false;
+
       applyVerifiedShopierUnlock(target, purchasedAt);
+      if (target !== "okuma_devami" && target.startsWith("okuma_")) {
+        applyVerifiedShopierUnlock("okuma_devami", purchasedAt);
+      }
       await tryUnlockCross(target, purchasedAt);
       await syncPurchasesFromServer();
       clearPendingPurchase();
@@ -98,87 +148,43 @@ export default function OdemeBasariliPage() {
     const pendingSnap = getPendingPurchase();
     const target = contentId || "premium";
     const pendingEmail = params.get("email") || pendingSnap?.email || "";
-
-    const alternateIds = [];
-    if (target.startsWith("okuma_")) {
-      alternateIds.push("okuma_devami");
-      const numPart = target.replace("okuma_", "");
-      if (numPart !== target) alternateIds.push(`okuma_${numPart}`);
-    }
-    if (target === "okuma_devami") {
-    } else if (!target.startsWith("okuma_")) {
-      alternateIds.push(target);
-    }
-
-    const tryAllIds = async (email) => {
-      const idsToTry = [target, ...alternateIds.filter(id => id !== target)];
-      for (const id of idsToTry) {
-        const r = await fetchShopierPurchaseCheck(id, email);
-        if (r.unlocked) {
-          return { unlocked: true, id, at: r.purchased_at || r.purchase?.purchased_at };
-        }
-      }
-      return { unlocked: false };
-    };
-
-    const tryVerifyByEmail = async (email) => {
-      const idsToTry = [target, ...alternateIds.filter(id => id !== target)];
-      for (const id of idsToTry) {
-        const pat = await verifyPurchaseByEmail(email, id);
-        if (pat.unlocked) {
-          const check = await fetchShopierPurchaseCheck(id, email);
-          if (check.unlocked) {
-            return { unlocked: true, id, at: check.purchased_at || check.purchase?.purchased_at || new Date().toISOString() };
-          }
-        }
-      }
-      return { unlocked: false };
-    };
+    const alternateIds = buildAlternateIds(target);
 
     (async () => {
-      setPhase("verifying");
       setVerifyNote("Ödeme kontrol ediliyor...");
 
-      const immediate = await tryAllIds(pendingEmail);
+      const immediate = await tryAllIds(target, alternateIds, pendingEmail);
       if (immediate.unlocked) {
         await runVerifiedSuccess(target, immediate.at, pendingSnap);
         return;
       }
 
       if (pendingEmail && pendingEmail.includes("@")) {
-        setVerifyNote("Shopier kaydı kontrol ediliyor...");
-        const patResult = await tryVerifyByEmail(pendingEmail);
+        const patResult = await tryVerifyByEmail(target, alternateIds, pendingEmail);
         if (patResult.unlocked) {
           await runVerifiedSuccess(target, patResult.at, pendingSnap);
           return;
         }
       }
 
-      for (let i = 0; i < 24; i++) {
-        await sleep(2500);
-        const r = await tryAllIds(pendingEmail);
+      setPhase("checking_with_email");
+      setVerifyNote(
+        "Ödeme kaydı henüz ulaşmadı — arka planda kontrol devam ediyor.\nHızlı doğrulama için Shopier e-postanı gir."
+      );
+
+      for (let i = 0; i < 30; i++) {
+        if (!pollingRef.current) return;
+        await sleep(3000);
+        if (!pollingRef.current) return;
+        const r = await tryAllIds(target, alternateIds, pendingEmail);
         if (r.unlocked) {
           await runVerifiedSuccess(target, r.at, pendingSnap);
           return;
         }
-        if (i === 4) {
-          setVerifyNote("Ödeme kaydı birkaç saniye gecikebilir. Kontrol devam ediyor...");
-        }
-        if (i === 8) {
-          setPhase("need_email");
-          setVerifyNote(
-            "Ödeme kaydı henüz ulaşmadı. Shopier'da kullandığın e-postanı girerek hızlıca doğrulayabilirsin."
-          );
-          return;
-        }
       }
-
-      setPhase("need_email");
-      setVerifyNote(
-        "Ödeme doğrulanamadı. Shopier'da kullandığın e-postayı girerek bu cihaza bağlayabilirsin."
-      );
+      setPollingActive(false);
     })();
-  }, [contentId, runVerifiedSuccess]);
+  }, [contentId, runVerifiedSuccess, params]);
 
   const finalPath =
     returnPath && returnPath !== "/" ? decodeURIComponent(returnPath) : "/";
@@ -192,12 +198,9 @@ export default function OdemeBasariliPage() {
       return;
     }
 
-    const idsToTry = [target];
-    if (target.startsWith("okuma_") && target !== "okuma_devami") {
-      idsToTry.push("okuma_devami");
-    }
-    if (target === "okuma_devami") {
-    }
+    setPhase("email_checking");
+    const alternateIds = buildAlternateIds(target);
+    const idsToTry = [target, ...alternateIds];
 
     for (const cid of idsToTry) {
       const pat = await verifyPurchaseByEmail(em, cid);
@@ -220,21 +223,32 @@ export default function OdemeBasariliPage() {
           await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
           return;
         }
-        setBindError("Bağlandı ama doğrulama yanıt vermedi. Sayfayı yenile veya birkaç dakika bekle.");
-        return;
       }
       if (bind.error === "device_mismatch") {
-        setBindError("Bu satın alma başka bir cihaza bağlı görünüyor. Destek ile iletişime geç.");
+        setEmailAttempts((a) => a + 1);
+        setPhase("checking_with_email");
+        setBindError("Bu satın alma başka bir cihaza bağlı görünüyor.");
         return;
       }
     }
 
-    setBindError(
-      "Bu e-posta ile eşleşen ödeme henüz bulunamadı.\n\n" +
-      "• Shopier ödeme e-postanı doğru girdiğinden emin ol\n" +
-      "• Ödeme birkaç dakika gecikebilir — 2-3 dk sonra tekrar dene\n" +
-      "• Sorun devam ederse: destek@asksanri.com"
-    );
+    const newAttempts = emailAttempts + 1;
+    setEmailAttempts(newAttempts);
+    setPhase("checking_with_email");
+
+    if (newAttempts >= 2) {
+      setBindError(
+        "Ödeme doğrulanamadı. Aşağıdaki yollardan birini dene:\n\n" +
+        "• E-postanı kontrol et — Shopier'da kullandığın e-posta ile eşleşmeli\n" +
+        "• Birkaç dakika bekle ve tekrar dene\n" +
+        "• WhatsApp'tan bize yaz — hemen yardımcı olalım"
+      );
+    } else {
+      setBindError(
+        "Bu e-posta ile eşleşen ödeme henüz bulunamadı.\n" +
+        "Ödeme birkaç dakika gecikebilir — tekrar dene."
+      );
+    }
   };
 
   const handleRetryPayment = () => {
@@ -248,81 +262,117 @@ export default function OdemeBasariliPage() {
     window.location.href = "https://shopier.com/asksanri";
   };
 
+  const showEmailForm = phase === "checking_with_email" || phase === "email_checking";
+
   return (
     <div className={styles.ritualPage}>
       <div
         className={`${styles.ritualGlow} ${
-          phase !== "verifying" && phase !== "need_email" ? styles.ritualGlowActive : ""
+          !showEmailForm && phase !== "verifying" ? styles.ritualGlowActive : ""
         }`}
       />
 
       <AnimatePresence mode="wait">
-        {phase === "verifying" && (
+        {phase === "email_checking" && (
           <motion.div
-            key="verifying"
+            key="email_checking"
             className={styles.ritualCenter}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             <div className={styles.voidPulse}>
               <span className={styles.voidGlyph}>{"\u25C8"}</span>
             </div>
-            <p className={styles.voidText}>{verifyNote || "\u00D6deme kontrol ediliyor..."}</p>
+            <p className={styles.voidText}>{"E-posta ile doğrulanıyor..."}</p>
           </motion.div>
         )}
 
-        {phase === "need_email" && (
+        {phase === "checking_with_email" && (
           <motion.div
-            key="need_email"
+            key="checking_with_email"
             className={styles.ritualCenter}
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             style={{ maxWidth: 420, padding: "0 20px" }}
           >
+            {pollingActive && (
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                marginBottom: 16,
+                padding: "10px 16px",
+                background: "rgba(120,247,216,0.06)",
+                border: "1px solid rgba(120,247,216,0.15)",
+                borderRadius: 10,
+              }}>
+                <span style={{ fontSize: 10, color: "#78f7d8", animation: "pulse 1.5s infinite" }}>{"●"}</span>
+                <span style={{ fontSize: 12, color: "rgba(120,247,216,0.7)" }}>
+                  {"Arka planda kontrol devam ediyor"}
+                </span>
+              </div>
+            )}
+
             <h1 className={styles.ritualTitle} style={{ fontSize: "clamp(20px,4vw,26px)" }}>
-              {"Ödeme henüz doğrulanamadı"}
+              {"Shopier e-postanı gir"}
             </h1>
-            <p
-              style={{
-                marginTop: 14,
-                color: "rgba(200,160,255,0.55)",
-                fontSize: 14,
-                lineHeight: 1.6,
-              }}
-            >
-              {verifyNote}
+            <p style={{
+              marginTop: 10,
+              color: "rgba(200,160,255,0.55)",
+              fontSize: 14,
+              lineHeight: 1.6,
+              whiteSpace: "pre-line",
+            }}>
+              {verifyNote || "Hızlı doğrulama için Shopier'da kullandığın e-postayı gir."}
             </p>
 
             <div style={{
-              marginTop: 20,
+              marginTop: 16,
               padding: "16px",
               background: "rgba(200,160,255,0.04)",
               border: "1px solid rgba(200,160,255,0.12)",
               borderRadius: 14,
-              textAlign: "left",
             }}>
-              <p style={{ margin: "0 0 10px", fontSize: 13, color: "rgba(200,160,255,0.7)", fontWeight: 600 }}>
-                {"Shopier'da ödeme yaptığın e-postayı gir:"}
-              </p>
               <input
                 type="email"
                 placeholder="ornek@gmail.com"
                 value={emailInput}
                 onChange={(e) => { setEmailInput(e.target.value); setBindError(""); }}
                 onKeyDown={(e) => e.key === "Enter" && handleBindEmail()}
+                autoFocus
                 style={{
                   width: "100%",
                   padding: "14px 16px",
                   borderRadius: 12,
-                  border: "1px solid rgba(200,160,255,0.2)",
-                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(200,160,255,0.25)",
+                  background: "rgba(255,255,255,0.06)",
                   color: "#e8e4f4",
-                  fontSize: 15,
+                  fontSize: 16,
                   boxSizing: "border-box",
+                  outline: "none",
                 }}
               />
+              <button
+                type="button"
+                onClick={handleBindEmail}
+                style={{
+                  marginTop: 12,
+                  width: "100%",
+                  padding: "14px 20px",
+                  borderRadius: 12,
+                  border: "none",
+                  background: "linear-gradient(135deg, #c8a0ff, #a07aff)",
+                  color: "#07080d",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  fontSize: 15,
+                }}
+              >
+                {"Ödemeyi doğrula"}
+              </button>
             </div>
 
             {bindError && (
@@ -330,33 +380,37 @@ export default function OdemeBasariliPage() {
                 color: "#f6ad55",
                 fontSize: 13,
                 marginTop: 12,
-                lineHeight: 1.6,
+                lineHeight: 1.7,
                 whiteSpace: "pre-line",
                 textAlign: "left",
                 padding: "0 4px",
               }}>{bindError}</p>
             )}
 
-            <button
-              type="button"
-              onClick={handleBindEmail}
-              style={{
-                marginTop: 16,
-                width: "100%",
-                padding: "14px 20px",
-                borderRadius: 12,
-                border: "none",
-                background: "linear-gradient(135deg, #c8a0ff, #a07aff)",
-                color: "#07080d",
-                fontWeight: 700,
-                cursor: "pointer",
-                fontSize: 15,
-              }}
-            >
-              {"Ödemeyi doğrula"}
-            </button>
+            {emailAttempts >= 2 && (
+              <a
+                href={WHATSAPP_LINK}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "block",
+                  marginTop: 14,
+                  padding: "14px 20px",
+                  borderRadius: 12,
+                  background: "rgba(37,211,102,0.12)",
+                  border: "1px solid rgba(37,211,102,0.3)",
+                  color: "#25d366",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  textAlign: "center",
+                }}
+              >
+                {"WhatsApp ile destek al"}
+              </a>
+            )}
 
-            <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+            <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
               <button
                 type="button"
                 onClick={handleRetryPayment}
@@ -396,15 +450,6 @@ export default function OdemeBasariliPage() {
                 {"Okumaya dön"}
               </button>
             </div>
-
-            <p style={{
-              marginTop: 16,
-              fontSize: 11,
-              color: "rgba(200,160,255,0.35)",
-              lineHeight: 1.6,
-            }}>
-              {"Ödeme yaptıysan ama doğrulama çalışmıyorsa, okuma sayfasındaki \"Ödeme yaptım ama açılmadı\" butonunu da kullanabilirsin."}
-            </p>
           </motion.div>
         )}
 
@@ -430,7 +475,7 @@ export default function OdemeBasariliPage() {
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.9, ease: "easeOut" }}
           >
-            <h1 className={styles.ritualTitle}>{"Kap\u0131 a\u00E7\u0131ld\u0131."}</h1>
+            <h1 className={styles.ritualTitle}>{"Kapı açıldı."}</h1>
             <p
               style={{
                 marginTop: 14,
@@ -440,7 +485,7 @@ export default function OdemeBasariliPage() {
                 fontStyle: "italic",
               }}
             >
-              {"\u00D6demen do\u011Fruland\u0131. \u0130\u00E7eri\u011Fin a\u00E7\u0131ld\u0131."}
+              {"Ödemen doğrulandı. İçeriğin açıldı."}
             </p>
           </motion.div>
         )}
@@ -464,7 +509,7 @@ export default function OdemeBasariliPage() {
                 lineHeight: 1.7,
               }}
             >
-              {"Devam etti\u011Finde:"}
+              {"Devam ettiğinde:"}
             </p>
             <p
               style={{
@@ -474,7 +519,7 @@ export default function OdemeBasariliPage() {
                 fontStyle: "italic",
               }}
             >
-              {"okudu\u011Fun \u015Fey de\u011Fi\u015Fmeyecek."}
+              {"okuduğun şey değişmeyecek."}
             </p>
             <h2
               style={{
@@ -485,7 +530,7 @@ export default function OdemeBasariliPage() {
                 letterSpacing: "0.02em",
               }}
             >
-              {"Sen de\u011Fi\u015Feceksin."}
+              {"Sen değişeceksin."}
             </h2>
             <button
               onClick={() => navigate(finalPath, { replace: true })}
@@ -502,7 +547,7 @@ export default function OdemeBasariliPage() {
                 letterSpacing: "0.03em",
               }}
             >
-              {finalPath.includes("rol-okuma") ? "Rol\u00FCn\u00FC G\u00F6r" : "Devam Et"}
+              {finalPath.includes("rol-okuma") ? "Rolünü Gör" : "Devam Et"}
             </button>
           </motion.div>
         )}
