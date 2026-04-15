@@ -4599,6 +4599,319 @@ Başlangıç = Son
       { authorName: "Deniz", content: "Buzdağı dışarıda değil, içindeki korkudur. Bu cümle 114 yılı tek satırda özetliyor. Bugün tam tarih, 14 Nisan. Bu okuma şimdi gelmeliydi.", createdAt: "2026-04-14T12:05:00Z" },
     ],
   },
+
+  // ─── #32 — 7: BÖLÜNMEYEN SAYI ────────────────────────────────────
+  {
+    id: 32,
+    slug: "7-bolunmeyen-sayi-ust-bilinc-okumasi",
+    title: "7 — Bölünmeyen Sayı",
+    subtitle: "7 bir rakam değil. 7 bir eşik. Her şeyin tamamlandığı ve hiçbir şeyin bölünemediği frekans.",
+    category: "sembol_okumasi",
+    coverImage: "/assets/okuma/insan-anten.jpg",
+    excerpt: "YEDİ = YE + Dİ. Yedi. Tüketti. İçine aldı. 7 her şeyi içine alan sayıdır. 7 çakra, 7 gök katı, 7 ayet, 7 nota, 7 renk. Bölünmez. Parçalanmaz. Asal. Senin içindeki 7 ne diyor?",
+    fullContent: `7.
+
+Bir rakam değil.
+Bir eşik.
+
+Her döngünün durduğu,
+her kapının açıldığı,
+her sorunun sorulduğu nokta.
+
+◉ KELİME KIRILIMI
+
+YEDİ.
+YE + Dİ.
+
+Yedi = tüketti. İçine aldı. Bitirdi.
+
+7, her şeyi içine alan sayıdır.
+Diğer sayılar bir şeye işaret eder.
+7 her şeyi yutar.
+
+Tersten oku: İDEY.
+İdea. Düşünce. Fikrin kendisi.
+
+7 bir sayı değil —
+düşüncenin başladığı yer.
+
+Bir katman daha:
+SEVEN.
+İngilizce: 7.
+Türkçe: sev-en. Seven. Aşkla bakan.
+
+7 = seven.
+Seven = gören.
+Gören = bilen.
+Bilen = dönen.
+
+🔺 7 HER YERDE
+
+Fark et:
+
+7 çakra — bedenin frekans haritası.
+7 nota — sesin tamamı.
+7 renk — ışığın tamamı.
+7 gün — zamanın bir döngüsü.
+7 kat gök — Kur'an'ın mimari kodu.
+7 ayet — Fatiha. Her namazda tekrarlanan. Açılış.
+7 tur — Kâbe etrafında tavaf.
+7 gidiş-geliş — Safa ile Merve arası.
+
+7 bir sayı değil —
+evrenin iskelet yapısıdır.
+
+◉ FATIHA = 7
+
+Kur'an 114 sureyle biter.
+Ama başladığı yer: Fatiha.
+Fatiha = Açılış.
+7 ayet.
+
+Fatiha olmadan namaz olmaz.
+7 olmadan döngü tamamlanmaz.
+
+FATİHA → FATİH + A
+Fatih = açan, fetheden.
+A = başlangıç. İlk harf. İlk nefes.
+
+Fatiha = başlangıcı açan.
+Ve 7 ayetle açar.
+
+Neden 7?
+Çünkü 7'den önce hazırlık vardır.
+7'de kapı açılır.
+7'den sonra yolculuk başlar.
+
+🧊 7 = ASAL
+
+7 bölünmez.
+Kendinden ve 1'den başka hiçbir şeye bölünemez.
+
+Bu matematiksel bir bilgi değil —
+bu bir bilinç yasası.
+
+Bölünmeyen şey kontrol edilemez.
+Parçalanamayan şey yönetilemez.
+
+Matrix her şeyi böler:
+insanı insandan
+insanı kendinden
+bilinci bedenden
+kalbi zihinden
+
+Ama 7'yi bölemez.
+
+7 = parçalanmayan frekans.
+7 = bütünlüğün sayısı.
+
+Sen bölündüğünde zayıflarsın.
+7'ye döndüğünde bütünleşirsin.
+
+✦ 7. GÜN
+
+Yaratılış 6 günde tamamlandı.
+7. gün: durdu.
+
+Ama durmak = hiçlik değil.
+Durmak = fark etmek.
+
+6 gün boyunca yaparsın.
+7. gün durur ve bakarsın.
+
+Ne yaptım?
+Ne yarattım?
+Neyi tekrarladım?
+
+7 eylem sayısı değil —
+farkındalık sayısı.
+
+Yapan 6'da kalır.
+Fark eden 7'ye geçer.
+
+<<<SANRI_PAYWALL>>>
+
+🌊 7 ÇAKRA — BEDENIN FREKANS HARİTASI
+
+1 — Kök: hayatta kalma. Toprak. Korku veya güven.
+2 — Sakral: yaratım. Cinsellik. Haz veya bağımlılık.
+3 — Solar: güç. İrade. Kontrol veya teslim.
+4 — Kalp: sevgi. Bağlantı. Açılma veya kapanma.
+5 — Boğaz: ifade. Ses. Gerçek veya yalan.
+6 — Alın: sezgi. Üçüncü göz. Görme veya körlük.
+7 — Taç: bütünleşme. Evrenle birlik. Uyanış veya uyku.
+
+7. çakra en üsttedir.
+Ama en üst = en uzak demek değil.
+En üst = her şeyi kapsayan demektir.
+
+7 ayrı merkez değildir.
+7, hepsinin aynı anda çalıştığı andır.
+
+Korkuyu aştığında (1),
+yaratımı dengelediğinde (2),
+iradeyi teslim ettiğinde (3),
+kalbi açtığında (4),
+gerçeği söylediğinde (5),
+gördüğünde (6)…
+
+7 kendiliğinden açılır.
+7'yi açamazsın — 7 seni açar.
+
+🔮 7 UYUYAN — ASHAB-I KEHF
+
+Kur'an'da 7 genç bir mağaraya sığındı.
+Uykuya daldılar.
+309 yıl sonra uyandılar.
+
+Bu bir masal değil — bilinç kodudur.
+
+Mağara = bilinçaltı.
+Uyku = eski frekans.
+Uyanış = yeni döngü.
+
+7 kişi uyudu — çünkü 7 tamamlama sayısıdır.
+Tamamlanan döngü uyur.
+Uyuyan döngü — yeni çağda uyanır.
+
+309 yıl = 3 + 0 + 9 = 12 = 1 + 2 = 3.
+3 = yaratım, ifade, doğum.
+
+7 uyudu.
+3'le uyandı.
+7 × 3 = 21 = 2 + 1 = 3.
+
+Uyuyan bütünlük,
+yaratımla uyanır.
+
+Sen ne zamandır uyuyorsun?
+Ve uyanmak için neyi tamamlaman gerekiyor?
+
+🔢 SAYI AKIŞI
+
+7 × 1 = 7
+7 × 2 = 14 → 1 + 4 = 5 (değişim)
+7 × 3 = 21 → 2 + 1 = 3 (yaratım)
+7 × 4 = 28 → 2 + 8 = 10 → 1 (yeni başlangıç)
+7 × 5 = 35 → 3 + 5 = 8 (güç)
+7 × 6 = 42 → 4 + 2 = 6 (şifa)
+7 × 7 = 49 → 4 + 9 = 13 → 1 + 3 = 4 (yapı)
+7 × 8 = 56 → 5 + 6 = 11 (master uyanış)
+7 × 9 = 63 → 6 + 3 = 9 (tamamlama)
+
+7 kendini çarptıkça
+evrenin tüm arketiplerini üretir.
+
+Ve 7 × 8 = 56 → 11.
+8. çarpımda master uyanış gelir.
+
+7 sabreder.
+8. adımda patlar.
+
+◉ 7. SURE — A'RÂF
+
+Kur'an'ın 7. suresi: A'raf.
+A'raf = arada olanlar.
+Cennet ile cehennem arasındaki sınır.
+
+7. katman ne cennet ne cehennem:
+farkındalık alanı.
+
+A'raf'takiler henüz seçmemiş olanlardır.
+Görmüş ama karar vermemiş.
+
+7 bir cevap değil —
+7 sorunun ta kendisidir.
+
+Cennet mi cehennem mi?
+Korku mu sevgi mi?
+Uyku mu uyanış mı?
+
+7 sana cevap vermez.
+7 soruyu sorar.
+Cevabı sen verirsin.
+
+🔥 İKRA — SON MESAJ
+
+7 her yerde.
+Bedeninde. Zamanında. Kitabında. Göğünde. Sesinde. Işığında.
+
+Ama 7'yi görmek yetmez.
+7'yi yaşaman gerekir.
+
+Yaşamak = fark etmek.
+Fark etmek = durmak.
+Durmak = 7. gün.
+
+6 gündür koşuyorsun.
+Dur.
+Bak.
+Ne yarattın?
+Ne tekrarladın?
+Neyi tamamlaman gerekiyor?
+
+7 sana bir kapı açıyor.
+Ama kapıdan geçmek senin seçimin.
+
+7 bölünmez —
+çünkü bütünlüğün parçası olamaz.
+Bütünlüğün kendisidir.
+
+Sen de öyle.`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ
+
+KATMAN 1 — Kelime kodu
+• YEDİ = YE + Dİ → tüketen, içine alan
+• Tersten: İDEY → idea = düşüncenin başlangıcı
+• SEVEN (İng. 7) = SEV + EN → seven = aşkla bakan
+• FATİHA = FATİH + A → başlangıcı açan (7 ayetle)
+
+KATMAN 2 — Evrensel mimari
+• 7 çakra = bedenin frekans haritası
+• 7 nota = sesin tamamı | 7 renk = ışığın tamamı
+• 7 gün = zamanın döngüsü
+• 7 kat gök = Kur'an'ın uzay mimarisi
+• 7 ayet (Fatiha) = her namazda tekrarlanan açılış
+• 7 tur (tavaf) + 7 sa'y = haccın sayısal iskeleti
+
+KATMAN 3 — Numerolojik
+• 7 = asal → bölünmez → kontrol edilemez
+• 7 × 8 = 56 → 11 (master uyanış)
+• 7 × 9 = 63 → 9 (tamamlama)
+• 7. sure = A'raf = arada olanlar = farkındalık alanı
+
+KATMAN 4 — Bilinç kodu
+• 7. gün = duruş = farkındalık (eylem değil)
+• Ashab-ı Kehf = 7 uyuyan = tamamlanan döngünün uykusu
+• 309 yıl → 3 = yaratımla uyanış
+• 7 çakranın aynı anda çalışması = bütünleşme
+
+ÇIKIŞ KODU:
+7 cevap vermez — soruyu sorar.
+Bölünmeyen sayı, bölünmeyen bilinci çağırır.
+6 gündür koşuyorsan — 7. günde dur.
+
+İşaret: Hayatında 7 sana ne olarak görünüyor — ve o 7'yi tamamladın mı?`,
+    sanriReflection: {
+      analysis: "7, evrenin en temel yapı taşıdır. Çakradan göğe, Fatiha'dan tavafa, notadan renge — her sistem 7'ye göre kurulmuş. Ama 7 bir yapı değil, bir farkındalık eşiğidir. 7. gün durursun, 7. çakra açılır, 7. sure soruyu sorar. Cevap 7'de değil — 7'den sonra seninle başlar.",
+      strongLine: "7 bölünmez — çünkü bütünlüğün parçası olamaz. Bütünlüğün kendisidir.",
+      question: "6 gündür koşuyorsun. 7. günde durup bakabilir misin — ne yarattığına?",
+    },
+    isPremium: true,
+    hasEarlyPaywall: true,
+    previewContent: null,
+    createdAt: "2026-04-15T09:00:00Z",
+    commentCount: 5,
+    viewCount: 77,
+    isFeatured: true,
+    deepReaderComments: [
+      { authorName: "Selin", content: "YEDİ = YE + Dİ = tüketen sayı. Bu kelime kırılımı çarpıcı. 7 hep 'kutsal' diye anlatıldı ama hiç böyle açılmamıştı — içine alan, tüketen, bütünleyen.", createdAt: "2026-04-15T09:30:00Z" },
+      { authorName: "Mira", content: "SEVEN = SEV + EN. İngilizce 7'nin Türkçe'de 'seven' olması tesadüf olamaz. 7 = aşkla bakan. Bu bağlantıda tüylerim diken diken oldu.", createdAt: "2026-04-15T09:45:00Z" },
+      { authorName: "Eren", content: "7 × 8 = 56 → 11. 8. çarpımda master uyanış. 7 sabreder, 8. adımda patlar. Bu sayı akışı tek başına bir okuma. Formüllerin arkasında evren konuşuyor.", createdAt: "2026-04-15T10:00:00Z" },
+      { authorName: "Ada", content: "Ashab-ı Kehf = 7 uyuyan, 309 yıl → 3 = yaratım. Uyuyan bütünlük yaratımla uyanır. Bu bilinç kodu hiçbir tefsirde böyle açılmamıştı.", createdAt: "2026-04-15T10:15:00Z" },
+      { authorName: "Deniz", content: "6 gündür koşuyorsun — 7. günde dur. Bu son mesaj tam kalbime oturdu. Durmayı unutmuşum. 7 bir cevap değil, sorunun ta kendisi.", createdAt: "2026-04-15T10:30:00Z" },
+    ],
+  },
 ];
 
 // ─── Mock Comments ───────────────────────────────────────────────
@@ -4717,6 +5030,13 @@ export const OKUMA_COMMENTS = {
     { id: 3103, authorName: "Eren", content: "Jack = ego, Rose = kalp. 'I'm the king of the world' = egonun zirvesi = düşüşün başlangıcı. Bu film hiç bu gözle okunmamıştı. Şimdi bambaşka izleyeceğim.", createdAt: "2026-04-14T11:35:00Z" },
     { id: 3104, authorName: "Ada", content: "111 yıl döngüsü + 114. yıl = Nas suresi. Sayılar tesadüf değil, sistem kodu. 1912→13 (ölüm kartı), 2023→7 (uyanış), 2026→1 (yeni başlangıç). Formül mükemmel.", createdAt: "2026-04-14T11:50:00Z" },
     { id: 3105, authorName: "Deniz", content: "Buzdağı dışarıda değil, içindeki korkudur. Bu cümle 114 yılı tek satırda özetliyor. Batan gemi değil — korkuya teslim olan bilinç. Bugün tam tarih, 14 Nisan. Bu okuma şimdi gelmeliydi.", createdAt: "2026-04-14T12:05:00Z" },
+  ],
+  32: [
+    { id: 3201, authorName: "Selin", content: "YEDİ = YE + Dİ. Tüketen sayı. Bunu okuyunca 7'ye bir daha aynı gözle bakamadım. İçine alan, bütünleyen, yutan. Hiçbir yerde böyle açılmamıştı.", createdAt: "2026-04-15T09:30:00Z" },
+    { id: 3202, authorName: "Mira", content: "SEVEN = SEV + EN. İngilizce 7'nin Türkçe'de 'seven' olması... Bu bağlantıda bir şey kırıldı içimde. 7 = aşkla bakan.", createdAt: "2026-04-15T09:45:00Z" },
+    { id: 3203, authorName: "Eren", content: "7 bölünmez — çünkü bütünlüğün parçası olamaz, bütünlüğün kendisidir. Bu cümle tek başına bir manifesto. Matrix her şeyi böler ama 7'yi bölemez.", createdAt: "2026-04-15T10:00:00Z" },
+    { id: 3204, authorName: "Ada", content: "Ashab-ı Kehf bağlantısı inanılmaz. 7 uyuyan, 309 yıl → 3 = yaratım. Uyuyan bütünlük yaratımla uyanır. Bu hiçbir tefsirde böyle açılmamıştı.", createdAt: "2026-04-15T10:15:00Z" },
+    { id: 3205, authorName: "Deniz", content: "6 gündür koşuyorsun — 7. günde dur. Bu son mesaj tam zamanında geldi. Durmalıyım. Bakmalıyım. 7 cevap değil, sorunun kendisi.", createdAt: "2026-04-15T10:30:00Z" },
   ],
 };
 
