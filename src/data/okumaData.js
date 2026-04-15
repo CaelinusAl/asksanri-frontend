@@ -4607,7 +4607,7 @@ Başlangıç = Son
     title: "7 — Bölünmeyen Sayı",
     subtitle: "7 bir rakam değil. 7 bir eşik. Her şeyin tamamlandığı ve hiçbir şeyin bölünemediği frekans.",
     category: "sembol_okumasi",
-    coverImage: "/assets/okuma/insan-anten.jpg",
+    coverImage: "/assets/okuma/seven.jpg",
     excerpt: "YEDİ = YE + Dİ. Yedi. Tüketti. İçine aldı. 7 her şeyi içine alan sayıdır. 7 çakra, 7 gök katı, 7 ayet, 7 nota, 7 renk. Bölünmez. Parçalanmaz. Asal. Senin içindeki 7 ne diyor?",
     fullContent: `7.
 
