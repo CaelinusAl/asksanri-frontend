@@ -1,6 +1,7 @@
 import React from "react";
 import { useAdmin } from "../../contexts/AdminContext";
 import { Navigate, useLocation } from "react-router-dom";
+import { allowUnauthenticatedPaymentAdmin } from "../../utils/adminOpenPayment";
 
 function LoadingScreen() {
   return (
@@ -51,11 +52,13 @@ export default function AdminGuard({ children }) {
   const { loading, isAdmin } = useAdmin();
   const location = useLocation();
 
-  if (loading) {
+  const openPaymentScreens = allowUnauthenticatedPaymentAdmin(location.pathname);
+
+  if (loading && !openPaymentScreens) {
     return <LoadingScreen />;
   }
 
-  if (!isAdmin) {
+  if (!isAdmin && !openPaymentScreens) {
     return <Navigate to="/admin/login" replace state={{ from: location }} />;
   }
 

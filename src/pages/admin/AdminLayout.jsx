@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAdmin } from "../../contexts/AdminContext";
 import { fetchAdminPendingSummary } from "../../data/adminApi";
+import { allowUnauthenticatedPaymentAdmin } from "../../utils/adminOpenPayment";
 import styles from "./AdminLayout.module.css";
 
 const NAV_ITEMS = [
@@ -19,6 +20,7 @@ const NAV_ITEMS = [
   { to: "/admin/muhasebe", icon: "≡", label: "Muhasebe" },
   { to: "/admin/banka-odemeleri", icon: "⌁", label: "Banka ödemeleri" },
   { to: "/admin/teslimatlar", icon: "✧", label: "Teslimatlar" },
+  { to: "/admin/leads", icon: "✉", label: "E-posta & Leads" },
   { to: "/admin/funnel", icon: "⊳", label: "Funnel" },
   { to: "/admin/billing", icon: "₺", label: "Billing" },
   { to: "/admin/notifications", icon: "⊙", label: "Bildirimler", pendingBadge: true },
@@ -28,6 +30,8 @@ const NAV_ITEMS = [
 export default function AdminLayout() {
   const { adminUser, logout } = useAdmin();
   const navigate = useNavigate();
+  const location = useLocation();
+  const openPaymentNoAuth = allowUnauthenticatedPaymentAdmin(location.pathname) && !adminUser;
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [pendingOps, setPendingOps] = useState(0);
@@ -144,13 +148,26 @@ export default function AdminLayout() {
               ☰
             </button>
             <span className={styles.topbarTitle}>Admin</span>
+            {openPaymentNoAuth ? (
+              <span
+                style={{
+                  marginLeft: 12,
+                  fontSize: "0.75rem",
+                  color: "rgba(200, 160, 255, 0.95)",
+                  fontWeight: 600,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                Ödeme ekranları açık (giriş yok — API token gerektirir)
+              </span>
+            ) : null}
           </div>
           <div className={styles.topbarRight}>
             <div className={styles.userBlock}>
               <div className={styles.userEmail} title={adminUser?.email || ""}>
-                {adminUser?.email || adminUser?.name || "Admin"}
+                {adminUser?.email || adminUser?.name || (openPaymentNoAuth ? "Yerel önizleme" : "Admin")}
               </div>
-              <div className={styles.userRole}>Yönetici</div>
+              <div className={styles.userRole}>{openPaymentNoAuth ? "Önizleme" : "Yönetici"}</div>
             </div>
             <button type="button" className={styles.logoutBtn} onClick={handleLogout}>
               Çıkış
