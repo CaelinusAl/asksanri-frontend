@@ -13,6 +13,7 @@ import useServerUnlock from "../hooks/useServerUnlock";
 import { EmailCaptureInline } from "../components/EmailCaptureModal";
 import BankTransferLink from "../components/BankTransferLink";
 import SeoHead from "../components/SeoHead";
+import { WHATSAPP_SUPPORT_URL as WHATSAPP_LINK } from "../constants/whatsappSupport";
 import styles from "./OkumaDetayPage.module.css";
 
 const API =
@@ -798,8 +799,6 @@ export default function OkumaDetayPage() {
     </div>
   );
 }
-
-const WHATSAPP_LINK = "https://wa.me/905324099498?text=Merhaba%2C%20Shopier%20%C3%BCzerinden%20%C3%B6deme%20yapt%C4%B1m%20ama%20i%C3%A7erik%20a%C3%A7%C4%B1lmad%C4%B1.";
 
 function PaywallEmailRecovery({ contentId, isTR, onUnlocked }) {
   const [open, setOpen] = useState(false);

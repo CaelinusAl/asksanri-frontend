@@ -4919,7 +4919,7 @@ Bölünmeyen sayı, bölünmeyen bilinci çağırır.
     title: "63 & 46 — Okul Kodu: Siverek → Maraş",
     subtitle: "Aynı hafta, iki plaka, iki okul, iki yaş: 19 ve 15. Haber bitmez; kod konuşur.",
     category: "gundem_kodu",
-    coverImage: "/assets/okuma/insan-anten.jpg",
+    coverImage: "/assets/okuma/okul.jpg?v=1",
     excerpt: "Şanlıurfa (63) Siverek ve Kahramanmaraş (46) Onikişubat'ta ardışık günlerde okullara silahlı saldırılar. 19 yaş (eski öğrenci) ve ~15 yaş (ortaokul öğrencisi). Basın rakamları, isimler, tarihler — altında hangi sistem dili var?",
     fullContent: `📰 HABERİN GERÇEĞİ (ÖZ — NİSAN 2026)
 
