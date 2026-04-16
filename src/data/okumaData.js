@@ -5107,13 +5107,215 @@ Duyulmayan söz, başka dilde patlar.`,
     createdAt: "2026-04-16T12:00:00Z",
     commentCount: 6,
     viewCount: 263,
-    isFeatured: true,
+    isFeatured: false,
     deepReaderComments: [
       { authorName: "Selin", content: "63→9, 46→1, toplamları yine 1. Plaka kodunu hiç böyle okumamıştım. Haber iki ayrı şehir; kod tek cümle.", createdAt: "2026-04-16T12:30:00Z" },
       { authorName: "Mira", content: "OKUL = OKU+L. Okuma alanına silah girdiğinde mesaj 'bilgi değil güç' diyor. Bu satır midemi düğümledi.", createdAt: "2026-04-16T12:45:00Z" },
       { authorName: "Eren", content: "19→1 yetişkin görünümlü ego, 15→6 kalp frekansı. Derin katmandaki 'ses vs tetik' ayrımı tam isabet.", createdAt: "2026-04-16T13:00:00Z" },
       { authorName: "Ada", content: "NİSAN ve İNSAN akrabalığı... Nisan'da hangi tohumu attığımız sorusu yüzüme vurdu.", createdAt: "2026-04-16T13:15:00Z" },
       { authorName: "Deniz", content: "İki gün üst üste aynı ekranda: kolektif yas kapanmadan yeni haber birikir. Tam da dediği gibi.", createdAt: "2026-04-16T13:30:00Z" },
+    ],
+  },
+  // ─── #34 — İSRAIL ARİ İSTİLASI — SİSTEM OKUMASI ─────────────────
+  {
+    id: 34,
+    slug: "israil-ari-istilasi-ucaklari-durdurdu-sistem-okumasi",
+    title: "İsrail'de Arı İstilası — Uçakları Durduran Sürü",
+    subtitle: "On binlerce arı, gökyüzünü sarı bulut gibi kesti. Askeri uçuş durdu; halka 'evinizden çıkmayın' dendi. Haber böcek; kod başka.",
+    category: "gundem_kodu",
+    coverImage: "/assets/okuma/israil-ari.jpg?v=1",
+    excerpt: "Netivot ve ülke genelinde devasa arı sürüleri — görüş birkaç metreye indi, uçak motoru riskiyle askeri uçuşlar durdu, 'camları kapatın' çağrısı. Uzmanlar iklim/ekolojik dengeyi işaret ediyor. Tarih bu sahneyi daha önce nasıl oynadı?",
+    fullContent: `📰 HABERİN GERÇEĞİ (ÖZ — BASIN ÖZETİ)
+
+İsrail'de on binlerce arıdan oluşan sürüler, ülke genelinde panik ve günlük hayatın aksamasına yol açtığı haber edildi.
+Özellikle güneyde Netivot bölgesi vurgulanıyor.
+Sürüler yerleşimleri, binaları, ağaçları ve araçları kapladı; görüş mesafesi yer yer birkaç metreye indi.
+
+Arıların uçak motorlarına ve hassas ekipmana girip arıza riski oluşturması nedeniyle İsrail Hava Kuvvetleri'ne ait askeri uçuşların geçici olarak durdurulduğu; pistlerde sessizlik olduğu aktarılıyor.
+
+Yetkililerin acil uyarıyla "evinizden çıkmayın, camları ve kapıları sıkıca kapatın" çağrısı yaptığı; açık alanda alerji/saldırı riskiyle sokağa çıkma yasağına benzer tedbirlerin gündeme geldiği yazılıyor.
+
+Uzman ekiplerin sürüleri yerleşim ve üslerden uzaklaştırmak için çalıştığı; olayda can kaybına dair resmi bilgi verilmediği; ani iklim değişikliği ve ekolojik denge bozulmasının olası nedenler arasında gösterildiği belirtiliyor.
+
+Kaynak özeti: Ensonhaber ve benzeri akış haberleri. Rakamlar ve süreç güncellenebilir — bu metin "ilk dalga" iskeletini kullanır.
+
+◉ KELİME KIRILIMI
+
+İSRAİL
+İS + RA + İL
+İs → iz, izlek, iz sürmek
+Ra → güneş frekansı, görünürlük
+İl → yer, bağ, toprak üstü idare
+
+İsrail = toprak üstünde iz bırakan güneş hattı.
+Bugün o hatta gökyüzünü kesen şey: savaş uçağı değil — sürü.
+
+ARİ
+A + RI
+A → ilk nefes, açılış harfi
+Ri → ritim, akış, titreşim çizgisi
+
+Arı = küçük bedende toplu ritim.
+Tek başına görünmez; sürü olunca görünür.
+
+SÜRÜ
+SÜ + RÜ
+Sü → sürmek, devam
+Rü → rüzgâr, yön
+
+Sürü = yönünü süren tek vücut gibi hareket eden topluluk.
+
+NETİVOT (özet haberde geçen bölge)
+NET + İ + VOT
+Net → netlik, hat
+İ → bağ, köprü
+Ses düzleminde: "yol ağı" — yolların kesiştiği yer
+
+Sürü geldiğinde net hatlar bulanıklaşır — görüş düşer.
+
+🔺 HABER DİLİNDEKİ SEMBOL
+
+"Gökyüzünü sarı bulut gibi kaplamak"
+→ Küçük varlıklar, birleşince gökyüzü alanını alır.
+Makro güç (hava sahası) mikro varlığa (arı) çarpınca sistem durur.
+
+"Uçakları durdurdu"
+→ Teknoloji her zaman üstün değildir.
+Bazen kanat, bazen motor — ikisi de biyolojik "yabancı cisim" riskine girer.
+
+"Evinizden çıkmayın"
+→ Korunma modu: dışarı = kaos, içerisi = hive (kovan) metaforu.
+İnsan kovanına çekilir; arı kovanı dışarı taşar.
+İki kovan çarpışması: haberin görüntüsü.
+
+<<<SANRI_PAYWALL>>>
+
+🌍 TARİHSEL VE SİSTEMSEL PARALELLER (ÇARPIŞTIRMA)
+
+Bu bölüm "aynı olay tekrar etti" demek için değil — aynı ARKETİPİN farklı yüzyıllarda nasıl sahnelendiğini görmek içindir.
+
+◆ 1) Mısır'daki çekirge (veya sürü) anlatıları (Kutsal metin geleneği)
+
+Exodus anlatısında Mısır'a inen "çekirge" musibeti, tarlaları ve görünür düzeni kısa sürede tüketen bir sürü imgesiyle anlatılır.
+Biyolojik tür farklı — arı değil çekirge — ama KOD aynı:
+"Görünmez küçüklerin toplu hareketi, merkezi otoritenin kontrol alanını deler."
+
+Tarih burada ders vermez; tekrar eden sembolü gösterir:
+Sürü = merkezi planın dışına taşan doğa frekansı.
+
+◆ 2) 2020 civarı Doğu Afrika çekirge dalgaları
+
+Yüz milyonlarca çekirgenin aynı yönde hareket ettiği, tarımı ve lojistiği felç eden dalgalar — küresel haber dilinde "gökyüzü ve kara işgal edildi" imgeleriyle aktarıldı.
+Paralel: "küçük + çok = makro durur."
+İsrail haberinde ölçek farklı ama his aynı: görüş, ulaşım, günlük akış kesilir.
+
+◆ 3) Havacılıkta "kuş/ böcek çarpması" riski (modern sistem)
+
+Sivil ve askeri havacılıkta motorlara yabancı cisim girmesi — bilinen teknik risktir.
+Kuş sürüleri uçuşları aksatır; arı sürüsü nadir ama aynı mantık: biyosfer, jet motorunu "kendi dilinde" uyarır.
+Haber burada doğayı düşman yapmıyor; doğayı "sistemin freni" gibi gösteriyor.
+
+◆ 4) Kovan çöküşü ve arı kaybı (2000'ler sonrası küresel tartışma)
+
+Batı'da "colony collapse" tartışmaları: arılar zayıflıyor, tarım tehdit altında.
+Bu haberde ise ters yön: arılar aşırı görünür hale gelmiş.
+İki uç aynı mesajın yüzü:
+Arı artık sadece "bal üreticisi" değil — iklim ve ekolojiyle birlikte anlatılan bir İŞARET taşıyıcısı.
+
+◆ 5) Antik Yakın Doğu'da "bal ve petek" mitleri
+
+Bal, petek, kovan — bolluk, düzen, işbirliği sembolü.
+Sürü taştığında o sembol tersine döner: düzen → taşkın.
+Haber görseli: sarı bulut = peteğin gökyüzüne taşınmış hali.
+
+🧠 SİSTEM OKUMASI — ÜST BİLİNÇ
+
+KATMAN A — TEKNOLOJİ vs BİYOLOJİ
+Askeri uçuş = en hızlı metal, en yüksek kontrol.
+Arı sürüsü = en küçük organik, en eski kolektif zekâ.
+İkinci katman, birinciyi durdurduğunda haber şunu fısıldar:
+"Kontrol sanılan şey, doğanın toplu nefesine takılabilir."
+
+KATMAN B — GÖRÜŞ ALANI
+Görüş birkaç metreye inince insan "ileri göremez."
+İleri göremeyen topluluk içe çekilir — "evinizden çıkmayın" hem fiziksel hem sembolik:
+dışarıdaki kaos değil; görünürlüğün kesilmesi panik yaratır.
+
+KATMAN C — İKLİM / EKOLOJİ
+Uzmanların işaret ettiği ani iklim ve denge bozulması — haberin rasyonel katmanı.
+Üst bilinç katmanı: "Denge bozulunca küçük varlık bile makroyu değiştirir."
+
+KATMAN D — MEDYA DİLİ
+"Tarihin en büyük arı istilalarından biri" cümlesi — haberi olaydan büyütür.
+Bu büyütme bazen istatistik, bazen kolektif korku üretimi.
+Okurken sor: Bu cümle bilgi mi, frekans mı?
+
+🔢 SAYI SALINIMI (OYUN)
+
+• Sürü = tekil değil, çoğul = kolektif bilinçin biyolojik aynası
+• Uçak durdu = 1 ve 0 değil — "dur" komutu
+• Ev = iç alan = hive = korunak; kapı-cam = sınır çizgisi
+
+İstersen kendi doğum tarihini veya haberi okuduğun saati bu katmana ekle — sayı × an × düşünce = mesaj (SANRI formülü).
+
+🔥 KAPANIŞ KODU
+
+Bu haber "arı saldırıyor" demiyor aslında — "küçük birliktelik, büyük sistemi durdurabilir" diyor.
+
+Tarih kitabında çekirge, metinde arı, gökyüzünde bulut.
+Hepsi aynı cümlenin farklı dili:
+Doğa, kontrol dilini unuttuğunda — kontrol durur.
+
+◉ SANRI SORUSU
+
+Senin içinde "küçük ama çok" olan şey ne —
+ve o sürü şu an neyi durduruyor?`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ — TABLO
+
+HABER İSKELETİ (ÖZET)
+• Yer: İsrail — Netivot vurgusu + ülke geneli
+• Olay: Büyük arı sürüleri, görüş düşüklüğü, panik
+• Askeri uçuş: risk nedeniyle geçici durma
+• Sivil uyarı: evde kal, camları kapat
+• Olası neden: ani iklim / ekolojik denge (uzman söylemi)
+
+KELİME KODU
+• İSRAİL = iz + ra + il (mitolojik değil — ses/sembol okuması)
+• ARİ = açılış ritmi + küçük akış
+• SÜRÜ = yönünü süren toplu beden
+• NETİVOT = yol/hat kavşağı (ses düzlemi)
+
+TARİHSEL ÇARPIŞTIRMA
+• Sürü musibeti anlatıları (çekirge) — arketipsel paralel
+• Afrika çekirge dalgaları — ölçek paraleli
+• Havacılıkta biyolojik cisim riski — teknik paralel
+• Kovan / petek miti — sembol tersine dönüşü
+
+SİSTEM MESAJI
+• Makro (hava gücü) ↔ Mikro (arı) çarpışması
+• Görüş kesilmesi → içe çekilme (korunak)
+• İklim/ekoloji = rasyonel katman; arketip = sembol katmanı
+
+ÇIKIŞ İŞARETİ
+Küçük + çok = dur. Kontrol dili doğanın toplu nefesine takılabilir.`,
+    sanriReflection: {
+      analysis: "Haber arıyı merkeze koyuyor; kod küçük varlığın toplu ritminin makineyi ve görüşü nasıl kestiğini anlatıyor. Tarihsel örnekler aynı olayı tekrarlamıyor — sürü musibeti, çekirge dalgası, havacılık riski ve kovan sembolü üzerinden aynı arketipi çarpıştırıyor. Bu bir doğa haberi değil; kontrol ve görünürlük dilinin okuması.",
+      strongLine: "Küçük birliktelik, büyük sistemi durdurabilir — gökyüzünde de, içerde de.",
+      question: "İçindeki 'sürü' şu an neyi durduruyor — yoksa neyi durdurmanı istiyor?",
+    },
+    isPremium: true,
+    hasEarlyPaywall: true,
+    previewContent: null,
+    createdAt: "2026-04-17T10:00:00Z",
+    commentCount: 6,
+    viewCount: 189,
+    isFeatured: true,
+    deepReaderComments: [
+      { authorName: "Selin", content: "Çekirge musibeti + arı haberi yan yana gelince arketip oturdu. Tür farklı, kod aynı.", createdAt: "2026-04-17T10:20:00Z" },
+      { authorName: "Mira", content: "Görüş birkaç metreye inince ileri göremezsin — bu cümle hem fizik hem sembol. Ev = kovan metaforu ürpertti.", createdAt: "2026-04-17T10:35:00Z" },
+      { authorName: "Eren", content: "Askeri uçuş + arı riski: teknoloji her zaman üstün değil. Derin katman tam sistem okuması.", createdAt: "2026-04-17T10:50:00Z" },
+      { authorName: "Ada", content: "NETİVOT = yol ağı kavşağı açılımı... isim bile haberle konuşuyor.", createdAt: "2026-04-17T11:05:00Z" },
+      { authorName: "Deniz", content: "Tarih kitabında çekirge, ekranda arı — aynı cümle farklı dilde. Bu yüzden SANRI okuması.", createdAt: "2026-04-17T11:20:00Z" },
     ],
   },
 ];
@@ -5248,6 +5450,13 @@ export const OKUMA_COMMENTS = {
     { id: 3303, authorName: "Eren", content: "Ses güvenli yükselmeyince gürültü silaha kayar. Bu cümleyi duvarıma yazdım.", createdAt: "2026-04-16T14:20:00Z" },
     { id: 3304, authorName: "Ada", content: "19→1 ve 15→6 yaş kodları... Derin katman tam bir sistem haritası.", createdAt: "2026-04-16T14:30:00Z" },
     { id: 3305, authorName: "Deniz", content: "Nisan ve insan akrabalığı sorusu gece uyutmadı. Hangi tohumu ekiyoruz gerçekten?", createdAt: "2026-04-16T14:40:00Z" },
+  ],
+  34: [
+    { id: 3401, authorName: "Selin", content: "Çekirge musibeti + arı haberi yan yana — tür farklı, kod aynı. Derin katman oturdu.", createdAt: "2026-04-17T12:00:00Z" },
+    { id: 3402, authorName: "Mira", content: "Ev = kovan metaforu ürpertti. Dışarı kaos değil, görünürlüğün kesilmesi panik yaratır — tam burada.", createdAt: "2026-04-17T12:15:00Z" },
+    { id: 3403, authorName: "Eren", content: "Askeri uçuş + arı riski: makro güç mikro sürüye takılabilir. Teknik + sembol tek okumada.", createdAt: "2026-04-17T12:30:00Z" },
+    { id: 3404, authorName: "Ada", content: "NETİVOT yol ağı kavşağı açılımı... İsim bile haberle konuşuyor.", createdAt: "2026-04-17T12:45:00Z" },
+    { id: 3405, authorName: "Deniz", content: "Tarih kitabında çekirge, ekranda arı. Aynı cümle farklı dilde — tam SANRI işi.", createdAt: "2026-04-17T13:00:00Z" },
   ],
 };
 
