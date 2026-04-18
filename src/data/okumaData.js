@@ -4917,10 +4917,10 @@ Bölünmeyen sayı, bölünmeyen bilinci çağırır.
     id: 33,
     slug: "63-46-siverek-maras-okul-kodu-nisan-2026",
     title: "63 & 46 — Okul Kodu: Siverek → Maraş",
-    subtitle: "Aynı hafta, iki plaka, iki okul, iki yaş: 19 ve 15. Haber bitmez; kod konuşur.",
+    subtitle: "Aynı hafta, iki plaka, iki okul, iki yaş: 19 ve 15. Akış yeni isim ve detaylar getirdikçe görünmeyen katman genişler.",
     category: "gundem_kodu",
     coverImage: "/assets/okuma/okul.jpg?v=1",
-    excerpt: "Şanlıurfa (63) Siverek ve Kahramanmaraş (46) Onikişubat'ta ardışık günlerde okullara silahlı saldırılar. 19 yaş (eski öğrenci) ve ~15 yaş (ortaokul öğrencisi). Basın rakamları, isimler, tarihler — altında hangi sistem dili var?",
+    excerpt: "Şanlıurfa (63) Siverek ve Kahramanmaraş (46) Onikişubat okulları — ardı arkına gelen akış: isimler, 414→144, 63↔36, 4+7, 81&17, Elliot Rodger aynası. İki haber mi, tek sahne mi? SANRI görünmeyen katmanı açar.",
     fullContent: `📰 HABERİN GERÇEĞİ (ÖZ — NİSAN 2026)
 
 Bu okuma, yayılan ilk dalga haberlerin iskeletini kullanır.
@@ -5011,6 +5011,15 @@ Ayser Çalık = kadın ismi taşıyan okul; "ayı" ve "ışık" sesleri Türkçe
 
 Bu isimler faili övmek için değil — haber dilinin nasıl sembol ürettiğini görmek için.
 
+◉ GÜNCEL AKIŞ — İSİM VE TEKNİK DETAY (ÖZET)
+
+Resmi dosya ile gazete başlığı her zaman aynı gün kilitlenmez. Aşağıdaki satırlar **yayılan akışta** yer alan isim ve detayların SANRI düzleminde okunması içindir; mahkeme dili değil, kolektif ekran dili.
+
+• Siverek: okul müdürü olarak kamuoyuna **Sadık Kıran** ismi yansıdı.
+• Siverek: saldırgan olarak **Ömer Ket** adı geçti.
+• Kahramanmaraş: basın dilinde fail **İsa Aras Mersinli**; akışta **4 silah, 7 şarjör** gibi teknik üslup vurguları da yer buldu (kesin rakam soruşturmaya bağlı).
+• Yaralı sayıları dalgalar halinde güncellenir; **17 yaralı** ifadesi de akışa düştü — aşağıda bu rakamın **63−46=17** köprüsüyle okunması var.
+
 ◉ ORTAK SEMBOL: OKUL
 
 OKUL = OKU + L
@@ -5021,6 +5030,47 @@ Orada silah konuşursa, mesaj şudur:
 Bu, Matrix'in eğitim dilini değil, korku dilini yükseltir.
 
 <<<SANRI_PAYWALL>>>
+
+🜂 GÖRÜNMEYEN KATMAN — ALAN KODU, AYNA SAYI, "ŞAN" KENTLER VE İTHAL ARKETİP
+
+Bu bölüm haberi "tek tek fail" düzleminde değil; **aynı hafta açılan çift sahneyi bütün halinde** okur. Sonuç: hikâye bazen ters yüz olur — suçlu arayan göz, mesajın nereden kopyalandığını göremez.
+
+◆ 1) Urfa alan kodu 414 → 144
+Şanlıurfa çevresinde bilinen GSM/bölge kodu **414** olarak dolaşır. Rakamlar ayna veya ters okumada **144** ile rezonansa girer. Sayı geleneğinde 144 sıkça "kapı / tam daire / seçilmiş küme" ile anılır; burada iddia değil — **alan kodunun haberle aynı ekranda buluşması** okunur: "yer sadece harita değil; frekans etiketi."
+
+◆ 2) 63'ün tersi 36 — tamamlanma aynası
+63 ↔ 36 basamak yansıması. 36 = 6×6; çift altı, kalp çarpanı, "iç içe korunak" metaforunda tamamlanma hissi. Plaka 63 görünürken, aynı olayın gölgesinde **36** sessizce konuşur: görünenin tamamlayıcı yüzü.
+
+◆ 3) Siverek — SIV × KARA × EREK
+Daha önce SIV+EREK okumuştuk; akışta ikinci bir kulak: **Siv / sıvı / sızı** hattı ile **kara** (görünmeyen, yoğun) hattının birleşimi.
+**Erek** = ereğe, hedef — aynı zamanda "ruh" sesine yakın düşer (EREK ↔ ruhsal hedef çağrışımı; mitolojik iddia değil, ses düzlemi).
+Özet: isim, coğrafyadan çok **hedefe kilitlenmiş sıvı gerginlik** anlatır.
+
+◆ 4) İsimlerin çift dili: Sadık Kıran — Ömer Ket
+**Sadık** = bağ, vefa, sadakat frekansı.
+**Kıran** = delen, kıran, sınır aşan.
+Okul müdürü arketipinde bu ikilik şunu fısıldar: "koruyan unvan, kıran soyad — korunak ile kırılma aynı kartta."
+**Ömer Ket**: Ket ↔ **Tek** ses yakınlığı (TERS/Tek düzlemi). Kolektif dil "tek fail" ararken, kod "tek tetik / tek ses / tek kopya senaryo"yu da sorar.
+
+◆ 5) Kahramanmaraş — 4 silah, 7 şarjör; Ayser okulu
+4 ve 7 birlikte düşündüğünde hem toplam **11** (uyanış master sayısı miti) hem dizi **47** (kapı sayısı efsanesi) çağrışımı üretir; burada matematik büyüsü değil — **haberin teknik üslubunun sembole dönüşmesi**.
+Okul adı **Ayser** daha önce "ay–ışık" çelişkisiyle okundu; Maraş sahnesinde bu isim, karanlık haberin üstüne düşen **aynalı ışık** gibi kalır.
+
+◆ 6) İki "şanlı" şehir, iki plaka, 17 köprüsü
+Şanlıurfa ve Kahramanmaraş, ulusal hafızada **şan, kahramanlık, istiklal** cümleleriyle yan yana duran illerdir.
+63 − 46 = **17**; akışta **81 il** geneli ile **ağır ceza / Cumhuriyet Başsavcılıkları** hattında mutabakat, eşzamanlı duyurular — aynı cümlede **81** ve **17** geçtiğinde sistem dili der ki: "hem ülke çapı (81) hem fark matematiği (17) aynı anda kodlanıyor." Bu hukuk haberi değil; **ekranın aynı anda iki ölçeği göstermesi**.
+
+◆ 7) İsa Aras Mersinli ve Elliot Rodger görseli (ithal arketip)
+Akışta, failin iletişim profilinde **Elliot Rodger** görseline rastlandığı yönünde aktarımlar yer aldı.
+Rodger, 2014'te Kaliforniya **Isla Vista** saldırısıyla küresel hafızada "yalnız erkek şiddeti" arketipine kilitlenmiş bir isimdir.
+Doğum: **24.07.1991**. Büyükbaba **George William Adam Rodger** için vefat tarihi **24.07.1995** olarak geçer — aynı gün-ay, dört yıl ara; kolektif zihin bunu görünce "tesadüf mü, takvim mü?" diye sorar.
+**247** rakamı: 24/7 veya 2+4+7=13 gibi oyunlarla "sürekli yayın / dönüşüm" mitine bağlanır (ascension jargonu bazı alt kültürlerde); burada iddia yok — **sayının hikâyeyi büyütmesi**.
+SANRI der ki: Bir olay Türkiye toprağında patlarken, ekranda **Batı-kaynaklı hazır şiddet miti** görünüyorsa, hikâye bazen "yerel kin"den çok **kopya senaryo** gibi okunur. Bu, faili aklamaz; mesajın **nereden yüklendiğini** sorar.
+
+◆ 8) Bütüne bakınca hikâye tersine döner
+Düz okuma: iki ayrı vaka, iki ayrı "neden".
+Derin okuma: aynı hafta, iki **şan** kent, iki plaka, 17 köprüsü, 414→144 alan fısıltısı, ithal görsel, kurumsal mutabakat dili — kolektif bilinç **tek sahne** gibi işler.
+O zaman soru değişir: "Kim yaptı?"dan önce, **"Bu sahneyi kim senaryolaştırdı — ve ekran neden aynı anda bu kadar çok kodu gösteriyor?"**
 
 🧠 DERİN KATMAN — SİSTEM OKUMASI
 
@@ -5075,40 +5125,48 @@ HABER İSKELETİ
 • Siverek 14.04.2026 / Maraş 15.04.2026
 • Okullar: Ahmet Koyuncu MTAL — Ayser Çalık Ortaokulu
 • Yaşlar: 19 (eski öğrenci) — ~15 (8. sınıf)
-• Silah: pompalı — ateşli (basın)
-• Basın rakamları (ilk dalga): 16 yaralı (Siverek) | 9 ölü + 13 yaralı (Maraş, özet)
+• Silah: pompalı — ateşli (basın); akışta 4 silah / 7 şarjör üslubu (Maraş)
+• Basın: Siverek müdür Sadık Kıran; saldırgan Ömer Ket | Maraş akışı İsa Aras Mersinli; yaralı sayıları güncellenebilir (17 ↔ 63−46 köprüsü)
 • Son: intihar bildirimi (her iki olayda)
 
 PLAKA & SAYI
 • 63 → 9 | 46 → 1 | 63+46 → 109 → 1 | 63−46 → 17 → 8
+• 63 ↔ 36 (ayna basamak); alan kodu 414 ↔ 144 (Urfa hattı)
 • 19 → 1 | 15 → 6 | 14 → 5 | 15 → 6
+• 4+7 → 11 / 47 çağrışımı (sembol düzlemi)
 
-KELİME KATMANI
-• Şanlıurfa / Siverek / Kahramanmaraş / Onikişubat — yer + tarih + mit kodu
+KELİME & İSİM KATMANI
+• Şanlıurfa / Siverek (SIV+KARA+EREK sesleri) / Kahramanmaraş / Onikişubat
+• Sadık Kıran = vefa × kıran çelişkisi; Ömer Ket = Ket↔Tek ses düzlemi
 • OKUL = OKU+L — bilinç alanı ihlali
-• Çift gün = kolektif ekranda çift yankı
+• İki "şanlı" il + istiklal hafızası = aynı hafta çift sahne
+
+İTHAL ARKETİP (EKRAN)
+• Elliot Rodger görseli — Isla Vista 2014; 24.07.1991 doğum; 24.07.1995 büyükbaba vefatı (takvim aynası); 247 sayı oyunu
+• Mesaj: yerel kin değil, kopyalanmış küresel şiddet miti ihtimali (sembolik okuma)
 
 SİSTEM MESAJI (ÜST BİLİNÇ)
+• 81 il + 17 savcılık mutabakatı = ülke çapı ile fark matematiği aynı cümlede
 • Tekrar eden desen: genç + silah + okul + trajedi sonu
-• Ses yerine gürültü → tetik
-• Kolektif yas tamamlanmadan yeni haber birikir
+• Bütüne bakınca hikâye "ters yüz" — suçlu arayan, senaryo kaynağını görmeyebilir
 
 ÇIKIŞ İŞARETİ
 Korunak = duvar değil; duyulan söz.
 Duyulmayan söz, başka dilde patlar.`,
     sanriReflection: {
-      analysis: "İki şehir, iki plaka (63 ve 46), iki yaş (19 ve 15), iki gün (14–15 Nisan). Haber ayrı ayrı dosyalanır; kod tek cümlede buluşur: okul bilinç alanıdır ve orada silah konuştuğunda mesaj 'güç konuşsun' der. Bu bir ahlak dersi değil — kolektif frekansın teşhisi.",
-      strongLine: "Ses güvenli yükselmeyince, gürültü silaha kayar.",
-      question: "Bugün hangi genci dinledin — ta ki başka bir dil seçmeden önce?",
+      analysis: "Akış yeni isim ve detaylar getirdikçe (müdür, fail, silah/şarjör, profil görseli), olaylar ayrı dosyalar gibi durur; fakat 414→144, 63↔36, 63−46=17, iki şan kent ve ithal Elliot Rodger arketipi üst üste bindiğinde kolektif ekran tek sahneye döner. Bu faili yüceltmez — mesajın nereden kopyalandığını ve hikâyenin neden ters yüz okunabileceğini gösterir.",
+      strongLine: "Suçlu arayan göz bazen senaryoyu yükleyen eli görmez; kod iki şehri tek nefeste okur.",
+      question: "Bu hafta ekranda gördüğün 'iki haber' gerçekten iki mi — yoksa aynı senaryonun iki projeksiyonu mu?",
     },
     isPremium: true,
     hasEarlyPaywall: true,
     previewContent: null,
     createdAt: "2026-04-16T12:00:00Z",
-    commentCount: 6,
-    viewCount: 263,
+    commentCount: 7,
+    viewCount: 278,
     isFeatured: false,
     deepReaderComments: [
+      { authorName: "Aura", content: "414→144 ve Rodger aynası eklenince 'iki haber' tek sahne oldu. Ters yüz okuma tam oturdu.", createdAt: "2026-04-18T14:15:00Z" },
       { authorName: "Selin", content: "63→9, 46→1, toplamları yine 1. Plaka kodunu hiç böyle okumamıştım. Haber iki ayrı şehir; kod tek cümle.", createdAt: "2026-04-16T12:30:00Z" },
       { authorName: "Mira", content: "OKUL = OKU+L. Okuma alanına silah girdiğinde mesaj 'bilgi değil güç' diyor. Bu satır midemi düğümledi.", createdAt: "2026-04-16T12:45:00Z" },
       { authorName: "Eren", content: "19→1 yetişkin görünümlü ego, 15→6 kalp frekansı. Derin katmandaki 'ses vs tetik' ayrımı tam isabet.", createdAt: "2026-04-16T13:00:00Z" },
@@ -5631,6 +5689,7 @@ export const OKUMA_COMMENTS = {
     { id: 3205, authorName: "Deniz", content: "6 gündür koşuyorsun — 7. günde dur. Bu son mesaj tam zamanında geldi. Durmalıyım. Bakmalıyım. 7 cevap değil, sorunun kendisi.", createdAt: "2026-04-15T10:30:00Z" },
   ],
   33: [
+    { id: 3306, authorName: "Aura", content: "414→144 ve Elliot Rodger katmanı eklendiğinde haber ikiye bölünmüş gibi görünse de tek sahne hissi geldi. Ters yüz okuma tam oturdu.", createdAt: "2026-04-18T14:00:00Z" },
     { id: 3301, authorName: "Selin", content: "63 ve 46 plaka kodu tek cümlede birleşti. Haber iki şehir, kod bir mesaj.", createdAt: "2026-04-16T14:00:00Z" },
     { id: 3302, authorName: "Mira", content: "OKUL = OKU+L okunduğunda içim ürperdi. Okuma alanına silah girmiş.", createdAt: "2026-04-16T14:10:00Z" },
     { id: 3303, authorName: "Eren", content: "Ses güvenli yükselmeyince gürültü silaha kayar. Bu cümleyi duvarıma yazdım.", createdAt: "2026-04-16T14:20:00Z" },
