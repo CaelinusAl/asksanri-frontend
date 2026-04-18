@@ -14,6 +14,7 @@ import {
   mergeChakraSnapshotWithBundle,
 } from "../lib/offline/nomadData";
 import { useOfflineMesh } from "../contexts/OfflineMeshContext";
+import { EmailCaptureInline } from "../components/EmailCaptureModal";
 
 const DURATIONS = [
   { label: "1 dk", seconds: 60 },
@@ -463,6 +464,7 @@ export default function FrekansAlaniPage() {
           />
         )}
 
+        <EmailCaptureInline page="frekans" label="Haftalık frekans ve enerji okumaları almak ister misin?" />
         <div className={styles.footer}>© 2026 CaelinusAI • SANRI</div>
       </div>
     </div>

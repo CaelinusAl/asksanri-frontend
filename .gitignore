@@ -5,3 +5,16 @@ dev-dist/
 .DS_Store
 .vite/
 /nul
+
+# Yerel ortam ve iç içe proje kopyaları (ayrı repolar / büyük arşiv — ana repoda tekrarlanmaz)
+.env.LOCAL_ONLY
+.env.*.local
+asksanri-mobile/
+asksanri-frontend/
+sanri-mobile/
+sanri/
+frontend/
+android/
+San/
+_backup_mixed/
+.g/

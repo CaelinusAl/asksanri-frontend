@@ -15,6 +15,7 @@ import {
 import { saveRolReadingCache, loadRolReadingCache } from "../lib/offline/rolReadingCache";
 import styles from "./RolOkumaPage.module.css";
 import SeoHead from "../components/SeoHead";
+import { EmailCaptureInline } from "../components/EmailCaptureModal";
 
 const API =
   (import.meta?.env?.VITE_BACKEND_URL &&
@@ -868,6 +869,8 @@ export default function RolOkumaPage() {
           </RolOkumaResultBoundary>
         )}
       </AnimatePresence>
+
+      <EmailCaptureInline page="rol-okuma" label="Kişisel rol okumalarını e-postayla almak ister misin?" />
 
       {/* ── Energy Exchange Modal ── */}
       <AnimatePresence>

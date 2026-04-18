@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import usePageView from "./hooks/usePageView";
 import { syncPurchasesFromServer } from "./data/shopierConfig";
 import { useAuth } from "./contexts/AuthContext";
@@ -86,11 +86,13 @@ const AdminFunnelPage = lazyRetry(() => import("./pages/admin/AdminFunnelPage"))
 const AdminMuhasebePage = lazyRetry(() => import("./pages/admin/AdminMuhasebePage"));
 const AdminBankTransferPage = lazyRetry(() => import("./pages/admin/AdminBankTransferPage"));
 const AdminDeliverablesPage = lazyRetry(() => import("./pages/admin/AdminDeliverablesPage"));
+const AdminLeadsPage = lazyRetry(() => import("./pages/admin/AdminLeadsPage"));
 
 const AuthCallback = lazyRetry(() => import("./components/AuthCallback"));
 const LandingRolOkumaPage = lazyRetry(() => import("./pages/LandingRolOkumaPage"));
 const BlogPage = lazyRetry(() => import("./pages/BlogPage"));
 const BlogPostPage = lazyRetry(() => import("./pages/BlogPostPage"));
+const SanriOnboardingPage = lazyRetry(() => import("./pages/SanriOnboardingPage"));
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
 import PushOptIn from "./components/PushOptIn";
@@ -141,8 +143,27 @@ function renderOkumaAreaError(err) {
   );
 }
 
+function useFirstVisitRedirect() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const didRedirect = useRef(false);
+  useEffect(() => {
+    if (didRedirect.current) return;
+    try {
+      if (localStorage.getItem("sanri_onboarding_done")) return;
+      if (localStorage.getItem("sanri_token")) return;
+      const skipPaths = ["/hosgeldin", "/giris", "/auth/callback", "/admin", "/payment", "/odeme", "/d/"];
+      if (skipPaths.some((p) => location.pathname.startsWith(p))) return;
+      if (location.pathname !== "/") return;
+      didRedirect.current = true;
+      navigate("/hosgeldin", { replace: true });
+    } catch {}
+  }, [location.pathname]);
+}
+
 export default function App() {
   usePageView();
+  useFirstVisitRedirect();
   const { isAuthenticated, user } = useAuth();
   const [toastItems, setToastItems] = useState(null);
   const authSyncDone = useRef(false);
@@ -172,6 +193,7 @@ export default function App() {
     {toastItems && <PurchaseToast items={toastItems} onDismiss={dismissToast} />}
     <PendingPurchaseRecovery />
     <EmailCaptureModal trigger="timer" page="global" />
+    <EmailCaptureModal trigger="exit_intent" page="exit" />
     <PushOptIn />
     <Suspense fallback={<LazyFallback />}>
     <Routes>
@@ -360,6 +382,7 @@ export default function App() {
       <Route path="/havale-odeme" element={<HavaleOdemePage />} />
       <Route path="/sanri-ag" element={<SanriMeshPage />} />
       <Route path="/d/rol-okuma" element={<LandingRolOkumaPage />} />
+      <Route path="/hosgeldin" element={<SanriOnboardingPage />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/blog/:slug" element={<BlogPostPage />} />
 
@@ -385,6 +408,7 @@ export default function App() {
         <Route path="banka-odemeleri" element={<AdminBankTransferPage />} />
         <Route path="teslimatlar" element={<AdminDeliverablesPage />} />
         <Route path="billing" element={<AdminBillingPage />} />
+        <Route path="leads" element={<AdminLeadsPage />} />
         <Route path="notifications" element={<AdminNotificationsPage />} />
         <Route path="system" element={<AdminSystemPage />} />
       </Route>

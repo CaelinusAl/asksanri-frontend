@@ -5,6 +5,7 @@ import styles from "./HomePage.module.css";
 
 import StarTrail from "../components/StarTrail";
 import AuthModal from "../components/AuthModal";
+import { EmailCaptureInline } from "../components/EmailCaptureModal";
 
 import { useLanguage } from "../contexts/LanguageContext";
 import { unlockAudio } from "../utils/sfx";
@@ -427,6 +428,7 @@ export default function HomePage() {
               ))}
             </div>
 
+            <EmailCaptureInline page="home" label="Sanrı'dan özel frekans okumaları ve içerik almak ister misin?" />
             <div className={styles.footer}>Caelinus AI • Consciousness Interface</div>
           </div>
         )}

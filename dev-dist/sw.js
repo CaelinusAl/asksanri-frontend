@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-52f2a342'], (function (workbox) { 'use strict';
+define(['./workbox-d2f107b2'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
@@ -82,7 +82,7 @@ define(['./workbox-52f2a342'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "index.html",
-    "revision": "0.olkcd5g05c"
+    "revision": "0.u5as40sfqn"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -101,7 +101,16 @@ define(['./workbox-52f2a342'], (function (workbox) { 'use strict';
   }), 'GET');
   workbox.registerRoute(({
     url
-  }) => url.pathname.startsWith("/assets/") || url.pathname.startsWith("/audio/"), new workbox.CacheFirst({
+  }) => url.pathname.startsWith("/assets/") && (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")), new workbox.StaleWhileRevalidate({
+    "cacheName": "sanri-code-assets",
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 200,
+      maxAgeSeconds: 604800
+    })]
+  }), 'GET');
+  workbox.registerRoute(({
+    url
+  }) => (url.pathname.startsWith("/assets/") || url.pathname.startsWith("/audio/")) && !url.pathname.endsWith(".js") && !url.pathname.endsWith(".css"), new workbox.CacheFirst({
     "cacheName": "sanri-static-media",
     plugins: [new workbox.ExpirationPlugin({
       maxEntries: 120,

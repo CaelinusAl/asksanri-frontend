@@ -17,7 +17,8 @@ function shouldShow() {
   try {
     if (localStorage.getItem(COLLECTED_KEY)) return false;
     const dismissed = localStorage.getItem(DISMISS_KEY);
-    if (dismissed && Date.now() - parseInt(dismissed) < 86400000) return false;
+    // Re-show after 4 hours instead of 24
+    if (dismissed && Date.now() - parseInt(dismissed) < 4 * 3600000) return false;
   } catch {}
   return true;
 }
@@ -30,29 +31,68 @@ export default function EmailCaptureModal({ trigger = "timer", page = "" }) {
   const [fieldError, setFieldError] = useState("");
   const shownRef = useRef(false);
 
+  // Timer trigger — show after 12 seconds
   useEffect(() => {
+    if (trigger !== "timer") return;
     if (isAdminPath(pathname)) return;
     if (shownRef.current || !shouldShow()) return;
 
-    if (trigger === "timer") {
-      const t = setTimeout(() => {
+    const t = setTimeout(() => {
+      shownRef.current = true;
+      setOpen(true);
+    }, 12000);
+    return () => clearTimeout(t);
+  }, [trigger, pathname]);
+
+  // Scroll trigger — show at 35% scroll depth
+  useEffect(() => {
+    if (trigger !== "scroll") return;
+    if (isAdminPath(pathname)) return;
+    if (shownRef.current || !shouldShow()) return;
+
+    const handler = () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      if (total <= 0) return;
+      const pct = window.scrollY / total;
+      if (pct > 0.35 && !shownRef.current) {
         shownRef.current = true;
         setOpen(true);
-      }, 25000);
-      return () => clearTimeout(t);
-    }
+      }
+    };
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, [trigger, pathname]);
 
-    if (trigger === "scroll") {
-      const handler = () => {
-        const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-        if (pct > 0.55 && !shownRef.current) {
-          shownRef.current = true;
-          setOpen(true);
-        }
-      };
-      window.addEventListener("scroll", handler, { passive: true });
-      return () => window.removeEventListener("scroll", handler);
-    }
+  // Exit-intent trigger — mouse leaves viewport (desktop)
+  useEffect(() => {
+    if (trigger !== "exit_intent") return;
+    if (isAdminPath(pathname)) return;
+    if (shownRef.current || !shouldShow()) return;
+
+    const handler = (e) => {
+      if (e.clientY <= 5 && !shownRef.current) {
+        shownRef.current = true;
+        setOpen(true);
+      }
+    };
+    document.addEventListener("mouseout", handler);
+    return () => document.removeEventListener("mouseout", handler);
+  }, [trigger, pathname]);
+
+  // Page-leave trigger for mobile — fires on visibilitychange
+  useEffect(() => {
+    if (trigger !== "exit_intent") return;
+    if (isAdminPath(pathname)) return;
+    if (shownRef.current || !shouldShow()) return;
+
+    const handler = () => {
+      if (document.visibilityState === "hidden" && !shownRef.current) {
+        shownRef.current = true;
+        setTimeout(() => setOpen(true), 300);
+      }
+    };
+    document.addEventListener("visibilitychange", handler);
+    return () => document.removeEventListener("visibilitychange", handler);
   }, [trigger, pathname]);
 
   const handleSubmit = async () => {

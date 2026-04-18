@@ -6,6 +6,7 @@ import { LockBadge } from "../components/premium/PremiumGate";
 import { OKUMA_POSTS, OKUMA_CATEGORIES, getCategoryById, timeAgoOkuma } from "../data/okumaData";
 import { isOkumaSeen } from "../data/okumaSeen";
 import SeoHead from "../components/SeoHead";
+import { EmailCaptureInline } from "../components/EmailCaptureModal";
 import styles from "./OkumaAlaniPage.module.css";
 
 const API =
@@ -359,6 +360,7 @@ export default function OkumaAlaniPage() {
             })}
           </div>
         )}
+        <EmailCaptureInline page="okuma-alani" label="Yeni içerikler yayınlandığında haberdar olmak ister misin?" />
       </div>
     </div>
   );

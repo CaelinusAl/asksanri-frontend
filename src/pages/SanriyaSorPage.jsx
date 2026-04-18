@@ -8,6 +8,7 @@ import { unlockAudio, playSfx } from "../utils/sfx";
 import { useLanguage } from "../contexts/LanguageContext";
 import SeoHead from "../components/SeoHead";
 import { useAuth } from "../contexts/AuthContext";
+import { EmailCaptureInline } from "../components/EmailCaptureModal";
 
 const MODES = [
   { id: "mirror", tr: "Ayna", en: "Mirror" },
@@ -549,7 +550,10 @@ export default function SanriyaSorPage() {
               ) : null}
 
               {isTypingDone ? (
-                <ResultCTAs isTR={isTR} navigate={navigate} />
+                <>
+                  <ResultCTAs isTR={isTR} navigate={navigate} />
+                  <EmailCaptureInline page="sanriya-sor" label={isTR ? "Bu tür derin okumaları e-postayla almak ister misin?" : "Want deep readings like this via email?"} />
+                </>
               ) : null}
             </motion.div>
           )}
