@@ -47,6 +47,11 @@ export default defineConfig(({ mode }) => {
         },
         workbox: {
           globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,jpg,jpeg,woff2,json,mp3}"],
+          globIgnores: [
+            "**/assets/art-gallery/**",
+            "**/node_modules/**",
+          ],
+          maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
           navigateFallback: "index.html",
           navigateFallbackDenylist: [/^\/auth\/callback/, /\.(?:png|jpg|jpeg|svg|webp|gif|ico|mp3|woff2)$/i],
           runtimeCaching: [
@@ -85,7 +90,7 @@ export default defineConfig(({ mode }) => {
         devOptions: { enabled: true, type: "module" },
       }),
     ],
-    build: { sourcemap: true, outDir: "dist" },
+    build: { sourcemap: true, outDir: "dist", chunkSizeWarningLimit: 1500 },
     define: {
       "import.meta.env.VITE_BANK_IBAN": JSON.stringify(iban),
       "import.meta.env.VITE_BANK_NAME": JSON.stringify(bankName),
