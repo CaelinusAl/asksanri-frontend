@@ -299,12 +299,31 @@ function ProductDetailModal({ product, isTR, onClose, onOpen }) {
             </div>
 
             <div className={styles.modalCta}>
-              <a
-                href={buildSupportMailto(product, isTR)}
-                className={styles.modalCtaPrimary}
-              >
-                {isTR ? "Ürün hakkında daha fazla bilgi al" : "Request more info"}
-              </a>
+              {product.shopierUrl ? (
+                <>
+                  <a
+                    href={product.shopierUrl}
+                    className={styles.modalCtaPrimary}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {isTR ? "Satın Al — Shopier" : "Buy — Shopier"}
+                  </a>
+                  <a
+                    href={buildSupportMailto(product, isTR)}
+                    className={styles.modalCtaGhost}
+                  >
+                    {isTR ? "Bilgi Al" : "Request info"}
+                  </a>
+                </>
+              ) : (
+                <a
+                  href={buildSupportMailto(product, isTR)}
+                  className={styles.modalCtaPrimary}
+                >
+                  {isTR ? "Ürün hakkında daha fazla bilgi al" : "Request more info"}
+                </a>
+              )}
               <button type="button" className={styles.modalCtaGhost} onClick={onClose}>
                 {isTR ? "Galerisine Dön" : "Back to gallery"}
               </button>

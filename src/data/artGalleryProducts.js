@@ -85,6 +85,7 @@ export const artGalleryProducts = [
   /* ── HEYKELLER / FİGÜRLER ──────────────────────────────────────── */
   {
     id: "love-basquiat",
+    shopierUrl: "https://shopier.com/asksanri/46391470",
     slug: "love-basquiat",
     name: "LOVE — Basquiat Grafiti Heykel",
     nameEn: "LOVE — Basquiat Graffiti Sculpture",
@@ -103,6 +104,7 @@ export const artGalleryProducts = [
   },
   {
     id: "joker-pop",
+    shopierUrl: "https://shopier.com/asksanri/46391544",
     slug: "joker-pop",
     name: "Joker Pop — Heykel",
     nameEn: "Joker Pop — Sculpture",
@@ -121,6 +123,7 @@ export const artGalleryProducts = [
   },
   {
     id: "joker-popart-tablo",
+    shopierUrl: "https://shopier.com/asksanri/46391624",
     slug: "joker-popart-tablo",
     name: "Joker Pop Art Tablo",
     nameEn: "Joker Pop Art Canvas",
@@ -139,6 +142,7 @@ export const artGalleryProducts = [
   },
   {
     id: "silver-balloon-dog",
+    shopierUrl: "https://shopier.com/asksanri/46391685",
     slug: "silver-balloon-dog",
     name: "Silver Balloon Dog",
     nameEn: "Silver Balloon Dog",
@@ -193,6 +197,7 @@ export const artGalleryProducts = [
   },
   {
     id: "face-wall-sculpture",
+    shopierUrl: "https://shopier.com/asksanri/46391738",
     slug: "face-wall-sculpture",
     name: "Face Wall Sculpture — 3'lü Set",
     nameEn: "Face Wall Sculpture — Set of 3",
@@ -211,6 +216,7 @@ export const artGalleryProducts = [
   },
   {
     id: "muhammed-ali-tablo",
+    shopierUrl: "https://shopier.com/asksanri/46391810",
     slug: "muhammed-ali-tablo",
     name: "Muhammed Ali Tablo",
     nameEn: "Muhammad Ali Relief",
@@ -229,6 +235,7 @@ export const artGalleryProducts = [
   },
   {
     id: "cosmic-reflection",
+    shopierUrl: "https://shopier.com/asksanri/46391867",
     slug: "cosmic-reflection",
     name: "Cosmic Reflection",
     nameEn: "Cosmic Reflection",
@@ -265,6 +272,7 @@ export const artGalleryProducts = [
   },
   {
     id: "basquiat-nike",
+    shopierUrl: "https://shopier.com/asksanri/46392042",
     slug: "basquiat-nike",
     name: "Basquiat Nike",
     nameEn: "Basquiat Nike",
@@ -283,6 +291,7 @@ export const artGalleryProducts = [
   },
   {
     id: "popart-aphrodite",
+    shopierUrl: "https://shopier.com/asksanri/46392153",
     slug: "popart-aphrodite",
     name: "Pop Art Aphrodite",
     nameEn: "Pop Art Aphrodite",
@@ -301,6 +310,7 @@ export const artGalleryProducts = [
   },
   {
     id: "plant-vibes-david",
+    shopierUrl: "https://shopier.com/asksanri/46392214",
     slug: "plant-vibes-david",
     name: "Plant Vibes David",
     nameEn: "Plant Vibes David",
@@ -319,6 +329,7 @@ export const artGalleryProducts = [
   },
   {
     id: "david-popart-heykel",
+    shopierUrl: "https://shopier.com/asksanri/46392258",
     slug: "david-popart-heykel",
     name: "David Popart Heykel",
     nameEn: "David Pop Art Sculpture",
@@ -337,6 +348,7 @@ export const artGalleryProducts = [
   },
   {
     id: "david-digital-thoughts",
+    shopierUrl: "https://shopier.com/asksanri/46392321",
     slug: "david-digital-thoughts",
     name: "David — Digital Thoughts",
     nameEn: "David — Digital Thoughts",
@@ -355,6 +367,7 @@ export const artGalleryProducts = [
   },
   {
     id: "antik-herkul",
+    shopierUrl: "https://shopier.com/asksanri/46392358",
     slug: "antik-herkul",
     name: "Antik Herkül",
     nameEn: "Antique Hercules",
@@ -373,6 +386,7 @@ export const artGalleryProducts = [
   },
   {
     id: "milkshake-hermes",
+    shopierUrl: "https://shopier.com/asksanri/46392406",
     slug: "milkshake-hermes",
     name: "Milkshake Hermes",
     nameEn: "Milkshake Hermes",
@@ -391,6 +405,7 @@ export const artGalleryProducts = [
   },
   {
     id: "atlas-dondurma",
+    shopierUrl: "https://shopier.com/asksanri/46392454",
     slug: "atlas-dondurma",
     name: "Atlas — Dondurma Heykel",
     nameEn: "Atlas — Ice Cream Sculpture",
@@ -409,6 +424,7 @@ export const artGalleryProducts = [
   },
   {
     id: "freeman",
+    shopierUrl: "https://shopier.com/asksanri/46392489",
     slug: "freeman",
     name: "Freeman — Klasik Beyaz Figür",
     nameEn: "Freeman — Classical White Figure",
@@ -427,6 +443,7 @@ export const artGalleryProducts = [
   },
   {
     id: "design-mickey",
+    shopierUrl: "https://shopier.com/asksanri/46392541",
     slug: "design-mickey",
     name: "Design Mickey — El Heykeli",
     nameEn: "Design Mickey — Hand Sculpture",
@@ -445,12 +462,13 @@ export const artGalleryProducts = [
   },
   {
     id: "mickey-street",
+    shopierUrl: "https://shopier.com/asksanri/46392605",
     slug: "mickey-street",
     name: "Mickey — Sokak Sanatı Figür",
     nameEn: "Mickey — Street Art Figure",
     image: "mickey.jpeg",
     gallery: ["mickey.jpeg"],
-    price: 10000,
+    price: 37000,
     currency: "TL",
     dimensions: DIMENSIONS_FALLBACK,
     material: "Polyester",
@@ -468,7 +486,7 @@ export const artGalleryProducts = [
     nameEn: "Mickey Painting — Wall Object",
     image: "mickey-painting.jpg",
     gallery: ["mickey-painting.jpg"],
-    price: null, // TODO: Mickey (10.000) heykelden ayrı tablo varyantı; fiyat netleşecek.
+    price: null, // TODO: Mickey Painting tablo varyantı; Shopier linki ve fiyatı netleşecek.
     currency: "TL",
     dimensions: DIMENSIONS_FALLBACK,
     material: "Karma teknik / kanvas",
@@ -481,6 +499,7 @@ export const artGalleryProducts = [
   },
   {
     id: "unicorn",
+    shopierUrl: "https://shopier.com/asksanri/46392673",
     slug: "unicorn",
     name: "Unicorn — At Başı Heykel",
     nameEn: "Unicorn — Horse Head Sculpture",
@@ -499,6 +518,7 @@ export const artGalleryProducts = [
   },
   {
     id: "heart-framed",
+    shopierUrl: "https://shopier.com/asksanri/46392715",
     slug: "heart-framed",
     name: "Heart — Çerçeveli Kalp Tablo",
     nameEn: "Heart — Framed Heart Art",
@@ -517,6 +537,7 @@ export const artGalleryProducts = [
   },
   {
     id: "killen",
+    shopierUrl: "https://shopier.com/asksanri/46392778",
     slug: "killen",
     name: "Killen",
     nameEn: "Killen",
@@ -535,6 +556,7 @@ export const artGalleryProducts = [
   },
   {
     id: "love-tablo",
+    shopierUrl: "https://shopier.com/asksanri/46392832",
     slug: "love-tablo",
     name: "Love Tablo",
     nameEn: "Love Canvas",
@@ -553,6 +575,7 @@ export const artGalleryProducts = [
   },
   {
     id: "future-tablo",
+    shopierUrl: "https://shopier.com/asksanri/46392861",
     slug: "future-tablo",
     name: "Future Tablo",
     nameEn: "Future Canvas",
@@ -571,6 +594,7 @@ export const artGalleryProducts = [
   },
   {
     id: "art-mirror",
+    shopierUrl: "https://shopier.com/asksanri/46392911",
     slug: "art-mirror",
     name: "Art Mirror",
     nameEn: "Art Mirror",
@@ -643,6 +667,7 @@ export const artGalleryProducts = [
   },
   {
     id: "kaws-painting",
+    shopierUrl: "https://shopier.com/asksanri/46392962",
     slug: "kaws-painting",
     name: "Kaws Painting",
     nameEn: "Kaws Painting",
@@ -661,6 +686,7 @@ export const artGalleryProducts = [
   },
   {
     id: "kaws-popart-world",
+    shopierUrl: "https://shopier.com/asksanri/46393001",
     slug: "kaws-popart-world",
     name: "Kaws Pop Art World — Tablo",
     nameEn: "Kaws Pop Art World — Canvas",
@@ -681,6 +707,7 @@ export const artGalleryProducts = [
   /* ── COFFEE TABLE / SEHPA / MASA ────────────────────────────────── */
   {
     id: "apollo-masa-seti",
+    shopierUrl: "https://shopier.com/asksanri/46393050",
     slug: "apollo-masa-seti",
     name: "Apollo Masa Seti",
     nameEn: "Apollo Table Set",
@@ -699,6 +726,7 @@ export const artGalleryProducts = [
   },
   {
     id: "asil-coffee-table",
+    shopierUrl: "https://shopier.com/asksanri/46393087",
     slug: "asil-coffee-table",
     name: "Asil Coffee Table",
     nameEn: "Asil Coffee Table",
@@ -717,6 +745,7 @@ export const artGalleryProducts = [
   },
   {
     id: "king-coffee-table",
+    shopierUrl: "https://shopier.com/asksanri/46393129",
     slug: "king-coffee-table",
     name: "King Coffee Table",
     nameEn: "King Coffee Table",
@@ -735,6 +764,7 @@ export const artGalleryProducts = [
   },
   {
     id: "face-coffee-table",
+    shopierUrl: "https://shopier.com/asksanri/46393170",
     slug: "face-coffee-table",
     name: "Face Coffee Table",
     nameEn: "Face Coffee Table",
@@ -753,6 +783,7 @@ export const artGalleryProducts = [
   },
   {
     id: "davut-table",
+    shopierUrl: "https://shopier.com/asksanri/46393276",
     slug: "davut-table",
     name: "Davut Table",
     nameEn: "Davut Table",
@@ -789,6 +820,7 @@ export const artGalleryProducts = [
   },
   {
     id: "herkul-apollo-sehpa",
+    shopierUrl: "https://shopier.com/asksanri/46393369",
     slug: "herkul-apollo-sehpa",
     name: "Herkül Apollo Sehpa",
     nameEn: "Hercules Apollo Side Table",
@@ -809,6 +841,7 @@ export const artGalleryProducts = [
   /* ── BÜSTLER ─────────────────────────────────────────────────────── */
   {
     id: "lady-bust",
+    shopierUrl: "https://shopier.com/asksanri/46393427",
     slug: "lady-bust",
     name: "Lady Bust",
     nameEn: "Lady Bust",
@@ -829,6 +862,7 @@ export const artGalleryProducts = [
   /* ── AYDINLATMA ─────────────────────────────────────────────────── */
   {
     id: "basquiat-abajur",
+    shopierUrl: "https://shopier.com/asksanri/46393470",
     slug: "basquiat-abajur",
     name: "Basquiat — Kafatası Abajur",
     nameEn: "Basquiat — Skull Lamp",
@@ -869,6 +903,7 @@ export const artGalleryProducts = [
   /* ── SAKSILAR ───────────────────────────────────────────────────── */
   {
     id: "hermes-saksi",
+    shopierUrl: "https://shopier.com/asksanri/46393235",
     slug: "hermes-saksi",
     name: "Hermes Baş Saksı",
     nameEn: "Hermes Head Planter",
@@ -889,12 +924,13 @@ export const artGalleryProducts = [
   /* ── EK / KEŞFEDİLEN EKSTRA GÖRSELLER (listede olmayan ürünler) ─── */
   {
     id: "casper-money",
+    shopierUrl: "https://shopier.com/asksanri/46393563",
     slug: "casper-money",
     name: "Casper — Money Serisi",
     nameEn: "Casper — Money Series",
     image: "casper-money.jpeg",
     gallery: ["casper-money.jpeg", "casper-money1.jpeg", "casper-money2.jpeg", "casper-money4.jpeg"],
-    price: null, // TODO: Kullanıcı listesinde yoktu; isim/fiyat netleşmeli.
+    price: 7400, // TODO: Kullanıcı listesinde yoktu; isim/fiyat netleşmeli.
     currency: "TL",
     dimensions: DIMENSIONS_FALLBACK,
     material: "Polyester",
@@ -907,12 +943,13 @@ export const artGalleryProducts = [
   },
   {
     id: "acid-party",
+    shopierUrl: "https://shopier.com/asksanri/46393593",
     slug: "acid-party",
     name: "Acid Party",
     nameEn: "Acid Party",
     image: "acid-part.jpg",
     gallery: ["acid-part.jpg", "acid-party1.jpg", "asid-party.jpg"],
-    price: null, // TODO: Kullanıcı listesinde yoktu; fiyat netleşmeli.
+    price: 5500, // TODO: Kullanıcı listesinde yoktu; fiyat netleşmeli.
     currency: "TL",
     dimensions: DIMENSIONS_FALLBACK,
     material: "Karma teknik",
