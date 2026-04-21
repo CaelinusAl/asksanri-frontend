@@ -139,6 +139,16 @@ export default function HomePage() {
         img: "/assets/gates/kutuphane.jpg",
       },
       {
+        key: "art-gallery",
+        title: isTR ? "Art Gallery" : "Art Gallery",
+        desc: isTR
+          ? "Heykel, büst, tablo ve objeler — seçilmiş koleksiyon"
+          : "Sculptures, busts, framed art & objects — curated collection",
+        hint: isTR ? "Galeriye Gir →" : "Enter Gallery →",
+        path: "/art-gallery",
+        img: "/assets/art-gallery/products/art-gallery.jpeg",
+      },
+      {
         key: "yanki",
         title: isTR ? "Yankı" : "Echo",
         desc: isTR

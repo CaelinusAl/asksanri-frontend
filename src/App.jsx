@@ -93,6 +93,7 @@ const LandingRolOkumaPage = lazyRetry(() => import("./pages/LandingRolOkumaPage"
 const BlogPage = lazyRetry(() => import("./pages/BlogPage"));
 const BlogPostPage = lazyRetry(() => import("./pages/BlogPostPage"));
 const SanriOnboardingPage = lazyRetry(() => import("./pages/SanriOnboardingPage"));
+const ArtGalleryPage = lazyRetry(() => import("./pages/ArtGalleryPage"));
 import PendingPurchaseRecovery from "./components/PendingPurchaseRecovery";
 import EmailCaptureModal from "./components/EmailCaptureModal";
 import PushOptIn from "./components/PushOptIn";
@@ -385,6 +386,9 @@ export default function App() {
       <Route path="/hosgeldin" element={<SanriOnboardingPage />} />
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/blog/:slug" element={<BlogPostPage />} />
+
+      <Route path="/art-gallery" element={<ArtGalleryPage />} />
+      <Route path="/sanat-galerisi" element={<Navigate to="/art-gallery" replace />} />
 
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/:bookId" element={<BookReader />} />
