@@ -161,6 +161,7 @@ export const artGalleryProducts = [
   },
   {
     id: "balloon-dog",
+    shopierUrl: "https://shopier.com/asksanri/46394034",
     slug: "balloon-dog",
     name: "Balloon Dog",
     nameEn: "Balloon Dog",
@@ -179,6 +180,7 @@ export const artGalleryProducts = [
   },
   {
     id: "supreme-dog",
+    shopierUrl: "https://shopier.com/asksanri/46393972",
     slug: "supreme-dog",
     name: "Supreme Dog",
     nameEn: "Supreme Dog",
@@ -254,6 +256,7 @@ export const artGalleryProducts = [
   },
   {
     id: "blue-design-series",
+    shopierUrl: "https://shopier.com/asksanri/46394605",
     slug: "blue-design-series",
     name: "Blue Design Series",
     nameEn: "Blue Design Series",
@@ -481,12 +484,13 @@ export const artGalleryProducts = [
   },
   {
     id: "mickey-painting",
+    shopierUrl: "https://shopier.com/asksanri/46394483",
     slug: "mickey-painting",
     name: "Mickey Painting — Duvar Objesi",
     nameEn: "Mickey Painting — Wall Object",
     image: "mickey-painting.jpg",
     gallery: ["mickey-painting.jpg"],
-    price: null, // TODO: Mickey Painting tablo varyantı; Shopier linki ve fiyatı netleşecek.
+    price: 10000,
     currency: "TL",
     dimensions: DIMENSIONS_FALLBACK,
     material: "Karma teknik / kanvas",
@@ -613,6 +617,7 @@ export const artGalleryProducts = [
   },
   {
     id: "mona-lisa-heykel",
+    shopierUrl: "https://shopier.com/asksanri/46394099",
     slug: "mona-lisa-heykel",
     name: "Mona Lisa — Heykel",
     nameEn: "Mona Lisa — Sculpture",
@@ -631,6 +636,7 @@ export const artGalleryProducts = [
   },
   {
     id: "mona-lisa-tablo",
+    shopierUrl: "https://shopier.com/asksanri/46394228",
     slug: "mona-lisa-tablo",
     name: "Mona Lisa — Tablo",
     nameEn: "Mona Lisa — Canvas",
@@ -649,6 +655,7 @@ export const artGalleryProducts = [
   },
   {
     id: "icecream-monalisa",
+    shopierUrl: "https://shopier.com/asksanri/46394169",
     slug: "icecream-monalisa",
     name: "Ice Cream Mona Lisa",
     nameEn: "Ice Cream Mona Lisa",
@@ -802,6 +809,7 @@ export const artGalleryProducts = [
   },
   {
     id: "street-art-sehpa",
+    shopierUrl: "https://shopier.com/asksanri/46394271",
     slug: "street-art-sehpa",
     name: "Street Art Sehpa",
     nameEn: "Street Art Side Table",
@@ -883,6 +891,7 @@ export const artGalleryProducts = [
   /* ── DEKOR / MUMLUK ─────────────────────────────────────────────── */
   {
     id: "govde-mumluk",
+    shopierUrl: "https://shopier.com/asksanri/46393522",
     slug: "govde-mumluk",
     name: "Gövde Mumluk",
     nameEn: "Torso Candle Holder",
