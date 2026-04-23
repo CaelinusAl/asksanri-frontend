@@ -14,6 +14,7 @@ import {
   SHOPIER_PRODUCTS,
 } from "../data/shopierConfig";
 import { trackPurchase } from "../data/analytics";
+import { useAuth } from "../contexts/AuthContext";
 import styles from "./PaymentPages.module.css";
 
 import { WHATSAPP_SUPPORT_URL as WHATSAPP_LINK } from "../constants/whatsappSupport";
@@ -81,12 +82,25 @@ async function tryVerifyByEmail(target, alternateIds, email) {
   return { unlocked: false };
 }
 
+/**
+ * Dinamik polling aralığı — ilk dakikada sık, sonra seyrek.
+ * Sayfa görünür olduğu sürece durmaz.
+ */
+function nextPollDelay(iteration) {
+  if (iteration < 10) return 3000; // ilk 30 sn: 3 sn
+  if (iteration < 30) return 5000; // sonraki ~100 sn: 5 sn
+  return 10000; // sonsuza kadar: 10 sn
+}
+
 export default function OdemeBasariliPage() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
+  const { user } = useAuth();
   const [phase, setPhase] = useState("checking_with_email");
   const [verifyNote, setVerifyNote] = useState("");
   const [emailInput, setEmailInput] = useState("");
+  /** Kullanıcı giriş yapınca veya URL/pending'den e-posta gelince input'u bir kez doldur. */
+  const emailPrefillRef = useRef(false);
   const [bindError, setBindError] = useState("");
   const [emailAttempts, setEmailAttempts] = useState(0);
   const [pollingActive, setPollingActive] = useState(true);
@@ -98,10 +112,38 @@ export default function OdemeBasariliPage() {
   const contentId = params.get("content") || pending?.contentId || null;
   const returnPath = params.get("ref") || pending?.returnPath || "/";
 
+  /**
+   * Sıralı e-posta kaynakları — güçlüden zayıfa:
+   *  1. URL param (mail linki ya da dpiurl ile geldi)
+   *  2. Pending kaydında Shopier redirect öncesi alınan e-posta
+   *  3. Giriş yapmış kullanıcının hesabındaki e-posta
+   *  4. Manuel form (emailInput)
+   */
+  const urlEmail = params.get("email") || "";
+  const authedEmail = user?.email || "";
+  const resolvedEmail =
+    (urlEmail && urlEmail.includes("@") && urlEmail.trim().toLowerCase()) ||
+    (pending?.email && pending.email.includes("@") && pending.email.trim().toLowerCase()) ||
+    (authedEmail && authedEmail.includes("@") && authedEmail.trim().toLowerCase()) ||
+    "";
+
+  /**
+   * Polling döngüsünde her zaman en güncel email'i kullanmak için ref.
+   * (AuthContext sonradan user'ı yükleyebilir, manuel form email girebilir.)
+   */
+  const emailRef = useRef(resolvedEmail);
+  useEffect(() => {
+    emailRef.current = resolvedEmail;
+    if (!emailPrefillRef.current && resolvedEmail && !emailInput) {
+      setEmailInput(resolvedEmail);
+      emailPrefillRef.current = true;
+    }
+  }, [resolvedEmail, emailInput]);
+
   const tryUnlockCross = useCallback(async (primaryId, purchasedAt) => {
     const crossIds = CROSS_UNLOCK_MAP[primaryId] || [];
     for (const cid of crossIds) {
-      const r = await fetchShopierPurchaseCheck(cid);
+      const r = await fetchShopierPurchaseCheck(cid, emailRef.current);
       if (r.unlocked) {
         applyVerifiedShopierUnlock(cid, r.purchased_at || r.purchase?.purchased_at || purchasedAt);
       }
@@ -119,7 +161,7 @@ export default function OdemeBasariliPage() {
         applyVerifiedShopierUnlock("okuma_devami", purchasedAt);
       }
       await tryUnlockCross(target, purchasedAt);
-      await syncPurchasesFromServer();
+      await syncPurchasesFromServer({ email: emailRef.current });
       clearPendingPurchase();
 
       const meta = resolveShopierPurchaseMeta(target, pendingSnap?.productId);
@@ -147,24 +189,26 @@ export default function OdemeBasariliPage() {
 
     const pendingSnap = getPendingPurchase();
     const target = contentId || "premium";
-    const pendingEmail = params.get("email") || pendingSnap?.email || "";
     const alternateIds = buildAlternateIds(target);
+
+    const runCheck = async () => {
+      const email = emailRef.current || "";
+      const r = await tryAllIds(target, alternateIds, email);
+      if (r.unlocked) return { unlocked: true, at: r.at };
+      if (email && email.includes("@")) {
+        const pat = await tryVerifyByEmail(target, alternateIds, email);
+        if (pat.unlocked) return { unlocked: true, at: pat.at };
+      }
+      return { unlocked: false };
+    };
 
     (async () => {
       setVerifyNote("Ödeme kontrol ediliyor...");
 
-      const immediate = await tryAllIds(target, alternateIds, pendingEmail);
+      const immediate = await runCheck();
       if (immediate.unlocked) {
         await runVerifiedSuccess(target, immediate.at, pendingSnap);
         return;
-      }
-
-      if (pendingEmail && pendingEmail.includes("@")) {
-        const patResult = await tryVerifyByEmail(target, alternateIds, pendingEmail);
-        if (patResult.unlocked) {
-          await runVerifiedSuccess(target, patResult.at, pendingSnap);
-          return;
-        }
       }
 
       setPhase("checking_with_email");
@@ -172,19 +216,59 @@ export default function OdemeBasariliPage() {
         "Ödeme kaydı henüz ulaşmadı — arka planda kontrol devam ediyor.\nHızlı doğrulama için Shopier e-postanı gir."
       );
 
-      for (let i = 0; i < 30; i++) {
+      /**
+       * Sonsuz polling — sayfa görünür olduğu sürece devam eder.
+       * Pratikte kullanıcı sekmeyi kapatırsa durur, yeniden açtığında
+       * `visibilitychange` ile yeniden tetiklenir.
+       */
+      let i = 0;
+      while (pollingRef.current) {
+        const delay = nextPollDelay(i);
+        i += 1;
+
+        if (typeof document !== "undefined" && document.visibilityState === "hidden") {
+          await sleep(1000);
+          continue;
+        }
+
+        await sleep(delay);
         if (!pollingRef.current) return;
-        await sleep(3000);
-        if (!pollingRef.current) return;
-        const r = await tryAllIds(target, alternateIds, pendingEmail);
+
+        const r = await runCheck();
         if (r.unlocked) {
           await runVerifiedSuccess(target, r.at, pendingSnap);
           return;
         }
+
+        /* 10 denemeden (ilk ~30 sn) sonra `pollingActive` ipucunu kapat ki
+           kullanıcı manuel e-posta formuna yönlensin — arka plan devam eder. */
+        if (i === 10) setPollingActive(false);
       }
-      setPollingActive(false);
     })();
-  }, [contentId, runVerifiedSuccess, params]);
+
+    return () => {
+      pollingRef.current = false;
+    };
+  }, [contentId, runVerifiedSuccess]);
+
+  /* Sekme tekrar görünür olunca bir kere hemen kontrol et. */
+  useEffect(() => {
+    if (typeof document === "undefined") return undefined;
+    const onVisibility = async () => {
+      if (document.visibilityState !== "visible") return;
+      if (successCalledRef.current) return;
+      if (!contentId) return;
+      const target = contentId;
+      const alternateIds = buildAlternateIds(target);
+      const email = emailRef.current || "";
+      const r = await tryAllIds(target, alternateIds, email);
+      if (r.unlocked) {
+        await runVerifiedSuccess(target, r.at, getPendingPurchase());
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, [contentId, runVerifiedSuccess]);
 
   const finalPath =
     returnPath && returnPath !== "/" ? decodeURIComponent(returnPath) : "/";

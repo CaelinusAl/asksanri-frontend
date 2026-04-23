@@ -2,12 +2,14 @@ import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useAuth } from "../contexts/AuthContext";
 import { redirectToShopier, isShopierUnlocked, checkServerUnlock, isShopierProductUnlocked, SHOPIER_PRODUCTS } from "../data/shopierConfig";
 import { trackFunnelEvent } from "../data/funnelTracker";
 import useServerUnlock from "../hooks/useServerUnlock";
 import KatmanliAcilim from "../components/KatmanliAcilim";
 import BankTransferLink from "../components/BankTransferLink";
 import SanriSharePanel from "../components/SanriSharePanel";
+import RestorePurchaseModal from "../components/RestorePurchaseModal";
 import {
   buildMatrixRolReading,
   narrativeToSectionTexts,
@@ -40,7 +42,32 @@ const LOADING_LINES = [
 
 /* ── Energy Exchange Modal ── */
 function EnergyModal({ open, onClose, label, price, productId, contentId }) {
+  const { user } = useAuth();
+  const authedEmail = user?.email && user.email.includes("@") ? user.email : "";
+  const [email, setEmail] = useState(authedEmail);
+  const [needEmail, setNeedEmail] = useState(!authedEmail);
+  const [emailErr, setEmailErr] = useState("");
+
+  useEffect(() => {
+    if (open) {
+      setEmail(authedEmail);
+      setNeedEmail(!authedEmail);
+      setEmailErr("");
+    }
+  }, [open, authedEmail]);
+
   if (!open) return null;
+
+  const handlePay = () => {
+    const em = String(email || "").trim().toLowerCase();
+    if (!em || !em.includes("@") || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
+      setEmailErr("Geçerli bir e-posta gir — satın alımın bu e-posta ile eşlenecek.");
+      setNeedEmail(true);
+      return;
+    }
+    trackFunnelEvent("role_shopier_redirect");
+    redirectToShopier(productId, contentId, "/rol-okuma", em);
+  };
 
   return (
     <div className={styles.modalBackdrop} onClick={onClose}>
@@ -83,13 +110,58 @@ function EnergyModal({ open, onClose, label, price, productId, contentId }) {
         <p className={styles.modalPrice}>
           {price}₺ enerji değişimi
         </p>
-        <button
-          className={styles.modalBtn}
-          onClick={() => {
-            trackFunnelEvent("role_shopier_redirect");
-            redirectToShopier(productId, contentId, "/rol-okuma");
-          }}
-        >
+
+        {needEmail ? (
+          <div style={{ marginTop: 14, marginBottom: 10 }}>
+            <label
+              style={{
+                display: "block",
+                fontSize: 12,
+                color: "rgba(200,160,255,0.55)",
+                marginBottom: 6,
+                textAlign: "left",
+              }}
+            >
+              E-posta adresin (Shopier'da da aynısını kullan)
+            </label>
+            <input
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder="ornek@gmail.com"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailErr("");
+              }}
+              style={{
+                width: "100%",
+                padding: "12px 14px",
+                borderRadius: 10,
+                border: "1px solid rgba(200,160,255,0.25)",
+                background: "rgba(255,255,255,0.05)",
+                color: "#e8e4f4",
+                fontSize: 14,
+                outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
+            {emailErr ? (
+              <p
+                style={{
+                  color: "#f6ad55",
+                  fontSize: 12,
+                  margin: "6px 0 0",
+                  textAlign: "left",
+                }}
+              >
+                {emailErr}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+
+        <button className={styles.modalBtn} onClick={handlePay}>
           Kartla Anında Öde
         </button>
         <BankTransferLink
@@ -126,6 +198,8 @@ const DEEP_CTA_PREFILL = {
 };
 
 function RolDeepenSection({ isTR, navigate }) {
+  const { user } = useAuth();
+  const authedEmail = user?.email && user.email.includes("@") ? user.email : "";
   const uIliski = useVerifiedProductUnlock("deep_iliski_unlock");
   const uKar = useVerifiedProductUnlock("deep_kariyer_unlock");
   const uGen = useVerifiedProductUnlock("deep_genel_unlock");
@@ -167,7 +241,7 @@ function RolDeepenSection({ isTR, navigate }) {
       navigate(`/sanriya-sor?prefill=${encodeURIComponent(pre)}`);
       return;
     }
-    redirectToShopier(item.productKey, item.contentId, "/rol-okuma");
+    redirectToShopier(item.productKey, item.contentId, "/rol-okuma", authedEmail);
   };
 
   return (
@@ -335,6 +409,7 @@ export default function RolOkumaPage() {
   const intervalRef = useRef(null);
 
   const [modal, setModal] = useState(null);
+  const [restoreOpen, setRestoreOpen] = useState(false);
   const [hasLocalRolCache, setHasLocalRolCache] = useState(false);
 
   const [serverUnlocked] = useServerUnlock("role_unlock", "ankod_unlock", "subconscious_unlock");
@@ -829,16 +904,18 @@ export default function RolOkumaPage() {
                       type="button"
                       className={styles.lockZoneRecovery}
                       onClick={async () => {
+                        trackFunnelEvent("role_restore_click");
+                        /* Önce sessiz cihaz-bazlı kontrol — yakında başarılıysa açarız. */
                         const ok = await checkServerUnlock("role_unlock");
-                        if (ok) window.location.reload();
-                        else {
-                          window.alert(
-                            "Sunucuda aktif satın alım bulunamadı. Ödeme sonrası /odeme-basarili sayfasından doğrula veya giriş yaptığın e-posta ile hesabını kullan."
-                          );
+                        if (ok) {
+                          window.location.reload();
+                          return;
                         }
+                        /* Aksi halde e-posta ile geri yükleme modalını aç. */
+                        setRestoreOpen(true);
                       }}
                     >
-                      Satın alımı doğrula
+                      Satın alımımı geri yükle
                     </button>
                   </div>
                 </div>
@@ -885,6 +962,13 @@ export default function RolOkumaPage() {
           />
         )}
       </AnimatePresence>
+
+      {/* ── Restore Purchase Modal ── */}
+      <RestorePurchaseModal
+        open={restoreOpen}
+        onClose={() => setRestoreOpen(false)}
+        contentLabel="Matrix Rol Okuma"
+      />
     </div>
   );
 }

@@ -145,6 +145,45 @@ export const fetchAdminDeliverables = (params = {}) => {
   return adminFetch(`/admin/deliverables${s ? `?${s}` : ""}`);
 };
 
+/**
+ * Belirli bir deliverable satırı için müşteriye transactional mail gönder.
+ * Backend uç noktası henüz yayında değilse 404 döner; UI "Backend hazır değil"
+ * mesajıyla mailto fallback'e yönlendirir.
+ *
+ * @param {number|string} id user_deliverables.id
+ * @param {{ lang?: "tr"|"en", force?: boolean, access_link?: string }} [opts]
+ *   - lang: gönderilecek dil (varsayılan backend tarafında tr)
+ *   - force: daha önce gönderilmiş olsa bile tekrar göndersin
+ *   - access_link: frontend'de üretilmiş link (backend kendi linkini üretmiyorsa kullanabilir)
+ */
+export const sendDeliverableEmail = (id, opts = {}) =>
+  adminFetch(`/admin/deliverables/${encodeURIComponent(id)}/send-email`, {
+    method: "POST",
+    body: {
+      lang: opts.lang || "tr",
+      force: Boolean(opts.force),
+      access_link: opts.access_link || undefined,
+    },
+  });
+
+/**
+ * Sadece erişim linki maili (deliverable içeriği olmadan) — Shopier
+ * satın alımı tespit edildi ama deliverable henüz üretilmediyse
+ * veya müşteri "linkim gelmedi" dediyse kullanılır.
+ *
+ * @param {{ email: string, content_id?: string, lang?: "tr"|"en", access_link?: string }} payload
+ */
+export const sendAccessLinkEmail = (payload = {}) =>
+  adminFetch(`/admin/deliverables/send-access-link`, {
+    method: "POST",
+    body: {
+      email: String(payload.email || "").trim().toLowerCase(),
+      content_id: payload.content_id || "role_unlock",
+      lang: payload.lang || "tr",
+      access_link: payload.access_link || undefined,
+    },
+  });
+
 // ── Okuma Stats ──
 export const fetchOkumaAllStats = () =>
   fetch(

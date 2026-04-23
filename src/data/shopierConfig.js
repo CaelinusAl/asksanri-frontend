@@ -446,15 +446,46 @@ export function getUnlockedItems() {
   return items;
 }
 
-export function setPendingPurchase(productId, contentId, returnPath) {
+export function setPendingPurchase(productId, contentId, returnPath, email = "") {
   const key = generateAccessKey();
   try {
+    const normalizedEmail =
+      typeof email === "string" && email.includes("@")
+        ? email.trim().toLowerCase()
+        : "";
     localStorage.setItem(
       SHOPIER_PENDING_KEY,
-      JSON.stringify({ productId, contentId, returnPath, key, ts: Date.now() })
+      JSON.stringify({
+        productId,
+        contentId,
+        returnPath,
+        email: normalizedEmail,
+        key,
+        ts: Date.now(),
+      })
     );
   } catch {}
   return key;
+}
+
+/** Shopier redirect öncesi opsiyonel "prepare-order" kaydı — webhook eşleşmesini iyileştirmek için. */
+async function _registerPendingOrderOnServer({ productId, contentId, email, key }) {
+  if (!email || !String(email).includes("@")) return;
+  try {
+    await fetch(`${API}/shopier/prepare-order`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: String(email).trim().toLowerCase(),
+        content_id: String(contentId || ""),
+        product_id: String(productId || ""),
+        device_fp: getDeviceFingerprint(),
+        platform_order_id: key,
+      }),
+    });
+  } catch {
+    /* backend henüz bu endpoint'i desteklemiyorsa sessiz geç */
+  }
 }
 
 export function getPendingPurchase() {
@@ -481,8 +512,10 @@ export function clearPendingPurchase() {
 /**
  * Redirect to Shopier product page.
  * productId must match a key in SHOPIER_PRODUCTS.
+ * `email` verilmişse hem pending kaydına hem de return URL'ine eklenir
+ * (webhook ve /odeme-basarili doğrulaması için kritik).
  */
-export function redirectToShopier(productId, contentId, returnPath) {
+export function redirectToShopier(productId, contentId, returnPath, email = "") {
   const product = SHOPIER_PRODUCTS[productId];
   if (!product) return;
 
@@ -492,13 +525,127 @@ export function redirectToShopier(productId, contentId, returnPath) {
     }
   } catch {}
 
-  const key = setPendingPurchase(productId, contentId, returnPath);
-  const returnUrl = `${SHOPIER_SUCCESS_ORIGIN}/odeme-basarili?key=${key}&content=${encodeURIComponent(
-    contentId || ""
-  )}&ref=${encodeURIComponent(returnPath || "/")}`;
+  const normalizedEmail =
+    typeof email === "string" && email.includes("@")
+      ? email.trim().toLowerCase()
+      : "";
+
+  const key = setPendingPurchase(productId, contentId, returnPath, normalizedEmail);
+
+  /* Backend'e pending order'ı bildir (varsa) — webhook geldiğinde eşleştirme için. */
+  _registerPendingOrderOnServer({
+    productId,
+    contentId,
+    email: normalizedEmail,
+    key,
+  });
+
+  const returnParams = new URLSearchParams();
+  returnParams.set("key", key);
+  if (contentId) returnParams.set("content", String(contentId));
+  if (returnPath) returnParams.set("ref", String(returnPath));
+  if (normalizedEmail) returnParams.set("email", normalizedEmail);
+
+  const returnUrl = `${SHOPIER_SUCCESS_ORIGIN}/odeme-basarili?${returnParams.toString()}`;
 
   const shopierUrl = `${product.url}?dpiurl=${encodeURIComponent(returnUrl)}`;
   window.location.href = shopierUrl;
+}
+
+/**
+ * "Satın alımımı geri yükle" akışı:
+ * Kullanıcıdan e-posta alır, sunucudan o e-postaya bağlı tüm satın alımları çeker
+ * ve localStorage'a doğrulanmış olarak yazar.
+ *
+ * Dönen obje:
+ *  - ok: boolean
+ *  - newItems: [{ content_id, label, at }]
+ *  - totalUnlocked: number (bu e-posta için server'da bulunan toplam kayıt)
+ *  - reason: "empty" | "network" | "bad_email" | null
+ */
+export async function restorePurchasesByEmail(email) {
+  const em = String(email || "").trim().toLowerCase();
+  if (!em || !em.includes("@")) {
+    return { ok: false, newItems: [], totalUnlocked: 0, reason: "bad_email" };
+  }
+
+  try {
+    const fp = getDeviceFingerprint();
+    const qs = new URLSearchParams();
+    qs.set("email", em);
+    if (fp && fp !== "anon") qs.set("device_fp", fp);
+
+    const res = await fetch(`${API}/shopier/my-purchases?${qs.toString()}`, {
+      headers: _getAuthHeaders(),
+    });
+
+    if (!res.ok) {
+      return { ok: false, newItems: [], totalUnlocked: 0, reason: "network" };
+    }
+
+    const data = await res.json().catch(() => ({}));
+    const purchases = Array.isArray(data.purchases) ? data.purchases : [];
+
+    if (!purchases.length) {
+      /* Fallback: /shopier/bind-device ile cihaz bağlamayı dene (ana ürünler). */
+      const fallbackTargets = ["role_unlock", "okuma_devami", "ankod_unlock"];
+      for (const cid of fallbackTargets) {
+        await bindShopierPurchaseEmail(em, cid).catch(() => null);
+      }
+      const retry = await fetch(`${API}/shopier/my-purchases?${qs.toString()}`, {
+        headers: _getAuthHeaders(),
+      });
+      if (retry.ok) {
+        const retryData = await retry.json().catch(() => ({}));
+        const retryList = Array.isArray(retryData.purchases) ? retryData.purchases : [];
+        if (!retryList.length) {
+          return { ok: true, newItems: [], totalUnlocked: 0, reason: "empty" };
+        }
+        return applyRestoredPurchases(retryList);
+      }
+      return { ok: true, newItems: [], totalUnlocked: 0, reason: "empty" };
+    }
+
+    return applyRestoredPurchases(purchases);
+  } catch {
+    return { ok: false, newItems: [], totalUnlocked: 0, reason: "network" };
+  }
+}
+
+function applyRestoredPurchases(purchases) {
+  const access = getShopierAccess();
+  const newItems = [];
+  let changed = 0;
+
+  for (const p of purchases) {
+    const cid = p.content_id;
+    if (!cid) continue;
+    const cur = access[cid];
+    if (!cur || !cur.serverVerified) {
+      access[cid] = {
+        unlocked: true,
+        serverVerified: true,
+        at: p.purchased_at || cur?.at,
+      };
+      changed += 1;
+      const pKey = CONTENT_TO_PRODUCT[cid] || cid;
+      const product = SHOPIER_PRODUCTS[pKey];
+      newItems.push({
+        content_id: cid,
+        label: product?.label || p.product_name || cid,
+        at: p.purchased_at,
+      });
+    }
+  }
+
+  if (changed) saveShopierAccess(access);
+
+  return {
+    ok: true,
+    newItems,
+    totalUnlocked: purchases.length,
+    reason: newItems.length === 0 ? "already_unlocked" : null,
+  };
 }
 
 export function hasAnyShopierPremium() {
