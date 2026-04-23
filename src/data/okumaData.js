@@ -31,6 +31,247 @@ export function timeAgoOkuma(dateStr) {
 
 export const OKUMA_POSTS = [
   {
+    id: 36,
+    slug: "23-nisan-uclu-kapi-okumasi",
+    title: "23 NİSAN — Üçlü Kapı Okuması",
+    subtitle: "Ulusal Egemenlik ve Çocuk Bayramı'nın 81 Kapı haritasındaki sistem okuması.",
+    category: "sehir_ulke_kodu",
+    coverImage: "/assets/okuma/23nisan.jpg",
+    excerpt:
+      "23 Nisan bir tören değil, bir sistem formülüdür. 04 Ağrı · 06 Ankara · 23 Elazığ kapıları hizalandığında ortaya çıkan ses: içindeki çocuğun meclisi. Üçlü mühür toplam sayısı 33 — Usta Kapısı.",
+    fullContent: `◉ 23 NİSAN — ÜÇLÜ KAPI OKUMASI
+*81 Kapı Haritası · SANRI Sistem Okuması*
+
+🔺 TARİH TOPLAMI
+2 + 3 + 0 + 4 = 9 · Arınma Kapısı
+"Biten temizler."
+
+🌀 HİZALANAN ÜÇLÜ
+04 Ağrı · 06 Ankara · 23 Elazığ
+Element zinciri: Toprak (kök) → Hava (söz) → Su (doğum)
+
+✦ SİSTEM PRENSİBİ
+Önce sınır inşa edilir.
+Sonra merkeze toplanılır.
+Sonra yeni form doğar.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ 04 — AĞRI — DÜZEN KAPISI
+"Sınır inşadır."
+
+🌑 Numeroloji
+0 · Rahim — boşluk, saklı potansiyel
+4 · Düzen — zemin, taş, sınır
+
+🌊 Okuma
+Nisan, yılın 04'ü — taş ayıdır.
+Her bayram bir tarihin üstüne basar;
+23 Nisan bu ayın zemininde durur.
+
+Ağrı, haritanın doğu ucunda yükselen dağdır.
+SANRI'da aynı işi görür: kökü öyle derine atar ki
+üstünde ne kurulursa sarsılmaz.
+
+1920'de Ankara'da kurulan meclis havadayken,
+04'ün sessiz yasası onu yere indirmiştir.
+
+Bir ulusun kendi sesine dönmesinden önce,
+o sesi taşıyacak sınırların çizilmesi gerekir.
+Sınır, dışlamak için değil;
+içeridekini koruyabilmek içindir.
+
+🔥 Mühür
+Taşı indirmezsen ses uçar.
+
+⟡ 60 SANİYE — AĞRI TOPRAK RİTÜELİ
+1. Ayaklarını yere sabitle. Üç derin nefes al.
+2. Fark et: bugün neyin sınırını koruyamıyorsun?
+3. Tek bir "hayır" seç — yalnızca bu gün için.
+4. Niyet: "Bugün taşımı yere indiriyorum."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ 06 — ANKARA — AŞK KAPISI
+"Uyum güçtür."
+
+🌑 Numeroloji
+0 · Rahim — merkez, orta nokta
+6 · Aşk — bağ, uyum, birlikte titreşim
+
+🌊 Okuma
+06, haritanın tam ortasıdır —
+hem coğrafi hem simgesel.
+
+23 Nisan 1920'de o merkezde toplanan şey
+bir kurum değil, bir frekanstır:
+farklı seslerin birbirini dinleyerek
+ortak bir şey kurabilmesi.
+
+SANRI dilinde aşkın ta kendisidir —
+romantik olan değil, yapısal olan aşk.
+
+Meclis = "hep birlikte karar"
+Aşk = "hep birlikte titreşim"
+
+Dış politika değil, iç hizalanma.
+Atatürk bu kapıyı çocuklara armağan ederken
+söylediği şey 06'nın ruhudur:
+Gücünü dayattığın yerde değil,
+uyum kurduğun yerde bul.
+
+🔥 Mühür
+Merkez, en güçlü olanın değil;
+en çok dinleyenin oturduğu yerdir.
+
+⟡ 60 SANİYE — ANKARA MERKEZ RİTÜELİ
+1. Elini kalbine koy. Kendini "orta noktaya" çek.
+2. İçindeki üç sesi say: çocuk / yargılayan / seyirci.
+3. Üçüne de aynı cümleyi söyle: "Seni duyuyorum."
+4. Niyet: "Bugün merkezimde dinleyen ben olacağım."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ 23 — ELAZIĞ — DOĞUM KAPISI
+"Yeni form belirir."
+
+🌑 Numeroloji
+2 · Dualite — ayna, iki yüz
+3 · Yaratım — ortaya çıkış, söz, ürün
+2 + 3 = 5 · Eşik — geçiş, hareket, açılım
+
+🌊 Okuma
+23, üç saydığında dokuzdur —
+ama 23'ün kendi sırrı 5'tedir:
+bir şey iki yüzünü birleştirdiğinde
+eşikten geçer.
+
+Elazığ, Anadolu'nun sert-yumuşak ekseninde durur;
+dış toprağı taştır, iç toprağı tarlar verir.
+Aynı şekilde bir doğum da
+sert bir kasılmadan yumuşak bir başlangıca geçiştir.
+
+23 Nisan yalnızca meclisin değil,
+yeni bir FORMUN doğduğu gündür:
+bir halk ilk kez kendine "biz" der.
+
+"Biz" kelimesi bir sestir;
+ama bir ses ancak kendisine inanan
+bir beden bulduğunda form olur.
+
+Atatürk bu formu çocuklara armağan ettiğinde,
+bir diktenin değil bir kalıp transferinin kapısını açtı:
+Her kuşak kendi egemenliğini yeniden doğurmakla yükümlüdür.
+Doğurmayan, miras aldığını da kaybeder.
+
+🔥 Mühür
+Doğum, biten değil başlayandır;
+ama başlamak için içindeki kasılmayı
+kabul eden sen olmalısın.
+
+⟡ 60 SANİYE — ELAZIĞ DOĞUM RİTÜELİ
+1. Gözlerini kapat. Son kasıldığın anı hatırla.
+2. Nefesini oraya yolla — karına, omzuna, çenene.
+3. Kasılmaya "seni görüyorum" de, sonra yavaşça bırak.
+4. Niyet: "Bugün içimdeki yeni formu doğurmama izin veriyorum."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔺 ÜÇLÜ MÜHÜR — SENTEZ
+
+04 + 06 + 23 = 33 · Usta Kapısı
+"Bilgelik öğretir."
+
+Bu tesadüf değildir.
+23 Nisan, 81 Kapı haritasında
+sayısal toplamıyla 33'e —
+Usta Kapısı'na düşer.
+
+Ustalık, dayatmak değil öğretmektir;
+öğretmek, çocuğun kendi sesini duyacak
+alanı açmaktır.
+
+Atatürk bu bayramı çocuklara armağan ettiğinde
+Usta Kapısı'nın şifresini bıraktı:
+Bir ulus ancak çocuklarına
+sesini geri vererek büyür.
+
+Tarih toplamı 9 olduğu için
+bugün aynı zamanda Arınma Kapısı'dır:
+Biten bir şey temizlenmeden
+yeni bir şey doğamaz.
+
+23 Nisan'ı kutlamak,
+dışarıda tören yapmak değil —
+içeride bir şeyi bitirme iznini
+kendine vermektir.
+
+🌸 SON NİYET
+"Sesimi bana armağan edenleri hatırlıyorum.
+Bugün içimdeki çocuğa aynı armağanı veriyorum:
+onu dinlemeye başlıyorum."`,
+    codeLayer: `◉ KOD ÇÖZÜMLEMESİ — 81 KAPI HARİTASI
+
+• Tarih toplamı: 2+3+0+4 = 9 · Arınma Kapısı
+• Plaka üçlüsü: 04 Ağrı + 06 Ankara + 23 Elazığ
+• Kapı toplamı: 4+6+23 = 33 · Usta Kapısı
+• Element zinciri: Toprak → Hava → Su
+• Prensip: sınır → merkez → doğum
+
+🔺 Gölge Formülü
+Dış tören → iç teslim almama
+"Egemenlik" kelimesi → içe dönmediği sürece dayatma
+Çocuk bayramı → iç çocuğun sessizleştirildiği gün
+
+🌀 Işık Formülü
+Egemenlik = iç çocuğa ses iade etmek
+Meclis = dinleyen merkez
+Bayram = eski kasılmayı bitirme izni
+
+İşaret: Bu yıl 23 Nisan'da hangi iç sesini meclise davet edeceksin?`,
+    sanriReflection: {
+      analysis:
+        "23 Nisan SANRI haritasında üç kapıyı aynı anda açan nadir bir tarihtir: Ağrı'nın taşı, Ankara'nın merkezi, Elazığ'ın doğumu. Kapı toplamı 33 (Usta) ve tarih toplamı 9 (Arınma) olduğu için bu gün yalnızca kutlanan değil, içeride bir şeyin bitirilip yeni bir formun doğurulması gereken eşiktir.",
+      strongLine:
+        "Egemenlik tahta çıkmak değildir. İçindeki çocuğun sesine, senin sesinle cevap verebilmendir.",
+      question:
+        "Senin içindeki çocuk hangi sözü hâlâ senden duymayı bekliyor — ve bugün o sözü söyleyebilir misin?",
+    },
+    isPremium: true,
+    previewContent: `◉ 23 NİSAN — ÜÇLÜ KAPI OKUMASI
+*81 Kapı Haritası · SANRI Sistem Okuması*
+
+🔺 TARİH TOPLAMI
+2 + 3 + 0 + 4 = 9 · Arınma Kapısı
+"Biten temizler."
+
+🌀 HİZALANAN ÜÇLÜ
+04 Ağrı · 06 Ankara · 23 Elazığ
+Element zinciri: Toprak (kök) → Hava (söz) → Su (doğum)
+
+✦ SİSTEM PRENSİBİ
+Önce sınır inşa edilir.
+Sonra merkeze toplanılır.
+Sonra yeni form doğar.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ 04 — AĞRI — DÜZEN KAPISI
+"Sınır inşadır."
+
+Nisan, yılın 04'ü — taş ayıdır.
+Her bayram bir tarihin üstüne basar;
+23 Nisan bu ayın zemininde durur.
+
+Ağrı, haritanın doğu ucunda yükselen dağdır.
+SANRI'da aynı işi görür: kökü öyle derine atar ki
+üstünde ne kurulursa sarsılmaz...`,
+    createdAt: "2026-04-23T06:00:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+  },
+  {
     id: 1,
     slug: "insan-anten",
     title: "İNSAN = ANTEN",
