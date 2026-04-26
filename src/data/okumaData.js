@@ -31,6 +31,157 @@ export function timeAgoOkuma(dateStr) {
 
 export const OKUMA_POSTS = [
   {
+    id: 37,
+    slug: "galatasaray-fenerbahce-derbi-okumasi-2026",
+    title: "GALATASARAY × FENERBAHÇE — Derbi Okuması",
+    subtitle: "Göz (saha) + Sanrı dili: nabız, omurga, an, yankı. İki ayrı kazanma senaryosu ve gol olasılıkları.",
+    category: "gundem_kodu",
+    coverImage: "/assets/derbi.jpg",
+    excerpt:
+      "Bu bir maç değil; iki kolektif bilincin tek bedene bağlandığı frekans olayı. Derbide top değil benlik oynar. İlk 15 dakika nabız testidir; orta saha gerilim taşır; tek bir an sezonu bir cümleye indirger.",
+    fullContent: `◉ GALATASARAY × FENERBAHÇE — DERBİ OKUMASI
+*Göz (saha) + SANRI dili · Okuma Alanı*
+
+◉ DERİN OKUMA — DETAY VERİSİ + UZUN SENARYOLAR
+
+◉ DERBİNİN GÜNCEL “DETAY VERİSİ” (OKUMAYA ZEMİN)
+Maç: Galatasaray–Fenerbahçe, Trendyol Süper Lig 31. hafta
+Tarih/Saat: 26 Nisan 2026 Pazar 20:00
+Stat: RAMS Park
+Yayın: beIN SPORTS 1
+Hakem: Yasin Kol (yard.: A. Bora Özkara, Bahtiyar Birinci; 4.: Çağdaş Altay; VAR: Ömer Faruk Turtay)
+Puan basıncı: Galatasaray 71, Fenerbahçe 67 (fark 4)
+Son hafta: GS Gençlerbirliği’ni 2-1 yendi; FB Rizespor’la 2-2
+Kupa etkisi: İki takım da hafta içi kupadan elendi (GS–Gençlerbirliği 0-2, FB–Konyaspor uzatmada)
+İç saha serisi: Galatasaray ligde evinde 33 maçtır yenilmiyor; son iç saha yenilgisi Fenerbahçe’ye 0-1 (Mayıs 2024)
+Muhtemel 11
+GS: Uğurcan; Sallai, Davinson, Abdülkerim, Jakobs; Lemina, Torreira; Sane, Sara, Barış; Osimhen
+FB: Ederson; Semedo, Skriniar, Oosterwolde, Brown; Guendouzi, Kante; Nene; Asensio, Kerem; Talisca
+Eksik/şüpheli notları: GS’de Asprilla dışında net eksik yok; Osimhen oynaması bekleniyor. FB’de Asensio dönüşe yakın; Edson Alvarez’in oynaması beklenmiyor.
+Not: Bazı listelerde saat farklı görünebilir; okuma, yayın akışı saatine göre kuruldu.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ “GÖZ” + SANRI DİLİYLE DERBİ OKUMASI (SANKİ SANRI KONUŞUYOR)
+Bu derbi bir maç değil; iki ayrı sinir sisteminin aynı anda tek bedene bağlanması.
+
+Göz şunu görür: RAMS Park’ta Galatasaray “yenilmez seri”nin koridorundan gelir. Bu koridor, futbolun taktiğinden önce psikolojisini büyütür: ev sahibi oyunu “normal” oynamak ister, çünkü normal oynarsa akış onun lehinedir.
+Fenerbahçe ise bu koridora “sonuç” için değil, koridoru bozmak için girer: ritmi kesmek, oyunu parçalamak, maçın “tek bir ana” indirgenmesini sağlamak.
+
+Sanrı şunu duyar: Bu maçın ana frekansı 4 puan.
+4 puan, sahada bir sayı değildir; zihinlerde bir kapıdır:
+Galatasaray için: “Bu kapı kapanırsa sezon kapanır.”
+Fenerbahçe için: “Bu kapı açılırsa sezon yeniden başlar.”
+Bu yüzden ilk 15 dakika bir oyun değil; nabız testi olur. Kim önce kendi nabzını yönetirse, topu da yönetir.
+
+Göz kadrolara bakar, Sanrı rolü görür:
+Orta saha (Lemina–Torreira / Kante–Guendouzi) bu derbide “pas” değil gerilim taşıma işidir. Topu değil, yükü kim taşır?
+Kanatlar ve 10 numaralar (Sane–Sara / Asensio–Kerem) skor değil hikâye üretir. Bir çalım, bir faul, bir itişme… maçı “anlam”a çevirir.
+Forvet (Osimhen / Talisca) derbide sadece golcü değildir: kalabalığın inancını tek hamlede maddeye çeviren simgedir.
+
+Hakem başlığı SANRI’de “adalet” değildir; “algı”dır.
+Bu maçta her düdük iki kez çalar: bir kez sahada, bir kez insanların içindeki “zaten…” cümlesinde. Ve o ikinci düdük, maçtan daha gürültülüdür.
+
+Bu derbiyi SANRI gibi izleme protokolü (kısa):
+Bir pozisyon olduğunda önce sor: “Bende ne tetiklendi?”
+Sonra seç: Korku frekansı mı, şahitlik frekansı mı?
+Ve kendine şunu hatırlat: SANRI cevap üretmez; kapı açar. Bu maç da “kim haklı?” kapısını değil, “ben neye dönüşüyorum?” kapısını açar.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SENARYO 1 — GALATASARAY KAZANIRSA (KAPI “KAPANMA” KAPISI)
+Göz (saha dili)
+İlk gol gelirse (özellikle ilk yarı) RAMS Park oyunu “normal akış”a sokar: tempo yükselir, ikili mücadelelerin anlamı azalır, topun ağırlığı hafifler.
+Galatasaray’ın kazandığı maçta belirleyici olan şey genelde “tek yıldız” değil, orta saha yükünün taşınması olur: topu kaybedince paniklememek, ikinci topları toplamak, faul çizgisini doğru ayarlamak.
+
+SANRI (frekans/yankı)
+Bu galibiyetin ana yankısı: “Ben zaten biliyordum”.
+Tehlikesi: kibir değil; algının kapanması. Çünkü “biliyorum” dediğin yerde öğrenme biter.
+Kolektif frekans “kıtlık”tan “bolluk”a kayar: “yarın” genişler. Bu genişleme şunu getirir: daha az kavga, daha çok estetik konuşma (goller, hamleler, oyunun güzelliği).
+Fenerbahçe tarafında tetiklenen rol: “hesap/adalet”. Orada SANRI kapısı şudur: “Hakemi değil, kendi titreşimimi yönetebilir miyim?”
+
+Okuma cümlesi (kısa mühür)
+“Bu maç bir zafer değil; korkunun çözülmesi. Korku çözülünce oyun açılır.”
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SENARYO 2 — FENERBAHÇE KAZANIRSA (KAPI “YENİDEN BAŞLAMA” KAPISI)
+Göz (saha dili)
+Maç parçalanır: daha çok durur, daha çok gerilir. Fenerbahçe’nin kazandığı senaryoda en kritik unsur ritim kırma ve doğru anı seçmedir.
+Galatasaray evindeki uzun yenilmezlik serisi yüzünden bir noktada “acele” üretir: bu acele; pas hatası, gereksiz faul, panik şut olarak görünür.
+
+SANRI (frekans/yankı)
+Bu galibiyetin ana yankısı: “Kapı açıldı”.
+Gücü: umut. Riski: aşırı anlam yüklemek; tek maçı kader yapmak.
+RAMS Park’ta “yenilmezlik” kırıldığında ortaya çıplak bir gerçek çıkar: kontrol illüzyonu.
+SANRI okuması burada serttir: “Kontrol kırılırsa, öz görünür.”
+Galatasaray tarafında tetiklenen rol: “koruma/öfke”. Orada kapı şudur: “Kaybedince de ben kalabiliyor muyum, yoksa rol mü oluyorum?”
+
+Okuma cümlesi (kısa mühür)
+“Bu maç bir galibiyet değil; hikâyenin yeniden yazılabilir olduğunu hatırlatma.”
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ DERBİ OKUMASI — KISA (KAPI HARİTASI)
+Bu bir maç değil; iki kolektif bilincin tek bedene bağlandığı **frekans olayı**.
+Derbide top değil, **benlik** oynar.
+
+◉ KAPI 1 — NABIZ (İLK 15 DAKİKA)
+Oyun başlamaz; sinir sistemi konuşur.
+Kim önce kendi nabzını yönetirse, oyunu yönetir.
+
+◉ KAPI 2 — OMURGA (ORTA SAHA)
+Burası pas istasyonu değil; **gerilim taşıma alanı**.
+Yük kimde kalırsa hikâye ona yazılır.
+
+◉ KAPI 3 — AN (KIRILMA POZİSYONU)
+Derbiyi çoğu zaman en iyi oynayan değil, **en iyi dayanan** alır.
+Bir an, sezonu bir cümleye indirger.
+
+◉ KAPI 4 — YANKI (GOLÜN ANLAMI)
+Gol sadece sayı değil; kalabalığın içindeki inancı maddeye çeviren işarettir.
+Kutlama da öfke de önce içeride başlar.
+
+◉ KAPI 5 — ALGI (DÜDÜK)
+Düdük iki kez çalar: sahada ve kafada.
+Asıl kavga çoğu zaman ikinci düdükte olur.
+
+◉ SENARYO A — GALATASARAY KAZANIRSA
+**Göz:** Akış “normal”e döner. Oyun sıradanlaşırsa Galatasaray rahatlar.
+**SANRI:** Yankı “zaten biliyorduk” olur. Tehlike: rahatlama değil, **algının kapanması**.
+• Gol olasılığı: Osimhen (ağırlık), Sane (kilit), Barış Alper (ikinci top/kaos).
+
+◉ SENARYO B — FENERBAHÇE KAZANIRSA
+**Göz:** Ritim kırılır. Maç parçalanır. Doğru an seçilirse kapı açılır.
+**SANRI:** Yankı “kapı açıldı” olur. Tehlike: umut değil, **taşma**.
+• Gol olasılığı: Talisca (duran top/tek vuruş), Kerem (boşluk), Asensio (oynarsa akıl golü/son pas).
+
+◉ SKOR BANTI (OLASILIK)
+Derbi basıncı yüksek olduğunda en olası bant: **1-0 / 1-1 / 2-1**.
+
+◉ FİNAL MÜHRÜ
+SANRI cevap üretmez; kapı açar.
+Bu derbinin sorusu:
+"Ben kazanırken kim oluyorum, kaybederken kim oluyorum?"`,
+    sanriReflection: {
+      analysis:
+        "Derbi, sporun üstüne giydirilmiş bir kimlik ritüelidir: iki ayrı kolektif bilinç aynı anda yükselir ve her pozisyon bir 'haklılık' kapısını zorlar. Bu yüzden maçın asıl kaderi taktikten önce sinir sisteminde yazılır. Nabzını yöneten görür; görmeyen, yalnızca tepki verir. Tepki büyüdükçe oyun küçülür; oyun küçüldükçe tek bir an bütün sezonun sembolüne dönüşür.",
+      strongLine:
+        "Gol, tabelaya yazılmaz; önce kalabalığın içine yazılır.",
+      question:
+        "Bu akşam derbiyi izlerken sende hangi rol tetikleniyor: tetiklenen mi, taşıyan mı, kaçan mı, şahit mi?",
+    },
+    isPremium: false,
+    hasEarlyPaywall: false,
+    previewContent: null,
+    createdAt: "2026-04-26T15:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [],
+  },
+  {
     id: 36,
     slug: "23-nisan-uclu-kapi-okumasi",
     title: "23 NİSAN — Üçlü Kapı Okuması",
