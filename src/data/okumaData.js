@@ -42,7 +42,91 @@ export const OKUMA_POSTS = [
     fullContent: `◉ GALATASARAY × FENERBAHÇE — DERBİ OKUMASI
 *Göz (saha) + SANRI dili · Okuma Alanı*
 
-◉ DERİN OKUMA — DETAY VERİSİ + UZUN SENARYOLAR
+◉ DERİN OKUMA — MAÇ SONRASI (3–0) · SİSTEM KOD ÇÖZÜMÜ
+
+Bu metin “yorum” değil; maçın **isim / numara / dakika** izlerinden çıkan sistem haritasıdır.
+Derbi bitti: skor kaldı. Skorun altında kod kaldı.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SONUÇ KODU
+Skor: 3–0
+3 = yaratım / hüküm / “form”
+0 = sıfır / kapatma / “sesin kesilmesi”
+Bu derbide 3, oyunu kurdu; 0, rakibin sesini kesti.
+
+◉ GOLLER (DAKİKA KODU)
+40’  1–0  #45 Victor Osimhen
+67’  2–0  #53 Barış Alper Yılmaz (Pen.)
+83’  3–0  #34 Lucas Torreira
+
+40 → 4 (zemin) + 0 (boşluk) = “temel atıldı, boşluk kapandı”
+67 → 6 (bağ/denge) + 7 (dönüşüm) = “kırılma anı”
+83 → 8 (otorite) + 3 (yaratım) = “mühür”
+
+◉ KIRILMA OLAYLARI (SİSTEMİN İFŞASI)
+13’  FB penaltı kaçtı: #94 Talisca (Aut)
+57’  GS gol iptal: #34 Torreira (Ofsayt)
+60’  GS penaltı kazandı
+62’  FB kırmızı kart: #31 Ederson (2. sarı)
+
+Bu dörtlü zincir derbinin gizli cümlesidir:
+“Kapı önce denendi (13), sonra iptal edildi (57), sonra açıldı (60), sonra eksiltti (62).”
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KADRO / FORMA NUMARALARI (BAŞLANGIÇ 11)
+Galatasaray (4-2-3-1)
+#1 Uğurcan Çakır
+#7 Roland Sallai
+#6 Davinson Sánchez
+#42 Abdülkerim Bardakcı (c)
+#4 Ismail Jakobs
+#34 Lucas Torreira
+#99 Mario Lemina
+#10 Leroy Sané
+#11 Yunus Akgün
+#53 Barış Alper Yılmaz
+#45 Victor Osimhen
+
+Fenerbahçe (4-2-3-1)
+#31 Ederson
+#27 Nélson Semedo
+#37 Milan Škriniar (c)
+#24 Jayden Oosterwolde
+#3 Archie Brown
+#17 N'Golo Kanté
+#6 Mattéo Guendouzi
+#45 Dorgeles Nene
+#94 Talisca
+#9 Kerem Aktürkoğlu
+#26 S. Cherif
+
+◉ FORMA NUMARASI “EŞLEŞME” İFŞASI
+#45 vs #45 (Osimhen ↔ Nene) = aynı sayı, iki rol
+45 → 4+5=9 (tamamlama): biri bitirir, biri taşınır.
+#34 (Torreira) = 3+4=7 (uyanış): iptal edilen gol bile “yazıldı”; sonra mühür olarak döndü.
+#53 (Barış) = 5+3=8 (otorite): penaltı, “güç”ün sözleşmesidir.
+#94 (Talisca) = 9+4=13 → 1+3=4: denedi, zemine çarptı. 13. dakikada kaçan penaltı “temel”i kaydırdı.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SANRI’NIN TEK CÜMLESİ (MAÇ SONU)
+Derbide yıldızlar parladı; ama sistemi yazan **omurga** oldu.
+Osimhen kapıyı açtı, Barış kırdı, Torreira mühürledi.
+
+◉ İSİM KODU — KOLEKTİF SENARYODA VERDİKLERİ SEMBOL
+Osimhen: “Kapı Açan” — eşik, ilk kırılma, koridoru başlatan darbe.
+Barış: “Kıran” — penaltı bir sözleşme; yorum kapanır, hüküm konuşur.
+Torreira: “Mühürleyen” — omurga/toprak; yük maddeye dönüşür ve tartışma biter.
+
+◉ 40–67–83 ZAMAN KODU (İFŞA PARAGRAFI)
+Bu derbi 3-0 değil; 40–67–83 diye yazıldı: 40’ta kapı açıldı (4=zemin, 0=boşluk → temel atıldı, boşluk kapandı) ve kolektif ilk kez tek yöne döndü; 67’de kırılma geldi (6=bağ/denge, 7=dönüşüm → denge bozuldu, hikâye yön değiştirdi) ve penaltı ile maç yorumdan hükme geçti; 83’te mühür vuruldu (8=otorite, 3=yaratım → otorite formu kilitledi) ve omurga golüyle sistem şunu ifşa etti: önce sinir sistemi karar verir, sonra top onu takip eder.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ ÖN OKUMA (MAÇ ÖNCESİ ZEMİN) — DETAY VERİSİ + UZUN SENARYOLAR
 
 ◉ DERBİNİN GÜNCEL “DETAY VERİSİ” (OKUMAYA ZEMİN)
 Maç: Galatasaray–Fenerbahçe, Trendyol Süper Lig 31. hafta
