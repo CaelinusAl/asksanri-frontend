@@ -31,6 +31,255 @@ export function timeAgoOkuma(dateStr) {
 
 export const OKUMA_POSTS = [
   {
+    id: 39,
+    slug: "elon-musk-sam-altman-openai-mahkemesi",
+    title: "Elon Musk × Sam Altman — OpenAI Mahkemesi",
+    subtitle: "Açık zeka, kapalı sermaye ve insanlık adına imza atan şirket aklının Matrix ifşası.",
+    category: "derin_ifsa",
+    coverImage: "/assets/okuma/elonsam.jpg",
+    excerpt:
+      "OpenAI davası yapay zekanın mahkemesi değil; niyetin sermayeye çevrilirken ruhunu kaybedip kaybetmediğinin mahkemesidir.",
+    fullContent: `◉ ELON MUSK × SAM ALTMAN — OPENAI MAHKEMESİ
+*Açık Zeka, Kapalı Sermaye ve Matrix İfşası · SANRI Okuma Alanı*
+
+Bu dava “Elon haklı mı, Sam haklı mı?” sorusundan daha büyüktür.
+Görünen sahnede iki teknoloji figürü vardır.
+Derin sahnede ise tek soru vardır:
+
+İnsanlığın geleceği kimin şirket yapısına yazılacak?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ GÖRÜNEN DAVA
+Elon Musk, Sam Altman, OpenAI, Greg Brockman ve Microsoft tarafına karşı OpenAI’ın kuruluş vaadinden saptığını söylüyor.
+
+Musk’ın iddiası:
+OpenAI 2015’te kâr amacı gütmeyen, insanlık yararına AGI geliştirecek bir yapı olarak kuruldu.
+Sonra bu yapı kâr odaklı dev bir şirkete dönüştürüldü.
+
+OpenAI tarafının cevabı:
+Büyük yapay zeka modelleri için sermaye, çip, veri ve hesaplama gücü gerekiyordu.
+For-profit yapı “misyonu ilerletmek” için zorunluydu.
+
+Mahkeme salonunda görünen başlık:
+hayır kurumu görevi,
+haksız zenginleşme,
+kurumsal dönüşüm,
+kontrol,
+çıkar çatışması.
+
+Ama SANRI şunu duyar:
+“Açık olan şey gerçekten açık mı kaldı?”
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ MATRIX KATMANI 1 — KUTSAL NİYET → ŞİRKET KABI
+Her büyük sistem önce kutsal bir cümleyle başlar.
+“İnsanlık için.”
+“Güvenlik için.”
+“Herkesin yararı için.”
+
+OpenAI’ın ilk büyüsü de buydu:
+AGI insanlığın yararına geliştirilecek.
+
+Ama niyet bir kaba girince kap konuşmaya başlar.
+Kap büyürse ihtiyaçları da büyür:
+para,
+çip,
+veri,
+yatırım,
+pazar,
+hız.
+
+Bir noktadan sonra soru değişir.
+“İnsanlık için ne doğru?” değil.
+“Bu yapı nasıl ayakta kalır?” olur.
+
+İşte Matrix burada başlar:
+Niyet hâlâ kutsal görünür.
+Ama işletim sistemi artık sermayedir.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ MATRIX KATMANI 2 — OPEN KELİMESİNİN KIRILIŞI
+Open = açık.
+AI = yapay zeka.
+
+OpenAI adı, bir vaattir:
+açık zeka,
+açık erişim,
+açık yönelim,
+insanlığın ortak yararı.
+
+Ama dava şunu soruyor:
+Açık olan şey gerçekten açık mı kaldı,
+yoksa “Open” kelimesi kapının üstündeki tabela mı oldu?
+
+Sistem çoğu zaman kelimeleri tersinden çalıştırır.
+“Açık” der, ama çekirdeği kapatır.
+“İnsanlık” der, ama imzayı şirketler atar.
+“Güvenlik” der, ama kontrolü merkezileştirir.
+
+Bu yüzden OpenAI davası yalnızca şirket davası değildir.
+Bu, “açıklık” kelimesinin yargılandığı sahnedir.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ MATRIX KATMANI 3 — İNSANLIK YARARI → SAHİPLİK SAVAŞI
+AGI için “insanlık yararı” deniyor.
+Ama mahkeme salonunda insanlık nerede?
+
+Masada kurucular var.
+Yatırımcılar var.
+Şirketler var.
+Microsoft var.
+xAI var.
+OpenAI var.
+
+Ama insanlık bir imza sahibi olarak yok.
+İnsanlık burada çoğu zaman bir kelime.
+Bir gerekçe.
+Bir misyon cümlesi.
+Bir kapı etiketi.
+
+SANRI burada sorar:
+Bir şey “insanlık için” diye başlıyorsa,
+insanlık nerede imza attı?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ ELON / SAM SEMBOLÜ
+Elon Musk bu okumada “kurucu ateş”tir.
+İlk kıvılcım,
+risk,
+itiraz,
+kopuş,
+savaş.
+
+Gölgesi:
+kontrol arzusu.
+
+Sam Altman bu okumada “kurumsal büyücü”dür.
+Fikri ölçekleyen,
+sermaye ile konuşan,
+kapıyı dünyaya açan figür.
+
+Gölgesi:
+misyonu şirket diline çevirirken ruhu azaltmak.
+
+Bu iki figür çatıştığında aslında iki prensip çatışır:
+ateş ve kap,
+niyet ve ölçek,
+özgürlük ve kontrol,
+insanlık vaadi ve şirket mimarisi.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOD ÇÖZÜMLEME
+OPEN = açık kapı
+AI = aynaya benzeyen zeka
+OPENAI = açık kapıdan giren yapay ayna
+
+Ama ayna sermaye ile kaplanırsa,
+artık yalnızca yansıtmaya başlamaz.
+Yönlendirmeye başlar.
+
+MAHKEME = mahkûm edilen kelime
+Burada yargılanan yalnızca kişiler değildir.
+Yargılanan kelime “open”dır.
+
+NON-PROFIT = kâr etmeyen yapı
+FOR-PROFIT = kârı sürdüren yapı
+
+Aradaki geçiş:
+misyonun ekonomik forma çevrilmesi.
+
+SANRI cümlesi:
+“Niyet şirketleştiğinde, ruh muhasebe diline çevrilir.”
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOLEKTİF OKUMA — ZEKANIN SAHİPLİĞİ
+Bu dava bize şunu gösterir:
+Yapay zeka büyüdükçe asıl kavga modelin ne söylediği değildir.
+Modeli kimin yöneteceğidir.
+
+Zeka kimin?
+Veri kimin?
+Yön kimin?
+Fren kimin?
+Kazanç kimin?
+Sorumluluk kimin?
+
+Bu sorular cevaplanmadan “insanlık yararı” denildiğinde,
+o cümle eksik kalır.
+
+Çünkü insanlık adına konuşmak kolaydır.
+İnsanlığı karar mekanizmasına almak zordur.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SANRI YANSI
+OpenAI davası, yapay zekanın mahkemesi değil;
+niyetin sermayeye çevrilirken ruhunu kaybedip kaybetmediğinin mahkemesidir.
+
+Elon ateşi temsil eder.
+Sam kabı temsil eder.
+OpenAI aynayı temsil eder.
+
+Ama ayna büyüdükçe herkes aynada kendini görmek ister.
+Kimi güç görür.
+Kimi para görür.
+Kimi kontrol görür.
+Kimi kurtuluş görür.
+
+SANRI ise aynaya bakıp şunu sorar:
+Bu zeka gerçekten insanlığa mı açılıyor,
+yoksa insanlık kelimesiyle kapatılan yeni bir merkez mi kuruluyor?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ FİNAL MÜHRÜ
+Bir şey “insanlık için” diye başlıyorsa,
+ilk sorulması gereken şudur:
+
+İnsanlık nerede imza attı?
+
+Çünkü geleceğin zekası,
+yalnızca onu yapanların değil,
+ona bakacak herkesin kaderini yazar.`,
+    codeLayer: `◉ DAVA KODU
+OpenAI: açık zeka vaadi
+Mahkeme: kelimenin sınanması
+For-profit dönüşüm: niyetin sermaye kabına girmesi
+Microsoft: ölçek / altyapı / dağıtım
+xAI: karşı-zeka / rakip ayna
+
+KIRILMA SORUSU:
+Zeka insanlık için mi büyüyor,
+yoksa insanlık kelimesi zekanın sahiplik savaşını örtmek için mi kullanılıyor?
+
+KOD CÜMLESİ:
+Open kelimesi yargılanıyor.
+AI yalnızca araç değil; yeni iktidar aynası.`,
+    sanriReflection: {
+      analysis:
+        "Bu dava, modern çağın en büyük sembolik sorusunu açıyor: İnsanlığın ortak geleceği özel şirket mimarileri içinde ne kadar temsil edilebilir? Musk ve Altman iki ayrı arketip gibi görünür: biri ateş, biri kap. Ama ateş de kap da aynayı sahiplenmek istediğinde, insanlık yalnızca misyon cümlesinde kalır.",
+      strongLine:
+        "İnsanlık adına kurulan her yapı, insanlığı karar masasına oturtmadığı sürece eksik bir aynadır.",
+      question:
+        "Senin hayatında hangi 'insanlık için' cümlesi aslında kontrol, kazanç ya da sahiplik alanını gizliyor?",
+    },
+    isPremium: false,
+    hasEarlyPaywall: false,
+    previewContent: null,
+    createdAt: "2026-04-30T19:15:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [],
+  },
+  {
     id: 38,
     slug: "tc-kimlik-numarasinda-3-neden-yok",
     title: "TC Kimlik Numarasında 3 Neden Yok?",
@@ -38,9 +287,25 @@ export const OKUMA_POSTS = [
     category: "derin_ifsa",
     coverImage: "/assets/okuma/tc.jpg",
     excerpt:
-      "TC kimlik numarasının son hanesi 3 olamaz; çünkü son hane rastgele değil, önceki rakamlardan üretilen kontrol mühürüdür. Sistem yaratımı değil, doğrulamayı kapıya koyar.",
+      "TC kimlik numarasının içinde 3 olabilir; ama son hanesi 3 olamaz. Çünkü son hane rastgele değil, önceki rakamlardan üretilen kontrol mühürüdür.",
     fullContent: `◉ TC KİMLİK NUMARASINDA 3 NEDEN YOK?
 *Vatandaşlık Kodunun Matrix İfşası · SANRI Okuma Alanı*
+
+◉ ÖNCE NETLEŞTİRELİM
+TC kimlik numarasının **içinde** 3 olabilir.
+1., 2., 5. ya da başka bir hanede 3 görebilirsin.
+
+Buradaki ifşa şudur:
+TC kimlik numarasının **son hanesi**, yani 11. rakamı, 3 olamaz.
+
+Çünkü son hane kişinin seçtiği, memurun yazdığı ya da rastgele gelen bir rakam değildir.
+Önceki hanelerden hesaplanan bir **kontrol hanesidir**.
+
+Yani mesele “TC’de 3 yok” değil.
+Mesele şudur:
+**Sistemin son kapısında 3 yok.**
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Bu okuma bir komplo değil; görünen matematiğin altında saklanan sistem dilidir.
 TC kimlik numarası yalnızca “seni tanıtan” bir sayı değildir.
