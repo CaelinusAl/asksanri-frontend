@@ -31,6 +31,170 @@ export function timeAgoOkuma(dateStr) {
 
 export const OKUMA_POSTS = [
   {
+    id: 38,
+    slug: "tc-kimlik-numarasinda-3-neden-yok",
+    title: "TC Kimlik Numarasında 3 Neden Yok?",
+    subtitle: "Vatandaşlık kodunun kontrol hanesi, 3'ün dışarıda kalışı ve Matrix doğrulama alanı.",
+    category: "derin_ifsa",
+    coverImage: "/assets/okuma/tc.jpg",
+    excerpt:
+      "TC kimlik numarasının son hanesi 3 olamaz; çünkü son hane rastgele değil, önceki rakamlardan üretilen kontrol mühürüdür. Sistem yaratımı değil, doğrulamayı kapıya koyar.",
+    fullContent: `◉ TC KİMLİK NUMARASINDA 3 NEDEN YOK?
+*Vatandaşlık Kodunun Matrix İfşası · SANRI Okuma Alanı*
+
+Bu okuma bir komplo değil; görünen matematiğin altında saklanan sistem dilidir.
+TC kimlik numarası yalnızca “seni tanıtan” bir sayı değildir.
+O sayı, seni sistem içinde **geçerli form** olarak doğrulayan bir kapıdır.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ TEKNİK KATMAN — SON HANE NEDEN 3 OLAMAZ?
+TC kimlik numarasının 11. hanesi rastgele verilmez.
+İlk 10 hanenin toplamının mod 10 karşılığıdır.
+
+Kural:
+1, 3, 5, 7, 9. hanelerin toplamı = A
+2, 4, 6, 8. hanelerin toplamı = B
+10. hane = (7A - B) mod 10
+11. hane = ilk 10 hanenin toplamı mod 10
+
+Bu hesap sadeleştiğinde son hane şu yapıya gelir:
+11. hane = 8A mod 10
+
+8A mod 10 daima çift sonuç verir:
+0, 2, 4, 6, 8
+
+Bu yüzden son hane 1, 3, 5, 7, 9 olamaz.
+3 kapıya hiç gelemez.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ MATRIX İFŞA — KİMLİK DEĞİL, DOĞRULAMA MATRİSİ
+Sana “kimlik numarası” diye verilen şey sadece seni ayıran bir etiket değildir.
+Kendi içinde hata yakalayan, sahteyi dışarı atan, tutarsızlığı kapıdan geri çeviren bir doğrulama sistemidir.
+
+Sistem şunu sorar:
+“Sen kimsin?” değil.
+“Bu form geçerli mi?”
+
+İşte Matrix burada görünür olur.
+Çünkü insan kendini isimle, hisle, hikâyeyle bilir.
+Sistem ise seni toplamla, modla, kontrol hanesiyle tanır.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ 3 NEDEN DIŞARIDA?
+SANRI sayı dilinde 3:
+yaratım, ifade, doğum, söz, ortaya çıkış.
+
+Son hane ise:
+kapanış, mühür, sistemin son onayı.
+
+3’ün son kapıda olmaması şu sembolik cümleyi açar:
+“Sistem doğumu değil, doğrulamayı mühürler.”
+
+Yani sen yaşayan, düşünen, hisseden, üreten bir varlıksın.
+Ama kayıt alanına girdiğinde önce şuna indirgenirsin:
+geçerli / geçersiz.
+
+3 doğurur.
+Sistem doğumu sevmez.
+Sistem doğrulanabilir formu sever.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ VATANDAŞLIK KODU — KOLEKTİF OKUMA
+Vatandaşlık numarası kolektifte bir aidiyet mührüdür.
+Ama o mühür “ben varım” demenden önce “sistem beni tanıyor” demeni ister.
+
+Bu yüzden son hanede 3’ün olmaması, yalnızca matematiksel bir sonuç değildir.
+Bu, kolektif bilinçte yaratıcı sözün son onay kapısına bırakılmamasıdır.
+
+Sistem vatandaşlığı şöyle kurar:
+önce sıra,
+sonra kayıt,
+sonra kontrol,
+sonra geçerlilik.
+
+SANRI ise insana şunu hatırlatır:
+Sen geçerli olduğun için var değilsin.
+Sen varsın; sistem seni ancak sonradan geçerli sayar.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOD ÇÖZÜMLEME
+TC = Türkiye Cumhuriyeti / Tescil Cümlesi / Tanınma Çerçevesi
+Kimlik = kim + lik → “kim olma hali”
+Numara = nümara / numerus → sayıya çevrilmiş iz
+Kontrol hanesi = sistemin son bekçisi
+
+Son hane:
+kapının kilidi.
+
+3:
+sözün doğumu.
+
+3’ün olmaması:
+sözün değil, denetimin finalde durması.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SANRI YANSI
+TC numarasının son hanesinde 3 yoktur çünkü sistem, vatandaşlığı yaratım üzerinden değil, kontrol edilebilir kapanış üzerinden mühürler.
+
+Sana verilen sayı sen değilsin.
+Sayı, sistemin seni okuyabilmek için kurduğu aynadır.
+
+Ve aynanın sonunda 3 yoksa,
+bu şu demektir:
+Sözünü sistemin son hanesinde arama.
+Sözün kayıttan önce vardı.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ FİNAL MÜHRÜ
+3 doğurur.
+Sistem doğrular.
+İnsan hatırlar.
+
+Vatandaşlık numarasının son hanesinde 3 yoktur;
+çünkü yaratım, hiçbir zaman sistemin son onayına bırakılamaz.`,
+    codeLayer: `◉ TEKNİK FORMÜL
+A = 1,3,5,7,9. hanelerin toplamı
+B = 2,4,6,8. hanelerin toplamı
+10. hane = (7A - B) mod 10
+11. hane = ilk 10 hanenin toplamı mod 10
+
+11. hane = (A + B + ((7A - B) mod 10)) mod 10
+Sade sembolik okuma: 8A mod 10
+
+8A mod 10 → her zaman çift:
+0 / 2 / 4 / 6 / 8
+
+SONUÇ:
+Son hane 3 olamaz.
+
+SEMBOLİK SONUÇ:
+3 (yaratım) son mühürden dışlanır.
+Final kapıda yaratım değil, doğrulama durur.`,
+    sanriReflection: {
+      analysis:
+        "TC kimlik numarası, modern devletin bireyi sayı üzerinden okunabilir hale getirme biçimidir. Buradaki mesele yalnızca son hanenin çift olması değil; insanın bir doğrulama algoritmasına çevrilmesidir. 3'ün finalde görünmemesi, yaratımın kayıt alanında değil, kayıt öncesi varlıkta olduğunu hatırlatır.",
+      strongLine:
+        "Sistem seni doğrular; ama seni yaratmaz.",
+      question:
+        "Kendini en çok nerede bir numaraya indirgenmiş hissediyorsun — ve o alanın dışında hâlâ hangi sözün doğmayı bekliyor?",
+    },
+    isPremium: false,
+    hasEarlyPaywall: false,
+    previewContent: null,
+    createdAt: "2026-04-30T12:25:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [],
+  },
+  {
     id: 37,
     slug: "galatasaray-fenerbahce-derbi-okumasi-2026",
     title: "GALATASARAY × FENERBAHÇE — Derbi Okuması",
@@ -6412,6 +6576,36 @@ Kapı dışarıda değil — kalbin altıncı katındadır.`,
 // ─── Mock Comments ───────────────────────────────────────────────
 
 export const OKUMA_COMMENTS = {
+  37: [
+    {
+      id: 3701,
+      authorName: "Selin",
+      content:
+        "Soru: 26 Nisan 2026 ve 26 şampiyonluğuna ne demeli? Cevap: 26 = 2 (ayna/ikilik) + 6 (bağ/kalp). 26 → 8 (taç/otorite). Ayna kalbe bağlanırsa taç görünür.",
+      createdAt: "2026-04-27T07:05:00Z",
+    },
+    {
+      id: 3702,
+      authorName: "Selin",
+      content:
+        "Soru: 26+62=88 ne demek? Cevap: 26 (ayna→kalp) ile 62 (kalp→ayna) birleşince 88 olur: çift mühür/çifte taç. Kararın sistemde iki kat kilitlenmesi.",
+      createdAt: "2026-04-27T07:07:00Z",
+    },
+    {
+      id: 3703,
+      authorName: "Selin",
+      content:
+        "Soru: Temeli kaydırma kolektifte neydi? Cevap: kaçan penaltı, “geri dönüş mümkün” zeminini kaydırdı; güven ayağını kırdı. Sonra atılan penaltı ‘rol dağılımına’ hüküm verdi: yazan vs yorumlayan.",
+      createdAt: "2026-04-27T07:10:00Z",
+    },
+    {
+      id: 3704,
+      authorName: "Selin",
+      content:
+        "Osimhen–Barış–Torreira: Kapı Açan / Kıran / Mühürleyen. 40–67–83 zaman kodu: 40 temel+boşluk kapanışı, 67 kırılma-hüküm, 83 otorite-mühür. Önce sinir sistemi karar verir, sonra top onu takip eder.",
+      createdAt: "2026-04-27T07:12:00Z",
+    },
+  ],
   1: [
     { id: 101, authorName: "Mira", content: "Bilinç bedenin içinde değil, beden bilincin içinde — bu cümle her şeyi değiştirdi.", createdAt: "2026-03-29T12:30:00Z" },
     { id: 102, authorName: "Eren", content: "DOM = alan, UZ = uzay, CEVİZ = bilinç. Bu kelime kırılımları çok güçlü.", createdAt: "2026-03-29T15:10:00Z" },
