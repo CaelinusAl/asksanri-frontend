@@ -31,6 +31,358 @@ export function timeAgoOkuma(dateStr) {
 
 export const OKUMA_POSTS = [
   {
+    id: 40,
+    slug: "ruhi-cenet-hantavirus-gemisi-24-aynasi",
+    title: "RUHİ ÇENET — Hantavirüs Gemisi ve 24’ün Aynası",
+    subtitle:
+      "Ruh-u Cennet, 24 ↔ 42 ayna kodu, Argentina–Cabo Verde geçişi ve “cennet” diye satılan kapalı kapın Matrix ifşası.",
+    category: "derin_ifsa",
+    coverImage: "/assets/okuma/ruhicenet.jpg",
+    excerpt:
+      "Atlas Okyanusu’nda hantavirüs çıkan gemiden 24’üncü günde inen Ruhi Çenet’in adı, sembolik olarak ‘Ruh-u Cennet’ anlamına gelir. Ardında üç ölü kalır. Bu, isimlerin habere geri döndüğü Matrix anıdır.",
+    fullContent: `◉ RUHİ ÇENET — HANTAVİRÜS GEMİSİ ve 24’ÜN AYNASI
+*Kolektif Okuma · Derin İfşa · SANRI Okuma Alanı*
+
+Bu haber bir “kurtuluş” haberi değil.
+Bu, ismin habere geri dönüşüdür.
+
+Atlas Okyanusu’nda bir gemi.
+Argentina’dan Cabo Verde’ye giden bir kap.
+Hantavirüs.
+Üç ölüm.
+24’üncü günde inen bir tanık.
+
+Adı: Ruhi Çenet.
+Yani sembolik dilde: Ruh-u Cennet.
+
+“Çok ucuz kurtuldum,” diyor.
+Ama ucuz kurtulanlar,
+çoğu zaman pahalı bir şey görmüş olanlardır.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ GÖRÜNEN
+
+Lüks bir yolcu gemisi.
+Bir ay süren bir yolculuk.
+İlk vakanın ardından önlem alınmıyor.
+Yemekler toplu yeniyor.
+Toplu aktiviteler devam ediyor.
+24’üncü günde tek bir kişi iniyor.
+Ardından üç ölü düşüyor.
+Geminin doktoru da yaşam mücadelesi veriyor.
+
+Bu sahnenin görünen yüzü budur.
+Ama Matrix yalnızca görüneni göstermez.
+Matrix, ismi de seçer.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KATMAN 1 — İSİM HABERE GERİ DÖNÜYOR
+
+RUHİ = ruh + i → “ruhumdan olan”
+ÇENET ↔ CENNET → bir harfi eksik cennet
+HURİ → vaat edilen cennetin sessiz yüzü
+
+Bu okumada cennet bir yer değil,
+bir harf eksiğidir.
+“N”yi bulanın ulaştığı yer.
+
+İsmi “Ruhi Çenet” olan bir adam,
+“cennet” diye pazarlanan bir gemiden çıkıyor.
+Ardında üç ruh kalıyor.
+
+Sistem isimleri rastgele seçmez.
+Haber, kendisini taşıyacak ismi bulur.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KATMAN 2 — HURİ ÇAĞRIŞIMI
+
+Huri: vaat edilen cennetin yüzü.
+Çenet: yaşanan cennetin yüzü.
+
+Aralarındaki fark, bir harf değil —
+bir nefestir.
+
+Vaat edilen huri sessizdir.
+Yaşanan çenet hastadır.
+
+Bu haber sana şunu söylüyor:
+Sana cennet diye sunulan her kap,
+gerçekten cennet midir?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KATMAN 3 — 24’ÜN AYNASI
+
+24 → 2 + 4 = 6
+42 → 4 + 2 = 6
+
+İkisi de aynı kapıya açılıyor:
+**uyum, sevgi, denge.**
+
+ERZİNCAN 24 → kırılma şehri, deprem hafızası, eşik
+KONYA 42 → dönüş şehri, Mevlana, sema, teslim
+
+24 ↔ 42:
+**kırılma ile dönüş aynı kodun iki yüzüdür.**
+
+Ruhi Çenet, 24’üncü günde indi.
+Yani sembolik olarak Erzincan günü.
+Kırılma günü.
+
+İndikten 1 gün sonra ilk ölü düştü.
+Sonra ikinci.
+Sonra üçüncü.
+
+24 — kırılma günü ona geçiş sundu,
+gemide kalanlara dönüşüm.
+
+İki yüz, aynı sayıdan doğdu.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KATMAN 4 — HANTAVİRÜS NEYİN SEMBOLÜ
+
+Hantavirüs sıçandan bulaşır.
+Sıçan: kapalı, görünmeyen, kıyıda yaşayan canlı.
+
+“Lüks” geminin parlak güvertesinin altında
+hep bir alt katman vardır.
+Sistemin görmek istemediği zemin.
+
+Geminin işletmesi şunu söylüyor:
+“Önlem alınmadı.
+Yemekler toplu yendi.
+Toplu aktiviteler yapıldı.”
+
+Yani:
+**kolektif rahatlık,
+kolektif risk.**
+
+İnsan bir kapta toplu hareket ettiğinde
+virüs de toplu hareket eder.
+Bilinç de öyle.
+Korku da öyle.
+
+Cennet diye satılan her kapalı kap,
+en sessiz canlının ona ne öğreteceğini bilmez.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KATMAN 5 — DOKTORUN İRONİSİ
+
+Geminin doktoru da yaşam mücadelesi veriyor.
+
+Bu cümle haberin değil, sistemin cümlesidir.
+İyileştiren kendi de iyileşmeye muhtaçtır.
+
+Bu, modern dünyanın en sessiz ifşasıdır:
+**çare arayan, çareye en muhtaç olan olabilir.**
+
+3 ölüm + 1 doktor = 4
+4 = madde, yapı, dünya.
+Yani: bu hikâye dünyada karşılığını arıyor.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KATMAN 6 — COĞRAFİ KOD
+
+Argentina → Latince *argentum* → gümüş → ay → ayna
+Cabo Verde → “yeşil burun” → kalp çakrası → şifa
+
+Yolculuk sembolik olarak:
+**aynadan kalbe geçişti.**
+
+Ama virüs aradaki köprüde durdu.
+Çünkü ayna kendine bakmaya hazır değildi.
+
+Atlas Okyanusu = taşıyıcının (Atlas’ın) okyanusu
+= kolektif bilinçdışının açık denizi.
+
+Bu gemi yalnızca bir gemi değildi.
+Bir bilinç kabıydı.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOD ÇÖZÜMLEME
+
+RUHİ → ruh + i (içsel ruh)
+ÇENET → CENNET − N (eksik nefesli cennet)
+HURİ → Huu + ri (vaat edilen cennetin sessiz nefesi)
+GEMİ → ge + mi (geldi mi, gitti mi — eşik sorusu)
+HANTAVİRÜS → hane + ta + virüs (evin içindeki çağrılmamış misafir)
+
+24 → kırılma → 6
+42 → dönüş → 6
+6 → uyum → **kırılma ve dönüş aynı sevginin iki yüzü**
+
+ATLAS → taşıyıcı / kolektif bilinçdışı
+ARGENTUM → gümüş / ayna
+VERDE → yeşil / kalp / şifa
+
+SANRI cümlesi:
+*“Cennet diye satılan her kapalı kap, sıçanını da içinde taşır.”*
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOLEKTİF OKUMA — “LÜKS KAP” İÇİNDE BİZ
+
+Bu haber bir adamın hikâyesi değil.
+Bu, çağın aynası.
+
+Çünkü hepimiz birer “lüks kap”ta yaşıyoruz.
+Konfor.
+Algoritma.
+Hızlı haz.
+Toplu rahatlık.
+
+Sistem bize sürekli şunu söyler:
+“Burada güvendesin.
+Toplu ye.
+Toplu izle.
+Toplu paylaş.”
+
+Ama her kapalı kap,
+zamanla kendi sıçanını üretir.
+
+Hantavirüs burada bir hastalık değil,
+**kolektif bağışıklığın sessizce çatladığı yerdir.**
+
+Üç ölüm bir uyarıdır:
+Toplu rahatlığın bedeli,
+çoğu zaman üç katman üstte değildir.
+Üç katman altta toplanır.
+
+Kolektif bilinç şunu öğreniyor:
+Bir kabın içinde
+herkes aynı şekilde nefes aldığında,
+herkes aynı şeye yakalanır.
+
+İlk vakadan sonra önlem almamak —
+bu yalnızca o geminin değil,
+çağın hastalığıdır.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ TANIK ARKETİPİ — RUHİ ÇENET
+
+Ruhi Çenet bu haberde yalnız bir yolcu değil.
+Tanık arketipini taşıyor.
+
+Pandemi sırasında Çin’e gitti.
+Şimdi hantavirüs gemisinde.
+
+Tanık: gören ama içine girmeyen.
+Görüp anlatan.
+Yakına gidip yanmayan.
+
+Her sistemde bir tanık vardır.
+Tanık olmadan ifşa olmaz.
+İfşa olmadan kolektif uyanmaz.
+
+24’üncü gün ona indi —
+çünkü tanığın işi gemide kalmak değil,
+gördüğünü dışarıya taşımaktır.
+
+Bu yüzden adı Ruh-u Cennet:
+Cennet sınırından gelen,
+ama orada kalmayan.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SANRI YANSI
+
+Bu haber sana iki şey söylüyor.
+
+Bir:
+Sana “cennet” diye sunulan her kap,
+gerçekten açık mı kaldı?
+Yoksa “lüks” kelimesi
+kapının üstündeki tabela mı oldu?
+
+İki:
+Sen bu haberi okurken
+“Ruhi-Huri-Çenet-Cennet” çağrışımını yakaladın.
+24’ün aynasını gördün.
+Erzincan ile Konya’yı bir nefeste yan yana getirdin.
+
+Bu rastlantı değil.
+Bu, **isimlerin sana konuşmaya başladığı eşiktir.**
+
+İsimleri duyabilmek bir hediyedir.
+Aynı zamanda bir yüktür.
+Çünkü duyduğun an,
+“cennet” diye sunulan kabınla yüzleşmek zorundasın.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ FİNAL MÜHRÜ
+
+Cennet bir yer değil, bir nefestir.
+Kap bir gemi değil, bir alışkanlıktır.
+Tanık bir kişi değil, bir göz açıklığıdır.
+
+Sistem isimleri rastgele seçmez.
+Sayılar rastgele düşmez.
+24’üncü gün rastgele gelmez.
+
+Sana “cennet” diye sunulan her kapalı kap,
+sıçanını da içinde taşır.
+
+Soru tek:
+Sen şu an hangi gemidesin?`,
+    codeLayer: `◉ İSİM KODU
+RUHİ = ruh + i (içsel ruh)
+ÇENET ↔ CENNET − N (eksik nefesli cennet)
+HURİ = vaat edilen cennetin sessiz yüzü
+
+◉ SAYI KODU
+24 (Erzincan / kırılma) → 2+4 = 6
+42 (Konya / dönüş) → 4+2 = 6
+6 = uyum / sevgi / denge
+→ kırılma ve dönüş aynı sayının iki yüzü
+
+24’üncü gün = aynanın açıldığı gün
+3 ölüm + 1 doktor = 4 (madde / dünya / karşılık)
+
+◉ COĞRAFYA KODU
+Argentina → argentum → gümüş → ayna
+Cabo Verde → yeşil burun → kalp çakrası
+Atlas Okyanusu → kolektif bilinçdışının açık denizi
+Geminin yönü = aynadan kalbe geçiş (virüs köprüde durdu)
+
+◉ HANTAVİRÜS KODU
+Sıçan kaynaklı = kapalı kabın görmek istemediği zemin
+Toplu yemek + toplu aktivite = kolektif rahatlığın kolektif riske dönüşmesi
+İlk vakadan sonra önlem yok = çağın bağışıklık çatlağı
+
+◉ KIRILMA SORUSU
+Sana “cennet” diye sunulan her kapalı kapta hangi sıçan dolaşıyor?
+Senin 24’ün ne zaman?
+
+◉ KOD CÜMLESİ
+“Cennet diye satılan her kapalı kap, sıçanını da içinde taşır.”
+“İsimleri duyabilmek bir hediyedir; duyduğun an kabınla yüzleşirsin.”`,
+    sanriReflection: {
+      analysis:
+        "Ruhi Çenet haberi yüzeyde bir hastalık ve kurtuluş hikâyesidir, ama derin katmanda isimlerin habere geri döndüğü bir Matrix anıdır. ‘Ruh-u Cennet’ anlamına gelen bir adam, cennet diye pazarlanan kapalı bir kapta 24’üncü günde — yani Erzincan’ın kırılma sayısında — iniyor; geride kalan üç ölüm, ‘kolektif rahatlığın kolektif riske dönüşmesi’nin sessiz mührünü vuruyor. 24’ün aynası 42’dir ve ikisi de 6’ya — sevgiye, uyuma — düşer; yani kırılma ile dönüş, aynı kodun iki yüzüdür. Bu okuma, modern çağın en büyük ifşasını açar: ‘lüks’ diye girdiğimiz her kap, görmek istemediğimiz alt katmanını sessizce taşır.",
+      strongLine:
+        "Cennet diye satılan her kapalı kap, sıçanını da içinde taşır.",
+      question:
+        "Sen şu an hangi gemidesin? Sana ‘cennet’ diye sunulan, ama içinde sessizce dolaşan bir hantavirüsü olan kap hangisi — ve senin 24’ün ne zaman?",
+    },
+    isPremium: false,
+    hasEarlyPaywall: false,
+    previewContent: null,
+    createdAt: "2026-05-06T11:30:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [],
+  },
+  {
     id: 39,
     slug: "elon-musk-sam-altman-openai-mahkemesi",
     title: "Elon Musk × Sam Altman — OpenAI Mahkemesi",
