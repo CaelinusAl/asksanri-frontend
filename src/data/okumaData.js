@@ -378,7 +378,7 @@ Senin 24’ün ne zaman?
     previewContent: null,
     createdAt: "2026-05-06T11:30:00Z",
     commentCount: 0,
-    viewCount: 0,
+    viewCount: 430,
     isFeatured: true,
     deepReaderComments: [],
   },
