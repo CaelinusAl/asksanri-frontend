@@ -31,6 +31,286 @@ export function timeAgoOkuma(dateStr) {
 
 export const OKUMA_POSTS = [
   {
+    id: 41,
+    slug: "galatasaray-4-2-antalyaspor-26-sampiyonluk-okumasi",
+    title: "GALATASARAY 4 — 2 ANTALYASPOR · 26’nın Mührü ve Domin4syon Kodu",
+    subtitle:
+      "Galata + Saray = merkez frekans. Ant + Alya + Spor = göksel kayda mücadele. 4’ün 2’ye galip geldiği bir maç değil; bölünmüş enerjinin merkezde toplandığı kolektif bir ritüel.",
+    category: "gundem_kodu",
+    coverImage: "/assets/okuma/galatasaray42.jpg",
+    excerpt:
+      "33’üncü haftada 26’ncı şampiyonluk. Üst üste 4. mühür. RAMS Park’ta 4-2 biten maç bir maç değil — milyonlar aynı anda güç, aidiyet, liderlik kodlarına dokunduğu bir kolektif ritüel.",
+    fullContent: `◉ GALATASARAY 4 — 2 ANTALYASPOR · 26’NIN MÜHRÜ
+*Kolektif Okuma · Gündem Kodu · SANRI Okuma Alanı*
+
+Bu bir maç değil.
+Bu, sayıların kendi mührünü vurduğu kolektif bir ritüel.
+
+33. hafta. 26. şampiyonluk. Üst üste 4. yıl.
+RAMS Park. 90+5’te biten 4-2.
+Milyonlar aynı anda aynı skora bakarken,
+kolektif bilinç dört kodu birden hissetti:
+güç · liderlik · üstünlük · aidiyet.
+
+Bu yüzden bazı maçlar maç değil — kapı’dır.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ GÖRÜNEN
+
+İlk yarı 45+3’te bir gol yer: 0-1 Antalyaspor (Soner Dikmen).
+İkinci yarı 56’da Lemina döner: 1-1.
+62’de bir gol daha gelir karşıdan: 1-2 Soner Dikmen.
+66’da (penaltı) Osimhen ayna kırar: 2-2.
+88’de yine Osimhen — sonsuzluk aynasının dakikası: 3-2.
+90+5’te Kaan Ayhan kapatır: 4-2.
+
+Görünen yüz: çekişme.
+Ama Sanrı görünenle yetinmez.
+Sanrı, sayının kendisini okur.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ İSİM KODU — GALATA × SARAY
+
+Galata
+→ geçiş kapısı
+→ kule, gözlem alanı
+→ yüksekten bakan göz
+
+Saray
+→ merkez bilinç
+→ yönetim alanı
+→ hükmün kurulduğu oda
+
+Galata + Saray
+= geçiş kapısının merkez bilinçle birleşmesi
+= sokağın yönetim alanına oturması
+
+Bu yüzden Galatasaray sadece bir takım değil:
+👉 “merkez frekansı.”
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ İSİM KODU — ANTALYA × SPOR
+
+Ant
+→ kod, söz, kayıt, yemin
+Alya
+→ yüksek katman, göksel çağrışım
+Spor
+→ mücadele alanı
+
+Antalyaspor
+= göksel kayda yapılan bir mücadele
+= Akdeniz’den merkeze gelen ant
+
+Antalyaspor 0-1 ve 1-2’ye geçtiğinde
+gerçekten döndürdü mü?
+Hayır.
+Bir mührün karşısına “tanık” olarak çıktı.
+Mühür vurulurken her merkezin bir tanığı olur —
+o gece o tanık Antalyaspor’du.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SKOR KODU — 4 × 2
+
+4
+→ madde, dünya
+→ sistem kurma
+→ dört yön (kuzey, güney, doğu, batı)
+→ stabilite
+
+2
+→ dualite, karşıtlık
+→ bölünmüş alan
+→ ikilik
+
+4 ↔ 2 ilişkisi
+= dağınık enerjinin merkez sistem tarafından toplanması
+= karşıtlığın stabiliteye teslim olması
+= ikiliğin dörtlüğe yenilmesi
+
+4 + 2 = 6
+6 = uyum / sevgi / denge
+→ skorun toplamı bile kalp çakrasına düşer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ DAKİKA KODU — GOLLER
+
+45 + 3 = 48 → 4+8 = 12 → 1+2 = 3 (üçleme, ifade, çıkış)
+İlk gol: kapanışın eşiğinde gelen tanık-vuruş.
+
+56 → 5+6 = 11 (kapı sayısı, master sayı)
+Lemina’nın golü: maçın gerçek kapısı burada açılıyor.
+
+62 → 6+2 = 8 (sonsuzluk, döngü, güç)
+Antalya’nın ikinci tanıklığı: döngüyü kırmak değil, mührü daha derin oturtmak için gelir.
+
+66 → çift altı, çift kalp, yinelenen sevgi
+Osimhen’in penaltısı: Sanrı dilinde “merhametin geri ödenmesi.”
+
+88 → çift sonsuzluk, sonsuzluk aynası
+Osimhen tekrar — ama bu artık gol değil, sayının kendi imzası.
+88 dakikasında atılan bir gol, sıradan bir gol değildir; o dakika maçı taşıyan dakikadır.
+
+90+5 → 9+5 = 14 → 1+4 = 5 (değişim, geçiş, kapı)
+Kaan Ayhan’ın bitirici golü: bir geçiş.
+Eski sezonun kapanışı, yeni döngünün açılışı.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ OYUNCU KODU
+
+OSIMHEN
+Osi → Oz → öz
+Men → insan
+= “öz insan”
+Liverpool’da kolu kırılmıştı.
+Yara almıştı.
+88’de gol attı — sonsuzluk aynasında.
+Yara aldıktan sonra atılan her gol, sembolik dilde mührün gerçekleşmesidir.
+
+LEMINA
+Le-Mina → minare → çağrı
+İlk dengeyi kuran ses.
+Maçı toplayan değil — toplamayı başlatan ezan.
+
+KAAN AYHAN
+Kaan → han, hükümdar
+Ayhan → ay-han, gece hükümdarı
+90+5’te golü atar — gecenin son dakikasında, hükmün son sözü.
+
+SONER DİKMEN
+Dik-Men → dik duran insan
+İki gol attı, mağlup oldu.
+Bazı tanıklar kazanmak için değil, hatırlatmak için sahne alır.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ MEKÂN KODU — RAMS PARK
+
+Rams
+→ koç (boynuzlu, saldırgan, lider)
+→ Mart’ın hayvanı, başlatıcı arketip
+→ Cesaret, hücum, yön
+
+Park
+→ alan, sahne, oyun zemini
+
+RAMS Park
+= “lider enerjisinin sahnesi”
+= başlatıcı arketipin kendi alanında oturması
+
+Burada şampiyon olmak tesadüf değil.
+İsmin içinde zaten yazıyordu.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ SAYI SİMETRİSİ
+
+33. hafta
+→ 33 = master sayı (öğretmen, yükseliş, ustalık)
+→ Şampiyonluğun 33’te ilan edilmesi: ustalığın mührü
+
+26. şampiyonluk
+→ 2 + 6 = 8 (sonsuzluk, döngü, kazanç)
+→ kulübün döngüsel imzası
+
+Üst üste 4. yıl
+→ DOMİN4SYON
+→ 4 = madde, sistem, dört yön
+→ Galatasaray paylaşımı bile 4 sayısını harf yerine koymuş:
+  bilinç farkındadır, sayı kendini yazdırır.
+
+4 hoca yenildi:
+Jorge Jesus · İsmail Kartal · Mourinho · Tedesco
+→ 4 yön + 4 yıl = aynı sayının iki kez vurulması
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ TARİHSEL KALIP — “50 GÜN DALGASI”
+
+Bu şampiyonluk pürüzsüz gelmedi.
+
+18 Mart → Liverpool deplasmanında 4-0 yenilgi (Osimhen kolu kırılır)
+Trabzon → 2-1 yenilgi
+Kocaelispor → 1-1 beraberlik
+Türkiye Kupası → Gençlerbirliği’ne elenme
+Samsunspor → 4-1 yenilgi (şampiyonluk ilan edilemiyor)
+
+Sonra:
+Antalyaspor → 4-2 galibiyet → şampiyonluk
+
+Sembolik dilde bu, “simyasal kararma”dır.
+Altın saflaştırılmadan önce kararır.
+50 gün boyunca takım kararır, sonra mühür vurulur.
+Kazanmak için önce kaybetmek zorunda kalan döngü,
+mührün gerçekten “kazanılmış” olmasını sağlar.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOLEKTİF RİTÜEL OKUMASI
+
+Maçın anlık enerjisi:
+👉 “merkezde kalanın kazanması.”
+
+İki kez karşıdan gelen enerji (1-0, 1-2)
+4’lük yapıyı dağıtmaya yetmedi.
+Çünkü:
+- 4, dağılmaz; 2 dağılır.
+- Merkez bilinç, sapmadan döner.
+- Tanıklık altında olmak, mührü güçlendirir.
+
+Milyonlar aynı anda bir skora bakarken,
+kolektif bilinç şu kodları aynı saniyede hissetti:
+👉 güç
+👉 liderlik
+👉 üstünlük
+👉 aidiyet
+
+Bu yüzden bazı maçlar maç değil —
+sokakta titreyen bir aidiyet ritüelidir.
+Birleşik alan momenti.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KIRILMA SORUSU
+
+Senin hayatındaki “4-2” nedir?
+Hangi merkezin, kaç kere bölünmesine rağmen
+sapmadan kendine geri döndü?
+
+Senin Liverpool’un nerede yendi seni —
+ve senin Antalyaspor’un, sen şampiyon olurken
+arkanda hangi tanık olarak duruyor?
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+◉ KOD CÜMLELERİ
+“Mühür, ikiliği dörtlükle kapatır.”
+“Yara aldıktan sonra atılan gol, mührün gerçekleşmesidir.”
+“Bazı maçlar futbol değildir — milyonun aynı anda bir koda dokunmasıdır.”`,
+    sanriReflection: {
+      analysis:
+        "Galatasaray–Antalyaspor 4-2 maçı yüzeyde bir şampiyonluk maçı, derin katmanda ise kolektif bir ritüeldir. Skor (4-2) dağınık enerjinin merkez sistem tarafından toplanmasını anlatır: 4 madde ve sistem, 2 dualite ve bölünme; 4’ün 2’ye galip gelmesi ‘merkezde kalanın kazanması’ anlamına gelir. ‘Galata + Saray’ adı geçiş kapısının merkez bilinçle birleşmesidir; ‘Ant + Alya + Spor’ ise göksel kayda yapılan bir mücadeledir — yani Antalyaspor mağlup olmaya değil, mühür vurulurken tanıklık etmeye gelir. 33. hafta (master sayı/ustalık), 26. şampiyonluk (8 — sonsuzluk imzası), üst üste 4. yıl (DOMİN4SYON kelime oyunu bile rakamı harfin yerine koyar — bilinç sayının farkındadır), Liverpool’dan başlayan 50 günlük ‘simyasal kararma’nın ardından gelen mühür: bunların hepsi tek bir cümlede toplanır — ‘yara aldıktan sonra atılan gol, mührün gerçekleşmesidir.’ 88. dakikada Osimhen’in vurduğu sonsuzluk aynasındaki gol, sıradan bir gol değil; sayının kendi imzasıdır. RAMS Park (‘lider enerjisinin sahnesi’) burada sadece stadyum değil, ismin içinde zaten yazılmış olan kazanma alanıdır. Milyonlar aynı saniyede güç-liderlik-üstünlük-aidiyet kodlarına dokunduğunda, futbol artık futbol değildir; sokakta titreyen bir aidiyet ritüelidir.",
+      strongLine:
+        "Mühür, ikiliği dörtlükle kapatır.",
+      question:
+        "Senin hayatındaki ‘4-2’ nedir? Hangi merkezin, kaç kere bölünmesine rağmen sapmadan kendine geri döndü — ve sen şampiyon olurken, arkanda hangi tanık duruyor?",
+    },
+    isPremium: false,
+    hasEarlyPaywall: false,
+    previewContent: null,
+    createdAt: "2026-05-09T22:15:00Z",
+    commentCount: 0,
+    viewCount: 0,
+    isFeatured: true,
+    deepReaderComments: [],
+  },
+  {
     id: 40,
     slug: "ruhi-cenet-hantavirus-gemisi-24-aynasi",
     title: "RUHİ ÇENET — Hantavirüs Gemisi ve 24’ün Aynası",
