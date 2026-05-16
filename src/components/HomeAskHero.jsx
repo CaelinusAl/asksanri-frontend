@@ -2,11 +2,11 @@
 import styles from "./HomeAskHero.module.css";
 
 /**
- * HomeAskHero ÔÇö anasayfan─▒n yeni hero'su.
- * SANRI'YA SOR'u ├Âne ├ğ─▒kar─▒r: b├╝y├╝k textarea + seed prompt'lar + tek primary CTA.
+ * HomeAskHero — ana sayfanin yeni hero'su.
+ * SANRI'YA SOR'u on plana cikarir: buyuk textarea + seed prompt'lar + tek primary CTA.
  *
- * Submit edildi─şinde onSubmit(text, { fromSeed }) ile parent'a haber verir.
- * Parent (HomePage) /sanriya-sor rotas─▒na state: { prefill, autoSubmit: true } ile gider.
+ * Submit edildiginde onSubmit(text, { fromSeed }) ile parent'a haber verir.
+ * Parent /sanriya-sor rotasina state: { prefill, autoSubmit: true } ile gider.
  */
 export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
   const [text, setText] = useState("");
@@ -16,9 +16,9 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
 
   const seedPrompts = isTR
     ? [
-        "Bug├╝n i├ğimde neyi bast─▒r─▒yorum?",
-        "Bu r├╝ya bana neyi hat─▒rlat─▒yor?",
-        "┼Şu an hangi karardan ka├ğ─▒yorum?",
+        "Bug\u00fcn i\u00e7imde neyi bast\u0131r\u0131yorum?",
+        "Bu r\u00fcya bana neyi hat\u0131rlat\u0131yor?",
+        "\u015eu an hangi karardan ka\u00e7\u0131yorum?",
       ]
     : [
         "What am I suppressing today?",
@@ -55,7 +55,6 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
     [handleSubmit]
   );
 
-  // Speech-to-text
   const startListening = useCallback(() => {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) return;
@@ -105,6 +104,16 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
 
   const hasText = String(text || "").trim().length > 0;
 
+  const titleTr = "\u0130\u00e7inden ne soruyorsun?";
+  const subtitleTr =
+    "Bir kelime, bir soru, bir r\u00fcya, bir tarih yaz. SANRI cevap \u00fcretmez \u2014 alan a\u00e7ar.";
+  const placeholderTr =
+    "\u00d6rn. Bug\u00fcn i\u00e7imde neyi bast\u0131r\u0131yorum?";
+  const listeningTr = "Dinleniyor\u2026";
+  const listeningEn = "Listening\u2026";
+  const hintTr = "ile h\u0131zl\u0131 g\u00f6nder";
+  const seedLabelTr = "Nereden ba\u015flayaca\u011f\u0131n\u0131 bilmiyorsan:";
+
   return (
     <section className={styles.hero} aria-labelledby="ask-hero-title">
       <div className={styles.glow} aria-hidden="true" />
@@ -116,12 +125,12 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
         </div>
 
         <h1 id="ask-hero-title" className={styles.title}>
-          {isTR ? "─░├ğinden ne soruyorsun?" : "What are you asking from within?"}
+          {isTR ? titleTr : "What are you asking from within?"}
         </h1>
         <p className={styles.subtitle}>
           {isTR
-            ? "Bir kelime, bir soru, bir r├╝ya, bir tarih yaz. SANRI cevap ├╝retmez ÔÇö alan a├ğar."
-            : "Write a word, a question, a dream, a date. SANRI doesn't produce answers ÔÇö it opens space."}
+            ? subtitleTr
+            : "Write a word, a question, a dream, a date. SANRI doesn't produce answers \u2014 it opens space."}
         </p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -135,11 +144,7 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={
-              isTR
-                ? "├ûrn. Bug├╝n i├ğimde neyi bast─▒r─▒yorum?"
-                : "e.g. What am I suppressing today?"
-            }
+            placeholder={isTR ? placeholderTr : "e.g. What am I suppressing today?"}
             rows={3}
           />
 
@@ -151,15 +156,15 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
               aria-label={isTR ? "Sesle yaz" : "Voice input"}
               aria-pressed={isListening}
             >
-              <span aria-hidden="true">­şÄÖ</span>
+              <span aria-hidden="true">{"\u{1F3A4}"}</span>
               <span className={styles.micLabel}>
                 {isListening
                   ? isTR
-                    ? "DinleniyorÔÇĞ"
-                    : "ListeningÔÇĞ"
+                    ? listeningTr
+                    : listeningEn
                   : isTR
-                  ? "Sesle yaz"
-                  : "Voice"}
+                    ? "Sesle yaz"
+                    : "Voice"}
               </span>
             </button>
 
@@ -167,10 +172,12 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
               type="submit"
               className={styles.submitBtn}
               disabled={!hasText}
-              aria-label={isTR ? "Yans─▒t" : "Reflect"}
+              aria-label={isTR ? "Yans\u0131t" : "Reflect"}
             >
-              <span>{isTR ? "Yans─▒t" : "Reflect"}</span>
-              <span aria-hidden="true" className={styles.arrow}>ÔåÆ</span>
+              <span>{isTR ? "Yans\u0131t" : "Reflect"}</span>
+              <span aria-hidden="true" className={styles.arrow}>
+                {"\u2192"}
+              </span>
             </button>
           </div>
 
@@ -178,15 +185,13 @@ export default function HomeAskHero({ isTR, onSubmit, onUnlock }) {
             <kbd className={styles.kbd}>Ctrl</kbd>
             <span className={styles.kbdPlus}>+</span>
             <kbd className={styles.kbd}>Enter</kbd>
-            <span className={styles.hintText}>
-              {isTR ? "ile h─▒zl─▒ g├Ânder" : "to submit"}
-            </span>
+            <span className={styles.hintText}>{isTR ? hintTr : "to submit"}</span>
           </div>
         </form>
 
         <div className={styles.seedRow}>
           <div className={styles.seedLabel}>
-            {isTR ? "Nereden ba┼şlayaca─ş─▒n─▒ bilmiyorsan:" : "If you don't know where to start:"}
+            {isTR ? seedLabelTr : "If you don't know where to start:"}
           </div>
           <div className={styles.seedChips}>
             {seedPrompts.map((p) => (
