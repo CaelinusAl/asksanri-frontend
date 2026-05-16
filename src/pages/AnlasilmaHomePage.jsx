@@ -84,6 +84,66 @@ export default function AnlasilmaHomePage() {
             </>
           )}
         </p>
+
+        <details className={styles.about}>
+          <summary className={styles.aboutSummary}>
+            {isTR ? "Sanrı nedir?" : "What is Sanrı?"}
+          </summary>
+          <div className={styles.aboutBody}>
+            <p className={styles.aboutBadge}>
+              {isTR
+                ? "SANRI — Bilinç ve Anlam Zekası"
+                : "SANRI — Consciousness & Meaning Intelligence"}
+            </p>
+            <p className={styles.aboutLead}>
+              {isTR ? (
+                <>
+                  Bu bir cevap motoru değil.
+                  <br />
+                  Görünmeyeni görünür kılan bilinç aynası.
+                </>
+              ) : (
+                <>
+                  Not an answer engine.
+                  <br />A mirror of consciousness that makes the invisible visible.
+                </>
+              )}
+            </p>
+            <div className={styles.aboutProof} aria-label={isTR ? "Özet istatistikler" : "Summary stats"}>
+              <span>{isTR ? "1200+ kullanıcı" : "1200+ people"}</span>
+              <span className={styles.aboutDot} aria-hidden>
+                ·
+              </span>
+              <span>{isTR ? "327+ okuma" : "327+ readings"}</span>
+              <span className={styles.aboutDot} aria-hidden>
+                ·
+              </span>
+              <span>{isTR ? "7 farklı alan" : "7 areas"}</span>
+            </div>
+            <div className={styles.aboutActions}>
+              <button
+                type="button"
+                className={styles.aboutBtnPrimary}
+                onClick={() => {
+                  unlockAudio();
+                  navigate("/hosgeldin", { state: { startAt: "intro" } });
+                }}
+              >
+                {isTR ? "Sanrı'yı Tanı" : "Meet Sanrı"}
+              </button>
+              <button
+                type="button"
+                className={styles.aboutBtnGhost}
+                onClick={() => {
+                  unlockAudio();
+                  navigate("/hosgeldin", { state: { startAt: "quiz" } });
+                }}
+              >
+                {isTR ? "Kendini Görmeye Başla" : "Start the short quiz"}
+              </button>
+            </div>
+          </div>
+        </details>
       </div>
     </>
   );

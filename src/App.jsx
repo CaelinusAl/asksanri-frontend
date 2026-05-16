@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback, lazy, Suspense } from "react";
-import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import usePageView from "./hooks/usePageView";
 import { syncPurchasesFromServer } from "./data/shopierConfig";
 import { useAuth } from "./contexts/AuthContext";
@@ -144,27 +144,8 @@ function renderOkumaAreaError(err) {
   );
 }
 
-function useFirstVisitRedirect() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const didRedirect = useRef(false);
-  useEffect(() => {
-    if (didRedirect.current) return;
-    try {
-      if (localStorage.getItem("sanri_onboarding_done")) return;
-      if (localStorage.getItem("sanri_token")) return;
-      const skipPaths = ["/hosgeldin", "/giris", "/auth/callback", "/admin", "/payment", "/odeme", "/d/"];
-      if (skipPaths.some((p) => location.pathname.startsWith(p))) return;
-      if (location.pathname !== "/") return;
-      didRedirect.current = true;
-      navigate("/hosgeldin", { replace: true });
-    } catch {}
-  }, [location.pathname]);
-}
-
 export default function App() {
   usePageView();
-  useFirstVisitRedirect();
   const { isAuthenticated, user } = useAuth();
   const [toastItems, setToastItems] = useState(null);
   const authSyncDone = useRef(false);

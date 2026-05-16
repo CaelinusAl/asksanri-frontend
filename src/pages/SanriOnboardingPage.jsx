@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import SeoHead from "../components/SeoHead";
 import { trackFunnelEvent, getUtmParams } from "../data/funnelTracker";
@@ -140,11 +140,19 @@ const PHASE_QUIZ = 2;
 const PHASE_EMAIL = 3;
 const PHASE_RESULT = 4;
 
+function initialPhaseFromState(state) {
+  const s = state?.startAt;
+  if (s === "quiz") return PHASE_QUIZ;
+  if (s === "intro") return PHASE_INTRO;
+  return PHASE_LANDING;
+}
+
 // ─── COMPONENT ───────────────────────────────────────────────────
 
 export default function SanriOnboardingPage() {
   const navigate = useNavigate();
-  const [phase, setPhase] = useState(PHASE_LANDING);
+  const location = useLocation();
+  const [phase, setPhase] = useState(() => initialPhaseFromState(location.state));
   const [qIndex, setQIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [email, setEmail] = useState("");
