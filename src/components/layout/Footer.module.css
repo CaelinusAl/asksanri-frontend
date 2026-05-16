@@ -1,0 +1,166 @@
+.footer {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 6, 14, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 24px 18px 20px;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.inner {
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.accordion {
+  width: 100%;
+  max-width: 640px;
+  border-radius: 12px;
+  border: 1px solid rgba(120, 160, 255, 0.14);
+  background: rgba(10, 12, 22, 0.65);
+  overflow: hidden;
+}
+
+.accordionBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(210, 220, 250, 0.9);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.accordionBtn:hover {
+  background: rgba(80, 120, 200, 0.08);
+}
+
+.chevron {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  opacity: 0.7;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.accordionPanel {
+  border-top: 1px solid rgba(120, 160, 255, 0.1);
+  padding: 12px 14px 18px;
+  text-align: left;
+  max-height: min(52vh, 440px);
+  overflow-y: auto;
+}
+
+.block {
+  margin-bottom: 16px;
+}
+
+.block:last-child {
+  margin-bottom: 0;
+}
+
+.blockTitle {
+  margin: 0 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(140, 160, 200, 0.55);
+}
+
+.linkList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.linkList li {
+  margin: 0;
+}
+
+.navLink,
+.navLinkActive {
+  display: block;
+  padding: 7px 8px;
+  margin: 2px 0;
+  border-radius: 8px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navLink {
+  color: rgba(200, 210, 235, 0.75);
+}
+
+.navLink:hover {
+  background: rgba(80, 120, 200, 0.1);
+  color: #fff;
+}
+
+.navLinkActive {
+  color: #fff;
+  background: rgba(100, 140, 220, 0.18);
+  border: 1px solid rgba(140, 180, 255, 0.22);
+}
+
+.legalRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.legalLink {
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+
+.legalLink:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 13px;
+  user-select: none;
+}
+
+.company {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.detail {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.copyright {
+  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 11px;
+}
