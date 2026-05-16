@@ -70,6 +70,93 @@
   word-break: break-all;
 }
 
+.plainBox {
+  margin: 0 0 16px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.plainLead {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: rgba(235, 230, 255, 0.9);
+}
+
+.plainList {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(210, 205, 240, 0.82);
+}
+
+.plainList li + li {
+  margin-top: 10px;
+}
+
+.techDetails {
+  margin: 0 0 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.techSummary {
+  padding: 12px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(200, 180, 255, 0.9);
+  list-style: none;
+}
+
+.techSummary::-webkit-details-marker {
+  display: none;
+}
+
+.techBody {
+  padding: 0 14px 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(190, 185, 220, 0.75);
+}
+
+.techBody code {
+  font-size: 11px;
+  background: rgba(200, 160, 255, 0.12);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.techNote {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sectionHint {
+  margin: -6px 0 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(200, 190, 230, 0.55);
+}
+
+.steps {
+  margin: 0 0 18px;
+  padding-left: 22px;
+  font-size: 13px;
+  line-height: 1.65;
+  color: rgba(220, 215, 250, 0.88);
+}
+
+.steps li + li {
+  margin-top: 8px;
+}
+
 .card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
