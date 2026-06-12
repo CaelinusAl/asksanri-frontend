@@ -282,9 +282,25 @@ export default function OdemeBasariliPage() {
       return;
     }
 
+    /* Girilen e-postayı arka plan polling döngüsüne de yansıt — aksi halde
+       döngü boş e-posta + sadece cihaz parmak izi ile denemeye devam eder. */
+    emailRef.current = em;
+
     setPhase("email_checking");
     const alternateIds = buildAlternateIds(target);
     const idsToTry = [target, ...alternateIds];
+
+    /* 1) En güvenilir yol: kendi DB kaydımıza doğrudan bak.
+       Webhook ile kaydedilmiş satın alımlar burada anında eşleşir
+       (Shopier canlı API'si gecikse / bulamasa bile). */
+    for (const cid of idsToTry) {
+      const r = await fetchShopierPurchaseCheck(cid, em);
+      if (r.unlocked) {
+        const pendingSnap = getPendingPurchase();
+        await runVerifiedSuccess(target, r.purchased_at || r.purchase?.purchased_at, pendingSnap);
+        return;
+      }
+    }
 
     for (const cid of idsToTry) {
       const pat = await verifyPurchaseByEmail(em, cid);
