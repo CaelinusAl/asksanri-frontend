@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -90,11 +90,11 @@ const STYLE = {
   },
 };
 
-async function silentCheckWithFallback(contentId) {
-  const ok = await checkServerUnlock(contentId);
+async function silentCheckWithFallback(contentId, email = "") {
+  const ok = await checkServerUnlock(contentId, email);
   if (ok) return true;
   if (contentId.startsWith("okuma_") && contentId !== "okuma_devami") {
-    return checkServerUnlock("okuma_devami");
+    return checkServerUnlock("okuma_devami", email);
   }
   return false;
 }
@@ -105,37 +105,83 @@ export default function PendingPurchaseRecovery() {
   const [pending, setPending] = useState(null);
   const [visible, setVisible] = useState(false);
   const [autoUnlocked, setAutoUnlocked] = useState(false);
+  const stopRef = useRef(false);
 
   useEffect(() => {
-    if (isAdminPath(location.pathname)) return;
-    if (location.pathname === "/odeme-basarili") return;
+    if (isAdminPath(location.pathname)) return undefined;
+    if (location.pathname === "/odeme-basarili") return undefined;
 
     const p = getPendingPurchase();
-    if (p && p.contentId) {
-      silentCheckWithFallback(p.contentId)
-        .then((unlocked) => {
-          if (unlocked) {
-            applyVerifiedShopierUnlock(p.contentId, new Date().toISOString());
-            syncPurchasesFromServer();
-            clearPendingPurchase();
-            setAutoUnlocked(true);
-            setPending(p);
-            setTimeout(() => setVisible(true), 600);
-            setTimeout(() => {
-              setVisible(false);
-              setPending(null);
-            }, 4000);
-            return;
-          }
-          setPending(p);
-          setTimeout(() => setVisible(true), 1200);
-        })
-        .catch(() => {
-          setPending(p);
-          setTimeout(() => setVisible(true), 1200);
-        });
-    }
-  }, [location.pathname]);
+    if (!p || !p.contentId) return undefined;
+
+    /* Shopier müşteriyi ödeme sonrası buraya yönlendirmeyebilir; bu yüzden
+       webhook'un satın alımı kaydetmesini periyodik olarak bekleriz.
+       İlk ~20 sn sessiz kontrol; sonra hâlâ açılmadıysa manuel doğrulama
+       kartını gösterir ama arka planda kontrole devam ederiz (~3 dk). */
+    stopRef.current = false;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 36;        // ~3 dk (5 sn aralık)
+    const SHOW_CARD_AFTER = 4;      // ~20 sn sonra manuel kart
+    const email = (p.email && String(p.email).includes("@")) ? p.email : "";
+
+    const finishUnlocked = () => {
+      applyVerifiedShopierUnlock(p.contentId, new Date().toISOString());
+      syncPurchasesFromServer({ email });
+      clearPendingPurchase();
+      setAutoUnlocked(true);
+      setPending(p);
+      setVisible(true);
+
+      const target =
+        p.returnPath && p.returnPath !== "/" ? p.returnPath : "";
+      if (target && location.pathname !== target) {
+        setTimeout(() => {
+          if (!stopRef.current) navigate(target, { replace: true });
+        }, 1500);
+      }
+      setTimeout(() => {
+        setVisible(false);
+        setPending(null);
+      }, 6000);
+    };
+
+    const poll = async () => {
+      if (stopRef.current) return;
+      attempts += 1;
+      let unlocked = false;
+      try {
+        unlocked = await silentCheckWithFallback(p.contentId, email);
+      } catch {
+        unlocked = false;
+      }
+      if (stopRef.current) return;
+
+      if (unlocked) {
+        finishUnlocked();
+        return;
+      }
+
+      if (attempts === SHOW_CARD_AFTER) {
+        setPending(p);
+        setVisible(true);
+      }
+
+      if (attempts < MAX_ATTEMPTS) {
+        const delay =
+          typeof document !== "undefined" &&
+          document.visibilityState === "hidden"
+            ? 8000
+            : 5000;
+        setTimeout(poll, delay);
+      }
+    };
+
+    poll();
+
+    return () => {
+      stopRef.current = true;
+    };
+  }, [location.pathname, navigate]);
 
   const goVerify = useCallback(() => {
     if (!pending) return;
@@ -154,6 +200,7 @@ export default function PendingPurchaseRecovery() {
   }, [pending, navigate]);
 
   const handleCancel = useCallback(() => {
+    stopRef.current = true;
     clearPendingPurchase();
     setVisible(false);
     setPending(null);
